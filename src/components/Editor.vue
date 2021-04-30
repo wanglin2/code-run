@@ -5,9 +5,12 @@
       :key="item.title"
       :title="item.title"
       :width="item.width"
+      :height="height"
       :touchBarSize="touchBarSize"
       :disabledDrag="index <= 0"
       :noSpace="item.width <= rotateWidth"
+      :language="item.language"
+      :content="item.content"
       @dragStart="onDragStart"
       @drag="
         (...args) => {
@@ -20,13 +23,22 @@
 </template>
 
 <script setup>
-import { ref, defineProps, onMounted, computed, toRaw, unref } from 'vue'
+import {
+  ref,
+  defineProps,
+  onMounted,
+  computed,
+  toRaw,
+  unref,
+  watch,
+  watchEffect,
+} from 'vue'
 import { useStore } from 'vuex'
 import EditorItem from '@/components/EditorItem.vue'
 import Resize from '@/hooks/Resize.js'
 
 // props
-defineProps({
+const props = defineProps({
   height: {
     type: Number,
     default: 100,
@@ -51,16 +63,22 @@ const rotateWidth = ref(0)
 const editorItemList = ref([
   {
     title: 'HTML',
+    language: 'html',
+    content: '',
     width: 0,
     min: 18,
   },
   {
     title: 'CSS',
+    language: 'css',
+    content: '',
     width: 0,
     min: 18,
   },
   {
     title: 'JS',
+    language: 'javascript',
+    content: '',
     width: 0,
     min: 18,
   },
@@ -86,6 +104,13 @@ const setInitSize = () => {
   }
 }
 
+const setInitData = () => {
+  const code = editData.value.code
+  editorItemList.value[0].content = code.html.content
+  editorItemList.value[1].content = code.css.content
+  editorItemList.value[2].content = code.js.content
+}
+
 /**
  * @Author: 王林25
  * @Date: 2021-04-28 14:47:12
@@ -96,6 +121,7 @@ const resizeInit = () => {
   let { width } = editorBox.value.getBoundingClientRect()
   containerWidth.value = width
   setInitSize(width)
+  setInitData()
   // 最大及最小宽度
   let minWidth = (touchBarSize.value / containerWidth.value) * 100
   // 编辑器标题进行旋转的临界值
