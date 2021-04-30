@@ -32,8 +32,14 @@ import Header from '@/components/Header.vue'
 import Editor from '@/components/Editor.vue'
 import Preview from '@/components/Preview.vue'
 import Console from '@/components/Console.vue'
-import { defineProps, onMounted, reactive, ref } from 'vue'
+import { defineProps, onMounted, reactive, ref, computed } from 'vue'
+import { useStore } from 'vuex'
 import Resize from '@/hooks/Resize.js'
+
+// vuex
+const store = useStore()
+// 数据
+const editData = computed(() => store.state.editData)
 
 // ------------ 尺寸调整部分开始 -----------
 const resize = new Resize()
@@ -69,12 +75,19 @@ const { onDragStart, onDrag } = resize
  * @Desc: 计算每部分初始高度
  */
 const setInitSize = (height) => {
-  // 控制台默认不显示
-  itemList.value[2].height = itemList.value[2].min / height * 100
-  // 编辑器和预览区平分剩下的一半
-  let rest = (100 - itemList.value[2].height) / 2
-  itemList.value[0].height = rest
-  itemList.value[1].height = rest
+  const blockSize = editData.value.config.blockSize
+  if (blockSize) {
+    blockSize.forEach((size, index) => {
+      itemList.value[index].height = size
+    })
+  } else {
+    // 控制台默认不显示
+    itemList.value[2].height = (itemList.value[2].min / height) * 100
+    // 编辑器和预览区平分剩下的一半
+    let rest = (100 - itemList.value[2].height) / 2
+    itemList.value[0].height = rest
+    itemList.value[1].height = rest
+  }
 }
 
 /**
