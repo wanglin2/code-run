@@ -14,7 +14,7 @@
         "
       ></Preview>
       <Console
-        :touchBarSize="touchBarSize"
+        :touchBarSize="30"
         :height="itemList[2].height"
         @dragStart="onDragStart"
         @drag="
@@ -32,9 +32,9 @@ import Header from '@/components/Header.vue'
 import Editor from '@/components/Editor.vue'
 import Preview from '@/components/Preview.vue'
 import Console from '@/components/Console.vue'
-import { defineProps, onMounted, reactive, ref, computed } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import { useStore } from 'vuex'
-import Resize from '@/hooks/Resize.js'
+import Resize from '@/utils/Resize.js'
 
 // vuex
 const store = useStore()
@@ -58,7 +58,7 @@ const itemList = ref([
   {
     title: '控制台',
     height: 0,
-    min: 18,
+    min: 30,
   },
 ])
 // 拖动条宽度
@@ -128,6 +128,7 @@ onMounted(() => {
   .content {
     width: 100%;
     height: 100%;
+    overflow: hidden;
   }
 }
 </style>
