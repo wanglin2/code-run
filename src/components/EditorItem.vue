@@ -52,6 +52,7 @@ import {
   nextTick,
 } from 'vue'
 import Drag from '@/utils/Drag.js'
+import { ElMessage } from 'element-plus'
 
 // 支持的语言
 const supportLanguage = {
@@ -158,10 +159,24 @@ const preprocessorChange = (e) => {
  * @Date: 2021-04-29 20:05:50
  * @Desc: 创建编辑器
  */
+const tryMaxCount = 10
+let tryCount = 0
 const createEditor = () => {
   if (!editor) {
+    // 有时候monaco对象还不存在，所以递归进行检查
+    if (!window.monaco) {
+      console.log('Monaco对象不存在，正在重新获取')
+      if (tryCount > tryMaxCount) {
+        return ElMessage.error('页面加载出错，请刷新重试')
+      }
+      tryCount++
+      setTimeout(() => {
+        createEditor()
+      }, 0)
+      return
+    }
     // 创建编辑器
-    editor = monaco.editor.create(editorEl.value, {
+    editor = window.monaco.editor.create(editorEl.value, {
       model: null,
       minimap: {
         enabled: false, // 关闭小地图
@@ -194,7 +209,10 @@ const updateDoc = (code, language) => {
     return
   }
   let oldModel = editor.getModel()
-  let newModel = monaco.editor.createModel(code, supportLanguage[language])
+  let newModel = window.monaco.editor.createModel(
+    code,
+    supportLanguage[language]
+  )
   editor.setModel(newModel)
   if (oldModel) {
     oldModel.dispose()
