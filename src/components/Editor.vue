@@ -107,7 +107,7 @@ import { useStore } from 'vuex'
 import EditorItem from '@/components/EditorItem.vue'
 import Resize from '@/utils/Resize.js'
 
-const app = getCurrentInstance()
+const { proxy } = getCurrentInstance()
 
 // props
 const props = defineProps({
@@ -267,7 +267,7 @@ const resetCode = () => {
   runCode()
 }
 
-app.ctx.$eventEmitter.on('reset_code', resetCode)
+proxy.$eventEmitter.on('reset_code', resetCode)
 
 /**
  * @Author: 王林25
@@ -439,13 +439,13 @@ const confirmAddResource = () => {
   runCode()
 }
 
-/** 
- * @Author: 王林25 
- * @Date: 2021-05-14 11:38:21 
- * @Desc: 发送运行代码的通知 
+/**
+ * @Author: 王林25
+ * @Date: 2021-05-14 11:38:21
+ * @Desc: 发送运行代码的通知
  */
 const runCode = () => {
-  app.ctx.$eventEmitter.emit('run')
+  proxy.$eventEmitter.emit('run')
 }
 
 // 挂载完成

@@ -30,7 +30,7 @@ import { getCurrentInstance, ref } from 'vue'
 import templateList from '@/utils/templates'
 import { useStore } from 'vuex'
 
-const app = getCurrentInstance()
+const {proxy} = getCurrentInstance()
 
 // vuex
 const store = useStore()
@@ -41,7 +41,7 @@ const store = useStore()
  * @Desc: 运行
  */
 const run = () => {
-  app.ctx.$eventEmitter.emit('run')
+  proxy.$eventEmitter.emit('run')
 }
 
 // ------------- 模板选择功能 ---------------------
@@ -65,7 +65,7 @@ const openTemplate = () => {
  */
 const selectTemplate = (data) =>{
   store.commit('setCode', JSON.parse(JSON.stringify(data.code)))
-  app.ctx.$eventEmitter.emit('reset_code')
+  proxy.$eventEmitter.emit('reset_code')
   templateDialogVisible.value = false
 }
 
