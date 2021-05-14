@@ -7,7 +7,8 @@ import {
 
 const routes = [{
         path: '/',
-        component: Home
+        component: Home,
+        redirect: '/edit'
     },
     {
         path: '/edit',

@@ -64,7 +64,7 @@ import {
 } from 'vue'
 import Drag from '@/utils/Drag.js'
 
-const app = getCurrentInstance()
+const {proxy} = getCurrentInstance()
 
 // 触发事件
 const { emit } = useContext()
@@ -234,21 +234,21 @@ const implementJs = (e) => {
   }
   e.preventDefault()
   if (jsInput.value.trim()) {
-    app.ctx.$eventEmitter.emit('dynamic_js_command', jsInput.value.trim())
+    proxy.$eventEmitter.emit('dynamic_js_command', jsInput.value.trim())
     jsInput.value = ''
   }
 }
 
 // 挂载完成
 onMounted(() => {
-  app.ctx.$eventEmitter.on('iframeMouseup', onMouseup)
+  proxy.$eventEmitter.on('iframeMouseup', onMouseup)
 })
 
 // 即将解除挂载
 onBeforeUnmount(() => {
   drag.off()
   window.removeEventListener('message', onMessage)
-  app.ctx.$eventEmitter.off('iframeMouseup', onMouseup)
+  proxy.$eventEmitter.off('iframeMouseup', onMouseup)
 })
 </script>
 

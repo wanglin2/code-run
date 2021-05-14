@@ -28,7 +28,7 @@ import { assembleHtml } from '@/utils'
 import transform from '@/utils/transform'
 import { load } from '@/utils/load'
 
-const app = getCurrentInstance()
+const {proxy} = getCurrentInstance()
 
 // 触发事件
 const { emit } = useContext()
@@ -66,7 +66,7 @@ const onMousedown = (e) => {
   drag.onMousedown(e)
 }
 const onMouseup = (e) => {
-  app.ctx.$eventEmitter.emit('iframeMouseup', e)
+  proxy.$eventEmitter.emit('iframeMouseup', e)
   drag.onMouseup(e)
 }
 
@@ -137,7 +137,7 @@ const run = async () => {
     })
 }
 
-app.ctx.$eventEmitter.on('run', run)
+proxy.$eventEmitter.on('run', run)
 
 /**
  * @Author: 王林25
@@ -151,7 +151,7 @@ const dynamicRunJs = (code) => {
   })
 }
 
-app.ctx.$eventEmitter.on('dynamic_js_command', dynamicRunJs)
+proxy.$eventEmitter.on('dynamic_js_command', dynamicRunJs)
 
 /**
  * @Author: 王林25
@@ -165,7 +165,7 @@ const log = (type, data) => {
   })
 }
 
-app.ctx.$eventEmitter.on('log', log)
+proxy.$eventEmitter.on('log', log)
 
 // 挂载完成
 onMounted(() => {
@@ -175,8 +175,8 @@ onMounted(() => {
 // 即将解除挂载
 onBeforeUnmount(() => {
   drag.off()
-  app.ctx.$eventEmitter.off('run', run)
-  app.ctx.$eventEmitter.off('dynamic_js_command', dynamicRunJs)
+  proxy.$eventEmitter.off('run', run)
+  proxy.$eventEmitter.off('dynamic_js_command', dynamicRunJs)
   iframeRef.value.contentWindow.removeEventListener('mouseup', onMouseup)
 })
 </script>
