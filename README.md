@@ -19,9 +19,7 @@ npm run build
 # 依赖
 
 视图库：`VUE 3.X`
+
 UI库：`element-plus`
+
 编辑器：`Monaco Editor`
-
-# 仓库
-
-[https://github.com/wanglin2/code-run](https://github.com/wanglin2/code-run)
