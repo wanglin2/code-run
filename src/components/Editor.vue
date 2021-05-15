@@ -13,20 +13,21 @@
       :content="item.content"
       :preprocessorList="preprocessorListMap[item.title]"
       :showAddBtn="item.showAddBtn"
+      :codeTheme="codeTheme"
       @dragStart="onDragStart"
       @drag="
         (...args) => {
-          onDrag(index, ...args)
+          onDrag(index, ...args);
         }
       "
       @code-change="
         (code) => {
-          codeChange(item, code)
+          codeChange(item, code);
         }
       "
       @preprocessor-change="
         (p) => {
-          preprocessorChange(item, p)
+          preprocessorChange(item, p);
         }
       "
       @add-resource="addResource(item)"
@@ -102,12 +103,12 @@
 </template>
 
 <script setup>
-import { ref, defineProps, onMounted, computed, getCurrentInstance } from 'vue'
-import { useStore } from 'vuex'
-import EditorItem from '@/components/EditorItem.vue'
-import Resize from '@/utils/Resize.js'
+import { ref, defineProps, onMounted, computed, getCurrentInstance } from "vue";
+import { useStore } from "vuex";
+import EditorItem from "@/components/EditorItem.vue";
+import Resize from "@/utils/Resize.js";
 
-const { proxy } = getCurrentInstance()
+const { proxy } = getCurrentInstance();
 
 // props
 const props = defineProps({
@@ -115,104 +116,106 @@ const props = defineProps({
     type: Number,
     default: 100,
   },
-})
+});
 
 // vuex
-const store = useStore()
+const store = useStore();
 // 数据
-const editData = computed(() => store.state.editData)
+const editData = computed(() => store.state.editData);
+
+const codeTheme = computed(() => store.state.editData.config.codeTheme);
 
 // ----------------  尺寸调整部分开始  ---------------
-const resize = new Resize()
+const resize = new Resize();
 // 拖动条宽度
-const touchBarSize = ref(18)
+const touchBarSize = ref(18);
 // 容器的宽度
-const editorBox = ref(null)
-const containerWidth = ref(0)
+const editorBox = ref(null);
+const containerWidth = ref(0);
 // 编辑器标题进行旋转的临界值
-const rotateWidth = ref(0)
+const rotateWidth = ref(0);
 // 编辑器列表
 const editorItemList = ref([
   {
-    title: 'HTML',
-    language: 'html',
-    content: '',
+    title: "HTML",
+    language: "html",
+    content: "",
     width: 0,
     min: 18,
     showAddBtn: false,
   },
   {
-    title: 'CSS',
-    language: 'css',
-    content: '',
+    title: "CSS",
+    language: "css",
+    content: "",
     width: 0,
     min: 18,
     showAddBtn: true,
   },
   {
-    title: 'JS',
-    language: 'javascript',
-    content: '',
+    title: "JS",
+    language: "javascript",
+    content: "",
     width: 0,
     min: 18,
     showAddBtn: true,
   },
-])
+]);
 // 预处理器列表
 const preprocessorListMap = {
   HTML: [
     {
-      label: 'HTML',
-      value: 'html',
+      label: "HTML",
+      value: "html",
     },
     {
-      label: 'Pug',
-      value: 'pug',
+      label: "Pug",
+      value: "pug",
     },
   ],
   JS: [
     {
-      label: 'JavaScript',
-      value: 'javascript',
+      label: "JavaScript",
+      value: "javascript",
     },
     {
-      label: 'Babel',
-      value: 'babel',
+      label: "Babel",
+      value: "babel",
     },
     {
-      label: 'TypeScript',
-      value: 'typescript',
+      label: "TypeScript",
+      value: "typescript",
     },
     {
-      label: 'CoffeeScript',
-      value: 'coffeescript',
+      label: "CoffeeScript",
+      value: "coffeescript",
     },
   ],
   CSS: [
     {
-      label: 'CSS',
-      value: 'css',
+      label: "CSS",
+      value: "css",
     },
     {
-      label: 'LESS',
-      value: 'less',
+      label: "LESS",
+      value: "less",
     },
     {
-      label: 'SASS',
-      value: 'sass',
+      label: "SASS",
+      value: "sass",
     },
     {
-      label: 'Stylus',
-      value: 'stylus',
+      label: "Stylus",
+      value: "stylus",
     },
     {
-      label: 'PostCss',
-      value: 'postcss',
+      label: "PostCss",
+      value: "postcss",
     },
   ],
-}
+};
 
-const { onDragStart, onDrag } = resize
+const { onDragStart, onDrag } = resize;
 
 /**
  * @Author: 王林25
@@ -220,17 +223,17 @@ const { onDragStart, onDrag } = resize
  * @Desc: 计算每部分初始宽度
  */
 const setInitSize = () => {
-  const editorSize = editData.value.config.editorSize
+  const editorSize = editData.value.config.editorSize;
   if (editorSize) {
     editorSize.forEach((size, index) => {
-      editorItemList.value[index].width = size
-    })
+      editorItemList.value[index].width = size;
+    });
   } else {
     editorItemList.value.forEach((item) => {
-      item.width = 100 / editorItemList.value.length
-    })
+      item.width = 100 / editorItemList.value.length;
+    });
   }
-}
+};
 
 /**
  * @Author: 王林25
@@ -239,9 +242,9 @@ const setInitSize = () => {
  */
 const getIndexByType = (type) => {
   return editorItemList.value.findIndex((item) => {
-    return item.title === type
-  })
-}
+    return item.title === type;
+  });
+};
 
 /**
  * @Author: 王林25
@@ -249,13 +252,13 @@ const getIndexByType = (type) => {
  * @Desc: 设置初始数据
  */
 const setInitData = () => {
-  const code = editData.value.code
+  const code = editData.value.code;
   Object.keys(code).forEach((type) => {
-    let index = getIndexByType(type)
-    editorItemList.value[index].content = code[type].content
-    editorItemList.value[index].language = code[type].language
-  })
-}
+    let index = getIndexByType(type);
+    editorItemList.value[index].content = code[type].content;
+    editorItemList.value[index].language = code[type].language;
+  });
+};
 
 /**
  * @Author: 王林25
@@ -263,11 +266,11 @@ const setInitData = () => {
  * @Desc: 重新设置代码数据
  */
 const resetCode = () => {
-  setInitData()
-  runCode()
-}
+  setInitData();
+  runCode();
+};
 
-proxy.$eventEmitter.on('reset_code', resetCode)
+proxy.$eventEmitter.on("reset_code", resetCode);
 
 /**
  * @Author: 王林25
@@ -276,22 +279,41 @@ proxy.$eventEmitter.on('reset_code', resetCode)
  */
 const resizeInit = () => {
   // 容器宽度
-  let { width } = editorBox.value.getBoundingClientRect()
-  containerWidth.value = width
-  setInitSize(width)
-  setInitData()
+  let { width } = editorBox.value.getBoundingClientRect();
+  containerWidth.value = width;
+  setInitSize(width);
+  setInitData();
   // 最大及最小宽度
-  let minWidth = (touchBarSize.value / containerWidth.value) * 100
+  let minWidth = (touchBarSize.value / containerWidth.value) * 100;
   // 编辑器标题进行旋转的临界值
-  rotateWidth.value = minWidth + (100 / containerWidth.value) * 100
+  rotateWidth.value = minWidth + (100 / containerWidth.value) * 100;
   resize.init({
-    dir: 'h',
+    dir: "h",
     dragItemList: editorItemList,
     containerSize: containerWidth.value,
-  })
-}
+  });
+};
 
 // ----------------  尺寸调整部分结束  ---------------
+
+/**
+ * @Author: 王林
+ * @Date: 2021-05-15 08:29:29
+ * @Desc: 自动运行
+ */
+let autoRunTimer = null;
+const isAutoRun = computed(() => {
+  return store.state.editData.config.autoRun;
+});
+const autoRun = () => {
+  if (!isAutoRun.value) {
+    return;
+  }
+  clearTimeout(autoRunTimer);
+  autoRunTimer = setTimeout(() => {
+    runCode();
+  }, 1000);
+};
 
 /**
  * @Author: 王林25
@@ -299,11 +321,12 @@ const resizeInit = () => {
  * @Desc: 代码修改事件
  */
 const codeChange = (item, code) => {
-  store.commit('setCodeContent', {
+  store.commit("setCodeContent", {
     type: item.title,
     code,
-  })
-}
+  });
+  autoRun();
+};
 
 /**
  * @Author: 王林25
@@ -311,52 +334,52 @@ const codeChange = (item, code) => {
  * @Desc: 修改预处理器
  */
 const preprocessorChange = (item, p) => {
-  let index = getIndexByType(item.title)
-  editorItemList.value[index].language = p
-  editorItemList.value[index].content = editData.value.code[item.title].content
-  store.commit('setCodePreprocessor', {
+  let index = getIndexByType(item.title);
+  editorItemList.value[index].language = p;
+  editorItemList.value[index].content = editData.value.code[item.title].content;
+  store.commit("setCodePreprocessor", {
     type: item.title,
     preprocessor: p,
-  })
-  runCode()
-}
+  });
+  runCode();
+};
 
 // -------------------添加资源部分---------------
 
-const addResourceDialogVisible = ref(false)
-const resourceData = ref([])
-const addResourceType = ref('')
+const addResourceDialogVisible = ref(false);
+const resourceData = ref([]);
+const addResourceType = ref("");
 // 常用cdn服务
 const cdnSiteList = [
   {
-    name: 'BootCDN',
-    url: 'https://www.bootcdn.cn/',
+    name: "BootCDN",
+    url: "https://www.bootcdn.cn/",
   },
   {
-    name: '又拍云',
-    url: 'http://jscdn.upai.com/',
+    name: "又拍云",
+    url: "http://jscdn.upai.com/",
   },
   {
-    name: 'Staticfile CDN',
-    url: 'http://staticfile.org/',
+    name: "Staticfile CDN",
+    url: "http://staticfile.org/",
   },
   {
-    name: '75CDN 前端静态资源库',
-    url: 'https://cdn.baomitu.com/',
+    name: "75CDN 前端静态资源库",
+    url: "https://cdn.baomitu.com/",
   },
   {
-    name: '字节跳动静态资源公共库',
-    url: 'https://cdn.bytedance.com/',
+    name: "字节跳动静态资源公共库",
+    url: "https://cdn.bytedance.com/",
   },
   {
-    name: 'cdnjs',
-    url: 'https://cdnjs.com/',
+    name: "cdnjs",
+    url: "https://cdnjs.com/",
   },
   {
-    name: 'jsDelivr',
-    url: 'https://www.jsdelivr.com/',
+    name: "jsDelivr",
+    url: "https://www.jsdelivr.com/",
   },
-]
+];
 
 /**
  * @Author: 王林25
@@ -364,12 +387,12 @@ const cdnSiteList = [
  * @Desc: 跳转到cdn服务
  */
 const handleCdnCommand = (url) => {
-  let a = document.createElement('a')
-  a.target = '_blank'
-  a.href = url
-  a.click()
-  a = null
-}
+  let a = document.createElement("a");
+  a.target = "_blank";
+  a.href = url;
+  a.click();
+  a = null;
+};
 
 /**
  * @Author: 王林25
@@ -377,16 +400,16 @@ const handleCdnCommand = (url) => {
  * @Desc: 添加资源
  */
 const addResource = (item) => {
-  addResourceType.value = item.title
+  addResourceType.value = item.title;
   resourceData.value = (editData.value.code[item.title].resources || []).map(
     (r) => {
       return {
         ...r,
-      }
+      };
     }
-  )
-  addResourceDialogVisible.value = true
-}
+  );
+  addResourceDialogVisible.value = true;
+};
 
 /**
  * @Author: 王林25
@@ -394,8 +417,8 @@ const addResource = (item) => {
  * @Desc: 删除一个资源
  */
 const deleteResource = (e) => {
-  resourceData.value.splice(e.$index, 1)
-}
+  resourceData.value.splice(e.$index, 1);
+};
 
 /**
  * @Author: 王林25
@@ -404,10 +427,10 @@ const deleteResource = (e) => {
  */
 const addOneResource = () => {
   resourceData.value.push({
-    url: '',
-    name: '',
-  })
-}
+    url: "",
+    name: "",
+  });
+};
 
 /**
  * @Author: 王林25
@@ -415,10 +438,10 @@ const addOneResource = () => {
  * @Desc: 取消添加资源
  */
 const cancelAddResource = () => {
-  addResourceDialogVisible.value = false
-  addResourceType.value = ''
-  resourceData.value = []
-}
+  addResourceDialogVisible.value = false;
+  addResourceType.value = "";
+  resourceData.value = [];
+};
 
 /**
  * @Author: 王林25
@@ -429,15 +452,15 @@ const confirmAddResource = () => {
   let resources = resourceData.value.map((item) => {
     return {
       ...item,
-    }
-  })
-  store.commit('setCodeResource', {
+    };
+  });
+  store.commit("setCodeResource", {
     type: addResourceType.value,
     resources,
-  })
-  cancelAddResource()
-  runCode()
-}
+  });
+  cancelAddResource();
+  runCode();
+};
 
 /**
  * @Author: 王林25
@@ -445,16 +468,16 @@ const confirmAddResource = () => {
  * @Desc: 发送运行代码的通知
  */
 const runCode = () => {
-  proxy.$eventEmitter.emit('run')
-}
+  proxy.$eventEmitter.emit("run");
+};
 
 // 挂载完成
 onMounted(async () => {
   // 获取代码数据
-  await store.dispatch('getData')
-  resizeInit()
-  runCode()
-})
+  await store.dispatch("getData");
+  resizeInit();
+  runCode();
+});
 </script>
 
 <style scoped lang="less">
