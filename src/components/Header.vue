@@ -4,6 +4,9 @@
       <h1>CodeRun</h1>
     </div>
     <div class="right">
+      <div class="btn" @click="openSetting">
+        <span class="icon el-icon-s-tools"></span> 设置
+      </div>
       <div class="btn" @click="openTemplate">
         <span class="icon el-icon-s-opportunity"></span> 模板
       </div>
@@ -13,7 +16,12 @@
     </div>
     <el-dialog title="常用模板" :width="1000" v-model="templateDialogVisible">
       <div class="templateList">
-        <div class="templateItem" v-for="item in templateData" :key="item.name" @click="selectTemplate(item)">
+        <div
+          class="templateItem"
+          v-for="item in templateData"
+          :key="item.name"
+          @click="selectTemplate(item)"
+        >
           <div
             class="icon"
             :style="{ backgroundImage: `url(${item.icon})` }"
@@ -22,18 +30,38 @@
         </div>
       </div>
     </el-dialog>
+    <el-dialog
+      custom-class="settingDialog"
+      title="设置"
+      :width="600"
+      v-model="settingDialogVisible"
+    >
+      <div class="settingBox">
+        <el-tabs tab-position="left" v-model="settingType">
+          <el-tab-pane label="主题设置" name="theme"></el-tab-pane>
+          <el-tab-pane label="布局设置" name="layout"></el-tab-pane>
+          <el-tab-pane label="其他设置" name="setting"></el-tab-pane>
+        </el-tabs>
+        <div class="settingContent">
+          <component :is="componentsMap[settingType]"></component>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script setup>
-import { getCurrentInstance, ref } from 'vue'
-import templateList from '@/utils/templates'
-import { useStore } from 'vuex'
+import { getCurrentInstance, ref } from "vue";
+import templateList from "@/utils/templates";
+import { useStore } from "vuex";
+import Setting from "./Setting.vue";
+import SettingLayout from "./SettingLayout.vue";
+import SettingTheme from "./SettingTheme.vue";
 
-const {proxy} = getCurrentInstance()
+const { proxy } = getCurrentInstance();
 
 // vuex
-const store = useStore()
+const store = useStore();
 
 /**
  * @Author: 王林25
@@ -41,13 +69,13 @@ const store = useStore()
  * @Desc: 运行
  */
 const run = () => {
-  proxy.$eventEmitter.emit('run')
-}
+  proxy.$eventEmitter.emit("run");
+};
 
 // ------------- 模板选择功能 ---------------------
 
-const templateDialogVisible = ref(false)
-const templateData = ref(templateList)
+const templateDialogVisible = ref(false);
+const templateData = ref(templateList);
 
 /**
  * @Author: 王林25
@@ -55,20 +83,38 @@ const templateData = ref(templateList)
  * @Desc: 打开选择模板弹窗
  */
 const openTemplate = () => {
-  templateDialogVisible.value = true
-}
+  templateDialogVisible.value = true;
+};
 
-/** 
- * @Author: 王林25 
- * @Date: 2021-05-14 11:22:32 
- * @Desc: 选择某个模板 
+/**
+ * @Author: 王林25
+ * @Date: 2021-05-14 11:22:32
+ * @Desc: 选择某个模板
  */
-const selectTemplate = (data) =>{
-  store.commit('setCode', JSON.parse(JSON.stringify(data.code)))
-  proxy.$eventEmitter.emit('reset_code')
-  templateDialogVisible.value = false
-}
+const selectTemplate = (data) => {
+  store.commit("setCode", JSON.parse(JSON.stringify(data.code)));
+  proxy.$eventEmitter.emit("reset_code");
+  templateDialogVisible.value = false;
+};
 
+// ------------- 设置功能 ---------------------
+
+const settingDialogVisible = ref(false);
+const settingType = ref("theme");
+const componentsMap = ref({
+  theme: SettingTheme,
+  layout: SettingLayout,
+  setting: Setting,
+});
+
+/**
+ * @Author: 王林
+ * @Date: 2021-05-15 07:28:49
+ * @Desc: 打开设置弹窗
+ */
+const openSetting = () => {
+  settingDialogVisible.value = true;
+};
 </script>
 
 <style scoped lang="less">
@@ -145,7 +191,7 @@ const selectTemplate = (data) =>{
     transition: all 0.3s;
 
     &:hover {
-      background-color:  rgba(36, 36, 36, 0.1);
+      background-color: rgba(36, 36, 36, 0.1);
     }
 
     .icon {
@@ -161,6 +207,28 @@ const selectTemplate = (data) =>{
       font-weight: bold;
       margin-left: 20px;
       font-size: 18px;
+    }
+  }
+}
+
+/deep/ .settingDialog {
+  .el-dialog__body {
+    padding: 0px;
+  }
+
+  .settingBox {
+    display: flex;
+
+    .el-tabs {
+      flex-grow: 0;
+      flex-shrink: 0;
+    }
+
+    .settingContent {
+      width: 100%;
+      height: 300px;
+      overflow: auto;
+      padding: 10px;
     }
   }
 }

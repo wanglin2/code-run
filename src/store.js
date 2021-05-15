@@ -7,9 +7,12 @@ const store = createStore({
         return {
             editData: {
                 config: {
+                    codeTheme: 'vs-dark',
                     blockSize: null,
                     editorSize: null,
-                    useInnerConsole: false
+                    openAlmightyConsole: false,
+                    autoRun: false,
+                    layout: 'default'
                 },
                 code: {
                     HTML: {
@@ -88,7 +91,43 @@ const store = createStore({
          */
         setCode(state, data) {
             state.editData.code = data
-        }
+        },
+
+        /** 
+         * @Author: 王林 
+         * @Date: 2021-05-15 08:08:04 
+         * @Desc: 设置代码主题 
+         */
+        setCodeTheme(state, theme) {
+            state.editData.config.codeTheme = theme
+        },
+
+        /** 
+         * @Author: 王林 
+         * @Date: 2021-05-15 08:16:38 
+         * @Desc: 设置自动运行的状态 
+         */
+        setAutoRun(state, autoRun) {
+            state.editData.config.autoRun = autoRun
+        },
+
+        /** 
+         * @Author: 王林 
+         * @Date: 2021-05-15 08:23:17 
+         * @Desc: 设置全能调试 
+         */
+        setOpenAlmightyConsole(state, openAlmightyConsole) {
+            state.editData.config.openAlmightyConsole = openAlmightyConsole
+        },
+
+        /** 
+         * @Author: 王林 
+         * @Date: 2021-05-15 08:51:49 
+         * @Desc: 设置布局 
+         */
+        setLayout(state, layout) {
+            state.editData.config.layout = layout
+        },
     },
     actions: {
         /** 
@@ -104,7 +143,7 @@ const store = createStore({
                 //         config: {
                 //             blockSize: null,
                 //             editorSize: null,
-                //             useInnerConsole: false
+                //             openAlmightyConsole: false
                 //         },
                 //         code: {
                 //             HTML: {
