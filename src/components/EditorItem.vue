@@ -252,6 +252,7 @@ const addResource = () => {
 };
 
 // 更新尺寸
+let timer = null;
 watch(
   [
     () => {
@@ -262,9 +263,16 @@ watch(
     },
   ],
   () => {
-    nextTick(() => {
-      editor && editor.layout();
-    });
+    // 100ms内只执行一次，优化卡顿问题
+    if (timer) {
+      return;
+    }
+    timer = setTimeout(() => {
+      nextTick(() => {
+        editor && editor.layout();
+        timer = null;
+      });
+    }, 100);
   }
 );
 

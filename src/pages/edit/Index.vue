@@ -14,7 +14,7 @@
         "
       ></Preview>
       <Console
-        :touchBarSize="30"
+        :touchBarSize="touchBarSize"
         :height="itemList[2].height"
         @dragStart="onDragStart"
         @drag="
@@ -43,6 +43,8 @@ const editData = computed(() => store.state.editData)
 
 // ------------ 尺寸调整部分开始 -----------
 const resize = new Resize()
+// 拖动条宽度
+const touchBarSize = ref(30)
 // 高度控制列表
 const itemList = ref([
   {
@@ -53,16 +55,14 @@ const itemList = ref([
   {
     title: '预览区',
     height: 0,
-    min: 18,
+    min: touchBarSize.value,
   },
   {
     title: '控制台',
     height: 0,
-    min: 30,
+    min: touchBarSize.value,
   },
 ])
-// 拖动条宽度
-const touchBarSize = ref(18)
 // 容器的高度
 const contentBox = ref(null)
 const containerHeight = ref(0)

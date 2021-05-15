@@ -141,8 +141,8 @@ const run = async () => {
 proxy.$eventEmitter.on("run", run);
 
 watch(() => {
-  return store.state.editData.config.openAlmightyConsole
-}, run)
+  return store.state.editData.config.openAlmightyConsole;
+}, run);
 
 /**
  * @Author: 王林25
@@ -203,8 +203,9 @@ onBeforeUnmount(() => {
     cursor: row-resize;
     color: #aaaebc;
     font-size: 12px;
-    line-height: 17px;
     padding-left: 5px;
+    display: flex;
+    align-items: center;
   }
 
   .iframe {
