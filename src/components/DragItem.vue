@@ -1,0 +1,175 @@
+<template>
+  <div
+    class="dragItem"
+    :class="[dir, { hide: hide }]"
+    :style="{
+      width: sizeList[index].width + '%',
+      height: sizeList[index].height + '%',
+    }"
+  >
+    <div
+      v-if="showTouchBar"
+      class="touchBar"
+      :style="{
+        width: dir === 'h' ? touchBarSize + 'px' : '100%',
+        height: dir === 'h' ? '100%' : touchBarSize + 'px',
+      }"
+      :class="[{ canDrag: !disabled }, dir]"
+      @mousedown="onMousedown"
+    >
+      <span class="title">{{ title }}</span>
+    </div>
+    <slot></slot>
+  </div>
+</template>
+
+<script setup>
+import {
+  defineProps,
+  useContext,
+  onBeforeUnmount,
+  watch,
+  inject,
+  getCurrentInstance,
+} from 'vue'
+import Drag from '@/utils/Drag.js'
+
+const { proxy } = getCurrentInstance()
+
+const onDragStart = inject('onDragStart')
+const onDrag = inject('onDrag')
+const sizeList = inject('sizeList')
+const dir = inject('dir')
+
+// 触发事件
+const { emit } = useContext()
+
+// props
+const props = defineProps({
+  disabled: {
+    type: Boolean,
+    default: false,
+  },
+  touchBarSize: {
+    type: Number,
+    default: 20,
+  },
+  index: {
+    type: Number,
+    default: 0,
+  },
+  showTouchBar: {
+    type: Boolean,
+    default: true,
+  },
+  title: {
+    type: String,
+    default: '',
+  },
+  hide: {
+    type: Boolean,
+    default: false,
+  },
+})
+
+watch(
+  [
+    () => {
+      return sizeList.value[props.index].width
+    },
+    () => {
+      return sizeList.value[props.index].height
+    },
+  ],
+  () => {
+    emit('size-change')
+  }
+)
+
+// 拖动方法
+let drag = null
+if (!props.disabled) {
+  drag = new Drag(
+    (...args) => {
+      onDragStart(...args)
+    },
+    (...args) => {
+      onDrag(props.index, ...args)
+    },
+    (...args) => {}
+  )
+}
+
+const onMousedown = (e) => {
+  drag && drag.onMousedown(e)
+}
+
+const onMouseup = (e) => {
+  drag && drag.onMouseup(e)
+}
+
+proxy.$eventEmitter.on('iframe_mouseup', onMouseup)
+
+// 即将解除挂载
+onBeforeUnmount(() => {
+  drag && drag.off()
+  proxy.$eventEmitter.off('iframe_mouseup')
+})
+</script>
+
+<style scoped lang="less">
+.dragItem {
+  display: flex;
+  overflow: hidden;
+
+  &.hide {
+    display: none;
+  }
+
+  &.v {
+    flex-direction: column;
+  }
+
+  .touchBar {
+    flex-grow: 0;
+    flex-shrink: 0;
+    background-color: #333642;
+
+    &.canDrag {
+      &.v {
+        cursor: row-resize;
+      }
+
+      &.h {
+        cursor: col-resize;
+      }
+    }
+
+    &.h {
+      border-left: 1px solid rgba(255, 255, 255, 0.05);
+      border-right: 1px solid rgba(0, 0, 0, 0.4);
+      height: 100%;
+
+      .title {
+        margin-left: 0px;
+        margin-top: 5px;
+        text-align: center;
+      }
+    }
+
+    &.v {
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+      width: 100%;
+    }
+
+    .title {
+      display: flex;
+      align-items: center;
+      color: #aaaebc;
+      font-size: 12px;
+      margin-left: 5px;
+    }
+  }
+}
+</style>

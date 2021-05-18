@@ -5,13 +5,14 @@ import {
     createWebHistory
 } from 'vue-router'
 
-const routes = [{
-        path: '/',
-        component: Home,
-        redirect: '/edit'
-    },
+const routes = [
+    // {
+    //     path: '/',
+    //     component: Home,
+    //     redirect: '/edit'
+    // },
     {
-        path: '/edit',
+        path: '/',
         component: Edit
     },
 ]

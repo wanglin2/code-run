@@ -1,21 +1,15 @@
 <template>
-  <div class="consoleBox" :style="{ height: height + '%' }">
-    <div
-      class="touchBar"
-      :style="{ height: touchBarSize + 'px' }"
-      @mousedown="onMousedown"
-    >
+  <div class="consoleBox">
+    <div class="header">
       <div class="left">
-        控制台
+        <span class="btn el-icon-delete" @click="clear"></span>
         <span class="errorCount" v-if="errorCount > 0"
           ><span class="icon el-icon-error"></span>{{ errorCount }}</span
         >
       </div>
-      <div class="right">
-        <div class="btn" @click="clear">清空</div>
-      </div>
+      <div class="right"></div>
     </div>
-    <div class="logBox" ref="logBoxRef" :style="{ top: touchBarSize + 'px' }">
+    <div class="logBox" ref="logBoxRef">
       <div
         class="logRow"
         v-for="(log, index) in logList"
@@ -62,43 +56,14 @@ import {
   nextTick,
   computed,
 } from 'vue'
-import Drag from '@/utils/Drag.js'
 
-const {proxy} = getCurrentInstance()
+const { proxy } = getCurrentInstance()
 
 // 触发事件
 const { emit } = useContext()
 
 // props
-defineProps({
-  height: {
-    type: Number,
-    default: 100,
-  },
-  touchBarSize: {
-    type: Number,
-    default: 18,
-  },
-})
-
-// 拖动方法
-const drag = new Drag(
-  (...args) => {
-    emit('dragStart', ...args)
-  },
-  (...args) => {
-    emit('drag', ...args)
-  },
-  (...args) => {
-    emit('dragOver', ...args)
-  }
-)
-const onMousedown = (e) => {
-  drag.onMousedown(e)
-}
-const onMouseup = (e) => {
-  drag.onMouseup(e)
-}
+defineProps({})
 
 const logList = ref([])
 const logBoxRef = ref(null)
@@ -241,14 +206,13 @@ const implementJs = (e) => {
 
 // 挂载完成
 onMounted(() => {
-  proxy.$eventEmitter.on('iframeMouseup', onMouseup)
+  // proxy.$eventEmitter.on('iframeMouseup', onMouseup)
 })
 
 // 即将解除挂载
 onBeforeUnmount(() => {
-  drag.off()
   window.removeEventListener('message', onMessage)
-  proxy.$eventEmitter.off('iframeMouseup', onMouseup)
+  // proxy.$eventEmitter.off('iframeMouseup', onMouseup)
 })
 </script>
 
@@ -256,31 +220,32 @@ onBeforeUnmount(() => {
 .consoleBox {
   position: relative;
   width: 100%;
+  height: 100%;
   background-color: #131417;
   overflow: hidden;
 
-  .touchBar {
+  .header {
     position: absolute;
     left: 0;
     top: 0;
     width: 100%;
-    flex-grow: 0;
-    flex-shrink: 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+    height: 30px;
     background-color: #333642;
-    cursor: row-resize;
     color: #aaaebc;
     font-size: 12px;
     padding: 0 5px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    z-index: 2;
+    z-index: 99;
+
+    .left {
+      display: flex;
+      align-items: center;
+    }
 
     .btn {
       border: 3px solid transparent;
-      background: #444857;
       color: white;
       cursor: pointer;
       font-size: 12px;
@@ -289,12 +254,15 @@ onBeforeUnmount(() => {
       &:active {
         transform: translateY(1px);
       }
+
+      &:hover {
+        background: #444857;
+      }
     }
 
     .errorCount {
       margin-left: 5px;
       color: #f56c6c;
-
       .icon {
         color: #f56c6c;
         margin-right: 3px;
@@ -305,6 +273,7 @@ onBeforeUnmount(() => {
   .logBox {
     position: absolute;
     left: 0;
+    top: 30px;
     bottom: 30px;
     width: 100%;
     overflow: auto;
