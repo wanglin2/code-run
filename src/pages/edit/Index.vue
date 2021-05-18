@@ -1,7 +1,7 @@
 <template>
   <div class="editContainer">
     <Header></Header>
-    <div class="content" ref="contentBox">
+    <div class="content">
       <component :is="activeLayout"></component>
     </div>
   </div>
