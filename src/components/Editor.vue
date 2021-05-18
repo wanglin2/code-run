@@ -1,5 +1,5 @@
 <template>
-  <div class="editorBox" ref="editorBox" :class="{ hide: hide }">
+  <div class="editorBox" :class="{ hide: hide }">
     <Drag
       :number="editorItemList.length"
       :dir="layout === 'edit' ? 'v' : 'h'"
