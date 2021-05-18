@@ -8,8 +8,6 @@ const store = createStore({
             editData: {
                 config: {
                     codeTheme: 'vs-dark',
-                    blockSize: null,
-                    editorSize: null,
                     openAlmightyConsole: false,
                     autoRun: false,
                     layout: 'default'
@@ -141,8 +139,6 @@ const store = createStore({
                 // setTimeout(() => {
                 //     context.commit('setEditData', {
                 //         config: {
-                //             blockSize: null,
-                //             editorSize: null,
                 //             openAlmightyConsole: false
                 //         },
                 //         code: {
