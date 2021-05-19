@@ -1,10 +1,14 @@
 import {
     createStore
 } from 'vuex'
+import {
+    generateUUID
+} from '@/utils'
 
 const store = createStore({
     state() {
         return {
+            uuid: generateUUID(),
             editData: {
                 config: {
                     codeTheme: 'vs-dark',

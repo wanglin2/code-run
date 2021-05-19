@@ -137,6 +137,9 @@ const codeTheme = computed(() => store.state.editData.config.codeTheme)
 const layout = computed(() => {
   return store.state.editData.config.layout
 })
+const openAlmightyConsole = computed(() => {
+  return store.state.editData.config.openAlmightyConsole
+})
 const dragConfig = ref([])
 const defaultEditorItemList = [
   {
@@ -248,6 +251,15 @@ watch(
   },
   () => {
     changeLayout()
+  }
+)
+
+watch(
+  () => {
+    return openAlmightyConsole.value
+  },
+  () => {
+    runCode()
   }
 )
 
@@ -471,6 +483,9 @@ const confirmAddResource = () => {
  */
 const runCode = () => {
   proxy.$eventEmitter.emit('run')
+  if (layout.value === 'newWindowPreview') {
+    proxy.$eventEmitter.emit('preview_window_run')
+  }
 }
 
 // 挂载完成

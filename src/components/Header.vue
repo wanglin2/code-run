@@ -51,7 +51,7 @@
 </template>
 
 <script setup>
-import { getCurrentInstance, ref } from "vue";
+import { getCurrentInstance, ref, computed } from "vue";
 import templateList from "@/utils/templates";
 import { useStore } from "vuex";
 import Setting from "./Setting.vue";
@@ -62,6 +62,9 @@ const { proxy } = getCurrentInstance();
 
 // vuex
 const store = useStore();
+const layout = computed(() => {
+  return store.state.editData.config.layout
+})
 
 /**
  * @Author: 王林25
@@ -70,6 +73,9 @@ const store = useStore();
  */
 const run = () => {
   proxy.$eventEmitter.emit("run");
+  if (layout.value === 'newWindowPreview') {
+    proxy.$eventEmitter.emit('preview_window_run')
+  }
 };
 
 // ------------- 模板选择功能 ---------------------

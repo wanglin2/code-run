@@ -4,7 +4,7 @@
       <div class="content">
         <span class="name">布局</span>
         <div class="control">
-          <el-select v-model="layout" @change="layoutChange">
+          <el-select v-model="layout">
             <el-option
               v-for="item in list"
               :key="item.value"
@@ -17,7 +17,7 @@
         <el-button type="primary" class="btn" @click="confirm">确定</el-button>
       </div>
     </div>
-    <div class="previewImg">
+    <div class="previewImg" v-if="previewImg">
       <img :src="previewImg" alt="" />
     </div>
   </div>
@@ -45,36 +45,40 @@ const list = [
     value: 'default',
   },
   {
-    name: '默认(对调)',
-    value: 'default2',
-  },
-  {
     name: '编辑视图',
     value: 'edit',
   },
   {
-    name: '编辑视图2',
-    value: 'edit2',
+    name: '新开窗口预览',
+    value: 'newWindowPreview',
   },
   {
     name: '纯编辑',
     value: 'editOnly',
   },
   {
-    name: '纯编辑(带控制台)',
-    value: 'editOnly2',
-  },
-  {
     name: '纯预览',
     value: 'previewOnly',
   },
   {
-    name: '纯预览(带控制台)',
-    value: 'previewOnly2',
+    name: '纯js',
+    value: 'js',
   },
   {
-    name: 'js模式',
-    value: 'js',
+    name: '默认(对调)',
+    value: 'default2',
+  },
+  {
+    name: '编辑视图2',
+    value: 'edit2',
+  },
+  {
+    name: '纯编辑(带控制台)',
+    value: 'editOnly2',
+  },
+  {
+    name: '纯预览(带控制台)',
+    value: 'previewOnly2',
   },
 ]
 
