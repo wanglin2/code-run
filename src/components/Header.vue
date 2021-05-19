@@ -1,7 +1,9 @@
 <template>
   <div class="header">
     <div class="left">
-      <h1>CodeRun</h1>
+      <h1>
+        <img src="../assets/logo.png" alt="" />
+      </h1>
     </div>
     <div class="right">
       <div class="btn" @click="openSetting">
@@ -51,17 +53,17 @@
 </template>
 
 <script setup>
-import { getCurrentInstance, ref, computed } from "vue";
-import templateList from "@/utils/templates";
-import { useStore } from "vuex";
-import Setting from "./Setting.vue";
-import SettingLayout from "./SettingLayout.vue";
-import SettingTheme from "./SettingTheme.vue";
+import { getCurrentInstance, ref, computed } from 'vue'
+import templateList from '@/utils/templates'
+import { useStore } from 'vuex'
+import Setting from './Setting.vue'
+import SettingLayout from './SettingLayout.vue'
+import SettingTheme from './SettingTheme.vue'
 
-const { proxy } = getCurrentInstance();
+const { proxy } = getCurrentInstance()
 
 // vuex
-const store = useStore();
+const store = useStore()
 const layout = computed(() => {
   return store.state.editData.config.layout
 })
@@ -72,16 +74,16 @@ const layout = computed(() => {
  * @Desc: 运行
  */
 const run = () => {
-  proxy.$eventEmitter.emit("run");
+  proxy.$eventEmitter.emit('run')
   if (layout.value === 'newWindowPreview') {
     proxy.$eventEmitter.emit('preview_window_run')
   }
-};
+}
 
 // ------------- 模板选择功能 ---------------------
 
-const templateDialogVisible = ref(false);
-const templateData = ref(templateList);
+const templateDialogVisible = ref(false)
+const templateData = ref(templateList)
 
 /**
  * @Author: 王林25
@@ -89,8 +91,8 @@ const templateData = ref(templateList);
  * @Desc: 打开选择模板弹窗
  */
 const openTemplate = () => {
-  templateDialogVisible.value = true;
-};
+  templateDialogVisible.value = true
+}
 
 /**
  * @Author: 王林25
@@ -98,20 +100,20 @@ const openTemplate = () => {
  * @Desc: 选择某个模板
  */
 const selectTemplate = (data) => {
-  store.commit("setCode", JSON.parse(JSON.stringify(data.code)));
-  proxy.$eventEmitter.emit("reset_code");
-  templateDialogVisible.value = false;
-};
+  store.commit('setCode', JSON.parse(JSON.stringify(data.code)))
+  proxy.$eventEmitter.emit('reset_code')
+  templateDialogVisible.value = false
+}
 
 // ------------- 设置功能 ---------------------
 
-const settingDialogVisible = ref(false);
-const settingType = ref("theme");
+const settingDialogVisible = ref(false)
+const settingType = ref('theme')
 const componentsMap = ref({
   theme: SettingTheme,
   layout: SettingLayout,
   setting: Setting,
-});
+})
 
 /**
  * @Author: 王林
@@ -119,8 +121,8 @@ const componentsMap = ref({
  * @Desc: 打开设置弹窗
  */
 const openSetting = () => {
-  settingDialogVisible.value = true;
-};
+  settingDialogVisible.value = true
+}
 </script>
 
 <style scoped lang="less">
@@ -138,6 +140,11 @@ const openSetting = () => {
   .left {
     h1 {
       color: #fff;
+
+      img {
+        height: 50px;
+        margin-left: -20px;
+      }
     }
   }
 
