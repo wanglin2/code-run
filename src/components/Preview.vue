@@ -38,9 +38,47 @@ defineProps({
 const store = useStore()
 // 数据
 const editData = computed(() => store.state.editData)
-
 const srcdoc = ref('')
 const iframeRef = ref(null)
+const isNewWindowPreview = ref(false)
+const newWindowPreviewData = ref(null)
+const openAlmightyConsole = computed(() => {
+  return isNewWindowPreview.value ? newWindowPreviewData.value.config.openAlmightyConsole : editData.value.config.openAlmightyConsole
+})
+const htmlLanguage = computed(() => {
+  return isNewWindowPreview.value ? newWindowPreviewData.value.code.HTML.language : editData.value.code.HTML.language
+})
+const jsLanguage = computed(() => {
+  return isNewWindowPreview.value ? newWindowPreviewData.value.code.JS.language : editData.value.code.JS.language
+})
+const cssLanguage = computed(() => {
+  return isNewWindowPreview.value ? newWindowPreviewData.value.code.CSS.language : editData.value.code.CSS.language
+})
+const htmlContent = computed(() => {
+  return isNewWindowPreview.value ? newWindowPreviewData.value.code.HTML.content : editData.value.code.HTML.content
+})
+const jsContent = computed(() => {
+  return isNewWindowPreview.value ? newWindowPreviewData.value.code.JS.content : editData.value.code.JS.content
+})
+const cssContent = computed(() => {
+  return isNewWindowPreview.value ? newWindowPreviewData.value.code.CSS.content : editData.value.code.CSS.content
+})
+const cssResources = computed(() => {
+  return isNewWindowPreview.value ? newWindowPreviewData.value.code.CSS.resources : editData.value.code.CSS.resources
+})
+const jsResources = computed(() => {
+  return isNewWindowPreview.value ? newWindowPreviewData.value.code.JS.resources : editData.value.code.JS.resources
+})
+
+// 新开窗口预览模式接收预览通知
+window.addEventListener('message', ({ data = {} }) => {
+  console.log('preview', data)
+  if (data.type === 'preview') {
+    newWindowPreviewData.value = data.data
+    isNewWindowPreview.value = true
+    run()
+  }
+})
 
 /**
  * @Author: 王林25
@@ -49,22 +87,19 @@ const iframeRef = ref(null)
  */
 const run = async () => {
   srcdoc.value = ''
-  let h = editData.value.code.HTML.language
-  let j = editData.value.code.JS.language
-  let c = editData.value.code.CSS.language
-  await load([h, j, c])
-  let htmlTransform = transform.html(h, editData.value.code.HTML.content)
-  let jsTransform = transform.js(j, editData.value.code.JS.content)
-  let cssTransform = transform.css(c, editData.value.code.CSS.content)
+  await load([htmlLanguage.value, jsLanguage.value, cssLanguage.value])
+  let htmlTransform = transform.html(htmlLanguage.value, htmlContent.value)
+  let jsTransform = transform.js(jsLanguage.value, jsContent.value)
+  let cssTransform = transform.css(cssLanguage.value, cssContent.value)
   Promise.all([htmlTransform, jsTransform, cssTransform])
     .then(([htmlStr, jsStr, cssStr]) => {
       // 添加依赖资源
-      let cssResources = editData.value.code.CSS.resources
+      let _cssResources = cssResources.value
         .map((item) => {
           return `<link href="${item.url}" rel="stylesheet">`
         })
         .join('\n')
-      let jsResources = editData.value.code.JS.resources
+      let _jsResources = jsResources.value
         .map((item) => {
           return `<script src="${item.url}"><\/script>`
         })
@@ -75,19 +110,15 @@ const run = async () => {
     <style type="text/css">
         ${cssStr}
     <\/style>
-    ${cssResources}
+    ${_cssResources}
     <script src="/console/compile.js"><\/script>
   `
         let body = `
     ${htmlStr}
-    ${jsResources}
-    ${
-      editData.value.config.openAlmightyConsole
-        ? `<script src="/eruda/eruda.js"><\/script>`
-        : ''
-    }
+    ${_jsResources}
+    ${openAlmightyConsole.value ? `<script src="/eruda/eruda.js"><\/script>` : ''}
     <script>
-        ${editData.value.config.openAlmightyConsole ? 'eruda.init();' : ''}
+        ${openAlmightyConsole.value ? 'eruda.init();' : ''}
         try {
           ${jsStr}
         } catch (err) {
@@ -98,6 +129,7 @@ const run = async () => {
   `
         let str = assembleHtml(head, body)
         srcdoc.value = str
+        isNewWindowPreview.value = false
       })
     })
     .catch((error) => {
@@ -109,7 +141,7 @@ const run = async () => {
 proxy.$eventEmitter.on('run', run)
 
 watch(() => {
-  return store.state.editData.config.openAlmightyConsole
+  return editData.value.config.openAlmightyConsole
 }, run)
 
 /**
