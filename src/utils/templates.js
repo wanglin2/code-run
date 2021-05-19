@@ -9,7 +9,6 @@ import angularIcon from '../assets/templateIcons/angular.png'
 import vantIcon from '../assets/templateIcons/vant.png'
 import leafletIcon from '../assets/templateIcons/leaflet.png'
 import konvaIcon from '../assets/templateIcons/konva.png'
-import huiIcon from '../assets/templateIcons/hui.png'
 
 /*
 const = {
@@ -567,48 +566,6 @@ layer.draw();`,
     },
 }
 
-const hui = {
-    name: 'Hui',
-    icon: huiIcon,
-    code: {
-        HTML: {
-            language: 'html',
-            content: `<div id="app">
-    <el-checkbox v-model="checked">备选项</el-checkbox>
-</div>
-          `,
-            resources: []
-        },
-        CSS: {
-            language: 'css',
-            content: '',
-            resources: [{
-                name: 'Hui',
-                url: 'http://unpkg.dev.hikhub.net/hui/lib/hui.css'
-            }]
-        },
-        JS: {
-            language: 'javascript',
-            content: `new Vue({
-    el: '#app',
-    data () { 
-        return {
-        checked: true 
-        }
-    }
-})
-              `,
-            resources: [{
-                name: 'Vue 2',
-                url: 'http://unpkg.dev.hikhub.net/vue'
-            }, {
-                name: 'Hui',
-                url: 'http://unpkg.dev.hikhub.net/hui'
-            }]
-        },
-    },
-}
-
 /** 
  * javascript comment 
  * @Author: 王林25 
@@ -616,7 +573,6 @@ const hui = {
  * @Desc: 模板列表 
  */
 const templateList = [
-    hui,
     vue3,
     vue2,
     react,
