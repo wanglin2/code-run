@@ -9,8 +9,9 @@
             effect="dark"
             content="格式化"
             placement="bottom"
+            v-if="formatterParserMap[language]"
           >
-            <div class="addBtn">
+            <div class="addBtn" @click="codeFormatter">
               <span class="el-icon-s-open"></span>
             </div>
           </el-tooltip>
@@ -57,6 +58,11 @@ import {
 } from 'vue'
 import { ElMessage } from 'element-plus'
 import ResizeObserver from 'resize-observer-polyfill'
+import prettier from 'prettier/esm/standalone.mjs'
+import parserHtml from 'prettier/esm/parser-html.mjs'
+import parserPostcss from 'prettier/esm/parser-postcss.mjs'
+import parserBabel from 'prettier/esm/parser-babel.mjs'
+import parserTypescript from 'prettier/esm/parser-typescript.mjs'
 
 // 支持的语言
 const supportLanguage = {
@@ -72,6 +78,18 @@ const supportLanguage = {
   babel: 'javascript',
   typescript: 'typescript',
   coffeescript: 'coffeescript',
+}
+
+// 支持美化的语言
+const formatterParserMap = {
+  css: 'css',
+  sass: 'scss',
+  less: 'less',
+  postcss: 'css',
+  html: 'html',
+  javascript: 'babel',
+  babel: 'babel',
+  typescript: 'typescript',
 }
 
 // 触发事件
@@ -269,6 +287,24 @@ const ro = new ResizeObserver((entries, observer) => {
     }
   }
 })
+
+/**
+ * @Author: 王林25
+ * @Date: 2021-05-20 16:06:31
+ * @Desc: 代码格式化
+ */
+const codeFormatter = () => {
+  let str = prettier.format(getValue(), {
+    parser: formatterParserMap[props.language],
+    plugins: [parserBabel, parserHtml, parserPostcss, parserTypescript],
+  })
+  // 设置文档内容
+  updateDoc(str, props.language)
+  // 监听编辑事件
+  editor.onDidChangeModelContent((e) => {
+    emit('code-change', editor.getValue())
+  })
+}
 
 // 挂载完成
 onMounted(() => {
