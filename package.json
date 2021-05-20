@@ -11,7 +11,10 @@
     "element-plus": "*",
     "eruda": "^2.4.1",
     "eventemitter3": "^4.0.7",
+    "file-saver": "^2.0.5",
+    "jszip": "^3.6.0",
     "loadjs": "^4.2.0",
+    "prettier": "^2.3.0",
     "vue": "^3.0.5",
     "vue-router": "^4.0.6",
     "vuex": "^4.0.0"

@@ -1,5 +1,8 @@
 "use strict";
 
+/** 
+此文件修改完后请编译成es5语法，然后粘贴到./compile.js文件里
+ */
 (function () {
   /**
    * javascript comment
@@ -408,7 +411,7 @@
     if (data.type === "command") {
       try {
         // 打印要执行的代码
-        console.log(data.data);
+        console.log("＞ " + data.data);
         console.log(eval(data.data));
       } catch (error) {
         console.error("js执行出错");

@@ -14,7 +14,8 @@ const store = createStore({
                     codeTheme: 'vs-dark',
                     openAlmightyConsole: false,
                     autoRun: false,
-                    layout: 'default'
+                    layout: 'default',
+                    keepPreviousLogs: true
                 },
                 code: {
                     HTML: {
@@ -129,6 +130,16 @@ const store = createStore({
          */
         setLayout(state, layout) {
             state.editData.config.layout = layout
+        },
+
+        /** 
+         * javascript comment 
+         * @Author: 王林25 
+         * @Date: 2021-05-20 15:41:55 
+         * @Desc: 设置是否保留之前的日志 
+         */
+        setKeepPreviousLogs(state, keepPreviousLogs) {
+            state.editData.config.keepPreviousLogs = keepPreviousLogs
         },
     },
     actions: {
