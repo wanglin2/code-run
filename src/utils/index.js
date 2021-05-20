@@ -1,3 +1,8 @@
+import {
+    load
+} from '@/utils/load'
+import transform from '@/utils/transform'
+
 /** 
  * javascript comment 
  * @Author: 王林25 
@@ -44,4 +49,30 @@ export const generateUUID = () => {
         return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
     });
     return uuid;
+}
+
+/** 
+ * javascript comment 
+ * @Author: 王林25 
+ * @Date: 2021-05-20 14:14:01 
+ * @Desc: 编译
+ */
+export const compile = async (htmlLanguage, jsLanguage, cssLanguage, htmlContent, jsContent, cssContent) => {
+    await load([htmlLanguage, jsLanguage, cssLanguage])
+    let htmlTransform = transform.html(htmlLanguage, htmlContent)
+    let jsTransform = transform.js(jsLanguage, jsContent)
+    let cssTransform = transform.css(cssLanguage, cssContent)
+    return new Promise((resolve, reject) => {
+        Promise.all([htmlTransform, jsTransform, cssTransform])
+            .then(([htmlStr, jsStr, cssStr]) => {
+                resolve({
+                    html: htmlStr,
+                    js: jsStr,
+                    css: cssStr
+                })
+            })
+            .catch((error) => {
+                reject(error)
+            })
+    })
 }

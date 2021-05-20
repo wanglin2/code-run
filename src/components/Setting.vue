@@ -11,6 +11,15 @@
     </div>
     <div class="settingRow">
       <div class="content">
+        <span class="name">保留之前的日志</span>
+        <div class="control">
+          <el-switch v-model="keepPreviousLogs" @change="keepPreviousLogsChange"></el-switch>
+        </div>
+      </div>
+      <div class="desc">关闭后每次重新运行都会清空日志</div>
+    </div>
+    <div class="settingRow">
+      <div class="content">
         <span class="name">开启全能调试</span>
         <div class="control">
           <el-switch v-model="openAlmightyConsole" @change="openAlmightyConsoleChange"></el-switch>
@@ -56,6 +65,20 @@ const openAlmightyConsole = computed(() => {
  */
 const openAlmightyConsoleChange = (e) => {
   store.commit("setOpenAlmightyConsole", e);
+};
+
+// 保留之前的日志
+const keepPreviousLogs = computed(() => {
+  return store.state.editData.config.keepPreviousLogs;
+});
+
+/** 
+ * @Author: 王林25 
+ * @Date: 2021-05-20 15:41:16 
+ * @Desc: 切换是否保留之前的日志 
+ */
+const keepPreviousLogsChange = (e) => {
+  store.commit("setKeepPreviousLogs", e);
 };
 </script>
 

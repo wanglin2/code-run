@@ -327,7 +327,7 @@
         if (data.type === 'command') {
             try {
                 // 打印要执行的代码
-                console.log(data.data)
+                console.log('＞ ' + data.data)
                 console.log(eval(data.data))
             } catch (error) {
                 console.error('js执行出错')

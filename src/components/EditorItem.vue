@@ -7,6 +7,16 @@
           <el-tooltip
             class="item"
             effect="dark"
+            content="格式化"
+            placement="bottom"
+          >
+            <div class="addBtn">
+              <span class="el-icon-s-open"></span>
+            </div>
+          </el-tooltip>
+          <el-tooltip
+            class="item"
+            effect="dark"
             content="添加资源"
             placement="bottom"
             v-if="showAddBtn"

@@ -12,6 +12,14 @@
       <div class="btn" @click="openTemplate">
         <span class="icon el-icon-s-opportunity"></span> 模板
       </div>
+      <div class="dropdownBtn" @click.stop>
+        <div class="btn" @click="showToolsList = !showToolsList">
+          <span class="icon el-icon-s-tools"></span> 工具
+        </div>
+        <ul class="toolList" :class="{ show: showToolsList }">
+          <li class="toolItem" @click="exportZipFile">导出zip</li>
+        </ul>
+      </div>
       <div class="btn" @click="run">
         <span class="icon el-icon-s-promotion"></span> 运行
       </div>
@@ -49,21 +57,39 @@
         </div>
       </div>
     </el-dialog>
+    <el-dialog
+      title="输入导出文件名称"
+      v-model="exportNameInputDialogVisible"
+      :width="600"
+    >
+      <el-input v-model="exportName"></el-input>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="exportNameInputDialogVisible = false"
+            >取 消</el-button
+          >
+          <el-button type="primary" @click="confirmExport">确 定</el-button>
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
 <script setup>
-import { getCurrentInstance, ref, computed } from 'vue'
+import { getCurrentInstance, ref, computed, onBeforeUnmount } from 'vue'
 import templateList from '@/utils/templates'
 import { useStore } from 'vuex'
 import Setting from './Setting.vue'
 import SettingLayout from './SettingLayout.vue'
 import SettingTheme from './SettingTheme.vue'
+import exportZip from '@/utils/exportZip'
+import { ElMessage } from 'element-plus'
 
 const { proxy } = getCurrentInstance()
 
 // vuex
 const store = useStore()
+const editData = computed(() => store.state.editData)
 const layout = computed(() => {
   return store.state.editData.config.layout
 })
@@ -123,6 +149,55 @@ const componentsMap = ref({
 const openSetting = () => {
   settingDialogVisible.value = true
 }
+
+// ------------- 工具功能 ---------------------
+
+const showToolsList = ref(false)
+
+/**
+ * @Author: 王林25
+ * @Date: 2021-05-20 09:49:12
+ * @Desc: 隐藏工具下拉菜单
+ */
+const hideToolList = () => {
+  showToolsList.value = false
+}
+
+document.body.addEventListener('click', hideToolList)
+
+const exportNameInputDialogVisible = ref(false)
+const exportName = ref('')
+
+/**
+ * @Author: 王林25
+ * @Date: 2021-05-20 09:52:20
+ * @Desc: 导出zip
+ */
+const exportZipFile = () => {
+  exportNameInputDialogVisible.value = true
+  hideToolList()
+}
+
+/**
+ * @Author: 王林25
+ * @Date: 2021-05-20 14:08:08
+ * @Desc: 确认导出
+ */
+const confirmExport = () => {
+  if (exportName.value.trim() === '') {
+    ElMessage.warning({
+      message: '请输入文件名',
+      type: 'warning',
+    })
+    return
+  }
+  exportNameInputDialogVisible.value = false
+  exportZip(editData, exportName.value.trim())
+}
+
+onBeforeUnmount(() => {
+  document.body.removeEventListener('click', hideToolList)
+})
 </script>
 
 <style scoped lang="less">
@@ -150,6 +225,49 @@ const openSetting = () => {
 
   .right {
     display: flex;
+
+    .dropdownBtn {
+      position: relative;
+
+      .toolList {
+        position: absolute;
+        right: 0;
+        top: 50px;
+        width: 220px;
+        padding: 10px 0;
+        white-space: nowrap;
+        opacity: 0;
+        visibility: hidden;
+        background: #1e1f26;
+        border-radius: 6px 0 6px 6px;
+        box-shadow: 0 2rem 4rem #0a0a0c;
+        transform: scale(0.5);
+        transform-origin: top right;
+        transition: all 0.2s ease-in-out;
+        list-style: none;
+        z-index: 2;
+
+        &.show {
+          opacity: 1;
+          visibility: visible;
+          transform: scale(1);
+        }
+
+        .toolItem {
+          width: 100%;
+          height: 30px;
+          cursor: pointer;
+          padding: 0 10px;
+          line-height: 30px;
+          color: #fff;
+          font-size: 14px;
+
+          &:hover {
+            background: #444857;
+          }
+        }
+      }
+    }
 
     .btn {
       background: none;

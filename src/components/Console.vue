@@ -51,16 +51,12 @@ import {
   defineProps,
   onMounted,
   onBeforeUnmount,
-  useContext,
   getCurrentInstance,
   nextTick,
   computed,
 } from 'vue'
 
 const { proxy } = getCurrentInstance()
-
-// 触发事件
-const { emit } = useContext()
 
 // props
 defineProps({})
@@ -106,6 +102,8 @@ window.addEventListener('message', onMessage)
 const clear = () => {
   logList.value = []
 }
+
+proxy.$eventEmitter.on('clear_logs', clear)
 
 /**
  * @Author: 王林25
