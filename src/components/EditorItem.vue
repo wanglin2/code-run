@@ -58,11 +58,6 @@ import {
 } from 'vue'
 import { ElMessage } from 'element-plus'
 import ResizeObserver from 'resize-observer-polyfill'
-import prettier from 'prettier/esm/standalone.mjs'
-import parserHtml from 'prettier/esm/parser-html.mjs'
-import parserPostcss from 'prettier/esm/parser-postcss.mjs'
-import parserBabel from 'prettier/esm/parser-babel.mjs'
-import parserTypescript from 'prettier/esm/parser-typescript.mjs'
 
 // 支持的语言
 const supportLanguage = {
@@ -296,7 +291,7 @@ const ro = new ResizeObserver((entries, observer) => {
 const codeFormatter = () => {
   let str = prettier.format(getValue(), {
     parser: formatterParserMap[props.language],
-    plugins: [parserBabel, parserHtml, parserPostcss, parserTypescript],
+    plugins: prettierPlugins,
   })
   // 设置文档内容
   updateDoc(str, props.language)
