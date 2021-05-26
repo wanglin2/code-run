@@ -7,6 +7,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CodeRun_一个在线代码运行预览平台</title>
   <link rel="stylesheet" data-name="vs/editor/editor.main" href="/monaco-editor/min/vs/editor/editor.main.css" />
+</head>
+
+<body>
+  <div id="app"></div>
   <script>
     var require = {
       paths: {
@@ -23,10 +27,11 @@
   <script src="/monaco-editor/min/vs/editor/editor.main.nls.js"></script>
   <script src="/monaco-editor/min/vs/editor/editor.main.js"></script>
   <script src="/lib/loadjs.min.js"></script>
-</head>
-
-<body>
-  <div id="app"></div>
+  <script defer src="/prettier/standalone.js"></script>
+  <script defer src="/prettier/parser-html.js"></script>
+  <script defer src="/prettier/parser-postcss.js"></script>
+  <script defer src="/prettier/parser-babel.js"></script>
+  <script defer src="/prettier/parser-typescript.js"></script>
   <script type="module" src="/src/main.js"></script>
 </body>
 
