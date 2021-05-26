@@ -1,5 +1,8 @@
 <template>
-  <div class="previewBox" :class="{ hide: hide }">
+  <div
+    class="previewBox"
+    :class="{ hide: hide, disabledEvents: disabledEvents }"
+  >
     <iframe class="iframe" ref="iframeRef" :srcdoc="srcdoc"></iframe>
   </div>
 </template>
@@ -8,10 +11,8 @@
 import {
   ref,
   defineProps,
-  onMounted,
   computed,
   onBeforeUnmount,
-  useContext,
   getCurrentInstance,
   watch,
 } from 'vue'
@@ -19,9 +20,6 @@ import { useStore } from 'vuex'
 import { assembleHtml, compile } from '@/utils'
 
 const { proxy } = getCurrentInstance()
-
-// 触发事件
-const { emit } = useContext()
 
 // props
 defineProps({
@@ -36,8 +34,8 @@ const store = useStore()
 // 数据
 const editData = computed(() => store.state.editData)
 const keepPreviousLogs = computed(() => {
-  return editData.value.config.keepPreviousLogs;
-});
+  return editData.value.config.keepPreviousLogs
+})
 const srcdoc = ref('')
 const iframeRef = ref(null)
 const isNewWindowPreview = ref(false)
@@ -223,26 +221,35 @@ const log = (type, data) => {
 }
 
 proxy.$eventEmitter.on('log', log)
+const disabledEvents = ref(false)
 
 /**
  * @Author: 王林25
- * @Date: 2021-05-18 13:53:25
- * @Desc: iframe的鼠标松开事件
+ * @Date: 2021-05-26 10:03:40
+ * @Desc: 拖动开始禁止响应iframe的鼠标事件，否则父页面不会触发鼠标事件导致拖动存在bug
  */
-const onMouseup = () => {
-  proxy.$eventEmitter.emit('iframe_mouseup')
+const onDragStart = () => {
+  disabledEvents.value = true
 }
 
-// 挂载完成
-onMounted(() => {
-  iframeRef.value.contentWindow.addEventListener('mouseup', onMouseup)
-})
+/**
+ * @Author: 王林25
+ * @Date: 2021-05-26 10:04:14
+ * @Desc: 拖动结束解除禁止
+ */
+const onDragOver = () => {
+  disabledEvents.value = false
+}
+
+proxy.$eventEmitter.on('dragStart', onDragStart)
+proxy.$eventEmitter.on('dragOver', onDragOver)
 
 // 即将解除挂载
 onBeforeUnmount(() => {
   proxy.$eventEmitter.off('run', run)
   proxy.$eventEmitter.off('dynamic_js_command', dynamicRunJs)
-  iframeRef.value.contentWindow.removeEventListener('mouseup', onMouseup)
+  proxy.$eventEmitter.off('dragStart', onDragStart)
+  proxy.$eventEmitter.off('dragOver', onDragOver)
 })
 </script>
 
@@ -256,6 +263,10 @@ onBeforeUnmount(() => {
 
   &.hide {
     display: none;
+  }
+
+  &.disabledEvents {
+    pointer-events: none;
   }
 
   .iframe {

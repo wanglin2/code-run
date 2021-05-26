@@ -96,24 +96,20 @@ if (!props.disabled) {
     (...args) => {
       onDrag(props.index, ...args)
     },
-    (...args) => {}
+    (...args) => {
+      proxy.$eventEmitter.emit('dragOver', ...args)
+    }
   )
 }
 
 const onMousedown = (e) => {
+  proxy.$eventEmitter.emit('dragStart')
   drag && drag.onMousedown(e)
 }
-
-const onMouseup = (e) => {
-  drag && drag.onMouseup(e)
-}
-
-proxy.$eventEmitter.on('iframe_mouseup', onMouseup)
 
 // 即将解除挂载
 onBeforeUnmount(() => {
   drag && drag.off()
-  proxy.$eventEmitter.off('iframe_mouseup')
 })
 </script>
 
