@@ -1,6 +1,6 @@
 <template>
   <Editor :hide="true"></Editor>
-  <Drag :number="2" dir="v" :config="[{ min: 0 }, { min: 48 }]">
+  <Drag :number="2" dir="v" :config="[{ min: 0 }, { min: 48, default: 48 }]">
     <!-- 编辑器 -->
     <DragItem :index="0" :disabled="true" :showTouchBar="false">
       <Preview></Preview>

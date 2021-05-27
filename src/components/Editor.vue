@@ -2,8 +2,7 @@
   <div class="editorBox" :class="{ hide: hide }">
     <Drag
       :number="editorItemList.length"
-      :dir="layout === 'edit' ? 'v' : 'h'"
-      :config="dragConfig"
+      :dir="dir"
     >
       <DragItem
         v-for="(item, index) in editorItemList"
@@ -20,6 +19,7 @@
           :preprocessorList="preprocessorListMap[item.title]"
           :showAddBtn="item.showAddBtn"
           :codeTheme="codeTheme"
+          :dir="dir"
           @code-change="
             (code) => {
               codeChange(item, code)
@@ -137,10 +137,12 @@ const codeTheme = computed(() => store.state.editData.config.codeTheme)
 const layout = computed(() => {
   return store.state.editData.config.layout
 })
+const dir = computed(() => {
+  return layout.value === 'edit' ? 'v' : 'h'
+})
 const openAlmightyConsole = computed(() => {
   return store.state.editData.config.openAlmightyConsole
 })
-const dragConfig = ref([])
 const defaultEditorItemList = [
   {
     title: 'HTML',
@@ -231,17 +233,9 @@ const preprocessorListMap = {
 const changeLayout = () => {
   if (layout.value === 'js') {
     editorItemList.value = defaultEditorItemList.slice(2)
+    editorItemList.value[0].disableDrag = true
   } else {
     editorItemList.value = defaultEditorItemList
-  }
-  if (layout.value === 'edit') {
-    editorItemList.value[0].showTouchBar = false
-    dragConfig.value.push({
-      min: 0,
-    })
-  } else {
-    editorItemList.value[0].showTouchBar = true
-    dragConfig.value = []
   }
 }
 changeLayout()
