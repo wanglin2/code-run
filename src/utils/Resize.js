@@ -94,8 +94,8 @@ class Resize {
             return narrowItemIndex
         } else if (dir === 'rightDown') {
             let narrowItemIndex = index
-            let _minSize = this.getMinSize(narrowItemIndex)
             while (narrowItemIndex <= this._dragItemList.value.length - 1) {
+                let _minSize = this.getMinSize(narrowItemIndex)
                 if (this._dragItemList.value[narrowItemIndex][this._prop] > _minSize) {
                     break
                 }

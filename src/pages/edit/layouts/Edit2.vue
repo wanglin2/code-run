@@ -2,7 +2,7 @@
   <Drag :number="2" dir="h" :config="[{ min: 0 }, { min: 20 }]">
     <!-- 编辑器&控制台 -->
     <DragItem :index="0" :disabled="true" :showTouchBar="false">
-      <Drag :number="2" dir="v" :config="[{ min: 0 }, { min: 48 }]">
+      <Drag :number="2" dir="v" :config="[{ min: 0 }, { min: 48, default: 48 }]">
         <!-- 编辑器 -->
         <DragItem :index="0" :disabled="true" :showTouchBar="false">
           <Editor></Editor>

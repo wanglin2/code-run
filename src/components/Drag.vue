@@ -61,19 +61,49 @@ provide('onDrag', onDrag)
 provide('sizeList', sizeList)
 provide('dir', ref(props.dir))
 
+const first = ref(true)
+
 /**
  * @Author: 王林25
  * @Date: 2021-04-29 15:19:58
  * @Desc: 计算每部分初始宽度
  */
-const setInitSize = () => {
+const setInitSize = (width, height) => {
+  if (!first.value) {
+    return
+  }
+  first.value = false
+  // 设置了默认尺寸的总和
+  let defaultSizeTotal = 0
+  // 设置了默认尺寸的数量
+  let hasDefaultNum = 0
   sizeList.value.forEach((item) => {
+    if (item.default !== undefined) {
+      defaultSizeTotal += item.default
+      hasDefaultNum++
+    }
+  })
+  // 剩余平均分配的百分比
+  let rest = 100 - (defaultSizeTotal / (props.dir === 'h' ? width : height)) * 100
+  // 平均分配的百分比
+  let noDefaultSize = rest / (props.number - hasDefaultNum)
+  sizeList.value.forEach((item) => {
+    // 水平
     if (props.dir === 'h') {
-      item.width = 100 / props.number
+      if (item.default === undefined) {
+        item.width = noDefaultSize
+      } else {
+        item.width = (item.default / width) * 100
+      }
       item.height = 100
     } else {
+      // 垂直
       item.width = 100
-      item.height = 100 / props.number
+      if (item.default === undefined) {
+        item.height = noDefaultSize
+      } else {
+        item.height = (item.default / height) * 100
+      }
     }
   })
 }
@@ -88,6 +118,7 @@ const resizeInit = () => {
   let { width, height } = dragBox.value.getBoundingClientRect()
   containerWidth.value = width
   containerHeight.value = height
+  setInitSize(width, height)
   resize.init({
     dir: props.dir,
     dragItemList: sizeList,
@@ -111,7 +142,6 @@ const ro = new ResizeObserver((entries, observer) => {
 
 // 挂载完成
 onMounted(() => {
-  setInitSize()
   ro.observe(dragBox.value)
 })
 

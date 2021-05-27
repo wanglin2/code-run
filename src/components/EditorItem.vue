@@ -2,7 +2,7 @@
   <div class="editorItem" ref="editorItem">
     <div class="editorContent">
       <div class="editorContentHeader">
-        <div class="title" :class="{ rotate: noSpace }">{{ title }}</div>
+        <div class="title" :class="[{ rotate: noSpace}, dir]">{{ title }}</div>
         <div class="right">
           <el-tooltip
             class="item"
@@ -118,6 +118,10 @@ const props = defineProps({
     type: String,
     default: '',
   },
+  dir: {
+    type: String,
+    default: '',
+  }
 })
 
 // 编辑器容器
@@ -262,8 +266,8 @@ const resize = () => {
   }
   timer = setTimeout(() => {
     nextTick(() => {
-      let { width } = editorItem.value.getBoundingClientRect()
-      noSpace.value = width <= 100
+      let { width, height } = editorItem.value.getBoundingClientRect()
+      noSpace.value = (props.dir === 'h' ? width : height) <= 100
       editor && editor.layout()
       timer = null
     })
@@ -350,6 +354,10 @@ onBeforeUnmount(() => {
           transform: rotate(90deg) translate(-2px, 6px);
           transform-origin: left top;
           font-size: 14px;
+
+          &.v {
+            transform: rotate(0deg) translateY(-28px);
+          }
         }
       }
 
