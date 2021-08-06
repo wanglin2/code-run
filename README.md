@@ -22,6 +22,12 @@
 
 - [x] 美观强大的控制台
 
+# 安装
+
+```bash
+npm i @wanglin1994/code-run
+```
+
 # 启动&打包
 
 ```bash
