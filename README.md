@@ -49,3 +49,9 @@ npm run build
 UI库：`element-plus`
 
 编辑器：`Monaco Editor`
+
+# 界面截图
+
+![http://assets.lxqnsys.com/Jietu20210830-220337.jpg](http://assets.lxqnsys.com/Jietu20210830-220337.jpg)
+
+![http://assets.lxqnsys.com/Jietu20210830-220311.jpg](http://assets.lxqnsys.com/Jietu20210830-220311.jpg)
