@@ -52,6 +52,6 @@ UI库：`element-plus`
 
 # 界面截图
 
-![http://assets.lxqnsys.com/Jietu20210830-220337.jpg](http://assets.lxqnsys.com/Jietu20210830-220337.jpg)
+![界面截图1](./assets/Jietu20210830-220337.jpg)
 
-![http://assets.lxqnsys.com/Jietu20210830-220311.jpg](http://assets.lxqnsys.com/Jietu20210830-220311.jpg)
+![界面截图2](./assets/Jietu20210830-220311.jpg)
