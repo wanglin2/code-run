@@ -19,6 +19,7 @@
 <script setup>
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
+import { codeThemeList } from "@/config/constants";
 
 // vuex
 const store = useStore();
@@ -26,30 +27,15 @@ const store = useStore();
 const codeTheme = computed(() => {
   return store.state.editData.config.codeTheme;
 });
-const codeThemeList = ref([
-  {
-    name: "经典",
-    value: "vs",
-  },
-  {
-    name: "深色",
-    value: "vs-dark",
-  },
 
-  {
-    name: "高对比度深色",
-    value: "hc-black",
-  },
-]);
-
-/** 
- * @Author: 王林 
- * @Date: 2021-05-15 08:07:04 
- * @Desc: 切换代码主题 
+/**
+ * @Author: 王林
+ * @Date: 2021-05-15 08:07:04
+ * @Desc: 切换代码主题
  */
 const codeThemeChange = (e) => {
-  store.commit('setCodeTheme', e)
-}
+  store.commit("setCodeTheme", e);
+};
 </script>
 
 <style scoped lang="less">

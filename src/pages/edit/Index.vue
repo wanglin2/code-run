@@ -2,72 +2,50 @@
   <div class="editContainer">
     <Header></Header>
     <div class="content">
-      <component :is="activeLayout"></component>
+      <component :is="activeLayout" :key="layout"></component>
     </div>
   </div>
 </template>
 
 <script setup>
-import Header from '@/components/Header.vue'
-import { computed, watch, getCurrentInstance } from 'vue'
-import { useStore } from 'vuex'
-import Default from './layouts/Default.vue'
-import Default2 from './layouts/Default2.vue'
-import Edit from './layouts/Edit.vue'
-import Edit2 from './layouts/Edit2.vue'
-import EditOnly from './layouts/EditOnly.vue'
-import EditOnly2 from './layouts/EditOnly2.vue'
-import PreviewOnly from './layouts/PreviewOnly.vue'
-import PreviewOnly2 from './layouts/PreviewOnly2.vue'
-import Js from './layouts/Js.vue'
-import NewWindowPreview from './layouts/NewWindowPreview.vue'
+import Header from "@/components/Header.vue";
+import { computed, watch, getCurrentInstance } from "vue";
+import { useStore } from "vuex";
+import { layoutMap } from "@/config/constants";
 
-const { proxy } = getCurrentInstance()
-
-const layoutMap = {
-  default: Default,
-  default2: Default2,
-  edit: Edit,
-  edit2: Edit2,
-  editOnly: EditOnly,
-  editOnly2: EditOnly2,
-  previewOnly: PreviewOnly,
-  previewOnly2: PreviewOnly2,
-  js: Js,
-  newWindowPreview: NewWindowPreview,
-}
+const { proxy } = getCurrentInstance();
 
 // vuex
-const store = useStore()
-const editData = computed(() => store.state.editData)
+const store = useStore();
+const editData = computed(() => store.state.editData);
 
 // 布局
 const layout = computed(() => {
-  return editData.value.config.layout
-})
+  return editData.value.config.layout;
+});
 
 /**
  * @Author: 王林25
  * @Date: 2021-05-19 16:14:08
  * @Desc: 布局处理
  */
-let previewWindow = null
+let previewWindow = null;
 const layoutHandle = () => {
   // 新窗口预览模式
-  if (layout.value === 'newWindowPreview') {
+  if (layout.value === "newWindowPreview") {
     if (!previewWindow) {
-      previewWindow = window.open('/preview/')
-      previewWindow.onload = () =>{
-        previewWindowRun()
-      }
+      previewWindow = window.open("/preview/");
+      previewWindow.onload = () => {
+        previewWindowRun();
+      };
     }
   } else {
     if (previewWindow) {
-      previewWindow.close()
-      previewWindow = null
+      previewWindow.close();
+      previewWindow = null;
     }
   }
-}
+};
 
 /**
  * @Author: 王林25
@@ -77,7 +55,7 @@ const layoutHandle = () => {
 const previewWindowRun = () => {
   previewWindow &&
     previewWindow.postMessage({
-      type: 'preview',
+      type: "preview",
       data: {
         config: {
           openAlmightyConsole: editData.value.config.openAlmightyConsole,
@@ -93,7 +71,7 @@ const previewWindowRun = () => {
             resources: editData.value.code.CSS.resources.map((item) => {
               return {
                 ...item,
-              }
+              };
             }),
           },
           JS: {
@@ -102,30 +80,30 @@ const previewWindowRun = () => {
             resources: editData.value.code.JS.resources.map((item) => {
               return {
                 ...item,
-              }
+              };
             }),
           },
         },
       },
-    })
-}
+    });
+};
 
-proxy.$eventEmitter.on('preview_window_run', previewWindowRun)
+proxy.$eventEmitter.on("preview_window_run", previewWindowRun);
 
-layoutHandle()
+layoutHandle();
 
 watch(
   () => {
-    return layout.value
+    return layout.value;
   },
   () => {
-    layoutHandle()
+    layoutHandle();
   }
-)
+);
 
 const activeLayout = computed(() => {
-  return layoutMap[layout.value]
-})
+  return layoutMap[layout.value];
+});
 </script>
 
 <style scoped lang="less">
