@@ -1,10 +1,12 @@
 <template>
   <div class="header">
+    <!-- logo -->
     <div class="left">
       <h1>
         <img src="../assets/logo.png" alt="" />
       </h1>
     </div>
+    <!-- 工具栏 -->
     <div class="right">
       <div class="btn" @click="openSetting">
         <span class="icon el-icon-s-tools"></span> 设置
@@ -24,6 +26,7 @@
         <span class="icon el-icon-s-promotion"></span> 运行
       </div>
     </div>
+    <!-- 模板弹窗 -->
     <el-dialog title="常用模板" :width="1000" v-model="templateDialogVisible">
       <div class="templateList">
         <div
@@ -40,6 +43,7 @@
         </div>
       </div>
     </el-dialog>
+    <!-- 设置弹窗  -->
     <el-dialog
       custom-class="settingDialog"
       title="设置"
@@ -48,8 +52,8 @@
     >
       <div class="settingBox">
         <el-tabs tab-position="left" v-model="settingType">
-          <el-tab-pane label="主题设置" name="theme"></el-tab-pane>
           <el-tab-pane label="布局设置" name="layout"></el-tab-pane>
+          <el-tab-pane label="主题设置" name="theme"></el-tab-pane>
           <el-tab-pane label="其他设置" name="setting"></el-tab-pane>
         </el-tabs>
         <div class="settingContent">
@@ -57,6 +61,7 @@
         </div>
       </div>
     </el-dialog>
+    <!-- 导出弹窗 -->
     <el-dialog
       title="输入导出文件名称"
       v-model="exportNameInputDialogVisible"
@@ -134,7 +139,7 @@ const selectTemplate = (data) => {
 // ------------- 设置功能 ---------------------
 
 const settingDialogVisible = ref(false)
-const settingType = ref('theme')
+const settingType = ref('layout')
 const componentsMap = ref({
   theme: SettingTheme,
   layout: SettingLayout,

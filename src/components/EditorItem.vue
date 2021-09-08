@@ -2,7 +2,7 @@
   <div class="editorItem" ref="editorItem">
     <div class="editorContent">
       <div class="editorContentHeader">
-        <div class="title" :class="[{ rotate: noSpace}, dir]">{{ title }}</div>
+        <div class="title" :class="[{ rotate: noSpace }, dir]">{{ title }}</div>
         <div class="right">
           <el-tooltip
             class="item"
@@ -55,60 +55,33 @@ import {
   onMounted,
   watch,
   nextTick,
-} from 'vue'
-import { ElMessage } from 'element-plus'
-import ResizeObserver from 'resize-observer-polyfill'
-
-// 支持的语言
-const supportLanguage = {
-  css: 'css',
-  less: 'less',
-  scss: 'scss',
-  sass: 'scss',
-  stylus: 'scss',
-  postcss: 'css',
-  html: 'html',
-  pug: 'pug',
-  javascript: 'javascript',
-  babel: 'javascript',
-  typescript: 'typescript',
-  coffeescript: 'coffeescript',
-}
-
-// 支持美化的语言
-const formatterParserMap = {
-  css: 'css',
-  sass: 'scss',
-  less: 'less',
-  postcss: 'css',
-  html: 'html',
-  javascript: 'babel',
-  babel: 'babel',
-  typescript: 'typescript',
-}
+} from "vue";
+import { ElMessage } from "element-plus";
+import ResizeObserver from "resize-observer-polyfill";
+import { supportLanguage, formatterParserMap } from "@/config/constants";
 
 // 触发事件
-const { emit } = useContext()
+const { emit } = useContext();
 
 // props
 const props = defineProps({
   preprocessorList: {
     type: Array,
     default() {
-      return []
+      return [];
     },
   },
   title: {
     type: String,
-    default: '',
+    default: "",
   },
   language: {
     type: String,
-    default: '',
+    default: "",
   },
   content: {
     type: String,
-    default: '',
+    default: "",
   },
   showAddBtn: {
     type: Boolean,
@@ -116,21 +89,21 @@ const props = defineProps({
   },
   codeTheme: {
     type: String,
-    default: '',
+    default: "",
   },
   dir: {
     type: String,
-    default: '',
-  }
-})
+    default: "",
+  },
+});
 
 // 编辑器容器
-const editorEl = ref(null)
+const editorEl = ref(null);
 // 编辑器
-let editor = null
+let editor = null;
 // 预处理器
-const preprocessor = ref(props.language)
-const noSpace = ref(false)
+const preprocessor = ref(props.language);
+const noSpace = ref(false);
 
 /**
  * @Author: 王林25
@@ -138,29 +111,29 @@ const noSpace = ref(false)
  * @Desc: 修改预处理器
  */
 const preprocessorChange = (e) => {
-  emit('preprocessor-change', e)
-}
+  emit("preprocessor-change", e);
+};
 
 /**
  * @Author: 王林25
  * @Date: 2021-04-29 20:05:50
  * @Desc: 创建编辑器
  */
-const tryMaxCount = 10
-let tryCount = 0
+const tryMaxCount = 10;
+let tryCount = 0;
 const createEditor = () => {
   if (!editor) {
     // 有时候monaco对象还不存在，所以递归进行检查
     if (!window.monaco) {
-      console.log('Monaco对象不存在，正在重新获取')
+      console.log("Monaco对象不存在，正在重新获取");
       if (tryCount > tryMaxCount) {
-        return ElMessage.error('页面加载出错，请刷新重试')
+        return ElMessage.error("页面加载出错，请刷新重试");
       }
-      tryCount++
+      tryCount++;
       setTimeout(() => {
-        createEditor()
-      }, 0)
-      return
+        createEditor();
+      }, 0);
+      return;
     }
     // 创建编辑器
     editor = window.monaco.editor.create(editorEl.value, {
@@ -168,33 +141,33 @@ const createEditor = () => {
       minimap: {
         enabled: false, // 关闭小地图
       },
-      wordWrap: 'on', // 代码超出换行
-      theme: props.codeTheme || 'vs-dark', // 主题
+      wordWrap: "on", // 代码超出换行
+      theme: props.codeTheme || "vs-dark", // 主题
       fontSize: 18,
-      fontFamily: 'MonoLisa, monospace',
-    })
+      fontFamily: "MonoLisa, monospace",
+    });
     // 设置文档内容
-    updateDoc(props.content, props.language)
+    updateDoc(props.content, props.language);
     // 监听编辑事件
     editor.onDidChangeModelContent((e) => {
-      emit('code-change', editor.getValue())
-    })
+      emit("code-change", editor.getValue());
+    });
     // 监听失焦事件
     editor.onDidBlurEditorText((e) => {
-      emit('blur', editor.getValue())
-    })
+      emit("blur", editor.getValue());
+    });
   }
-}
+};
 
 // 监听设置代码主题
 watch(
   () => {
-    return props.codeTheme
+    return props.codeTheme;
   },
   () => {
-    monaco.editor.setTheme(props.codeTheme)
+    monaco.editor.setTheme(props.codeTheme);
   }
-)
+);
 
 /**
  * @Author: 王林25
@@ -203,18 +176,18 @@ watch(
  */
 const updateDoc = (code, language) => {
   if (!editor) {
-    return
+    return;
   }
-  let oldModel = editor.getModel()
+  let oldModel = editor.getModel();
   let newModel = window.monaco.editor.createModel(
     code,
     supportLanguage[language]
-  )
-  editor.setModel(newModel)
+  );
+  editor.setModel(newModel);
   if (oldModel) {
-    oldModel.dispose()
+    oldModel.dispose();
   }
-}
+};
 
 /**
  * @Author: 王林25
@@ -222,8 +195,8 @@ const updateDoc = (code, language) => {
  * @Desc: 获取文档内容
  */
 const getValue = () => {
-  return editor.getValue()
-}
+  return editor.getValue();
+};
 
 /**
  * @Author: 王林25
@@ -231,48 +204,48 @@ const getValue = () => {
  * @Desc: 点击添加资源
  */
 const addResource = () => {
-  emit('add-resource')
-}
+  emit("add-resource");
+};
 
 // 更新文档内容
 watch(
   () => {
-    return props.content
+    return props.content;
   },
   () => {
-    updateDoc(props.content, props.language)
+    updateDoc(props.content, props.language);
   }
-)
+);
 
 // 更新语言
 watch(
   () => {
-    return props.language
+    return props.language;
   },
   () => {
-    preprocessor.value = props.language
-    updateDoc(props.content, props.language)
+    preprocessor.value = props.language;
+    updateDoc(props.content, props.language);
   }
-)
+);
 
-const editorItem = ref(null)
+const editorItem = ref(null);
 
 // 更新尺寸
-let timer = null
+let timer = null;
 const resize = () => {
   // 100ms内只执行一次，优化卡顿问题
   if (timer) {
-    return
+    return;
   }
   timer = setTimeout(() => {
     nextTick(() => {
-      let { width, height } = editorItem.value.getBoundingClientRect()
-      noSpace.value = (props.dir === 'h' ? width : height) <= 100
-      editor && editor.layout()
-      timer = null
-    })
-  }, 100)
-}
+      let { width, height } = editorItem.value.getBoundingClientRect();
+      noSpace.value = (props.dir === "h" ? width : height) <= 100;
+      editor && editor.layout();
+      timer = null;
+    });
+  }, 100);
+};
 
 /**
  * @Author: 王林25
@@ -281,11 +254,11 @@ const resize = () => {
  */
 const ro = new ResizeObserver((entries, observer) => {
   for (const entry of entries) {
-    if (entry.target.classList.contains('editorItem')) {
-      resize()
+    if (entry.target.classList.contains("editorItem")) {
+      resize();
     }
   }
-})
+});
 
 /**
  * @Author: 王林25
@@ -296,25 +269,25 @@ const codeFormatter = () => {
   let str = prettier.format(getValue(), {
     parser: formatterParserMap[props.language],
     plugins: prettierPlugins,
-  })
+  });
   // 设置文档内容
-  updateDoc(str, props.language)
+  updateDoc(str, props.language);
   // 监听编辑事件
   editor.onDidChangeModelContent((e) => {
-    emit('code-change', editor.getValue())
-  })
-}
+    emit("code-change", editor.getValue());
+  });
+};
 
 // 挂载完成
 onMounted(() => {
-  createEditor()
-  ro.observe(editorItem.value)
-})
+  createEditor();
+  ro.observe(editorItem.value);
+});
 
 // 即将解除挂载
 onBeforeUnmount(() => {
-  ro.unobserve(editorItem.value)
-})
+  ro.unobserve(editorItem.value);
+});
 </script>
 
 <style scoped lang="less">

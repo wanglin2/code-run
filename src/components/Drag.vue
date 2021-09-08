@@ -11,7 +11,7 @@ import {
   onMounted,
   getCurrentInstance,
   provide,
-  onBeforeUnmount,
+  onBeforeUnmount
 } from 'vue'
 import Resize from '@/utils/Resize.js'
 import ResizeObserver from 'resize-observer-polyfill'

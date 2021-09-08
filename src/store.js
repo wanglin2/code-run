@@ -31,6 +31,11 @@ const store = createStore({
                         language: 'javascript',
                         content: '',
                         resources: []
+                    },
+                    VUE: {
+                        language: 'vue2.x',
+                        content: '',
+                        resources: []
                     }
                 }
             },

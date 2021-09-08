@@ -6,7 +6,7 @@
         <div class="control">
           <el-select v-model="layout">
             <el-option
-              v-for="item in list"
+              v-for="item in layoutList"
               :key="item.value"
               :label="item.name"
               :value="item.value"
@@ -24,83 +24,20 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
-import { useStore } from 'vuex'
-import defaultImg from '../assets/layoutImgs/default.jpg'
-import default2Img from '../assets/layoutImgs/default2.jpg'
-import editImg from '../assets/layoutImgs/edit.jpg'
-import edit2Img from '../assets/layoutImgs/edit2.jpg'
-import editOnlyImg from '../assets/layoutImgs/editOnly.jpg'
-import editOnly2Img from '../assets/layoutImgs/editOnly2.jpg'
-import previewOnlyImg from '../assets/layoutImgs/previewOnly.jpg'
-import previewOnly2Img from '../assets/layoutImgs/previewOnly2.jpg'
-import jsImg from '../assets/layoutImgs/js.jpg'
+import { computed, ref } from "vue";
+import { useStore } from "vuex";
+import { layoutList, previewImgMap } from "@/config/constants";
 
 // vuex
-const store = useStore()
-
-const list = [
-  {
-    name: '默认',
-    value: 'default',
-  },
-  {
-    name: '编辑视图',
-    value: 'edit',
-  },
-  {
-    name: '新开窗口预览',
-    value: 'newWindowPreview',
-  },
-  {
-    name: '纯编辑',
-    value: 'editOnly',
-  },
-  {
-    name: '纯预览',
-    value: 'previewOnly',
-  },
-  {
-    name: '纯js',
-    value: 'js',
-  },
-  {
-    name: '默认(对调)',
-    value: 'default2',
-  },
-  {
-    name: '编辑视图2',
-    value: 'edit2',
-  },
-  {
-    name: '纯编辑(带控制台)',
-    value: 'editOnly2',
-  },
-  {
-    name: '纯预览(带控制台)',
-    value: 'previewOnly2',
-  },
-]
-
-const previewImgMap = {
-  default: defaultImg,
-  default2: default2Img,
-  edit: editImg,
-  edit2: edit2Img,
-  editOnly: editOnlyImg,
-  editOnly2: editOnly2Img,
-  previewOnly: previewOnlyImg,
-  previewOnly2: previewOnly2Img,
-  js: jsImg,
-}
+const store = useStore();
 
 const previewImg = computed(() => {
-  return previewImgMap[layout.value]
-})
+  return previewImgMap[layout.value];
+});
 
 // 布局
-const layout = ref('')
-layout.value = store.state.editData.config.layout
+const layout = ref("");
+layout.value = store.state.editData.config.layout;
 
 /**
  * @Author: 王林
@@ -108,8 +45,8 @@ layout.value = store.state.editData.config.layout
  * @Desc: 切换布局
  */
 const confirm = () => {
-  store.commit('setLayout', layout.value)
-}
+  store.commit("setLayout", layout.value);
+};
 </script>
 
 <style scoped lang="less">

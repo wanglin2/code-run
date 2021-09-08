@@ -1,9 +1,6 @@
 <template>
   <div class="editorBox" :class="{ hide: hide }">
-    <Drag
-      :number="editorItemList.length"
-      :dir="dir"
-    >
+    <Drag :number="editorItemList.length" :dir="dir">
       <DragItem
         v-for="(item, index) in editorItemList"
         :key="item.title"
@@ -22,12 +19,12 @@
           :dir="dir"
           @code-change="
             (code) => {
-              codeChange(item, code)
+              codeChange(item, code);
             }
           "
           @preprocessor-change="
             (p) => {
-              preprocessorChange(item, p)
+              preprocessorChange(item, p);
             }
           "
           @add-resource="addResource(item)"
@@ -111,13 +108,19 @@ import {
   computed,
   getCurrentInstance,
   watch,
-} from 'vue'
-import { useStore } from 'vuex'
-import EditorItem from '@/components/EditorItem.vue'
-import Drag from './Drag.vue'
-import DragItem from './DragItem.vue'
+} from "vue";
+import { useStore } from "vuex";
+import EditorItem from "@/components/EditorItem.vue";
+import Drag from "./Drag.vue";
+import DragItem from "./DragItem.vue";
+import {
+  defaultEditorItemList,
+  vueSFCEditorItem,
+  preprocessorListMap,
+  cdnSiteList,
+} from "@/config/constants";
 
-const { proxy } = getCurrentInstance()
+const { proxy } = getCurrentInstance();
 
 // props
 const props = defineProps({
@@ -125,105 +128,27 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-})
+});
 
 // vuex
-const store = useStore()
+const store = useStore();
 // 数据
-const editData = computed(() => store.state.editData)
+const editData = computed(() => store.state.editData);
 // 代码主题
-const codeTheme = computed(() => store.state.editData.config.codeTheme)
+const codeTheme = computed(() => store.state.editData.config.codeTheme);
 // 布局
 const layout = computed(() => {
-  return store.state.editData.config.layout
-})
+  return store.state.editData.config.layout;
+});
 const dir = computed(() => {
-  return layout.value === 'edit' ? 'v' : 'h'
-})
+  return ["edit", "vue"].includes(layout.value) ? "v" : "h";
+});
 const openAlmightyConsole = computed(() => {
-  return store.state.editData.config.openAlmightyConsole
-})
-const defaultEditorItemList = [
-  {
-    title: 'HTML',
-    language: 'html',
-    content: '',
-    showAddBtn: false,
-    disableDrag: true,
-    showTouchBar: true,
-  },
-  {
-    title: 'CSS',
-    language: 'css',
-    content: '',
-    showAddBtn: true,
-    disableDrag: false,
-    showTouchBar: true,
-  },
-  {
-    title: 'JS',
-    language: 'javascript',
-    content: '',
-    showAddBtn: true,
-    disableDrag: false,
-    showTouchBar: true,
-  },
-]
+  return store.state.editData.config.openAlmightyConsole;
+});
+
 // 编辑器列表
-const editorItemList = ref()
-// 预处理器列表
-const preprocessorListMap = {
-  HTML: [
-    {
-      label: 'HTML',
-      value: 'html',
-    },
-    {
-      label: 'Pug',
-      value: 'pug',
-    },
-  ],
-  JS: [
-    {
-      label: 'JavaScript',
-      value: 'javascript',
-    },
-    {
-      label: 'Babel',
-      value: 'babel',
-    },
-    {
-      label: 'TypeScript',
-      value: 'typescript',
-    },
-    {
-      label: 'CoffeeScript',
-      value: 'coffeescript',
-    },
-  ],
-  CSS: [
-    {
-      label: 'CSS',
-      value: 'css',
-    },
-    {
-      label: 'LESS',
-      value: 'less',
-    },
-    {
-      label: 'SASS',
-      value: 'sass',
-    },
-    {
-      label: 'Stylus',
-      value: 'stylus',
-    },
-    {
-      label: 'PostCss',
-      value: 'postcss',
-    },
-  ],
-}
+const editorItemList = ref();
 
 /**
  * @Author: 王林25
@@ -231,38 +156,41 @@ const preprocessorListMap = {
  * @Desc: 修改布局
  */
 const changeLayout = () => {
-  if (layout.value === 'js') {
-    editorItemList.value = defaultEditorItemList.slice(2)
-    editorItemList.value[0].disableDrag = true
+  if (layout.value === "js") {
+    editorItemList.value = defaultEditorItemList.slice(2);
+    editorItemList.value[0].disableDrag = true;
+  } else if (layout.value === "vue") {
+    editorItemList.value = vueSFCEditorItem;
   } else {
-    editorItemList.value = defaultEditorItemList
+    editorItemList.value = defaultEditorItemList;
   }
-}
-changeLayout()
-watch(
-  () => {
-    return layout.value
-  },
-  () => {
-    changeLayout()
-  }
-)
+};
+changeLayout();
 
 watch(
   () => {
-    return openAlmightyConsole.value
+    return layout.value;
   },
   () => {
-    runCode()
+    changeLayout();
   }
-)
+);
+
+watch(
+  () => {
+    return openAlmightyConsole.value;
+  },
+  () => {
+    runCode();
+  }
+);
 
 /**
  * @Author: 王林25
  * @Date: 2021-05-17 20:24:11
  * @Desc: 尺寸变化
  */
-const sizeChange = () => {}
+const sizeChange = () => {};
 
 /**
  * @Author: 王林25
@@ -271,9 +199,9 @@ const sizeChange = () => {}
  */
 const getIndexByType = (type) => {
   return editorItemList.value.findIndex((item) => {
-    return item.title === type
-  })
-}
+    return item.title === type;
+  });
+};
 
 /**
  * @Author: 王林25
@@ -281,16 +209,16 @@ const getIndexByType = (type) => {
  * @Desc: 设置初始数据
  */
 const setInitData = () => {
-  const code = editData.value.code
+  const code = editData.value.code;
   Object.keys(code).forEach((type) => {
-    let index = getIndexByType(type)
+    let index = getIndexByType(type);
     if (index === -1) {
-      return
+      return;
     }
-    editorItemList.value[index].content = code[type].content
-    editorItemList.value[index].language = code[type].language
-  })
-}
+    editorItemList.value[index].content = code[type].content;
+    editorItemList.value[index].language = code[type].language;
+  });
+};
 
 /**
  * @Author: 王林25
@@ -298,30 +226,30 @@ const setInitData = () => {
  * @Desc: 重新设置代码数据
  */
 const resetCode = () => {
-  setInitData()
-  runCode()
-}
+  setInitData();
+  runCode();
+};
 
-proxy.$eventEmitter.on('reset_code', resetCode)
+proxy.$eventEmitter.on("reset_code", resetCode);
 
 /**
  * @Author: 王林
  * @Date: 2021-05-15 08:29:29
  * @Desc: 自动运行
  */
-let autoRunTimer = null
+let autoRunTimer = null;
 const isAutoRun = computed(() => {
-  return store.state.editData.config.autoRun
-})
+  return store.state.editData.config.autoRun;
+});
 const autoRun = () => {
   if (!isAutoRun.value) {
-    return
+    return;
   }
-  clearTimeout(autoRunTimer)
+  clearTimeout(autoRunTimer);
   autoRunTimer = setTimeout(() => {
-    runCode()
-  }, 1000)
-}
+    runCode();
+  }, 1000);
+};
 
 /**
  * @Author: 王林25
@@ -329,12 +257,12 @@ const autoRun = () => {
  * @Desc: 代码修改事件
  */
 const codeChange = (item, code) => {
-  store.commit('setCodeContent', {
+  store.commit("setCodeContent", {
     type: item.title,
     code,
-  })
-  autoRun()
-}
+  });
+  autoRun();
+};
 
 /**
  * @Author: 王林25
@@ -342,52 +270,21 @@ const codeChange = (item, code) => {
  * @Desc: 修改预处理器
  */
 const preprocessorChange = (item, p) => {
-  let index = getIndexByType(item.title)
-  editorItemList.value[index].language = p
-  editorItemList.value[index].content = editData.value.code[item.title].content
-  store.commit('setCodePreprocessor', {
+  let index = getIndexByType(item.title);
+  editorItemList.value[index].language = p;
+  editorItemList.value[index].content = editData.value.code[item.title].content;
+  store.commit("setCodePreprocessor", {
     type: item.title,
     preprocessor: p,
-  })
-  runCode()
-}
+  });
+  runCode();
+};
 
 // -------------------添加资源部分---------------
 
-const addResourceDialogVisible = ref(false)
-const resourceData = ref([])
-const addResourceType = ref('')
-// 常用cdn服务
-const cdnSiteList = [
-  {
-    name: 'BootCDN',
-    url: 'https://www.bootcdn.cn/',
-  },
-  {
-    name: '又拍云',
-    url: 'http://jscdn.upai.com/',
-  },
-  {
-    name: 'Staticfile CDN',
-    url: 'http://staticfile.org/',
-  },
-  {
-    name: '75CDN 前端静态资源库',
-    url: 'https://cdn.baomitu.com/',
-  },
-  {
-    name: '字节跳动静态资源公共库',
-    url: 'https://cdn.bytedance.com/',
-  },
-  {
-    name: 'cdnjs',
-    url: 'https://cdnjs.com/',
-  },
-  {
-    name: 'jsDelivr',
-    url: 'https://www.jsdelivr.com/',
-  },
-]
+const addResourceDialogVisible = ref(false);
+const resourceData = ref([]);
+const addResourceType = ref("");
 
 /**
  * @Author: 王林25
@@ -395,12 +292,12 @@ const cdnSiteList = [
  * @Desc: 跳转到cdn服务
  */
 const handleCdnCommand = (url) => {
-  let a = document.createElement('a')
-  a.target = '_blank'
-  a.href = url
-  a.click()
-  a = null
-}
+  let a = document.createElement("a");
+  a.target = "_blank";
+  a.href = url;
+  a.click();
+  a = null;
+};
 
 /**
  * @Author: 王林25
@@ -408,16 +305,16 @@ const handleCdnCommand = (url) => {
  * @Desc: 添加资源
  */
 const addResource = (item) => {
-  addResourceType.value = item.title
+  addResourceType.value = item.title;
   resourceData.value = (editData.value.code[item.title].resources || []).map(
     (r) => {
       return {
         ...r,
-      }
+      };
     }
-  )
-  addResourceDialogVisible.value = true
-}
+  );
+  addResourceDialogVisible.value = true;
+};
 
 /**
  * @Author: 王林25
@@ -425,8 +322,8 @@ const addResource = (item) => {
  * @Desc: 删除一个资源
  */
 const deleteResource = (e) => {
-  resourceData.value.splice(e.$index, 1)
-}
+  resourceData.value.splice(e.$index, 1);
+};
 
 /**
  * @Author: 王林25
@@ -435,10 +332,10 @@ const deleteResource = (e) => {
  */
 const addOneResource = () => {
   resourceData.value.push({
-    url: '',
-    name: '',
-  })
-}
+    url: "",
+    name: "",
+  });
+};
 
 /**
  * @Author: 王林25
@@ -446,10 +343,10 @@ const addOneResource = () => {
  * @Desc: 取消添加资源
  */
 const cancelAddResource = () => {
-  addResourceDialogVisible.value = false
-  addResourceType.value = ''
-  resourceData.value = []
-}
+  addResourceDialogVisible.value = false;
+  addResourceType.value = "";
+  resourceData.value = [];
+};
 
 /**
  * @Author: 王林25
@@ -460,15 +357,15 @@ const confirmAddResource = () => {
   let resources = resourceData.value.map((item) => {
     return {
       ...item,
-    }
-  })
-  store.commit('setCodeResource', {
+    };
+  });
+  store.commit("setCodeResource", {
     type: addResourceType.value,
     resources,
-  })
-  cancelAddResource()
-  runCode()
-}
+  });
+  cancelAddResource();
+  runCode();
+};
 
 /**
  * @Author: 王林25
@@ -476,22 +373,22 @@ const confirmAddResource = () => {
  * @Desc: 发送运行代码的通知
  */
 const runCode = () => {
-  proxy.$eventEmitter.emit('run')
-  if (layout.value === 'newWindowPreview') {
-    proxy.$eventEmitter.emit('preview_window_run')
+  proxy.$eventEmitter.emit("run");
+  if (layout.value === "newWindowPreview") {
+    proxy.$eventEmitter.emit("preview_window_run");
   }
-}
+};
 
 // 挂载完成
 onMounted(async () => {
   // 获取代码数据
-  await store.dispatch('getData')
-  setInitData()
-  runCode()
-})
+  await store.dispatch("getData");
+  setInitData();
+  runCode();
+});
 </script>
 
-<style scoped lang="less">
+<style lang="less" scoped>
 .editorBox {
   width: 100%;
   height: 100%;
@@ -504,8 +401,5 @@ onMounted(async () => {
 
 /deep/ .el-dialog__body {
   padding: 20px;
-}
-
-.btnGroup {
 }
 </style>
