@@ -76,3 +76,29 @@ export const compile = async (htmlLanguage, jsLanguage, cssLanguage, htmlContent
             })
     })
 }
+
+/** 
+ * javascript comment 
+ * @Author: 王林25 
+ * @Date: 2021-09-08 16:12:36 
+ * @Desc: 编译vue单文件 
+ */
+export const compileVue = async (vueLanguage, vueContent) => {
+    await load([vueLanguage])
+    let vueTransform = transform.vue(vueLanguage, vueContent)
+    return new Promise((resolve, reject) => {
+        Promise.all([vueTransform])
+            .then(([vueData]) => {
+                if (vueData) {
+                    resolve({
+                        ...vueData
+                    })
+                } else {
+                    resolve(null)
+                }
+            })
+            .catch((error) => {
+                reject(error)
+            })
+    })
+}

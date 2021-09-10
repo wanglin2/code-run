@@ -33,9 +33,65 @@ const = {
                 url: ''
             }]
         },
+        VUE: {
+            language: 'vue2',
+            content: ``,
+            resources: []
+        }
     },
 }
 */
+
+const vue2SFC = {
+    name: 'Vue 2单文件',
+    isVueSFC: true,
+    icon: vueIcon,
+    code: {
+        HTML: {
+            language: 'html',
+            content: ``,
+            resources: []
+        },
+        CSS: {
+            language: 'css',
+            content: '',
+            resources: []
+        },
+        JS: {
+            language: 'javascript',
+            content: ``,
+            resources: [{
+                name: 'Vue 2',
+                url: 'https://cdn.jsdelivr.net/npm/vue/dist/vue.js'
+            }]
+        },
+        VUE: {
+            language: 'vue2',
+            content: `
+<template>
+    <div class="example">{{ msg }}</div>
+</template>
+
+<script>
+export default {
+    data () {
+        return {
+            msg: 'Hello world!'
+        }
+    }
+}
+</script>
+
+<style>
+.example {
+    color: red;
+}
+</style>  
+            `,
+            resources: []
+        },
+    },
+}
 
 const vue3 = {
     name: 'Vue 3',
@@ -75,8 +131,13 @@ data() {
 Vue.createApp(HelloVueApp).mount('#hello-vue')`,
             resources: [{
                 name: 'Vue 3',
-                url: 'https://unpkg.com/vue@next'
+                url: 'https://cdn.bootcdn.net/ajax/libs/vue/3.2.0-beta.7/vue.global.js'
             }]
+        },
+        VUE: {
+            language: 'vue2',
+            content: ``,
+            resources: []
         },
     },
 }
@@ -110,6 +171,11 @@ data: {
                 url: 'https://cdn.jsdelivr.net/npm/vue/dist/vue.js'
             }]
         },
+        VUE: {
+            language: 'vue2',
+            content: ``,
+            resources: []
+        },
     },
 }
 
@@ -142,6 +208,11 @@ document.getElementById('root')
                     url: 'https://unpkg.com/react-dom/umd/react-dom.development.js'
                 },
             ]
+        },
+        VUE: {
+            language: 'vue2',
+            content: ``,
+            resources: []
         },
     },
 }
@@ -184,6 +255,11 @@ app.mount("#app");`,
                 name: 'element-plus',
                 url: 'https://unpkg.com/element-plus/lib/index.full.js'
             }]
+        },
+        VUE: {
+            language: 'vue2',
+            content: ``,
+            resources: []
         },
     },
 }
@@ -228,6 +304,11 @@ data: function() {
                 }
             ]
         },
+        VUE: {
+            language: 'vue2',
+            content: ``,
+            resources: []
+        },
     },
 }
 
@@ -269,6 +350,11 @@ view: new ol.View({
                 name: 'OpenLayers',
                 url: 'https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/build/ol.js'
             }]
+        },
+        VUE: {
+            language: 'vue2',
+            content: ``,
+            resources: []
         },
     },
 }
@@ -319,6 +405,11 @@ myChart.setOption(option);`,
                 name: 'ECharts',
                 url: 'https://cdn.bootcdn.net/ajax/libs/echarts/5.1.0/echarts.min.js'
             }]
+        },
+        VUE: {
+            language: 'vue2',
+            content: ``,
+            resources: []
         },
     },
 }
@@ -400,6 +491,11 @@ chart.render();`,
                 url: 'https://gw.alipayobjects.com/os/lib/antv/g2/4.1.16/dist/g2.min.js'
             }]
         },
+        VUE: {
+            language: 'vue2',
+            content: ``,
+            resources: []
+        },
     },
 }
 
@@ -428,6 +524,11 @@ const angular = {
                 name: 'angular',
                 url: 'https://cdn.staticfile.org/angular.js/1.4.6/angular.min.js'
             }]
+        },
+        VUE: {
+            language: 'vue2',
+            content: ``,
+            resources: []
         },
     },
 }
@@ -465,6 +566,11 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
                 name: 'leaflet',
                 url: 'https://unpkg.com/leaflet@1.7.1/dist/leaflet.js'
             }]
+        },
+        VUE: {
+            language: 'vue2',
+            content: ``,
+            resources: []
         },
     },
 }
@@ -507,6 +613,11 @@ Vue.use(vant.Lazyload);`,
                 name: 'vant',
                 url: 'https://cdn.jsdelivr.net/npm/vant@2.12/lib/vant.min.js'
             }]
+        },
+        VUE: {
+            language: 'vue2',
+            content: ``,
+            resources: []
         },
     },
 }
@@ -563,6 +674,11 @@ layer.draw();`,
                 url: 'https://unpkg.com/konva@7.0.3/konva.min.js'
             }]
         },
+        VUE: {
+            language: 'vue2',
+            content: ``,
+            resources: []
+        },
     },
 }
 
@@ -573,6 +689,7 @@ layer.draw();`,
  * @Desc: 模板列表 
  */
 const templateList = [
+    vue2SFC,
     vue3,
     vue2,
     react,
@@ -586,5 +703,24 @@ const templateList = [
     leaflet,
     konva
 ]
+const templateMap = {
+    vue2SFC,
+    vue3,
+    vue2,
+    react,
+    elementPlus,
+    elementUi,
+    openLayers,
+    eCharts,
+    g2,
+    angular,
+    vant,
+    leaflet,
+    konva
+}
+
+export const getTemplate = (name) => {
+    return templateMap[name]
+}
 
 export default templateList

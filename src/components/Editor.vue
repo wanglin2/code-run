@@ -17,6 +17,7 @@
           :showAddBtn="item.showAddBtn"
           :codeTheme="codeTheme"
           :dir="dir"
+          :showAllAddResourcesBtn="['vue2'].includes(item.language)"
           @code-change="
             (code) => {
               codeChange(item, code);
@@ -27,7 +28,9 @@
               preprocessorChange(item, p);
             }
           "
-          @add-resource="addResource(item)"
+          @add-resource="(languageType) => {
+            addResource(languageType || item.title)
+          }"
         ></EditorItem>
       </DragItem>
     </Drag>
@@ -305,8 +308,8 @@ const handleCdnCommand = (url) => {
  * @Desc: 添加资源
  */
 const addResource = (item) => {
-  addResourceType.value = item.title;
-  resourceData.value = (editData.value.code[item.title].resources || []).map(
+  addResourceType.value = item;
+  resourceData.value = (editData.value.code[item].resources || []).map(
     (r) => {
       return {
         ...r,
