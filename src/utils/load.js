@@ -13,11 +13,15 @@ const preprocessorLoaded = {
     typescript: false,
     coffeeScript: false,
     coffeeScript2: false,
+    vue2: false,
+    vue3: false
 }
 
 // 需要加载多个文件
 const resources = {
-    postcss: ['postcss-cssnext', 'postcss']
+    postcss: ['postcss-cssnext', 'postcss'],
+    babel: ['babel', 'babel-types'],
+    vue3: ['vue2']
 }
 
 export const load = (preprocessorList) => {
