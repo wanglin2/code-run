@@ -34,7 +34,8 @@ export const supportLanguage = {
 	babel: 'javascript',
 	typescript: 'typescript',
 	coffeescript: 'coffeescript',
-	'vue2.x': 'html'
+	vue2: 'html',
+	vue3: 'html'
 }
 
 // 支持美化的语言
@@ -47,7 +48,8 @@ export const formatterParserMap = {
 	javascript: 'babel',
 	babel: 'babel',
 	typescript: 'typescript',
-	'vue2.x': 'html'
+	vue2: 'html',
+	vue3: 'html'
 }
 
 // 默认的编辑器列表
@@ -81,7 +83,7 @@ export const defaultEditorItemList = [
 // vue单文件组件编辑器列表
 export const vueSFCEditorItem = [{
 	title: 'VUE',
-	language: 'vue2.x',
+	language: 'vue2',
 	content: '',
 	showAddBtn: true,
 	disableDrag: true,
@@ -142,8 +144,12 @@ export const preprocessorListMap = {
 	],
 	VUE: [
 		{
-			label: 'Vue2.x',
-			value: 'vue2.x',
+			label: 'Vue2',
+			value: 'vue2',
+		},
+		{
+			label: 'Vue3',
+			value: 'vue3',
 		}
 	]
 }
@@ -253,7 +259,7 @@ export const layoutMap = {
 	previewOnly2: PreviewOnly2,
 	js: Js,
 	newWindowPreview: NewWindowPreview,
-	vue: Default
+	vue: Edit
 }
 
 // 代码编辑器主题列表

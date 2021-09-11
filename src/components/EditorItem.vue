@@ -4,6 +4,7 @@
       <div class="editorContentHeader">
         <div class="title" :class="[{ rotate: noSpace }, dir]">{{ title }}</div>
         <div class="right">
+          <!-- 格式化按钮 -->
           <el-tooltip
             class="item"
             effect="dark"
@@ -15,17 +16,45 @@
               <span class="el-icon-s-open"></span>
             </div>
           </el-tooltip>
-          <el-tooltip
-            class="item"
-            effect="dark"
-            content="添加资源"
-            placement="bottom"
-            v-if="showAddBtn"
-          >
-            <div class="addBtn" @click="addResource">
-              <span class="el-icon-plus"></span>
-            </div>
-          </el-tooltip>
+          <!-- 添加资源按钮 -->
+          <template v-if="showAllAddResourcesBtn">
+            <el-tooltip
+              class="item"
+              effect="dark"
+              content="添加css资源"
+              placement="bottom"
+              v-if="showAddBtn"
+            >
+              <div class="addBtn" @click="addResource('CSS')">
+                <span class="el-icon-plus"></span>
+              </div>
+            </el-tooltip>
+            <el-tooltip
+              class="item"
+              effect="dark"
+              content="添加js资源"
+              placement="bottom"
+              v-if="showAddBtn"
+            >
+              <div class="addBtn" @click="addResource('JS')">
+                <span class="el-icon-plus"></span>
+              </div>
+            </el-tooltip>
+          </template>
+          <template v-else>
+            <el-tooltip
+              class="item"
+              effect="dark"
+              content="添加资源"
+              placement="bottom"
+              v-if="showAddBtn"
+            >
+              <div class="addBtn" @click="addResource">
+                <span class="el-icon-plus"></span>
+              </div>
+            </el-tooltip>
+          </template>
+          <!-- 选择语言 -->
           <el-select
             size="mini"
             v-model="preprocessor"
@@ -95,6 +124,10 @@ const props = defineProps({
     type: String,
     default: "",
   },
+  showAllAddResourcesBtn: {
+    type: Boolean,
+    default: false,
+  }
 });
 
 // 编辑器容器
@@ -203,8 +236,8 @@ const getValue = () => {
  * @Date: 2021-05-13 19:30:08
  * @Desc: 点击添加资源
  */
-const addResource = () => {
-  emit("add-resource");
+const addResource = (languageType) => {
+  emit("add-resource", languageType);
 };
 
 // 更新文档内容

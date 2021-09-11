@@ -17,7 +17,8 @@ import {
   watch,
 } from 'vue'
 import { useStore } from 'vuex'
-import { assembleHtml, compile } from '@/utils'
+import { assembleHtml, compile, compileVue } from '@/utils'
+import { getTemplate } from '@/utils/templates'
 
 const { proxy } = getCurrentInstance()
 
@@ -28,9 +29,12 @@ defineProps({
     default: false,
   },
 })
-
 // vuex
 const store = useStore()
+// 当前布局类型
+const layout = computed(() => {
+  return store.state.editData.config.layout;
+});
 // 数据
 const editData = computed(() => store.state.editData)
 const keepPreviousLogs = computed(() => {
@@ -84,6 +88,12 @@ const jsResources = computed(() => {
   return isNewWindowPreview.value
     ? newWindowPreviewData.value.code.JS.resources
     : editData.value.code.JS.resources
+})
+const vueLanguage = computed(() => {
+  return editData.value.code.VUE.language
+})
+const vueContent = computed(() => {
+  return editData.value.code.VUE.content
 })
 
 // 新开窗口预览模式接收预览通知
@@ -155,24 +165,42 @@ const run = async () => {
       proxy.$eventEmitter.emit('clear_logs')
     }
     srcdoc.value = ''
-    let compiledData = await compile(
-      htmlLanguage.value,
-      jsLanguage.value,
-      cssLanguage.value,
-      htmlContent.value,
-      jsContent.value,
-      cssContent.value
-    )
+    let _jsResourcesPlus = []
+    let _cssResourcesPlus = []
+    let compiledData = null
+    // vue单文件
+    if (layout.value === 'vue') {
+      compiledData = await compileVue(vueLanguage.value, vueContent.value)
+      if (compiledData) {
+        // 自动引入vue资源
+        _jsResourcesPlus = getTemplate(vueLanguage.value).code.JS.resources
+      } else {
+        compiledData = {
+          html: '',
+          css: '',
+          js: ''
+        }
+      }
+    } else {
+      compiledData = await compile(
+        htmlLanguage.value,
+        jsLanguage.value,
+        cssLanguage.value,
+        htmlContent.value,
+        jsContent.value,
+        cssContent.value
+      )
+    }
     let _cssResources = cssResources.value.map((item) => {
       return {
         ...item,
       }
-    })
+    }).concat(_cssResourcesPlus)
     let _jsResources = jsResources.value.map((item) => {
       return {
         ...item,
       }
-    })
+    }).concat(_jsResourcesPlus)
     srcdoc.value = createHtml(
       compiledData.html,
       compiledData.js,

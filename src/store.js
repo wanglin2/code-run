@@ -33,7 +33,7 @@ const store = createStore({
                         resources: []
                     },
                     VUE: {
-                        language: 'vue2.x',
+                        language: 'vue2',
                         content: '',
                         resources: []
                     }
