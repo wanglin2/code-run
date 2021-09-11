@@ -36,7 +36,6 @@
     "loadjs": "^4.2.0",
     "vue": "^3.0.5",
     "vue-router": "^4.0.6",
-    "vue-template-compiler": "^2.6.14",
     "vuex": "^4.0.0"
   },
   "devDependencies": {

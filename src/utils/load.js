@@ -20,7 +20,6 @@ const preprocessorLoaded = {
 // 需要加载多个文件
 const resources = {
     postcss: ['postcss-cssnext', 'postcss'],
-    babel: ['babel', 'babel-types'],
     vue3: ['vue2']
 }
 

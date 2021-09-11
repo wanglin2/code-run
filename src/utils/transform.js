@@ -136,39 +136,59 @@ const css = (preprocessor, code) => {
  * @Desc: 解析vue2 script语法 
  */
 const parseVue2ScriptPlugin = (data) => {
-    return function () {
+    return function (babel) {
+        let t = babel.types
         return {
             visitor: {
                 // export default -> new Vue
                 ExportDefaultDeclaration(path) {
                     path.replaceWith(
-                        window.babelTypes.expressionStatement(
-                            window.babelTypes.newExpression(
-                                window.babelTypes.identifier('Vue'),
+                        t.expressionStatement(
+                            t.newExpression(
+                                t.identifier('Vue'),
                                 [
                                     path.get('declaration').node
                                 ]
                             )
                         )
                     );
+                    path.traverse({
+                        ObjectExpression(path2) {
+                            if (path2.parent && path2.parent.type === 'NewExpression' ) {
+                                path2.node.properties.push(
+                                    // el
+                                    t.objectProperty(
+                                        t.identifier('el'),
+                                        t.stringLiteral('#app')
+                                    ),
+                                    // template
+                                    t.objectProperty(
+                                        t.identifier('template'),
+                                        t.stringLiteral(data.template.content)
+                                    ),
+                                )
+                                path2.stop()
+                            }
+                        }
+                    });
                 },
                 // 添加el属性、template属性
-                ObjectExpression(path) {
-                    if (path.parent && path.parent.type === 'NewExpression') {
-                        path.node.properties.push(
-                            // el
-                            window.babelTypes.objectProperty(
-                                window.babelTypes.identifier('el'),
-                                window.babelTypes.stringLiteral('#app')
-                            ),
-                            // template
-                            window.babelTypes.objectProperty(
-                                window.babelTypes.identifier('template'),
-                                window.babelTypes.stringLiteral(data.template.content)
-                            ),
-                        )
-                    }
-                }
+                // ObjectExpression(path) {
+                //     if (path.parent && path.parent.type === 'NewExpression' ) {
+                //         path.node.properties.push(
+                //             // el
+                //             t.objectProperty(
+                //                 t.identifier('el'),
+                //                 t.stringLiteral('#app')
+                //             ),
+                //             // template
+                //             t.objectProperty(
+                //                 t.identifier('template'),
+                //                 t.stringLiteral(data.template.content)
+                //             ),
+                //         )
+                //     }
+                // }
             }
         }
     }
@@ -187,9 +207,9 @@ const parseVue3ScriptPlugin = (data) => {
                 // export default -> Vue.create
                 ExportDefaultDeclaration(path) {
                     path.replaceWith(
-                        window.babelTypes.expressionStatement(
-                            window.babelTypes.newExpression(
-                                window.babelTypes.identifier('Vue'),
+                        t.expressionStatement(
+                            t.newExpression(
+                                t.identifier('Vue'),
                                 [
                                     path.get('declaration').node
                                 ]
@@ -202,14 +222,14 @@ const parseVue3ScriptPlugin = (data) => {
                     if (path.parent && path.parent.type === 'CallExpression') {
                         path.node.properties.push(
                             // el
-                            window.babelTypes.objectProperty(
-                                window.babelTypes.identifier('el'),
-                                window.babelTypes.stringLiteral('#app')
+                            t.objectProperty(
+                                t.identifier('el'),
+                                t.stringLiteral('#app')
                             ),
                             // template
-                            window.babelTypes.objectProperty(
-                                window.babelTypes.identifier('template'),
-                                window.babelTypes.stringLiteral(data.template.content)
+                            t.objectProperty(
+                                t.identifier('template'),
+                                t.stringLiteral(data.template.content)
                             ),
                         )
                     }
@@ -242,7 +262,7 @@ const parseVueComponentData = async (data, parseVueScriptPlugin) => {
             parseVueScriptPlugin(data)
         ]
     }).code : ''
-    console.log(jsStr)
+    console.log(data.script.content, jsStr)
     // 编译css
     let cssStr = []
     for(let i = 0; i < data.styles.length; i++) {
