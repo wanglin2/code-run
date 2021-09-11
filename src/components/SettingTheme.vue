@@ -20,6 +20,7 @@
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
 import { codeThemeList } from "@/config/constants";
+import { ElMessage } from 'element-plus';
 
 // vuex
 const store = useStore();
@@ -33,8 +34,22 @@ const codeTheme = computed(() => {
  * @Date: 2021-05-15 08:07:04
  * @Desc: 切换代码主题
  */
-const codeThemeChange = (e) => {
-  store.commit("setCodeTheme", e);
+const codeThemeChange = async (e) => {
+  try {
+    let item = codeThemeList.find((item) => {
+      return item.value === e;
+    })
+    if (item.custom && !item.loaded) {
+      await loadjs([`/themes/${e}.js`], {
+          returnPromise: true
+      })
+      item.loaded = true
+    }
+    store.commit("setCodeTheme", e);
+  } catch (error) {
+    console.log(error)
+    ElMessage.error('切换失败，请重试')
+  }
 };
 </script>
 

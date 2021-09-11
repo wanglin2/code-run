@@ -270,4 +270,10 @@ export const codeThemeList = [
 		name: "高对比度深色",
 		value: "hc-black",
 	},
+	{
+		name: "One Dark Pro",
+		value: "OneDarkPro",
+		custom: true,
+		loaded: false
+	},
 ];
