@@ -81,7 +81,7 @@
 </template>
 
 <script setup>
-import { getCurrentInstance, ref, computed, onBeforeUnmount } from 'vue'
+import { getCurrentInstance, ref, computed, onBeforeUnmount, nextTick } from 'vue'
 import templateList from '@/utils/templates'
 import { useStore } from 'vuex'
 import Setting from './Setting.vue'
@@ -125,15 +125,35 @@ const openTemplate = () => {
   templateDialogVisible.value = true
 }
 
+/** 
+ * @Author: 王林25 
+ * @Date: 2021-09-10 15:27:33 
+ * @Desc: 检查布局是否和模板对应 
+ */
+const checkLayout = (data) => {
+  if (data.isVueSFC) {
+    if (layout.value !== 'vue') {
+      store.commit("setLayout", 'vue');
+    }
+  } else {
+    if (layout.value === 'vue') {
+      store.commit("setLayout", 'default');
+    }
+  }
+}
+
 /**
  * @Author: 王林25
  * @Date: 2021-05-14 11:22:32
  * @Desc: 选择某个模板
  */
 const selectTemplate = (data) => {
-  store.commit('setCode', JSON.parse(JSON.stringify(data.code)))
-  proxy.$eventEmitter.emit('reset_code')
-  templateDialogVisible.value = false
+  checkLayout(data)
+  nextTick(() => {
+    store.commit('setCode', JSON.parse(JSON.stringify(data.code)))
+    proxy.$eventEmitter.emit('reset_code')
+    templateDialogVisible.value = false
+  })
 }
 
 // ------------- 设置功能 ---------------------

@@ -1,3 +1,7 @@
+import {
+    load
+} from '@/utils/load'
+
 /** 
  * javascript comment 
  * @Author: 王林25 
@@ -125,8 +129,193 @@ const css = (preprocessor, code) => {
     })
 }
 
+/** 
+ * javascript comment 
+ * @Author: 王林25 
+ * @Date: 2021-09-10 16:03:32 
+ * @Desc: 解析vue2 script语法 
+ */
+const parseVue2ScriptPlugin = (data) => {
+    return function (babel) {
+        let t = babel.types
+        return {
+            visitor: {
+                // export default -> new Vue
+                ExportDefaultDeclaration(path) {
+                    path.replaceWith(
+                        t.expressionStatement(
+                            t.newExpression(
+                                t.identifier('Vue'),
+                                [
+                                    path.get('declaration').node
+                                ]
+                            )
+                        )
+                    );
+                    path.traverse({
+                        ObjectExpression(path2) {
+                            if (path2.parent && path2.parent.type === 'NewExpression' ) {
+                                path2.node.properties.push(
+                                    // el
+                                    t.objectProperty(
+                                        t.identifier('el'),
+                                        t.stringLiteral('#app')
+                                    ),
+                                    // template
+                                    t.objectProperty(
+                                        t.identifier('template'),
+                                        t.stringLiteral(data.template.content)
+                                    ),
+                                )
+                                path2.stop()
+                            }
+                        }
+                    });
+                },
+                // 添加el属性、template属性
+                // ObjectExpression(path) {
+                //     if (path.parent && path.parent.type === 'NewExpression' ) {
+                //         path.node.properties.push(
+                //             // el
+                //             t.objectProperty(
+                //                 t.identifier('el'),
+                //                 t.stringLiteral('#app')
+                //             ),
+                //             // template
+                //             t.objectProperty(
+                //                 t.identifier('template'),
+                //                 t.stringLiteral(data.template.content)
+                //             ),
+                //         )
+                //     }
+                // }
+            }
+        }
+    }
+}
+
+/** 
+ * javascript comment 
+ * @Author: 王林25 
+ * @Date: 2021-09-10 16:05:31 
+ * @Desc: 解析vue3 script语法 
+ */
+const parseVue3ScriptPlugin = (data) => {
+    return function () {
+        return {
+            visitor: {
+                // export default -> Vue.create
+                ExportDefaultDeclaration(path) {
+                    path.replaceWith(
+                        t.expressionStatement(
+                            t.newExpression(
+                                t.identifier('Vue'),
+                                [
+                                    path.get('declaration').node
+                                ]
+                            )
+                        )
+                    );
+                },
+                // 添加el属性、template属性
+                ObjectExpression(path) {
+                    if (path.parent && path.parent.type === 'CallExpression') {
+                        path.node.properties.push(
+                            // el
+                            t.objectProperty(
+                                t.identifier('el'),
+                                t.stringLiteral('#app')
+                            ),
+                            // template
+                            t.objectProperty(
+                                t.identifier('template'),
+                                t.stringLiteral(data.template.content)
+                            ),
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+/** 
+ * javascript comment 
+ * @Author: 王林25 
+ * @Date: 2021-09-09 13:54:12 
+ * @Desc: 解析出html、js、css 
+ */
+const parseVueComponentData = async (data, parseVueScriptPlugin) => {
+    console.log(data)
+    // html就直接渲染一个挂载vue实例的节点
+    let htmlStr = `<div id="app"></div>`
+    // 加载babel解析器
+    await load(['babel'])
+    // babel编译，通过编写插件来完成对ast的修改
+    let jsStr = data.script ? window.Babel.transform(data.script.content, {
+        presets: [
+            'es2015',
+            'es2016',
+            'es2017',
+        ],
+        plugins: [
+            parseVueScriptPlugin(data)
+        ]
+    }).code : ''
+    console.log(data.script.content, jsStr)
+    // 编译css
+    let cssStr = []
+    for(let i = 0; i < data.styles.length; i++) {
+        let style = data.styles[i]
+        let preprocessor = style.lang || 'css'
+        if (preprocessor !== 'css') {
+            await load([preprocessor])
+        }
+        let cssData = await css(preprocessor, style.content)
+        cssStr.push(cssData)
+    }
+    return {
+        html: htmlStr,
+        js: jsStr,
+        css: cssStr.join('\r\n')
+    }
+}
+
+/** 
+ * javascript comment 
+ * @Author: 王林25 
+ * @Date: 2021-09-08 20:07:46 
+ * @Desc: 编译vue单文件 
+ */
+const vue = (preprocessor, code) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let componentData
+            let parseData
+            switch (preprocessor) {
+                case 'vue2':
+                    componentData = window.VueTemplateCompiler.parseComponent(code)
+                    parseData = await parseVueComponentData(componentData, parseVue2ScriptPlugin)
+                    resolve(parseData)
+                    break;
+                case 'vue3':
+                    componentData = window.VueTemplateCompiler.parseComponent(code)
+                    parseData = await parseVueComponentData(componentData, parseVue3ScriptPlugin)
+                    resolve(parseData)
+                    break;
+                default:
+                    resolve('')
+                    break;
+            }
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+
 export default {
     html,
     js,
-    css
+    css,
+    vue
 }
