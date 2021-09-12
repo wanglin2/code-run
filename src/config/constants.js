@@ -282,4 +282,52 @@ export const codeThemeList = [
 		custom: true,
 		loaded: false
 	},
+	{
+		name: "Horla Color Theme",
+		value: "HorlaColorTheme",
+		custom: true,
+		loaded: false
+	},
+	{
+		name: "Tokyo Night Storm",
+		value: "TokyoNightStorm",
+		custom: true,
+		loaded: false
+	},
+	{
+		name: "Eva Light",
+		value: "EvaLight",
+		custom: true,
+		loaded: false
+	},
+	{
+		name: "Bluloco Light",
+		value: "BlulocoLight",
+		custom: true,
+		loaded: false
+	},
+	{
+		name: "Snazzy Light Color Theme",
+		value: "SnazzyLightColorTheme",
+		custom: true,
+		loaded: false
+	},
+	{
+		name: "Atlantic Night",
+		value: "AtlanticNight",
+		custom: true,
+		loaded: false
+	},
+	{
+		name: "Aurora X",
+		value: "AuroraX",
+		custom: true,
+		loaded: false
+	},
+	{
+		name: "Darktooth",
+		value: "Darktooth",
+		custom: true,
+		loaded: false
+	}
 ];

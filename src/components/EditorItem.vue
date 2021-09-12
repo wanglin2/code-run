@@ -88,6 +88,7 @@ import {
 import { ElMessage } from "element-plus";
 import ResizeObserver from "resize-observer-polyfill";
 import { supportLanguage, formatterParserMap } from "@/config/constants";
+import { codeThemeList } from "@/config/constants";
 
 // 触发事件
 const { emit } = useContext();
@@ -192,12 +193,38 @@ const createEditor = () => {
   }
 };
 
+/** 
+ * @Author: 王林 
+ * @Date: 2021-09-11 23:40:29 
+ * @Desc: 加载主题 
+ */
+const loadTheme = async () => {
+  try {
+    if (!props.codeTheme) {
+      return;
+    }
+    let item = codeThemeList.find((item) => {
+      return item.value === props.codeTheme;
+    })
+    if (item && item.custom && !item.loaded) {
+      await loadjs([`/themes/${props.codeTheme}.js`], {
+          returnPromise: true
+      })
+      item.loaded = true
+    }
+  } catch (error) {
+    console.log(error)
+    ElMessage.error('主题加载失败，请重试')
+  }
+}
+
 // 监听设置代码主题
 watch(
   () => {
     return props.codeTheme;
   },
-  () => {
+  async () => {
+    await loadTheme()  
     monaco.editor.setTheme(props.codeTheme);
   }
 );
@@ -312,7 +339,8 @@ const codeFormatter = () => {
 };
 
 // 挂载完成
-onMounted(() => {
+onMounted(async () => {
+  await loadTheme()
   createEditor();
   ro.observe(editorItem.value);
 });
