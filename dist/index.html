@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link href="/favicon.png" rel="shortcut icon">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CodeRun_一个在线代码运行预览平台</title>
+  <link rel="stylesheet" data-name="vs/editor/editor.main" href="/monaco-editor/min/vs/editor/editor.main.css" />
+<script type="module" crossorigin src="/assets/index.d8df29ba.js"></script>
+  <link rel="modulepreload" href="/assets/vendor.f3775519.js">
+  <link rel="stylesheet" href="/assets/index.a62f008a.css">
+</head>
+
+<body>
+  <div id="app"></div>
+  <script>
+    var require = {
+      paths: {
+        vs: '/monaco-editor/min/vs'
+      },
+      'vs/nls': {
+        availableLanguages: {
+          '*': 'zh-cn' // 使用中文语言，默认为英文
+        }
+      }
+    };
+  </script>
+  <script src="/monaco-editor/min/vs/loader.js"></script>
+  <script src="/monaco-editor/min/vs/editor/editor.main.nls.js"></script>
+  <script src="/monaco-editor/min/vs/editor/editor.main.js"></script>
+  <script src="/lib/loadjs.min.js"></script>
+  <script defer src="/prettier/standalone.js"></script>
+  <script defer src="/prettier/parser-html.js"></script>
+  <script defer src="/prettier/parser-postcss.js"></script>
+  <script defer src="/prettier/parser-babel.js"></script>
+  <script defer src="/prettier/parser-typescript.js"></script>
+  
+</body>
+
+</html>
