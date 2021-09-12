@@ -28,7 +28,7 @@
 npm i @wanglin1994/code-run
 ```
 
-# 启动&打包
+# 启动
 
 ```bash
 git clone https://github.com/wanglin2/code-run.git
@@ -38,7 +38,13 @@ cd code-run
 npm i
 
 npm run dev
+```
 
+# 打包
+
+
+
+```bash
 npm run build
 ```
 
