@@ -35,21 +35,7 @@ const codeTheme = computed(() => {
  * @Desc: 切换代码主题
  */
 const codeThemeChange = async (e) => {
-  try {
-    let item = codeThemeList.find((item) => {
-      return item.value === e;
-    })
-    if (item.custom && !item.loaded) {
-      await loadjs([`/themes/${e}.js`], {
-          returnPromise: true
-      })
-      item.loaded = true
-    }
-    store.commit("setCodeTheme", e);
-  } catch (error) {
-    console.log(error)
-    ElMessage.error('切换失败，请重试')
-  }
+  store.commit("setCodeTheme", e);
 };
 </script>
 

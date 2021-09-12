@@ -20,21 +20,21 @@ const store = createStore({
                 code: {
                     HTML: {
                         language: 'html',
-                        content: ''
+                        content: ``
                     },
                     CSS: {
                         language: 'css',
-                        content: '',
+                        content: ``,
                         resources: []
                     },
                     JS: {
                         language: 'javascript',
-                        content: '',
+                        content: ``,
                         resources: []
                     },
                     VUE: {
                         language: 'vue2',
-                        content: '',
+                        content: ``,
                         resources: []
                     }
                 }
