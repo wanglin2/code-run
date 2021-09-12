@@ -2,8 +2,10 @@ import Edit from '@/pages/edit/Index.vue'
 import Preview from '@/pages/edit/Preview.vue'
 import {
     createRouter,
-    createWebHistory
+    createWebHistory,
+    createWebHashHistory
 } from 'vue-router'
+import { routerMode } from './config';
 
 const routes = [
     {
@@ -17,7 +19,7 @@ const routes = [
 ]
 
 const router = createRouter({
-    history: createWebHistory(),
+    history: routerMode === 'hash' ? createWebHashHistory() : createWebHistory(),
     routes
 })
 
