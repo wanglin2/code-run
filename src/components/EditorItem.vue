@@ -89,6 +89,7 @@ import { ElMessage } from "element-plus";
 import ResizeObserver from "resize-observer-polyfill";
 import { supportLanguage, formatterParserMap } from "@/config/constants";
 import { codeThemeList } from "@/config/constants";
+import { base } from '@/config'
 
 // 触发事件
 const { emit } = useContext();
@@ -207,7 +208,7 @@ const loadTheme = async () => {
       return item.value === props.codeTheme;
     })
     if (item && item.custom && !item.loaded) {
-      await loadjs([`/themes/${props.codeTheme}.js`], {
+      await loadjs([`${ base }themes/${props.codeTheme}.js`], {
           returnPromise: true
       })
       item.loaded = true

@@ -12,8 +12,12 @@ import Header from "@/components/Header.vue";
 import { computed, watch, getCurrentInstance } from "vue";
 import { useStore } from "vuex";
 import { layoutMap } from "@/config/constants";
+import { useRouter } from 'vue-router'
 
 const { proxy } = getCurrentInstance();
+
+// 路由
+const router = useRouter()
 
 // vuex
 const store = useStore();
@@ -34,7 +38,10 @@ const layoutHandle = () => {
   // 新窗口预览模式
   if (layout.value === "newWindowPreview") {
     if (!previewWindow) {
-      previewWindow = window.open("/preview/");
+      let previewUrl = router.resolve({
+        name: 'Preview'
+      })
+      previewWindow = window.open(previewUrl.href);
       previewWindow.onload = () => {
         previewWindowRun();
       };

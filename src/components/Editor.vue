@@ -111,14 +111,14 @@ import {
   computed,
   getCurrentInstance,
   watch,
+  reactive,
 } from "vue";
 import { useStore } from "vuex";
 import EditorItem from "@/components/EditorItem.vue";
 import Drag from "./Drag.vue";
 import DragItem from "./DragItem.vue";
 import {
-  defaultEditorItemList,
-  vueSFCEditorItem,
+  defaultEditorMap,
   preprocessorListMap,
   cdnSiteList,
 } from "@/config/constants";
@@ -127,10 +127,21 @@ const { proxy } = getCurrentInstance();
 
 // props
 const props = defineProps({
+  // 是否隐藏编辑器
   hide: {
     type: Boolean,
     default: false,
   },
+  // 排布方向
+  dir: {
+    type: String,
+    default: 'h'// v（垂直）、h（水平）
+  },
+  // 要显示的编辑器列表
+  showList: {
+    type: Array,
+    default: ['HTML', 'CSS', 'JS']// 目前共有四种编辑器：'HTML'、 'CSS'、 'JS'、 'VUE'
+  }
 });
 
 // vuex
@@ -143,41 +154,41 @@ const codeTheme = computed(() => store.state.editData.config.codeTheme);
 const layout = computed(() => {
   return store.state.editData.config.layout;
 });
-const dir = computed(() => {
-  return ["edit", "vue"].includes(layout.value) ? "v" : "h";
-});
 const openAlmightyConsole = computed(() => {
   return store.state.editData.config.openAlmightyConsole;
 });
 
 // 编辑器列表
-const editorItemList = ref();
+let editorItemList = ref([])
 
-/**
- * @Author: 王林25
- * @Date: 2021-05-18 11:05:23
- * @Desc: 修改布局
+/** 
+ * @Author: 王林25 
+ * @Date: 2021-09-13 14:52:51 
+ * @Desc: 初始化编辑器列表数据 
  */
-const changeLayout = () => {
-  if (layout.value === "js") {
-    editorItemList.value = defaultEditorItemList.slice(2);
-    editorItemList.value[0].disableDrag = true;
-  } else if (layout.value === "vue") {
-    editorItemList.value = vueSFCEditorItem;
-  } else {
-    editorItemList.value = defaultEditorItemList;
-  }
-};
-changeLayout();
+const initEditorItemList = () => {
+  editorItemList = ref(props.showList.map((item, index) => {
+    if (typeof item === 'string') {
+      return {
+        ...defaultEditorMap[item]
+      }
+    } else {
+      return {
+        ...defaultEditorMap[item.title],
+        ...item
+      }
+    }
+  }))
+}
+
+initEditorItemList()
 
 watch(
   () => {
-    return layout.value;
+    return props.showList
   },
-  () => {
-    changeLayout();
-  }
-);
+  initEditorItemList
+)
 
 watch(
   () => {

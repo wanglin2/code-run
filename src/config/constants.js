@@ -19,6 +19,7 @@ import PreviewOnly from '../pages/edit/layouts/PreviewOnly.vue'
 import PreviewOnly2 from '../pages/edit/layouts/PreviewOnly2.vue'
 import Js from '../pages/edit/layouts/Js.vue'
 import NewWindowPreview from '../pages/edit/layouts/NewWindowPreview.vue'
+import VueSFC from '../pages/edit/layouts/VueSFC.vue'
 
 // 支持的语言
 export const supportLanguage = {
@@ -52,9 +53,9 @@ export const formatterParserMap = {
 	vue3: 'html'
 }
 
-// 默认的编辑器列表
-export const defaultEditorItemList = [
-	{
+// 编辑器列表
+export const defaultEditorMap = {
+	HTML: {
 		title: 'HTML',
 		language: 'html',
 		content: '',
@@ -62,7 +63,7 @@ export const defaultEditorItemList = [
 		disableDrag: true,
 		showTouchBar: true,
 	},
-	{
+	CSS: {
 		title: 'CSS',
 		language: 'css',
 		content: '',
@@ -70,7 +71,7 @@ export const defaultEditorItemList = [
 		disableDrag: false,
 		showTouchBar: true,
 	},
-	{
+	JS: {
 		title: 'JS',
 		language: 'javascript',
 		content: '',
@@ -78,17 +79,15 @@ export const defaultEditorItemList = [
 		disableDrag: false,
 		showTouchBar: true,
 	},
-]
-
-// vue单文件组件编辑器列表
-export const vueSFCEditorItem = [{
-	title: 'VUE',
-	language: 'vue2',
-	content: '',
-	showAddBtn: true,
-	disableDrag: true,
-	showTouchBar: false,
-}]
+	VUE: {
+		title: 'VUE',
+		language: 'vue2',
+		content: '',
+		showAddBtn: true,
+		disableDrag: true,
+		showTouchBar: false,
+	}
+}
 
 // 预处理器列表
 export const preprocessorListMap = {
@@ -259,7 +258,7 @@ export const layoutMap = {
 	previewOnly2: PreviewOnly2,
 	js: Js,
 	newWindowPreview: NewWindowPreview,
-	vue: Edit
+	vue: VueSFC
 }
 
 // 代码编辑器主题列表

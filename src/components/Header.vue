@@ -82,7 +82,7 @@
 
 <script setup>
 import { getCurrentInstance, ref, computed, onBeforeUnmount, nextTick } from 'vue'
-import templateList from '@/utils/templates'
+import templateList from '@/config/templates'
 import { useStore } from 'vuex'
 import Setting from './Setting.vue'
 import SettingLayout from './SettingLayout.vue'
