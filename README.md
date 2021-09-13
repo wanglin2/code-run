@@ -2,7 +2,9 @@
 
 一个代码在线编辑预览工具，类似`codepen`。
 
-在线使用：[http://lxqnsys.com/code-run/](http://lxqnsys.com/code-run/)，在线版支持用户登录相关功能，支持云端保存与分享，本仓库的代码不包含该部分功能，如有需要，可邮件联系：`1013335014@qq.com`。
+项目demo：[https://wanglin2.github.io/code-run-online/](https://wanglin2.github.io/code-run-online/)。
+
+在本项目基础上开发的带用户登录相关功能的版本：[http://lxqnsys.com/code-run/](http://lxqnsys.com/code-run/)。
 
 项目设计思路及开发过程可参考文章：[https://juejin.cn/post/6965467528600485919](https://juejin.cn/post/6965467528600485919)。
 
