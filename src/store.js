@@ -14,7 +14,7 @@ const store = createStore({
                     codeTheme: 'vs-dark',
                     openAlmightyConsole: false,
                     autoRun: false,
-                    layout: 'default',
+                    layout: 'vue',
                     keepPreviousLogs: true
                 },
                 code: {

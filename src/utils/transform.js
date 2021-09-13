@@ -132,6 +132,34 @@ const css = (preprocessor, code) => {
 /** 
  * javascript comment 
  * @Author: 王林25 
+ * @Date: 2021-09-13 16:06:15 
+ * @Desc: 遍历匹配节点，添加el、template属性 
+ */
+const traverseAddProperty = (path, t, data) => {
+    path.traverse({
+        ObjectExpression(path2) {
+            if (path2.parent && path2.parent.type === 'NewExpression') {
+                path2.node.properties.push(
+                    // el
+                    t.objectProperty(
+                        t.identifier('el'),
+                        t.stringLiteral('#app')
+                    ),
+                    // template
+                    t.objectProperty(
+                        t.identifier('template'),
+                        t.stringLiteral(data.template.content)
+                    ),
+                )
+                path2.stop()
+            }
+        }
+    });
+}
+
+/** 
+ * javascript comment 
+ * @Author: 王林25 
  * @Date: 2021-09-10 16:03:32 
  * @Desc: 解析vue2 script语法 
  */
@@ -140,8 +168,9 @@ const parseVue2ScriptPlugin = (data) => {
         let t = babel.types
         return {
             visitor: {
-                // export default -> new Vue
+                // 解析export default模块语法
                 ExportDefaultDeclaration(path) {
+                    // export default -> new Vue
                     path.replaceWith(
                         t.expressionStatement(
                             t.newExpression(
@@ -152,43 +181,26 @@ const parseVue2ScriptPlugin = (data) => {
                             )
                         )
                     );
-                    path.traverse({
-                        ObjectExpression(path2) {
-                            if (path2.parent && path2.parent.type === 'NewExpression' ) {
-                                path2.node.properties.push(
-                                    // el
-                                    t.objectProperty(
-                                        t.identifier('el'),
-                                        t.stringLiteral('#app')
-                                    ),
-                                    // template
-                                    t.objectProperty(
-                                        t.identifier('template'),
-                                        t.stringLiteral(data.template.content)
-                                    ),
-                                )
-                                path2.stop()
-                            }
-                        }
-                    });
+                    // 添加el和template属性
+                    traverseAddProperty(path, t, data)
                 },
-                // 添加el属性、template属性
-                // ObjectExpression(path) {
-                //     if (path.parent && path.parent.type === 'NewExpression' ) {
-                //         path.node.properties.push(
-                //             // el
-                //             t.objectProperty(
-                //                 t.identifier('el'),
-                //                 t.stringLiteral('#app')
-                //             ),
-                //             // template
-                //             t.objectProperty(
-                //                 t.identifier('template'),
-                //                 t.stringLiteral(data.template.content)
-                //             ),
-                //         )
-                //     }
-                // }
+                // 解析module.exports模块语法
+                AssignmentExpression(path) {
+                    let objectNode = path.get('left.object.name')
+                    let propertyNode = path.get('left.property.name')
+                    if (objectNode && objectNode.node === 'module' && propertyNode && propertyNode.node === 'exports') {
+                        path.replaceWith(
+                            t.newExpression(
+                                t.identifier('Vue'),
+                                [
+                                    path.get('right').node
+                                ]
+                            )
+                        )
+                        // 添加el和template属性
+                        traverseAddProperty(path, t, data)
+                    }
+                }
             }
         }
     }
@@ -216,23 +228,6 @@ const parseVue3ScriptPlugin = (data) => {
                             )
                         )
                     );
-                },
-                // 添加el属性、template属性
-                ObjectExpression(path) {
-                    if (path.parent && path.parent.type === 'CallExpression') {
-                        path.node.properties.push(
-                            // el
-                            t.objectProperty(
-                                t.identifier('el'),
-                                t.stringLiteral('#app')
-                            ),
-                            // template
-                            t.objectProperty(
-                                t.identifier('template'),
-                                t.stringLiteral(data.template.content)
-                            ),
-                        )
-                    }
                 }
             }
         }
@@ -246,7 +241,6 @@ const parseVue3ScriptPlugin = (data) => {
  * @Desc: 解析出html、js、css 
  */
 const parseVueComponentData = async (data, parseVueScriptPlugin) => {
-    console.log(data)
     // html就直接渲染一个挂载vue实例的节点
     let htmlStr = `<div id="app"></div>`
     // 加载babel解析器
@@ -265,7 +259,7 @@ const parseVueComponentData = async (data, parseVueScriptPlugin) => {
     console.log(data.script.content, jsStr)
     // 编译css
     let cssStr = []
-    for(let i = 0; i < data.styles.length; i++) {
+    for (let i = 0; i < data.styles.length; i++) {
         let style = data.styles[i]
         let preprocessor = style.lang || 'css'
         if (preprocessor !== 'css') {
