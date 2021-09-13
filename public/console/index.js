@@ -1,5 +1,5 @@
 /** 
-此文件修改完后请编译成es5语法，然后粘贴到./compile.js文件里
+    此文件修改完后打包时会被编译成es5语法，并输出到./compile.js，所以你不应该直接修改./compile.js文件，你也可以手动运行`npm run buildConsole`来编译
  */
 
 ;

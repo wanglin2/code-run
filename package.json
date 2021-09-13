@@ -23,8 +23,9 @@
   ],
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "serve": "vite preview"
+    "build": "babel ./public/console/index.js --out-file ./public/console/compile.js && vite build",
+    "serve": "vite preview",
+    "buildConsole": "babel ./public/console/index.js --out-file ./public/console/compile.js"
   },
   "dependencies": {
     "axios": "^0.21.1",
@@ -39,6 +40,11 @@
     "vuex": "^4.0.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.15.4",
+    "@babel/core": "^7.15.5",
+    "@babel/plugin-transform-modules-commonjs": "^7.15.4",
+    "@babel/plugin-transform-strict-mode": "^7.14.5",
+    "@babel/preset-env": "^7.15.6",
     "@vitejs/plugin-vue": "^1.2.2",
     "@vue/compiler-sfc": "^3.0.5",
     "less": "^4.1.1",
