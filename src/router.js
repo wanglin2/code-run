@@ -5,7 +5,7 @@ import {
     createWebHistory,
     createWebHashHistory
 } from 'vue-router'
-import { routerMode } from './config';
+import { routerMode, base } from './config';
 
 const routes = [
     {
@@ -14,12 +14,13 @@ const routes = [
     },
     {
         path: '/preview',
+        name: 'Preview',
         component: Preview
     },
 ]
 
 const router = createRouter({
-    history: routerMode === 'hash' ? createWebHashHistory() : createWebHistory(),
+    history: routerMode === 'hash' ? createWebHashHistory(base) : createWebHistory(base),
     routes
 })
 

@@ -18,7 +18,8 @@ import {
 } from 'vue'
 import { useStore } from 'vuex'
 import { assembleHtml, compile, compileVue } from '@/utils'
-import { getTemplate } from '@/utils/templates'
+import { getTemplate } from '@/config/templates'
+import { base } from '@/config'
 
 const { proxy } = getCurrentInstance()
 
@@ -135,12 +136,12 @@ const createHtml = (
         ${cssStr}
     <\/style>
     ${_cssResources}
-    <script src="/console/compile.js"><\/script>
+    <script src="${ base }console/compile.js"><\/script>
   `
   let body = `
     ${htmlStr}
     ${_jsResources}
-    ${openAlmightyConsole ? `<script src="/eruda/eruda.js"><\/script>` : ''}
+    ${openAlmightyConsole ? `<script src="${ base }eruda/eruda.js"><\/script>` : ''}
     <script>
         ${openAlmightyConsole ? 'eruda.init();' : ''}
         try {

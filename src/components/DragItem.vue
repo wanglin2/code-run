@@ -46,26 +46,32 @@ const { emit } = useContext()
 
 // props
 const props = defineProps({
+  // 是否禁止拖动
   disabled: {
     type: Boolean,
     default: false,
   },
+  // 拖动条的尺寸
   touchBarSize: {
     type: Number,
     default: 20,
   },
+  // 该组件在容器内的同级`DragItem`组件列表中的索引，从0开始
   index: {
     type: Number,
     default: 0,
   },
+  // 是否显示拖动条
   showTouchBar: {
     type: Boolean,
     default: true,
   },
+  // 标题
   title: {
     type: String,
     default: '',
   },
+  // 是否隐藏该组件
   hide: {
     type: Boolean,
     default: false,

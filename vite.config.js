@@ -4,7 +4,7 @@ import path from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: './',
+  base: '/code-run-online/',
   plugins: [vue()],
   resolve: {
     alias: {

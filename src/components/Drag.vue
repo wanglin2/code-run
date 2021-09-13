@@ -20,14 +20,17 @@ const { proxy } = getCurrentInstance()
 
 // props
 const props = defineProps({
+  // 容器内部的`DragItem`组件排列方式，可选项：h（水平排列）、v（垂直排列）
   dir: {
     type: String,
     default: 'h',
   },
+  // 内部的`DragItem`组件数量
   number: {
     type: Number,
     default: 0,
   },
+  // 配置
   config: {
     type: Array,
     default() {

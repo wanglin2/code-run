@@ -45,7 +45,7 @@ const createHtml = (title, htmlStr, cssResources, jsResources) => {
     let body = `
         ${htmlStr}
         ${_jsResources}
-        <script  src="./script.js"></script>
+        <script src="./script.js"></script>
     `
     return assembleHtml(head, body)
 }

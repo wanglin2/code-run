@@ -1,3 +1,5 @@
+import { base } from '@/config'
+
 // 记录加载状态
 const preprocessorLoaded = {
     html: true,
@@ -36,7 +38,7 @@ export const load = (preprocessorList) => {
         let jsList = []
         notLoaded.forEach((item) => {
             let _resources = (resources[item] || [item]).map((r) => {
-                return /^https?/.test(item) ? item : `/parses/${r}.js`
+                return /^https?/.test(item) ? item : `${ base }parses/${ r }.js`
             })
             jsList.push(..._resources)
         })

@@ -2,7 +2,7 @@
   <Drag :number="2" dir="h" :config="[{ min: 0 }, { min: 20 }]">
     <!-- 编辑器 -->
     <DragItem :index="0" :disabled="true" :showTouchBar="false">
-      <Editor dir="v"></Editor>
+      <Editor dir="v" :showList="showList"></Editor>
     </DragItem>
     <!-- 预览&控制台 -->
     <DragItem :index="1" :disabled="false">
@@ -29,4 +29,13 @@ import Preview from '@/components/Preview.vue'
 import Console from '@/components/Console.vue'
 import Drag from '@/components/Drag.vue'
 import DragItem from '@/components/DragItem.vue'
+import { reactive } from 'vue'
+
+const showList = reactive([
+    {
+        title: 'VUE',
+        disableDrag: true,
+        showTouchBar: false
+    }
+])
 </script>
