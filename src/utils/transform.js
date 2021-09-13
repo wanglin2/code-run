@@ -190,10 +190,10 @@ const parseVue2ScriptPlugin = (data) => {
                         let objectNode = path.get('left.object.name')
                         let propertyNode = path.get('left.property.name')
                         if (
-                            objectNode 
-                            && objectNode.node === 'module' 
-                            && propertyNode 
-                            && propertyNode.node === 'exports'
+                            objectNode &&
+                            objectNode.node === 'module' &&
+                            propertyNode &&
+                            propertyNode.node === 'exports'
                         ) {
                             path.replaceWith(
                                 t.newExpression(
@@ -265,7 +265,6 @@ const parseVueComponentData = async (data, parseVueScriptPlugin) => {
             parseVueScriptPlugin(data)
         ]
     }).code : ''
-    console.log(data.script.content, jsStr)
     // 编译css
     let cssStr = []
     for (let i = 0; i < data.styles.length; i++) {
