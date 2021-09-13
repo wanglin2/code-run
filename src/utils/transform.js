@@ -186,19 +186,28 @@ const parseVue2ScriptPlugin = (data) => {
                 },
                 // 解析module.exports模块语法
                 AssignmentExpression(path) {
-                    let objectNode = path.get('left.object.name')
-                    let propertyNode = path.get('left.property.name')
-                    if (objectNode && objectNode.node === 'module' && propertyNode && propertyNode.node === 'exports') {
-                        path.replaceWith(
-                            t.newExpression(
-                                t.identifier('Vue'),
-                                [
-                                    path.get('right').node
-                                ]
+                    try {
+                        let objectNode = path.get('left.object.name')
+                        let propertyNode = path.get('left.property.name')
+                        if (
+                            objectNode 
+                            && objectNode.node === 'module' 
+                            && propertyNode 
+                            && propertyNode.node === 'exports'
+                        ) {
+                            path.replaceWith(
+                                t.newExpression(
+                                    t.identifier('Vue'),
+                                    [
+                                        path.get('right').node
+                                    ]
+                                )
                             )
-                        )
-                        // 添加el和template属性
-                        traverseAddProperty(path, t, data)
+                            // 添加el和template属性
+                            traverseAddProperty(path, t, data)
+                        }
+                    } catch (error) {
+                        console.log(error)
                     }
                 }
             }
