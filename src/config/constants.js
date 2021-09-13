@@ -146,10 +146,10 @@ export const preprocessorListMap = {
 			label: 'Vue2',
 			value: 'vue2',
 		},
-		{
-			label: 'Vue3',
-			value: 'vue3',
-		}
+		// {
+		// 	label: 'Vue3',
+		// 	value: 'vue3',
+		// }
 	]
 }
 
