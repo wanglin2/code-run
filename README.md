@@ -6,7 +6,11 @@
 
 在本项目基础上开发的带用户登录相关功能的版本：[http://lxqnsys.com/code-run/](http://lxqnsys.com/code-run/)。
 
-项目设计思路及开发过程可参考文章：[https://juejin.cn/post/6965467528600485919](https://juejin.cn/post/6965467528600485919)。
+# 相关文章
+
+[快速搭建一个代码在线编辑预览工具](https://juejin.cn/post/6965467528600485919)
+
+[如何手动解析vue单文件并预览？](https://juejin.cn/post/7007725841689870366)
 
 # 特性
 
