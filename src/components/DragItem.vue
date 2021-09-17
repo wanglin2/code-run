@@ -26,11 +26,11 @@
 <script setup>
 import {
   defineProps,
-  useContext,
   onBeforeUnmount,
   watch,
   inject,
   getCurrentInstance,
+  defineEmits
 } from 'vue'
 import Drag from '@/utils/Drag.js'
 
@@ -42,7 +42,7 @@ const sizeList = inject('sizeList')
 const dir = inject('dir')
 
 // 触发事件
-const { emit } = useContext()
+const emit = defineEmits(['size-change'])
 
 // props
 const props = defineProps({

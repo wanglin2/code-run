@@ -79,40 +79,66 @@
 import {
   ref,
   defineProps,
-  useContext,
   onBeforeUnmount,
   onMounted,
   watch,
   nextTick,
-} from "vue";
-import { ElMessage } from "element-plus";
-import ResizeObserver from "resize-observer-polyfill";
-import { supportLanguage, formatterParserMap } from "@/config/constants";
-import { codeThemeList } from "@/config/constants";
+  defineEmits,
+} from 'vue'
+import { ElMessage } from 'element-plus'
+import ResizeObserver from 'resize-observer-polyfill'
+import { supportLanguage, formatterParserMap } from '@/config/constants'
+import { codeThemeList } from '@/config/constants'
 import { base } from '@/config'
+import { ElTooltip, ElSelect, ElOption } from 'element-plus'
+import * as monaco from 'monaco-editor'
+import loadjs from 'loadjs'
+
+self.MonacoEnvironment = {
+  getWorkerUrl: function (moduleId, label) {
+    if (label === 'json') {
+      return './monaco/json.worker.bundle.js'
+    }
+    if (label === 'css' || label === 'scss' || label === 'less') {
+      return './monaco/css.worker.bundle.js'
+    }
+    if (label === 'html' || label === 'handlebars' || label === 'razor') {
+      return './monaco/html.worker.bundle.js'
+    }
+    if (label === 'typescript' || label === 'javascript') {
+      return './monaco/ts.worker.bundle.js'
+    }
+    return './monaco/editor.worker.bundle.js'
+  },
+}
 
 // 触发事件
-const { emit } = useContext();
+const emit = defineEmits([
+  'preprocessor-change',
+  'code-change',
+  'blur',
+  'add-resource',
+])
 
 // props
 const props = defineProps({
   preprocessorList: {
     type: Array,
     default() {
-      return [];
+      return []
     },
   },
   title: {
     type: String,
-    default: "",
+    default: '',
   },
   language: {
     type: String,
-    default: "",
+    default: '',
   },
   content: {
     type: String,
-    default: "",
+    default: '',
   },
   showAddBtn: {
     type: Boolean,
@@ -120,25 +146,25 @@ const props = defineProps({
   },
   codeTheme: {
     type: String,
-    default: "",
+    default: '',
   },
   dir: {
     type: String,
-    default: "",
+    default: '',
   },
   showAllAddResourcesBtn: {
     type: Boolean,
     default: false,
-  }
-});
+  },
+})
 
 // 编辑器容器
-const editorEl = ref(null);
+const editorEl = ref(null)
 // 编辑器
-let editor = null;
+let editor = null
 // 预处理器
-const preprocessor = ref(props.language);
-const noSpace = ref(false);
+const preprocessor = ref(props.language)
+const noSpace = ref(false)
 
 /**
  * @Author: 王林25
@@ -146,70 +172,56 @@ const noSpace = ref(false);
  * @Desc: 修改预处理器
  */
 const preprocessorChange = (e) => {
-  emit("preprocessor-change", e);
-};
+  emit('preprocessor-change', e)
+}
 
 /**
  * @Author: 王林25
  * @Date: 2021-04-29 20:05:50
  * @Desc: 创建编辑器
  */
-const tryMaxCount = 10;
-let tryCount = 0;
 const createEditor = () => {
   if (!editor) {
-    // 有时候monaco对象还不存在，所以递归进行检查
-    if (!window.monaco) {
-      console.log("Monaco对象不存在，正在重新获取");
-      if (tryCount > tryMaxCount) {
-        return ElMessage.error("页面加载出错，请刷新重试");
-      }
-      tryCount++;
-      setTimeout(() => {
-        createEditor();
-      }, 0);
-      return;
-    }
     // 创建编辑器
-    editor = window.monaco.editor.create(editorEl.value, {
+    editor = monaco.editor.create(editorEl.value, {
       model: null,
       minimap: {
         enabled: false, // 关闭小地图
       },
-      wordWrap: "on", // 代码超出换行
-      theme: props.codeTheme || "vs-dark", // 主题
+      wordWrap: 'on', // 代码超出换行
+      theme: props.codeTheme || 'vs-dark', // 主题
       fontSize: 18,
-      fontFamily: "MonoLisa, monospace",
-    });
+      fontFamily: 'MonoLisa, monospace',
+    })
     // 设置文档内容
-    updateDoc(props.content, props.language);
+    updateDoc(props.content, props.language)
     // 监听编辑事件
     editor.onDidChangeModelContent((e) => {
-      emit("code-change", editor.getValue());
-    });
+      emit('code-change', editor.getValue())
+    })
     // 监听失焦事件
     editor.onDidBlurEditorText((e) => {
-      emit("blur", editor.getValue());
-    });
+      emit('blur', editor.getValue())
+    })
   }
-};
+}
 
-/** 
- * @Author: 王林 
- * @Date: 2021-09-11 23:40:29 
- * @Desc: 加载主题 
+/**
+ * @Author: 王林
+ * @Date: 2021-09-11 23:40:29
+ * @Desc: 加载主题
  */
 const loadTheme = async () => {
   try {
     if (!props.codeTheme) {
-      return;
+      return
     }
     let item = codeThemeList.find((item) => {
-      return item.value === props.codeTheme;
+      return item.value === props.codeTheme
     })
     if (item && item.custom && !item.loaded) {
-      await loadjs([`${ base }themes/${props.codeTheme}.js`], {
-          returnPromise: true
+      await loadjs([`${base}themes/${props.codeTheme}.js`], {
+        returnPromise: true,
       })
       item.loaded = true
     }
@@ -222,13 +234,13 @@ const loadTheme = async () => {
 // 监听设置代码主题
 watch(
   () => {
-    return props.codeTheme;
+    return props.codeTheme
   },
   async () => {
-    await loadTheme()  
-    monaco.editor.setTheme(props.codeTheme);
+    await loadTheme()
+    monaco.editor.setTheme(props.codeTheme)
   }
-);
+)
 
 /**
  * @Author: 王林25
@@ -237,18 +249,15 @@ watch(
  */
 const updateDoc = (code, language) => {
   if (!editor) {
-    return;
+    return
   }
-  let oldModel = editor.getModel();
-  let newModel = window.monaco.editor.createModel(
-    code,
-    supportLanguage[language]
-  );
-  editor.setModel(newModel);
+  let oldModel = editor.getModel()
+  let newModel = monaco.editor.createModel(code, supportLanguage[language])
+  editor.setModel(newModel)
   if (oldModel) {
-    oldModel.dispose();
+    oldModel.dispose()
   }
-};
+}
 
 /**
  * @Author: 王林25
@@ -256,8 +265,8 @@ const updateDoc = (code, language) => {
  * @Desc: 获取文档内容
  */
 const getValue = () => {
-  return editor.getValue();
-};
+  return editor.getValue()
+}
 
 /**
  * @Author: 王林25
@@ -265,48 +274,48 @@ const getValue = () => {
  * @Desc: 点击添加资源
  */
 const addResource = (languageType) => {
-  emit("add-resource", languageType);
-};
+  emit('add-resource', languageType)
+}
 
 // 更新文档内容
 watch(
   () => {
-    return props.content;
+    return props.content
   },
   () => {
-    updateDoc(props.content, props.language);
+    updateDoc(props.content, props.language)
   }
-);
+)
 
 // 更新语言
 watch(
   () => {
-    return props.language;
+    return props.language
   },
   () => {
-    preprocessor.value = props.language;
-    updateDoc(props.content, props.language);
+    preprocessor.value = props.language
+    updateDoc(props.content, props.language)
   }
-);
+)
 
-const editorItem = ref(null);
+const editorItem = ref(null)
 
 // 更新尺寸
-let timer = null;
+let timer = null
 const resize = () => {
   // 100ms内只执行一次，优化卡顿问题
   if (timer) {
-    return;
+    return
   }
   timer = setTimeout(() => {
     nextTick(() => {
-      let { width, height } = editorItem.value.getBoundingClientRect();
-      noSpace.value = (props.dir === "h" ? width : height) <= 100;
-      editor && editor.layout();
-      timer = null;
-    });
-  }, 100);
-};
+      let { width, height } = editorItem.value.getBoundingClientRect()
+      noSpace.value = (props.dir === 'h' ? width : height) <= 100
+      editor && editor.layout()
+      timer = null
+    })
+  }, 100)
+}
 
 /**
  * @Author: 王林25
@@ -315,11 +324,11 @@ const resize = () => {
  */
 const ro = new ResizeObserver((entries, observer) => {
   for (const entry of entries) {
-    if (entry.target.classList.contains("editorItem")) {
-      resize();
+    if (entry.target.classList.contains('editorItem')) {
+      resize()
     }
   }
-});
+})
 
 /**
  * @Author: 王林25
@@ -330,26 +339,26 @@ const codeFormatter = () => {
   let str = prettier.format(getValue(), {
     parser: formatterParserMap[props.language],
     plugins: prettierPlugins,
-  });
+  })
   // 设置文档内容
-  updateDoc(str, props.language);
+  updateDoc(str, props.language)
   // 监听编辑事件
   editor.onDidChangeModelContent((e) => {
-    emit("code-change", editor.getValue());
-  });
-};
+    emit('code-change', editor.getValue())
+  })
+}
 
 // 挂载完成
 onMounted(async () => {
   await loadTheme()
-  createEditor();
-  ro.observe(editorItem.value);
-});
+  createEditor()
+  ro.observe(editorItem.value)
+})
 
 // 即将解除挂载
 onBeforeUnmount(() => {
-  ro.unobserve(editorItem.value);
-});
+  ro.unobserve(editorItem.value)
+})
 </script>
 
 <style scoped lang="less">

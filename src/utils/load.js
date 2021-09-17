@@ -1,4 +1,5 @@
 import { base } from '@/config'
+import loadjs from 'loadjs'
 
 // 记录加载状态
 const preprocessorLoaded = {

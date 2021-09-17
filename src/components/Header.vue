@@ -88,7 +88,7 @@ import Setting from './Setting.vue'
 import SettingLayout from './SettingLayout.vue'
 import SettingTheme from './SettingTheme.vue'
 import exportZip from '@/utils/exportZip'
-import { ElMessage } from 'element-plus'
+import { ElMessage, ElButton, ElDialog, ElInput, ElTabs, ElTabPane } from 'element-plus'
 
 const { proxy } = getCurrentInstance()
 

@@ -27,6 +27,7 @@
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
 import { layoutList, previewImgMap } from "@/config/constants";
+import { ElSelect, ElButton, ElOption } from 'element-plus'
 
 // vuex
 const store = useStore();

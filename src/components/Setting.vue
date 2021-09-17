@@ -35,6 +35,7 @@
 <script setup>
 import { computed } from "vue";
 import { useStore } from "vuex";
+import { ElSwitch } from 'element-plus'
 
 // vuex
 const store = useStore();
