@@ -5,13 +5,13 @@
 
 (function (root, factory) {
   'use strict';
-  // if (typeof define === 'function' && define.amd) {
-  //   define([], factory);
-  // } else if (typeof exports === 'object') {
-  //   module.exports = factory();
-  // } else {
+  if (typeof define === 'function' && define.amd) {
+    define([], factory);
+  } else if (typeof exports === 'object') {
+    module.exports = factory();
+  } else {
     root.Sass = factory();
-  // }
+  }
 }(this, function () {/*global document*/
 // identify the path sass.js is located at in case we're loaded by a simple
 // <script src="path/to/sass.js"></script>

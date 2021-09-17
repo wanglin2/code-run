@@ -20,7 +20,7 @@
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
 import { codeThemeList } from "@/config/constants";
-import { ElMessage } from 'element-plus';
+import { ElMessage, ElSelect, ElOption } from 'element-plus';
 
 // vuex
 const store = useStore();
