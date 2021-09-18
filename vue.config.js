@@ -1,5 +1,6 @@
-
 const path = require('path')
+const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin')
+
 module.exports = {
     publicPath: '/code-run-online/',
     lintOnSave: false,
@@ -8,6 +9,13 @@ module.exports = {
             alias: {
                 '@': path.resolve(__dirname, './src/')
             }
-        }
+        },
+        plugins: [
+            new MonacoWebpackPlugin({
+                languages: [
+                    // 'typescript', 'javascript', 'css', 'coffee', 'html', 'less', 'pug', 'scss'
+                ]
+            })
+        ]
     }
 }

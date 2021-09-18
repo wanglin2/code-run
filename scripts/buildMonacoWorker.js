@@ -1,3 +1,5 @@
+// 打包Monaco Editor的worker文件
+// 输出到/public/monaco文件夹下
 // 参考：https://github.com/microsoft/monaco-editor-samples/tree/main/browser-esm-webpack
 const webpack = require('webpack');
 const path = require('path');
@@ -36,4 +38,4 @@ webpack({
     } else {
         console.log('完成')
     }
-});
+})
