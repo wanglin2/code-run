@@ -93,6 +93,9 @@ import { base } from '@/config'
 import { ElTooltip, ElSelect, ElOption } from 'element-plus'
 import * as monaco from 'monaco-editor'
 import loadjs from 'loadjs'
+import { loadWASM } from 'onigasm'
+import { Registry } from 'monaco-textmate'
+import { wireTmGrammars } from 'monaco-editor-textmate'
 
 self.MonacoEnvironment = {
   getWorkerUrl: function (moduleId, label) {
@@ -180,8 +183,30 @@ const preprocessorChange = (e) => {
  * @Date: 2021-04-29 20:05:50
  * @Desc: 创建编辑器
  */
-const createEditor = () => {
+const createEditor = async () => {
   if (!editor) {
+    await loadWASM(`${base}/onigasm/onigasm.wasm`)
+    const registry = new Registry({
+      getGrammarDefinition: async () => {
+        return {
+          format: 'json',
+          content: await (
+            await fetch(`${base}grammars/javascript.tmLanguage.json`)
+          ).text(),
+        }
+      },
+    })
+
+    const grammars = new Map()
+    grammars.set('css', 'source.css')
+    grammars.set('html', 'text.html.basic')
+    grammars.set('typescript', 'source.ts')
+    grammars.set('javascript', 'source.js')
+    monaco.languages.register({ id: 'javascript' })
+    monaco.editor.defineTheme(
+      'vs-code-theme-converted',
+      require('../../public/themes/OneDarkPro.json')
+    )
     // 创建编辑器
     editor = monaco.editor.create(editorEl.value, {
       model: null,
@@ -189,12 +214,14 @@ const createEditor = () => {
         enabled: false, // 关闭小地图
       },
       wordWrap: 'on', // 代码超出换行
-      theme: props.codeTheme || 'vs-dark', // 主题
+      theme: 'vs-code-theme-converted' || props.codeTheme || 'vs-dark', // 主题
       fontSize: 18,
       fontFamily: 'MonoLisa, monospace',
+      contextmenu: false, // 不显示右键菜单
     })
     // 设置文档内容
     updateDoc(props.content, props.language)
+    await wireTmGrammars(monaco, registry, grammars, editor)
     // 监听编辑事件
     editor.onDidChangeModelContent((e) => {
       emit('code-change', editor.getValue())

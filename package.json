@@ -26,17 +26,18 @@
     "build": "babel ./public/console/index.js --out-file ./public/console/compile.js && vue-cli-service build",
     "lint": "vue-cli-service lint",
     "buildConsole": "babel ./public/console/index.js --out-file ./public/console/compile.js",
-    "buildMonacoWorker": "node ./scripts/buildMonacoWorker.js"
+    "buildMonacoWorker": "node ./scripts/buildMonacoWorker.js",
+    "convertTheme": "node ./scripts/convertTheme.js"
   },
   "dependencies": {
     "core-js": "^3.6.5",
     "element-plus": "*",
     "eventemitter3": "^4.0.7",
     "jszip": "^3.7.1",
-    "less": "^4.1.1",
-    "less-loader": "^4.1.0",
     "loadjs": "^4.2.0",
     "monaco-editor": "^0.27.0",
+    "monaco-editor-textmate": "^3.0.0",
+    "monaco-vscode-textmate-theme-converter": "^0.1.7",
     "resize-observer-polyfill": "^1.5.1",
     "vue": "^3.2.4",
     "vue-router": "^4.0.6",
@@ -54,7 +55,10 @@
     "@vue/compiler-sfc": "^3.0.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
-    "eslint-plugin-vue": "^7.0.0"
+    "eslint-plugin-vue": "^7.0.0",
+    "less": "^4.1.1",
+    "less-loader": "^4.1.0",
+    "monaco-editor-webpack-plugin": "^4.1.2"
   },
   "eslintConfig": {
     "root": true,
