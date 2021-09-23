@@ -91,24 +91,6 @@ import { ElTooltip, ElSelect, ElOption } from 'element-plus'
 import * as monaco from 'monaco-editor'
 import { wire } from '@/utils/monacoEditor'
 
-// self.MonacoEnvironment = {
-//   getWorkerUrl: function (moduleId, label) {
-//     if (label === 'json') {
-//       return './monaco/json.worker.bundle.js'
-//     }
-//     if (label === 'css' || label === 'scss' || label === 'less') {
-//       return './monaco/css.worker.bundle.js'
-//     }
-//     if (label === 'html' || label === 'handlebars' || label === 'razor') {
-//       return './monaco/html.worker.bundle.js'
-//     }
-//     if (label === 'typescript' || label === 'javascript') {
-//       return './monaco/ts.worker.bundle.js'
-//     }
-//     return './monaco/editor.worker.bundle.js'
-//   },
-// }
-
 // 触发事件
 const emit = defineEmits([
   'preprocessor-change',
@@ -157,8 +139,7 @@ const props = defineProps({
 
 // hooks定义部分
 // 创建编辑器
-// 编辑器
-let editor = null
+let editor = null// 编辑器实例
 const useCreateEditor = ({ props, emit, updateDoc }) => {
   // 编辑器容器
   const editorEl = ref(null)

@@ -263,18 +263,6 @@ export const layoutMap = {
 // 代码编辑器主题列表
 export const codeThemeList = [
 	{
-		name: "经典",
-		value: "vs",
-	},
-	{
-		name: "深色",
-		value: "vs-dark",
-	},
-	{
-		name: "高对比度深色",
-		value: "hc-black",
-	},
-	{
 		name: "One Dark Pro",
 		value: "OneDarkPro",
 		custom: true,
@@ -336,5 +324,17 @@ export const codeThemeList = [
 		custom: true,
 		loaded: false,
 		cache: ''
+	},
+	{
+		name: "经典",
+		value: "vs",
+	},
+	{
+		name: "深色",
+		value: "vs-dark",
+	},
+	{
+		name: "高对比度深色",
+		value: "hc-black",
 	}
 ];

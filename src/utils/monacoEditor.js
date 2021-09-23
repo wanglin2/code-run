@@ -8,9 +8,12 @@ import {
     wireTmGrammars
 } from 'monaco-editor-textmate'
 import * as monaco from 'monaco-editor'
+import { loadWASM } from "onigasm";
 
 // 初始化编辑器
 export const initMonacoEditor = async () => {
+    // 加载onigasm的WebAssembly文件
+    await loadWASM(`${base}/onigasm/onigasm.wasm`)
     // 配置编辑器运行环境
     window.MonacoEnvironment = {
         getWorkerUrl: function (moduleId, label) {
@@ -83,25 +86,11 @@ export const wire = async (languageId, editor) => {
                 format = jsonMap.format
                 path = jsonMap.path
             }
-            console.log(path)
             return {
                 format,
                 content: await (await fetch(`${base}grammars/${path}`)).text()
             }
         }
     })
-    // bugfix：https://github.com/Microsoft/monaco-editor/issues/884
-    // let count = 0
-    // let loop = async () => {
-    //     let len = document.querySelectorAll('script').length
-    //     if (len !== count) {
-    //         count = len
-    //         setTimeout(() => {
-    //             loop()
-    //         }, 100);
-    //     } else {
-            await wireTmGrammars(monaco, registry, grammars, editor)
-    //     }
-    // }
-    // loop()
+    await wireTmGrammars(monaco, registry, grammars, editor)
 }
