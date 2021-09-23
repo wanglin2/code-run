@@ -17,6 +17,7 @@ const html = (preprocessor, code) => {
                     break;
                 case 'pug':
                     resolve(window.pug.render(code))
+                    break;
                 default:
                     resolve('')
                     break;
@@ -51,6 +52,7 @@ const js = (preprocessor, code) => {
                         ]
                     }).code
                     resolve(_code)
+                    break;
                 case 'typescript':
                     _code = window.typescript.transpileModule(code, {
                         reportDiagnostics: true,
@@ -80,7 +82,7 @@ const js = (preprocessor, code) => {
  * @Date: 2021-05-13 11:35:34 
  * @Desc: 编译css 
  */
-let sass = null
+let scss = null
 const css = (preprocessor, code) => {
     return new Promise((resolve, reject) => {
         try {
@@ -97,11 +99,11 @@ const css = (preprocessor, code) => {
                                 reject(error)
                             });
                     break;
-                case 'sass':
-                    if (!sass) {
-                        sass = new window.Sass();
+                case 'scss':
+                    if (!scss) {
+                        scss = new window.Sass();
                     }
-                    sass.compile(code, (result) => {
+                    scss.compile(code, (result) => {
                         resolve(result.text)
                     });
                     break;
@@ -222,7 +224,8 @@ const parseVue2ScriptPlugin = (data) => {
  * @Desc: 解析vue3 script语法 
  */
 const parseVue3ScriptPlugin = (data) => {
-    return function () {
+    return function (babel) {
+        let t = babel.types
         return {
             visitor: {
                 // export default -> Vue.create

@@ -1,8 +1,6 @@
 /** 
     此文件修改完后打包时会被编译成es5语法，并输出到./compile.js，所以你不应该直接修改./compile.js文件，你也可以手动运行`npm run buildConsole`来编译
  */
-;
-
 (function () {
   /** 
    * javascript comment 
@@ -311,9 +309,8 @@
   }; // 代理console构造函数
 
 
-  function ProxyConsole() {}
+  function ProxyConsole() {} // 拦截console的所有方法
 
-  ; // 拦截console的所有方法
 
   ['debug', 'clear', 'error', 'info', 'log', 'warn', 'dir', 'props', 'group', 'groupEnd', 'dirxml', 'table', 'trace', 'assert', 'count', 'markTimeline', 'profile', 'profileEnd', 'time', 'timeEnd', 'timeStamp', 'groupCollapsed'].forEach(function (method) {
     var originMethod = console[method]; // 设置原型方法

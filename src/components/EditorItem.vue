@@ -85,35 +85,29 @@ import {
   nextTick,
   defineEmits,
 } from 'vue'
-import { ElMessage } from 'element-plus'
 import ResizeObserver from 'resize-observer-polyfill'
 import { supportLanguage, formatterParserMap } from '@/config/constants'
-import { codeThemeList } from '@/config/constants'
-import { base } from '@/config'
 import { ElTooltip, ElSelect, ElOption } from 'element-plus'
 import * as monaco from 'monaco-editor'
-import loadjs from 'loadjs'
-import { loadWASM } from 'onigasm'
-import { Registry } from 'monaco-textmate'
-import { wireTmGrammars } from 'monaco-editor-textmate'
+import { wire } from '@/utils/monacoEditor'
 
-self.MonacoEnvironment = {
-  getWorkerUrl: function (moduleId, label) {
-    if (label === 'json') {
-      return './monaco/json.worker.bundle.js'
-    }
-    if (label === 'css' || label === 'scss' || label === 'less') {
-      return './monaco/css.worker.bundle.js'
-    }
-    if (label === 'html' || label === 'handlebars' || label === 'razor') {
-      return './monaco/html.worker.bundle.js'
-    }
-    if (label === 'typescript' || label === 'javascript') {
-      return './monaco/ts.worker.bundle.js'
-    }
-    return './monaco/editor.worker.bundle.js'
-  },
-}
+// self.MonacoEnvironment = {
+//   getWorkerUrl: function (moduleId, label) {
+//     if (label === 'json') {
+//       return './monaco/json.worker.bundle.js'
+//     }
+//     if (label === 'css' || label === 'scss' || label === 'less') {
+//       return './monaco/css.worker.bundle.js'
+//     }
+//     if (label === 'html' || label === 'handlebars' || label === 'razor') {
+//       return './monaco/html.worker.bundle.js'
+//     }
+//     if (label === 'typescript' || label === 'javascript') {
+//       return './monaco/ts.worker.bundle.js'
+//     }
+//     return './monaco/editor.worker.bundle.js'
+//   },
+// }
 
 // 触发事件
 const emit = defineEmits([
@@ -139,6 +133,10 @@ const props = defineProps({
     type: String,
     default: '',
   },
+  codeTheme: {
+    type: String,
+    default: '',
+  },
   content: {
     type: String,
     default: '',
@@ -146,10 +144,6 @@ const props = defineProps({
   showAddBtn: {
     type: Boolean,
     default: false,
-  },
-  codeTheme: {
-    type: String,
-    default: '',
   },
   dir: {
     type: String,
@@ -161,231 +155,211 @@ const props = defineProps({
   },
 })
 
-// 编辑器容器
-const editorEl = ref(null)
+// hooks定义部分
+// 创建编辑器
 // 编辑器
 let editor = null
-// 预处理器
-const preprocessor = ref(props.language)
-const noSpace = ref(false)
+const useCreateEditor = ({ props, emit, updateDoc }) => {
+  // 编辑器容器
+  const editorEl = ref(null)
+  // 创建编辑器
+  const createEditor = async () => {
+    if (!editor) {
+      // 创建编辑器
+      editor = monaco.editor.create(editorEl.value, {
+        model: null,
+        minimap: {
+          enabled: false, // 关闭小地图
+        },
+        wordWrap: 'on', // 代码超出换行
+        theme: props.codeTheme || 'vs-dark', // 主题
+        fontSize: 18,
+        fontFamily: 'MonoLisa, monospace',
+        contextmenu: false, // 不显示右键菜单
+      })
+      // 设置文档内容
+      updateDoc(props.content, props.language)
+      // 支持textMate语法解析
+      wire(props.language, editor)
+      // 监听编辑事件
+      editor.onDidChangeModelContent(() => {
+        emit('code-change', editor.getValue())
+      })
+      // 监听失焦事件
+      editor.onDidBlurEditorText(() => {
+        emit('blur', editor.getValue())
+      })
+    }
+  }
 
-/**
- * @Author: 王林25
- * @Date: 2021-05-12 19:16:00
- * @Desc: 修改预处理器
- */
-const preprocessorChange = (e) => {
-  emit('preprocessor-change', e)
+  return {
+    editorEl,
+    createEditor,
+  }
 }
 
-/**
- * @Author: 王林25
- * @Date: 2021-04-29 20:05:50
- * @Desc: 创建编辑器
- */
-const createEditor = async () => {
-  if (!editor) {
-    await loadWASM(`${base}/onigasm/onigasm.wasm`)
-    const registry = new Registry({
-      getGrammarDefinition: async () => {
-        return {
-          format: 'json',
-          content: await (
-            await fetch(`${base}grammars/javascript.tmLanguage.json`)
-          ).text(),
-        }
-      },
-    })
+// 选择预处理器
+const usePreprocessor = ({ props, emit, updateDoc }) => {
+  // 预处理器
+  const preprocessor = ref(props.language)
+  // 修改预处理器
+  const preprocessorChange = (e) => {
+    emit('preprocessor-change', e)
+  }
+  // 更新语言
+  watch(
+    () => {
+      return props.language
+    },
+    () => {
+      preprocessor.value = props.language
+      updateDoc(props.content, props.language)
+    }
+  )
 
-    const grammars = new Map()
-    grammars.set('css', 'source.css')
-    grammars.set('html', 'text.html.basic')
-    grammars.set('typescript', 'source.ts')
-    grammars.set('javascript', 'source.js')
-    monaco.languages.register({ id: 'javascript' })
-    monaco.editor.defineTheme(
-      'vs-code-theme-converted',
-      require('../../public/themes/OneDarkPro.json')
-    )
-    // 创建编辑器
-    editor = monaco.editor.create(editorEl.value, {
-      model: null,
-      minimap: {
-        enabled: false, // 关闭小地图
-      },
-      wordWrap: 'on', // 代码超出换行
-      theme: 'vs-code-theme-converted' || props.codeTheme || 'vs-dark', // 主题
-      fontSize: 18,
-      fontFamily: 'MonoLisa, monospace',
-      contextmenu: false, // 不显示右键菜单
+  return {
+    preprocessor,
+    preprocessorChange,
+  }
+}
+
+// 处理尺寸调整
+const useSizeChange = ({ props }) => {
+  const editorItem = ref(null)
+  const noSpace = ref(false)
+  // 更新尺寸
+  let timer = null
+  const resize = () => {
+    // 100ms内只执行一次，优化卡顿问题
+    if (timer) {
+      return
+    }
+    timer = setTimeout(() => {
+      nextTick(() => {
+        let { width, height } = editorItem.value.getBoundingClientRect()
+        noSpace.value = (props.dir === 'h' ? width : height) <= 100
+        editor && editor.layout()
+        timer = null
+      })
+    }, 100)
+  }
+
+  // 监听dom大小变化
+  const ro = new ResizeObserver((entries) => {
+    for (const entry of entries) {
+      if (entry.target.classList.contains('editorItem')) {
+        resize()
+      }
+    }
+  })
+
+  // 挂载完成
+  onMounted(() => {
+    ro.observe(editorItem.value)
+  })
+
+  // 即将解除挂载
+  onBeforeUnmount(() => {
+    ro.unobserve(editorItem.value)
+  })
+
+  return {
+    editorItem,
+    noSpace,
+  }
+}
+
+// 处理文档内容
+const useDoc = ({ props }) => {
+  // 更新编辑器文档模型
+  const updateDoc = (code, language) => {
+    if (!editor) {
+      return
+    }
+    let oldModel = editor.getModel()
+    let newModel = monaco.editor.createModel(code, supportLanguage[language])
+    editor.setModel(newModel)
+    if (oldModel) {
+      oldModel.dispose()
+    }
+  }
+
+  // 获取文档内容
+  const getValue = () => {
+    return editor.getValue()
+  }
+
+  // 更新文档内容
+  watch(
+    () => {
+      return props.content
+    },
+    () => {
+      updateDoc(props.content, props.language)
+    }
+  )
+
+  return {
+    updateDoc,
+    getValue,
+  }
+}
+
+// 处理资源
+const useResource = ({ emit }) => {
+  // 点击添加资源
+  const addResource = (languageType) => {
+    emit('add-resource', languageType)
+  }
+  return {
+    addResource,
+  }
+}
+
+// 代码格式化
+const useCodeFormat = ({ getValue, updateDoc, emit }) => {
+  // 代码格式化
+  const codeFormatter = () => {
+    let str = window.prettier.format(getValue(), {
+      parser: formatterParserMap[props.language],
+      plugins: window.prettierPlugins,
     })
     // 设置文档内容
-    updateDoc(props.content, props.language)
-    await wireTmGrammars(monaco, registry, grammars, editor)
+    updateDoc(str, props.language)
     // 监听编辑事件
     editor.onDidChangeModelContent((e) => {
       emit('code-change', editor.getValue())
     })
-    // 监听失焦事件
-    editor.onDidBlurEditorText((e) => {
-      emit('blur', editor.getValue())
-    })
+  }
+
+  return {
+    codeFormatter,
   }
 }
 
-/**
- * @Author: 王林
- * @Date: 2021-09-11 23:40:29
- * @Desc: 加载主题
- */
-const loadTheme = async () => {
-  try {
-    if (!props.codeTheme) {
-      return
-    }
-    let item = codeThemeList.find((item) => {
-      return item.value === props.codeTheme
-    })
-    if (item && item.custom && !item.loaded) {
-      await loadjs([`${base}themes/${props.codeTheme}.js`], {
-        returnPromise: true,
-      })
-      item.loaded = true
-    }
-  } catch (error) {
-    console.log(error)
-    ElMessage.error('主题加载失败，请重试')
-  }
-}
-
-// 监听设置代码主题
-watch(
-  () => {
-    return props.codeTheme
-  },
-  async () => {
-    await loadTheme()
-    monaco.editor.setTheme(props.codeTheme)
-  }
-)
-
-/**
- * @Author: 王林25
- * @Date: 2021-05-13 09:38:24
- * @Desc: 更新编辑器文档模型
- */
-const updateDoc = (code, language) => {
-  if (!editor) {
-    return
-  }
-  let oldModel = editor.getModel()
-  let newModel = monaco.editor.createModel(code, supportLanguage[language])
-  editor.setModel(newModel)
-  if (oldModel) {
-    oldModel.dispose()
-  }
-}
-
-/**
- * @Author: 王林25
- * @Date: 2021-04-30 17:19:25
- * @Desc: 获取文档内容
- */
-const getValue = () => {
-  return editor.getValue()
-}
-
-/**
- * @Author: 王林25
- * @Date: 2021-05-13 19:30:08
- * @Desc: 点击添加资源
- */
-const addResource = (languageType) => {
-  emit('add-resource', languageType)
-}
-
-// 更新文档内容
-watch(
-  () => {
-    return props.content
-  },
-  () => {
-    updateDoc(props.content, props.language)
-  }
-)
-
-// 更新语言
-watch(
-  () => {
-    return props.language
-  },
-  () => {
-    preprocessor.value = props.language
-    updateDoc(props.content, props.language)
-  }
-)
-
-const editorItem = ref(null)
-
-// 更新尺寸
-let timer = null
-const resize = () => {
-  // 100ms内只执行一次，优化卡顿问题
-  if (timer) {
-    return
-  }
-  timer = setTimeout(() => {
-    nextTick(() => {
-      let { width, height } = editorItem.value.getBoundingClientRect()
-      noSpace.value = (props.dir === 'h' ? width : height) <= 100
-      editor && editor.layout()
-      timer = null
-    })
-  }, 100)
-}
-
-/**
- * @Author: 王林25
- * @Date: 2021-05-18 10:16:50
- * @Desc: 监听dom大小变化
- */
-const ro = new ResizeObserver((entries, observer) => {
-  for (const entry of entries) {
-    if (entry.target.classList.contains('editorItem')) {
-      resize()
-    }
-  }
-})
-
-/**
- * @Author: 王林25
- * @Date: 2021-05-20 16:06:31
- * @Desc: 代码格式化
- */
-const codeFormatter = () => {
-  let str = prettier.format(getValue(), {
-    parser: formatterParserMap[props.language],
-    plugins: prettierPlugins,
-  })
-  // 设置文档内容
-  updateDoc(str, props.language)
-  // 监听编辑事件
-  editor.onDidChangeModelContent((e) => {
-    emit('code-change', editor.getValue())
+// 初始化
+const useInit = ({ createEditor }) => {
+  onMounted(() => {
+    createEditor()
   })
 }
 
-// 挂载完成
-onMounted(async () => {
-  await loadTheme()
-  createEditor()
-  ro.observe(editorItem.value)
+// created部分
+const { updateDoc, getValue } = useDoc({ props })
+const { editorEl, createEditor } = useCreateEditor({
+  props,
+  emit,
+  updateDoc,
 })
-
-// 即将解除挂载
-onBeforeUnmount(() => {
-  ro.unobserve(editorItem.value)
+const { preprocessor, preprocessorChange } = usePreprocessor({
+  props,
+  emit,
+  updateDoc,
 })
+const { editorItem, noSpace } = useSizeChange({ props })
+const { addResource } = useResource({ emit })
+const { codeFormatter } = useCodeFormat({ getValue, updateDoc, emit })
+useInit({ createEditor })
 </script>
 
 <style scoped lang="less">

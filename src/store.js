@@ -11,7 +11,7 @@ const store = createStore({
             uuid: generateUUID(),
             editData: {
                 config: {
-                    codeTheme: 'vs-dark',
+                    codeTheme: 'OneDarkPro',
                     openAlmightyConsole: false,
                     autoRun: false,
                     layout: 'default',

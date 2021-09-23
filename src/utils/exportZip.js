@@ -14,7 +14,7 @@ const suffixMap = {
     coffeescript: 'coffee',
     css: 'css',
     less: 'less',
-    sass: 'sass',
+    scss: 'scss',
     stylus: 'styl',
     postcss: 'css'
 }
