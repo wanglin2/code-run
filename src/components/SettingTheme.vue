@@ -17,26 +17,43 @@
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
-import { useStore } from "vuex";
-import { codeThemeList } from "@/config/constants";
-import { ElMessage, ElSelect, ElOption } from 'element-plus';
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+import { codeThemeList } from '@/config/constants'
+import { ElSelect, ElOption } from 'element-plus'
 
-// vuex
-const store = useStore();
+// 初始化
+const useInit = () => {
+  // vuex
+  const store = useStore()
+  return {
+    store,
+  }
+}
 
-const codeTheme = computed(() => {
-  return store.state.editData.config.codeTheme;
-});
+// 处理主题
+const useTheme = ({ store }) => {
+  const codeTheme = computed(() => {
+    return store.state.editData.config.codeTheme
+  })
 
-/**
- * @Author: 王林
- * @Date: 2021-05-15 08:07:04
- * @Desc: 切换代码主题
- */
-const codeThemeChange = async (e) => {
-  store.commit("setCodeTheme", e);
-};
+  /**
+   * @Author: 王林
+   * @Date: 2021-05-15 08:07:04
+   * @Desc: 切换代码主题
+   */
+  const codeThemeChange = async (e) => {
+    store.commit('setCodeTheme', e)
+  }
+
+  return {
+    codeTheme,
+    codeThemeChange,
+  }
+}
+
+const { store } = useInit()
+const { codeTheme, codeThemeChange } = useTheme({ store })
 </script>
 
 <style scoped lang="less">

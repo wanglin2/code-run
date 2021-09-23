@@ -8,109 +8,138 @@
 </template>
 
 <script setup>
-import Header from "@/components/Header.vue";
-import { computed, watch, getCurrentInstance } from "vue";
-import { useStore } from "vuex";
-import { layoutMap } from "@/config/constants";
+import Header from '@/components/Header.vue'
+import { computed, watch, getCurrentInstance, onUnmounted } from 'vue'
+import { useStore } from 'vuex'
+import { layoutMap } from '@/config/constants'
 import { useRouter } from 'vue-router'
+import { loadWASM } from 'onigasm'
+import { base } from '@/config'
+import { initMonacoEditor } from '@/utils/monacoEditor'
 
-const { proxy } = getCurrentInstance();
-
-// 路由
-const router = useRouter()
-
-// vuex
-const store = useStore();
-const editData = computed(() => store.state.editData);
+// hooks定义部分
+const useInit = () => {
+  const store = useStore()
+  const init = async (callback) => {
+    // 加载onigasm的WebAssembly文件
+    await loadWASM(`${base}/onigasm/onigasm.wasm`)
+    // 初始化编辑器
+    initMonacoEditor()
+    callback()
+  }
+  return {
+    store,
+    proxy: getCurrentInstance().proxy,
+    router: useRouter(),
+    init,
+  }
+}
 
 // 布局
-const layout = computed(() => {
-  return editData.value.config.layout;
-});
+const useLayout = ({ store }) => {
+  const layout = computed(() => {
+    return store.state.editData.config.layout
+  })
+  const activeLayout = computed(() => {
+    return layoutMap[layout.value]
+  })
+  return {
+    layout,
+    activeLayout,
+  }
+}
 
-/**
- * @Author: 王林25
- * @Date: 2021-05-19 16:14:08
- * @Desc: 布局处理
- */
-let previewWindow = null;
-const layoutHandle = () => {
-  // 新窗口预览模式
-  if (layout.value === "newWindowPreview") {
-    if (!previewWindow) {
-      let previewUrl = router.resolve({
-        name: 'Preview'
+// 新窗口预览
+const useWindowPreview = ({ store, layout, router, proxy }) => {
+  // 预览窗口
+  let previewWindow = null
+  // 通知预览窗口进行刷新
+  const editData = computed(() => store.state.editData)
+  const previewWindowRun = () => {
+    previewWindow &&
+      previewWindow.postMessage({
+        type: 'preview',
+        data: {
+          config: {
+            openAlmightyConsole: editData.value.config.openAlmightyConsole,
+          },
+          code: {
+            HTML: {
+              language: editData.value.code.HTML.language,
+              content: editData.value.code.HTML.content,
+            },
+            CSS: {
+              language: editData.value.code.CSS.language,
+              content: editData.value.code.CSS.content,
+              resources: editData.value.code.CSS.resources.map((item) => {
+                return {
+                  ...item,
+                }
+              }),
+            },
+            JS: {
+              language: editData.value.code.JS.language,
+              content: editData.value.code.JS.content,
+              resources: editData.value.code.JS.resources.map((item) => {
+                return {
+                  ...item,
+                }
+              }),
+            },
+          },
+        },
       })
-      previewWindow = window.open(previewUrl.href);
-      previewWindow.onload = () => {
-        previewWindowRun();
-      };
-    }
-  } else {
-    if (previewWindow) {
-      previewWindow.close();
-      previewWindow = null;
+  }
+  proxy.$eventEmitter.on('preview_window_run', previewWindowRun)
+  onUnmounted(() => {
+    proxy.$eventEmitter.off('preview_window_run', previewWindowRun)
+  })
+
+  // 创建和销毁预览窗口
+  const previewLayoutHandle = () => {
+    // 新窗口预览模式
+    if (layout.value === 'newWindowPreview') {
+      if (!previewWindow) {
+        let previewUrl = router.resolve({
+          name: 'Preview',
+        })
+        previewWindow = window.open(previewUrl.href)
+        previewWindow.onload = () => {
+          previewWindowRun()
+        }
+      }
+    } else {
+      if (previewWindow) {
+        previewWindow.close()
+        previewWindow = null
+      }
     }
   }
-};
+  watch(
+    () => {
+      return layout.value
+    },
+    () => {
+      previewLayoutHandle()
+    }
+  )
 
-/**
- * @Author: 王林25
- * @Date: 2021-05-19 16:31:54
- * @Desc: 通知预览窗口进行刷新
- */
-const previewWindowRun = () => {
-  previewWindow &&
-    previewWindow.postMessage({
-      type: "preview",
-      data: {
-        config: {
-          openAlmightyConsole: editData.value.config.openAlmightyConsole,
-        },
-        code: {
-          HTML: {
-            language: editData.value.code.HTML.language,
-            content: editData.value.code.HTML.content,
-          },
-          CSS: {
-            language: editData.value.code.CSS.language,
-            content: editData.value.code.CSS.content,
-            resources: editData.value.code.CSS.resources.map((item) => {
-              return {
-                ...item,
-              };
-            }),
-          },
-          JS: {
-            language: editData.value.code.JS.language,
-            content: editData.value.code.JS.content,
-            resources: editData.value.code.JS.resources.map((item) => {
-              return {
-                ...item,
-              };
-            }),
-          },
-        },
-      },
-    });
-};
-
-proxy.$eventEmitter.on("preview_window_run", previewWindowRun);
-
-layoutHandle();
-
-watch(
-  () => {
-    return layout.value;
-  },
-  () => {
-    layoutHandle();
+  return {
+    previewLayoutHandle,
+    previewWindowRun,
   }
-);
+}
 
-const activeLayout = computed(() => {
-  return layoutMap[layout.value];
-});
+// created部分
+const { proxy, router, store, init } = useInit()
+const { layout, activeLayout } = useLayout({ store })
+const { previewLayoutHandle } = useWindowPreview({
+  store,
+  layout,
+  router,
+  proxy,
+})
+init(() => [previewLayoutHandle()])
 </script>
 
 <style scoped lang="less">

@@ -10,7 +10,7 @@ const path = require('path')
  */
 const run = async () => {
     try {
-        await converter.convertThemeFromDir(path.resolve(__dirname, './themeIn'), path.resolve(__dirname, '../public/themes'));
+        await converter.convertThemeFromDir(path.resolve(__dirname, './vscodeThemes'), path.resolve(__dirname, '../public/themes'));
     } catch (error) {
         console.log(error)
     }

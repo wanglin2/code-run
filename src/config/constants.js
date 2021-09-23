@@ -26,7 +26,6 @@ export const supportLanguage = {
 	css: 'css',
 	less: 'less',
 	scss: 'scss',
-	sass: 'scss',
 	stylus: 'scss',
 	postcss: 'css',
 	html: 'html',
@@ -42,7 +41,7 @@ export const supportLanguage = {
 // 支持美化的语言
 export const formatterParserMap = {
 	css: 'css',
-	sass: 'scss',
+	scss: 'scss',
 	less: 'less',
 	postcss: 'css',
 	html: 'html',
@@ -129,8 +128,8 @@ export const preprocessorListMap = {
 			value: 'less',
 		},
 		{
-			label: 'SASS',
-			value: 'sass',
+			label: 'SCSS',
+			value: 'scss',
 		},
 		{
 			label: 'Stylus',
@@ -279,55 +278,63 @@ export const codeThemeList = [
 		name: "One Dark Pro",
 		value: "OneDarkPro",
 		custom: true,
-		loaded: false
+		loaded: false,
+		cache: ''
 	},
 	{
-		name: "Horla Color Theme",
-		value: "HorlaColorTheme",
+		name: "Horla Light Theme",
+		value: "HorlaLightTheme",
 		custom: true,
-		loaded: false
+		loaded: false,
+		cache: ''
 	},
 	{
 		name: "Tokyo Night Storm",
 		value: "TokyoNightStorm",
 		custom: true,
-		loaded: false
+		loaded: false,
+		cache: ''
 	},
 	{
 		name: "Eva Light",
 		value: "EvaLight",
 		custom: true,
-		loaded: false
+		loaded: false,
+		cache: ''
 	},
 	{
 		name: "Bluloco Light",
 		value: "BlulocoLight",
 		custom: true,
-		loaded: false
+		loaded: false,
+		cache: ''
 	},
 	{
 		name: "Snazzy Light Color Theme",
 		value: "SnazzyLightColorTheme",
 		custom: true,
-		loaded: false
+		loaded: false,
+		cache: ''
 	},
 	{
 		name: "Atlantic Night",
 		value: "AtlanticNight",
 		custom: true,
-		loaded: false
+		loaded: false,
+		cache: ''
 	},
 	{
 		name: "Aurora X",
 		value: "AuroraX",
 		custom: true,
-		loaded: false
+		loaded: false,
+		cache: ''
 	},
 	{
 		name: "Darktooth",
 		value: "Darktooth",
 		custom: true,
-		loaded: false
+		loaded: false,
+		cache: ''
 	}
 ];
-

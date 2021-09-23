@@ -4,6 +4,7 @@ const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin')
 module.exports = {
     publicPath: '/code-run-online/',
     lintOnSave: false,
+    transpileDependencies: ['monaco-editor'],
     configureWebpack: {
         resolve: {
             alias: {
@@ -12,9 +13,7 @@ module.exports = {
         },
         plugins: [
             new MonacoWebpackPlugin({
-                languages: [
-                    // 'typescript', 'javascript', 'css', 'coffee', 'html', 'less', 'pug', 'scss'
-                ]
+                languages: []
             })
         ]
     }
