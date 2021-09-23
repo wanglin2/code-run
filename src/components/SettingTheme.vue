@@ -22,6 +22,8 @@ import { useStore } from 'vuex'
 import { codeThemeList } from '@/config/constants'
 import { ElSelect, ElOption } from 'element-plus'
 
+// hooks定义部分
+
 // 初始化
 const useInit = () => {
   // vuex
@@ -52,6 +54,7 @@ const useTheme = ({ store }) => {
   }
 }
 
+// created部分
 const { store } = useInit()
 const { codeTheme, codeThemeChange } = useTheme({ store })
 </script>

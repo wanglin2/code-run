@@ -1,6 +1,6 @@
 <template>
   <div class="editorBox" :class="{ hide: hide }">
-    <Drag :number="editorItemList.length" :dir="dir">
+    <Drag v-if="show" :number="editorItemList.length" :dir="dir">
       <DragItem
         v-for="(item, index) in editorItemList"
         :key="item.title"
@@ -173,6 +173,7 @@ const useInit = () => {
 
 // 初始化编辑器列表
 const useInitEditorList = ({ props, editData }) => {
+  let show = ref(false)
   // 编辑器列表
   let editorItemList = ref([])
 
@@ -214,6 +215,7 @@ const useInitEditorList = ({ props, editData }) => {
   }
 
   return {
+    show,
     editorItemList,
     setInitData,
   }
@@ -253,11 +255,9 @@ const useTheme = ({ codeTheme }) => {
   }
 
   // 监听设置代码主题
-  watch(codeTheme, async () => {
-    await loadTheme()
+  watch(codeTheme, () => {
+    loadTheme()
   })
-
-  loadTheme()
 
   return {
     loadTheme,
@@ -450,7 +450,7 @@ const useHandleAssets = ({ store, runCode }) => {
 
 // created部分
 const { store, editData, codeTheme, proxy } = useInit()
-const { editorItemList, setInitData } = useInitEditorList({
+const { show, editorItemList, setInitData } = useInitEditorList({
   props,
   editData,
 })
@@ -479,7 +479,9 @@ const {
 onMounted(async () => {
   // 获取代码数据
   await store.dispatch('getData')
+  await loadTheme()
   setInitData()
+  show.value = true
   runCode()
 })
 </script>
