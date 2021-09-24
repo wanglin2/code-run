@@ -7,7 +7,7 @@ import {
 import {
     wireTmGrammars
 } from 'monaco-editor-textmate'
-import * as monaco from 'monaco-editor'
+import * as monaco from 'monaco-editor/esm/vs/editor/editor.api'
 import { loadWASM } from "onigasm";
 
 // 初始化编辑器
@@ -92,5 +92,7 @@ export const wire = async (languageId, editor) => {
             }
         }
     })
+    // 注册语言
+    monaco.languages.register({id: languageId});
     await wireTmGrammars(monaco, registry, grammars, editor)
 }

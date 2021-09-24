@@ -136,7 +136,7 @@ import {
 } from 'element-plus'
 import { codeThemeList } from '@/config/constants'
 import { base } from '@/config'
-import * as monaco from 'monaco-editor'
+import * as monaco from 'monaco-editor/esm/vs/editor/editor.api'
 
 // props
 const props = defineProps({

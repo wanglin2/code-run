@@ -88,7 +88,7 @@ import {
 import ResizeObserver from 'resize-observer-polyfill'
 import { supportLanguage, formatterParserMap } from '@/config/constants'
 import { ElTooltip, ElSelect, ElOption } from 'element-plus'
-import * as monaco from 'monaco-editor'
+import * as monaco from 'monaco-editor/esm/vs/editor/editor.api'
 import { wire } from '@/utils/monacoEditor'
 
 // 触发事件
