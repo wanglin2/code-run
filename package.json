@@ -35,7 +35,7 @@
     "eventemitter3": "^4.0.7",
     "jszip": "^3.7.1",
     "loadjs": "^4.2.0",
-    "monaco-editor": "^0.27.0",
+    "monaco-editor": "^0.26.0",
     "monaco-editor-textmate": "^3.0.0",
     "monaco-vscode-textmate-theme-converter": "^0.1.7",
     "resize-observer-polyfill": "^1.5.1",
