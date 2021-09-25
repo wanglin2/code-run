@@ -93,6 +93,6 @@ export const wire = async (languageId, editor) => {
         }
     })
     // 注册语言
-    monaco.languages.register({id: languageId});
+    // monaco.languages.register({id: languageId});
     await wireTmGrammars(monaco, registry, grammars, editor)
 }

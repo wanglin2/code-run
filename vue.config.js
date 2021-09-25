@@ -12,7 +12,7 @@ module.exports = {
         },
         plugins: [
             new MonacoWebpackPlugin({
-                languages: []
+                languages: ['css', 'html', 'javascript', 'less', 'pug', 'scss', 'typescript', 'coffee']
             })
         ]
     }

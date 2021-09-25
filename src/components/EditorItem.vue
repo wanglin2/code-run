@@ -49,7 +49,7 @@
               placement="bottom"
               v-if="showAddBtn"
             >
-              <div class="addBtn" @click="addResource">
+              <div class="addBtn" @click="addResource()">
                 <span class="el-icon-plus"></span>
               </div>
             </el-tooltip>
@@ -196,6 +196,7 @@ const usePreprocessor = ({ props, emit, updateDoc }) => {
     () => {
       preprocessor.value = props.language
       updateDoc(props.content, props.language)
+      wire(props.language, editor)
     }
   )
 

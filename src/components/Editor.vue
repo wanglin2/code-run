@@ -374,7 +374,7 @@ const useAutoRun = ({ store, runCode }) => {
 }
 
 // 静态资源管理
-const useHandleAssets = ({ store, runCode }) => {
+const useHandleAssets = ({ store, runCode, editData }) => {
   const addResourceDialogVisible = ref(false)
   const resourceData = ref([])
   const addResourceType = ref('')
@@ -437,6 +437,7 @@ const useHandleAssets = ({ store, runCode }) => {
   }
 
   return {
+    resourceData,
     addResourceType,
     addResourceDialogVisible,
     handleCdnCommand,
@@ -467,6 +468,7 @@ const { getIndexByType, preprocessorChange, codeChange } = useEditorChange({
   proxy,
 })
 const {
+  resourceData,
   addResourceType,
   addResourceDialogVisible,
   handleCdnCommand,
@@ -475,7 +477,7 @@ const {
   addOneResource,
   cancelAddResource,
   confirmAddResource,
-} = useHandleAssets({ store, runCode })
+} = useHandleAssets({ store, runCode, editData })
 onMounted(async () => {
   // 获取代码数据
   await store.dispatch('getData')
