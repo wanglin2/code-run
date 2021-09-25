@@ -30,19 +30,9 @@ import {
   watch,
   inject,
   getCurrentInstance,
-  defineEmits
-} from 'vue'
-import Drag from '@/utils/Drag.js'
-
-const { proxy } = getCurrentInstance()
-
-const onDragStart = inject('onDragStart')
-const onDrag = inject('onDrag')
-const sizeList = inject('sizeList')
-const dir = inject('dir')
-
-// 触发事件
-const emit = defineEmits(['size-change'])
+  defineEmits,
+} from "vue";
+import Drag from "@/utils/Drag.js";
 
 // props
 const props = defineProps({
@@ -69,54 +59,93 @@ const props = defineProps({
   // 标题
   title: {
     type: String,
-    default: '',
+    default: "",
   },
   // 是否隐藏该组件
   hide: {
     type: Boolean,
     default: false,
   },
-})
+});
 
-watch(
-  [
-    () => {
-      return sizeList.value[props.index].width
-    },
-    () => {
-      return sizeList.value[props.index].height
-    },
-  ],
-  () => {
-    emit('size-change')
-  }
-)
+// 触发事件
+const emit = defineEmits(["size-change"]);
 
-// 拖动方法
-let drag = null
-if (!props.disabled) {
-  drag = new Drag(
-    (...args) => {
-      onDragStart(...args)
-    },
-    (...args) => {
-      onDrag(props.index, ...args)
-    },
-    (...args) => {
-      proxy.$eventEmitter.emit('dragOver', ...args)
+// hooks部分
+
+// 初始化
+const useInit = () => {
+  const dir = inject("dir");
+
+  return {
+    dir,
+  };
+};
+
+// 尺寸列表处理
+const useSizeList = ({ emit }) => {
+  const sizeList = inject("sizeList");
+
+  watch(
+    [
+      () => {
+        return sizeList.value[props.index].width;
+      },
+      () => {
+        return sizeList.value[props.index].height;
+      },
+    ],
+    () => {
+      emit("size-change");
     }
-  )
-}
+  );
 
-const onMousedown = (e) => {
-  proxy.$eventEmitter.emit('dragStart')
-  drag && drag.onMousedown(e)
-}
+  return {
+    sizeList,
+  };
+};
 
-// 即将解除挂载
-onBeforeUnmount(() => {
-  drag && drag.off()
-})
+// 拖动处理
+const useDrag = ({ props }) => {
+  const { proxy } = getCurrentInstance();
+  const onDragStart = inject("onDragStart");
+  const onDrag = inject("onDrag");
+  // 拖动方法
+  let drag = null;
+  if (!props.disabled) {
+    drag = new Drag(
+      (...args) => {
+        onDragStart(...args);
+      },
+      (...args) => {
+        onDrag(props.index, ...args);
+      },
+      (...args) => {
+        proxy.$eventEmitter.emit("dragOver", ...args);
+      }
+    );
+  }
+
+  // 拖动条鼠标按下事件
+  const onMousedown = (e) => {
+    proxy.$eventEmitter.emit("dragStart");
+    drag && drag.onMousedown(e);
+  };
+
+  // 即将解除挂载
+  onBeforeUnmount(() => {
+    drag && drag.off();
+  });
+
+  return {
+    onMousedown,
+  };
+};
+
+// created部分
+const { dir } = useInit();
+const { sizeList } = useSizeList({ emit });
+const { onMousedown } = useDrag({ props });
 </script>
 
 <style scoped lang="less">
