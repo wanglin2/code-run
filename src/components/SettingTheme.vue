@@ -19,7 +19,7 @@
 <script setup>
 import { computed } from 'vue'
 import { useStore } from 'vuex'
-import { codeThemeList } from '@/config/constants'
+import { codeThemeList } from '@/config/codeThemeList'
 import { ElSelect, ElOption } from 'element-plus'
 
 // hooks定义部分

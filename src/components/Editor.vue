@@ -134,7 +134,7 @@ import {
   ElTableColumn,
   ElMessage,
 } from 'element-plus'
-import { codeThemeList } from '@/config/constants'
+import { codeThemeList } from '@/config/codeThemeList'
 import { base } from '@/config'
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api'
 
