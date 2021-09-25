@@ -1,5 +1,5 @@
 // 转换VSCode主题到Monaco Editor主题
-const converter = require('monaco-vscode-textmate-theme-converter')
+const converter = require('vscode-theme-to-monaco-theme-node')
 const path = require('path')
 
 /*

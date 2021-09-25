@@ -27,7 +27,8 @@
     "lint": "vue-cli-service lint",
     "buildConsole": "babel --config-file ./public/console/babel.config.json ./public/console/index.js --out-file ./public/console/compile.js",
     "buildMonacoWorker": "node ./scripts/buildMonacoWorker.js",
-    "convertTheme": "node ./scripts/convertTheme.js"
+    "convertTheme": "node ./scripts/convertTheme.js",
+    "createThemeList": "node ./scripts/createThemeList.js"
   },
   "dependencies": {
     "core-js": "^3.6.5",
@@ -37,7 +38,6 @@
     "loadjs": "^4.2.0",
     "monaco-editor": "^0.26.0",
     "monaco-editor-textmate": "^3.0.0",
-    "monaco-vscode-textmate-theme-converter": "^0.1.7",
     "resize-observer-polyfill": "^1.5.1",
     "vue": "^3.2.4",
     "vue-router": "^4.0.6",
@@ -56,9 +56,11 @@
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^7.0.0",
+    "fs-extra": "^7.0.1",
     "less": "^4.1.1",
     "less-loader": "^4.1.0",
-    "monaco-editor-webpack-plugin": "^4.1.2"
+    "monaco-editor-webpack-plugin": "^4.1.2",
+    "vscode-theme-to-monaco-theme-node": "^1.0.0"
   },
   "eslintConfig": {
     "root": true,
