@@ -119,6 +119,10 @@ const props = defineProps({
     type: String,
     default: '',
   },
+  codeFontSize: {
+    type: Number,
+    default: 16
+  },
   content: {
     type: String,
     default: '',
@@ -155,7 +159,7 @@ const useCreateEditor = ({ props, emit, updateDoc }) => {
         },
         wordWrap: 'on', // 代码超出换行
         theme: props.codeTheme || 'vs-dark', // 主题
-        fontSize: 18,
+        fontSize: props.codeFontSize || 16,
         fontFamily: 'MonoLisa, monospace',
         contextmenu: false, // 不显示右键菜单
         fixedOverflowWidgets: true// 让语法提示层能溢出容器
@@ -173,6 +177,14 @@ const useCreateEditor = ({ props, emit, updateDoc }) => {
         emit('blur', editor.getValue())
       })
     }
+    // 更新字号
+    watch(() => {
+      return props.codeFontSize
+    }, (val) => {
+      editor.updateOptions({
+        fontSize: val
+      })
+    })
   }
 
   return {

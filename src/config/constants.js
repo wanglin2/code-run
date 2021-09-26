@@ -58,38 +58,38 @@ export const monacoEditorInnerLanguages = ['css', 'html', 'javascript', 'less', 
 
 // 语言id到作用域名称的映射
 export const scopeNameMap = {
-    html: 'text.html.basic',
-    pug: 'text.pug',
-    css: 'source.css',
-    less: 'source.css.less',
-    scss: 'source.css.scss',
-    sass: 'source.sassdoc',
-    typescript: 'source.ts',
-    javascript: 'source.js',
-    javascriptreact: 'source.js.jsx',
-    coffeescript: 'source.coffee'
+	html: 'text.html.basic',
+	pug: 'text.pug',
+	css: 'source.css',
+	less: 'source.css.less',
+	scss: 'source.css.scss',
+	sass: 'source.sassdoc',
+	typescript: 'source.ts',
+	javascript: 'source.js',
+	javascriptreact: 'source.js.jsx',
+	coffeescript: 'source.coffee'
 }
 
 
 // 作用域名称到语法文件的映射
 export const tmGrammarJsonMap = {
-    'text.html.basic': 'html.tmLanguage.json',
-    'text.pug': 'pug.tmLanguage.json',
-    'source.css': 'css.tmLanguage.json',
-    'source.css.less': 'less.tmLanguage.json',
-    'source.less': 'less.tmLanguage.json',
-    'source.css.scss': 'scss.tmLanguage.json',
-    'source.sass': 'scss.tmLanguage.json',
-    'source.sassdoc': 'sassdoc.tmLanguage.json',
-    'source.stylus': 'css.tmLanguage.json',
-    'source.ts': 'TypeScript.tmLanguage.json',
-    'source.js': 'JavaScript.tmLanguage.json',
-    'source.js.jsx': 'JavaScriptReact.tmLanguage.json',
-    'source.coffee': 'coffeescript.tmLanguage.json',
-    'source.js.regexp': {
-        format: 'plist',
-        path: 'Regular Expressions (JavaScript).tmLanguage'
-    }
+	'text.html.basic': 'html.tmLanguage.json',
+	'text.pug': 'pug.tmLanguage.json',
+	'source.css': 'css.tmLanguage.json',
+	'source.css.less': 'less.tmLanguage.json',
+	'source.less': 'less.tmLanguage.json',
+	'source.css.scss': 'scss.tmLanguage.json',
+	'source.sass': 'scss.tmLanguage.json',
+	'source.sassdoc': 'sassdoc.tmLanguage.json',
+	'source.stylus': 'css.tmLanguage.json',
+	'source.ts': 'TypeScript.tmLanguage.json',
+	'source.js': 'JavaScript.tmLanguage.json',
+	'source.js.jsx': 'JavaScriptReact.tmLanguage.json',
+	'source.coffee': 'coffeescript.tmLanguage.json',
+	'source.js.regexp': {
+		format: 'plist',
+		path: 'Regular Expressions (JavaScript).tmLanguage'
+	}
 }
 
 // 编辑器列表
@@ -130,8 +130,7 @@ export const defaultEditorMap = {
 
 // 预处理器列表
 export const preprocessorListMap = {
-	HTML: [
-		{
+	HTML: [{
 			label: 'HTML',
 			value: 'html',
 		},
@@ -140,8 +139,7 @@ export const preprocessorListMap = {
 			value: 'pug',
 		},
 	],
-	JS: [
-		{
+	JS: [{
 			label: 'JavaScript',
 			value: 'javascript',
 		},
@@ -158,8 +156,7 @@ export const preprocessorListMap = {
 			value: 'coffeescript',
 		},
 	],
-	CSS: [
-		{
+	CSS: [{
 			label: 'CSS',
 			value: 'css',
 		},
@@ -184,8 +181,7 @@ export const preprocessorListMap = {
 			value: 'postcss',
 		},
 	],
-	VUE: [
-		{
+	VUE: [{
 			label: 'Vue2',
 			value: 'vue2',
 		},
@@ -197,8 +193,7 @@ export const preprocessorListMap = {
 }
 
 // 常用cdn服务
-export const cdnSiteList = [
-	{
+export const cdnSiteList = [{
 		name: 'BootCDN',
 		url: 'https://www.bootcdn.cn/',
 	},
@@ -229,8 +224,7 @@ export const cdnSiteList = [
 ]
 
 // 布局列表
-export const layoutList = [
-	{
+export const layoutList = [{
 		name: '默认',
 		value: 'default',
 	},
@@ -303,3 +297,11 @@ export const layoutMap = {
 	newWindowPreview: NewWindowPreview,
 	vue: VueSFC
 }
+
+// 编辑器字号
+export const codeFontSizeList = [12, 14, 16, 18, 20, 22, 24].map((item) => {
+	return {
+		name: item + 'px',
+		value: item,
+	}
+})
