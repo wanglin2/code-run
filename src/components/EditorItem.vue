@@ -140,7 +140,7 @@ const props = defineProps({
 // hooks定义部分
 
 // 创建编辑器
-let editor = null// 编辑器实例
+let editor = null // 编辑器实例
 const useCreateEditor = ({ props, emit, updateDoc }) => {
   // 编辑器容器
   const editorEl = ref(null)
@@ -158,6 +158,7 @@ const useCreateEditor = ({ props, emit, updateDoc }) => {
         fontSize: 18,
         fontFamily: 'MonoLisa, monospace',
         contextmenu: false, // 不显示右键菜单
+        fixedOverflowWidgets: true// 让语法提示层能溢出容器
       })
       // 设置文档内容
       updateDoc(props.content, props.language)
@@ -230,7 +231,7 @@ const useSizeChange = ({ props }) => {
   // 监听dom大小变化
   const ro = new ResizeObserver((entries) => {
     for (const entry of entries) {
-      if (entry.target.classList.contains('editorItem')) {
+      if (entry.target.classList.contains('dragItem')) {
         resize()
       }
     }
@@ -238,7 +239,7 @@ const useSizeChange = ({ props }) => {
 
   // 挂载完成
   onMounted(() => {
-    ro.observe(editorItem.value)
+    ro.observe(editorItem.value.parentNode)
   })
 
   // 即将解除挂载
@@ -305,7 +306,7 @@ const useCodeFormat = ({ getValue, updateDoc, emit }) => {
   const codeFormatter = () => {
     let str = window.prettier.format(getValue(), {
       parser: formatterParserMap[props.language],
-      plugins: window.prettierPlugins
+      plugins: window.prettierPlugins,
     })
     // 设置文档内容
     updateDoc(str, props.language)
@@ -351,7 +352,7 @@ useInit({ createEditor })
   height: 100%;
   background-color: #1d1e22;
   display: flex;
-  // overflow: hidden;
+  overflow: hidden;
 
   .editorContent {
     width: 100%;
@@ -427,7 +428,6 @@ useInit({ createEditor })
     .editorContentBody {
       width: 100%;
       height: 100%;
-      overflow: hidden;
     }
   }
 }
