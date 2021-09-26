@@ -12,6 +12,7 @@
           :title="item.title"
           :language="item.language"
           :codeTheme="codeTheme"
+          :codeFontSize="codeFontSize"
           :content="item.content"
           :preprocessorList="preprocessorListMap[item.title]"
           :showAddBtn="item.showAddBtn"
@@ -168,6 +169,7 @@ const useInit = () => {
     proxy: getCurrentInstance().proxy,
     editData: computed(() => store.state.editData), // 数据
     codeTheme: computed(() => store.state.editData.config.codeTheme), // 代码主题
+    codeFontSize: computed(() => store.state.editData.config.codeFontSize), // 代码字号
   }
 }
 
@@ -450,7 +452,7 @@ const useHandleAssets = ({ store, runCode, editData }) => {
 }
 
 // created部分
-const { store, editData, codeTheme, proxy } = useInit()
+const { store, editData, codeTheme, proxy, codeFontSize } = useInit()
 const { show, editorItemList, setInitData } = useInitEditorList({
   props,
   editData,

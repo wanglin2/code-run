@@ -15,7 +15,8 @@ const store = createStore({
                     openAlmightyConsole: false,
                     autoRun: false,
                     layout: 'default',
-                    keepPreviousLogs: true
+                    keepPreviousLogs: true,
+                    codeFontSize: 16
                 },
                 code: {
                     HTML: {
@@ -146,6 +147,16 @@ const store = createStore({
         setKeepPreviousLogs(state, keepPreviousLogs) {
             state.editData.config.keepPreviousLogs = keepPreviousLogs
         },
+
+        /** 
+         * javascript comment 
+         * @Author: 王林25 
+         * @Date: 2021-09-26 15:04:09 
+         * @Desc: 设置编辑器字号 
+         */
+        setCodeFontSize(state, codeFontSize) {
+            state.editData.config.codeFontSize = codeFontSize
+        }
     },
     actions: {
         /** 
