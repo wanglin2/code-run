@@ -151,7 +151,6 @@ const { onMousedown } = useDrag({ props });
 <style scoped lang="less">
 .dragItem {
   display: flex;
-  overflow: hidden;
 
   &.hide {
     display: none;
