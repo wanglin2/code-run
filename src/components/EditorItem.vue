@@ -305,12 +305,12 @@ const useCodeFormat = ({ getValue, updateDoc, emit }) => {
   const codeFormatter = () => {
     let str = window.prettier.format(getValue(), {
       parser: formatterParserMap[props.language],
-      plugins: window.prettierPlugins,
+      plugins: window.prettierPlugins
     })
     // 设置文档内容
     updateDoc(str, props.language)
     // 监听编辑事件
-    editor.onDidChangeModelContent((e) => {
+    editor.onDidChangeModelContent(() => {
       emit('code-change', editor.getValue())
     })
   }
