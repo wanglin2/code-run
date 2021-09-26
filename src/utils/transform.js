@@ -82,7 +82,7 @@ const js = (preprocessor, code) => {
  * @Date: 2021-05-13 11:35:34 
  * @Desc: 编译css 
  */
-let scss = null
+let sass = null
 const css = (preprocessor, code) => {
     return new Promise((resolve, reject) => {
         try {
@@ -99,11 +99,14 @@ const css = (preprocessor, code) => {
                                 reject(error)
                             });
                     break;
+                case 'sass':
                 case 'scss':
-                    if (!scss) {
-                        scss = new window.Sass();
+                    if (!sass) {
+                        sass = new window.Sass();
                     }
-                    scss.compile(code, (result) => {
+                    sass.compile(code, {
+                        indentedSyntax: preprocessor === 'sass'
+                    }, (result) => {
                         resolve(result.text)
                     });
                     break;
