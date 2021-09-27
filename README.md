@@ -2,7 +2,7 @@
 
 一个代码在线编辑预览工具，类似`codepen`。
 
-项目demo：[https://wanglin2.github.io/code-run-online/](https://wanglin2.github.io/code-run-online/)。
+在线示例：[https://wanglin2.github.io/code-run-online/](https://wanglin2.github.io/code-run-online/)。
 
 在本项目基础上开发的带用户登录相关功能的版本（功能可能滞后）：[http://lxqnsys.com/code-run/](http://lxqnsys.com/code-run/)。
 
@@ -11,6 +11,8 @@
 [快速搭建一个代码在线编辑预览工具](https://juejin.cn/post/6965467528600485919)
 
 [如何手动解析vue单文件并预览？](https://juejin.cn/post/7007725841689870366)
+
+[手把手教你实现在Monaco Editor中使用VSCode主题](https://juejin.cn/post/7012514944579502116)
 
 # 特性
 
