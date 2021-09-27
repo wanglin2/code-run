@@ -229,7 +229,7 @@ const { jsonClick } = useJSONFormat();
   position: relative;
   width: 100%;
   height: 100%;
-  background-color: #131417;
+  background-color: var(--console-background);
   overflow: hidden;
 
   .header {
@@ -238,8 +238,8 @@ const { jsonClick } = useJSONFormat();
     top: 0;
     width: 100%;
     height: 30px;
-    background-color: #333642;
-    color: #aaaebc;
+    background-color: var(--touch-bar-background);
+    color: var(--editor-header-title-color);
     font-size: 12px;
     padding: 0 5px;
     display: flex;
@@ -254,17 +254,18 @@ const { jsonClick } = useJSONFormat();
 
     .btn {
       border: 3px solid transparent;
-      color: white;
+      color: var(--command-color);
       cursor: pointer;
       font-size: 12px;
       padding: 0 5px;
+      opacity: 0.7;
 
       &:active {
         transform: translateY(1px);
       }
 
       &:hover {
-        background: #444857;
+        opacity: 1;
       }
     }
 
@@ -408,7 +409,7 @@ const { jsonClick } = useJSONFormat();
     bottom: 0;
     width: 100%;
     height: 30px;
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--command-background);
     padding: 0 8px 0 0;
     display: flex;
 
@@ -418,7 +419,7 @@ const { jsonClick } = useJSONFormat();
       display: flex;
       justify-content: center;
       align-items: center;
-      color: #fff;
+      color: var(--command-color);
       flex-grow: 0;
       flex-shrink: 0;
     }
@@ -429,7 +430,7 @@ const { jsonClick } = useJSONFormat();
       border: none;
       background-color: transparent;
       outline: none;
-      color: #fff;
+      color: var(--command-color);
       padding: 7px 0 7px 7px;
       resize: none;
     }

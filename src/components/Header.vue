@@ -2,9 +2,7 @@
   <div class="header">
     <!-- logo -->
     <div class="left">
-      <h1>
-        <img src="../assets/logo.png" alt="" />
-      </h1>
+      <h1>CodeRun</h1>
     </div>
     <!-- 工具栏 -->
     <div class="right">
@@ -251,7 +249,7 @@ const { settingDialogVisible, settingType, componentsMap, openSetting } = useSet
 
 <style scoped lang="less">
 .header {
-  background: #1e1f26;
+  background: var(--header-background);
   width: 100%;
   height: 65px;
   display: flex;
@@ -263,12 +261,7 @@ const { settingDialogVisible, settingType, componentsMap, openSetting } = useSet
 
   .left {
     h1 {
-      color: #fff;
-
-      img {
-        height: 50px;
-        margin-left: -20px;
-      }
+      color: var(--header-logo-color);
     }
   }
 
@@ -287,9 +280,9 @@ const { settingDialogVisible, settingType, componentsMap, openSetting } = useSet
         white-space: nowrap;
         opacity: 0;
         visibility: hidden;
-        background: #1e1f26;
+        background: var(--dropdown-background);
         border-radius: 6px 0 6px 6px;
-        box-shadow: 0 2rem 4rem #0a0a0c;
+        border: 1px solid var(--dropdown-box-border-color);
         transform: scale(0.5);
         transform-origin: top right;
         transition: all 0.2s ease-in-out;
@@ -308,20 +301,21 @@ const { settingDialogVisible, settingType, componentsMap, openSetting } = useSet
           cursor: pointer;
           padding: 0 10px;
           line-height: 30px;
-          color: #fff;
+          color: var(--dropdown-color);
           font-size: 14px;
 
           &:hover {
-            background: #444857;
+            background: var(--dropdown-hover-background);
+            color: var(--dropdown-hover-color);
           }
         }
       }
     }
 
     .btn {
-      background: none;
-      border: 3px solid #444857;
-      color: #fff;
+      background: var(--header-btn-background);
+      border: 1px solid var(--header-btn-border-color);
+      color: var(--header-btn-color);
       min-width: 40px;
       height: 40px;
       display: flex;
@@ -336,10 +330,10 @@ const { settingDialogVisible, settingType, componentsMap, openSetting } = useSet
       font-weight: 400 !important;
       cursor: pointer;
       transition: all 0.3s;
+      opacity: 0.7;
 
       &:hover {
-        background-color: #5a5f73;
-        border-color: #5a5f73;
+        opacity: 1;
       }
 
       &:active {

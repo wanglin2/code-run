@@ -407,6 +407,7 @@ useDynamicRunJs({ iframeRef, proxy });
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  background-color: #fff;
 
   &.hide {
     display: none;
