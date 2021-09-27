@@ -32,13 +32,13 @@ defineProps({
 // hooks定义部分
 
 // 初始化数据
+const iframeRef = ref(null);
 const useInitData = () => {
   const { proxy } = getCurrentInstance();
   // vuex
   const store = useStore();
   // 数据
   const editData = computed(() => store.state.editData);
-  const iframeRef = ref(null);
   const isNewWindowPreview = ref(false);
   const newWindowPreviewData = ref(null);
   const htmlLanguage = computed(() => {
@@ -92,7 +92,6 @@ const useInitData = () => {
     proxy,
     store,
     editData,
-    iframeRef,
     isNewWindowPreview,
     newWindowPreviewData,
     htmlLanguage,
@@ -109,7 +108,7 @@ const useInitData = () => {
 };
 
 // 处理日志打印
-const useLog = ({ iframeRef, proxy }) => {
+const useLog = ({ proxy }) => {
   // 打印日志
   const log = (type, data) => {
     iframeRef.value.contentWindow.postMessage({
@@ -340,7 +339,7 @@ const useDrag = ({ proxy }) => {
 };
 
 // 处理动态执行js
-const useDynamicRunJs = ({ iframeRef, proxy }) => {
+const useDynamicRunJs = ({ proxy }) => {
   // 动态执行js
   const dynamicRunJs = (code) => {
     iframeRef.value.contentWindow.postMessage({
@@ -360,7 +359,6 @@ const {
   proxy,
   store,
   editData,
-  iframeRef,
   isNewWindowPreview,
   newWindowPreviewData,
   htmlLanguage,
@@ -374,7 +372,7 @@ const {
   vueLanguage,
   vueContent,
 } = useInitData();
-const { log } = useLog({ iframeRef, proxy });
+const { log } = useLog({ proxy });
 const { createHtml } = useCreateHtml();
 const { srcdoc, run } = useRun({
   store,
@@ -397,7 +395,7 @@ const { srcdoc, run } = useRun({
 });
 useNewWindowPreview({ newWindowPreviewData, isNewWindowPreview, run });
 const { disabledEvents } = useDrag({ proxy });
-useDynamicRunJs({ iframeRef, proxy });
+useDynamicRunJs({ proxy });
 </script>
 
 <style scoped lang="less">

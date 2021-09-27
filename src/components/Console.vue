@@ -66,9 +66,9 @@ const useInit = () => {
 };
 
 // 日志处理
+const logBoxRef = ref(null); // 日志容器dom
 const useLog = ({ proxy }) => {
   const logList = ref([]); // 日志信息列表
-  const logBoxRef = ref(null); // 日志容器dom
 
   // 错误信息数量
   const errorCount = computed(() => {
@@ -111,7 +111,6 @@ const useLog = ({ proxy }) => {
 
   return {
     logList,
-    logBoxRef,
     errorCount,
     clear,
   };
@@ -219,7 +218,7 @@ const useJSONFormat = () => {
 
 // created部分
 const { proxy } = useInit();
-const { logList, logBoxRef, errorCount, clear } = useLog({ proxy });
+const { logList, errorCount, clear } = useLog({ proxy });
 const { jsInput, implementJs } = useImplementJs({ proxy });
 const { jsonClick } = useJSONFormat();
 </script>

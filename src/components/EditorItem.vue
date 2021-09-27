@@ -97,6 +97,7 @@ const emit = defineEmits([
   'code-change',
   'blur',
   'add-resource',
+  'space-change'
 ])
 
 // props
@@ -145,9 +146,9 @@ const props = defineProps({
 
 // 创建编辑器
 let editor = null // 编辑器实例
+// 编辑器容器
+const editorEl = ref(null)
 const useCreateEditor = ({ props, emit, updateDoc }) => {
-  // 编辑器容器
-  const editorEl = ref(null)
   // 创建编辑器
   const createEditor = async () => {
     if (!editor) {
@@ -191,7 +192,6 @@ const useCreateEditor = ({ props, emit, updateDoc }) => {
   }
 
   return {
-    editorEl,
     createEditor,
   }
 }
@@ -223,8 +223,8 @@ const usePreprocessor = ({ props, emit, updateDoc }) => {
 }
 
 // 处理尺寸调整
+const editorItem = ref(null)
 const useSizeChange = ({ props }) => {
-  const editorItem = ref(null)
   const noSpace = ref(false)
   // 更新尺寸
   let timer = null
@@ -236,7 +236,9 @@ const useSizeChange = ({ props }) => {
     timer = setTimeout(() => {
       nextTick(() => {
         let { width, height } = editorItem.value.getBoundingClientRect()
+        // 宽度小于100像素则旋转标题
         noSpace.value = (props.dir === 'h' ? width : height) <= 100
+        emit('space-change', noSpace.value)
         editor && editor.layout()
         timer = null
       })
@@ -259,11 +261,10 @@ const useSizeChange = ({ props }) => {
 
   // 即将解除挂载
   onBeforeUnmount(() => {
-    ro.unobserve(editorItem.value)
+    ro.unobserve(editorItem.value.parentNode)
   })
 
   return {
-    editorItem,
     noSpace,
   }
 }
@@ -345,7 +346,7 @@ const useInit = ({ createEditor }) => {
 
 // created部分
 const { updateDoc, getValue } = useDoc({ props })
-const { editorEl, createEditor } = useCreateEditor({
+const { createEditor } = useCreateEditor({
   props,
   emit,
   updateDoc,
@@ -355,7 +356,7 @@ const { preprocessor, preprocessorChange } = usePreprocessor({
   emit,
   updateDoc,
 })
-const { editorItem, noSpace } = useSizeChange({ props })
+const { noSpace } = useSizeChange({ props })
 const { addResource } = useResource({ emit })
 const { codeFormatter } = useCodeFormat({ getValue, updateDoc, emit })
 useInit({ createEditor })

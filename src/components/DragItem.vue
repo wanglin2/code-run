@@ -17,7 +17,7 @@
       :class="[{ canDrag: !disabled }, dir]"
       @mousedown="onMousedown"
     >
-      <span class="title">{{ title }}</span>
+      <span class="title" v-html="titleStr"></span>
     </div>
     <slot></slot>
   </div>
@@ -31,6 +31,7 @@ import {
   inject,
   getCurrentInstance,
   defineEmits,
+  computed,
 } from "vue";
 import Drag from "@/utils/Drag.js";
 
@@ -74,11 +75,15 @@ const emit = defineEmits(["size-change"]);
 // hooks部分
 
 // 初始化
-const useInit = () => {
+const useInit = ({ props }) => {
   const dir = inject("dir");
+  const titleStr = computed(() => {
+    return dir.value === 'h' ? props.title.split('').join('<br>') : props.title
+  })
 
   return {
     dir,
+    titleStr
   };
 };
 
@@ -143,7 +148,7 @@ const useDrag = ({ props }) => {
 };
 
 // created部分
-const { dir } = useInit();
+const { dir, titleStr } = useInit({ props });
 const { sizeList } = useSizeList({ emit });
 const { onMousedown } = useDrag({ props });
 </script>
@@ -182,6 +187,7 @@ const { onMousedown } = useDrag({ props });
       height: 100%;
 
       .title {
+        display: block;
         margin-left: 0px;
         margin-top: 5px;
         text-align: center;
