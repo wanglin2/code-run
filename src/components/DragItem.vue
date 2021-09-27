@@ -17,7 +17,7 @@
       :class="[{ canDrag: !disabled }, dir]"
       @mousedown="onMousedown"
     >
-      <span class="title">{{ title }}</span>
+      <span class="title" v-html="titleStr"></span>
     </div>
     <slot></slot>
   </div>
@@ -26,23 +26,14 @@
 <script setup>
 import {
   defineProps,
-  useContext,
   onBeforeUnmount,
   watch,
   inject,
   getCurrentInstance,
-} from 'vue'
-import Drag from '@/utils/Drag.js'
-
-const { proxy } = getCurrentInstance()
-
-const onDragStart = inject('onDragStart')
-const onDrag = inject('onDrag')
-const sizeList = inject('sizeList')
-const dir = inject('dir')
-
-// 触发事件
-const { emit } = useContext()
+  defineEmits,
+  computed,
+} from "vue";
+import Drag from "@/utils/Drag.js";
 
 // props
 const props = defineProps({
@@ -69,60 +60,103 @@ const props = defineProps({
   // 标题
   title: {
     type: String,
-    default: '',
+    default: "",
   },
   // 是否隐藏该组件
   hide: {
     type: Boolean,
     default: false,
   },
-})
+});
 
-watch(
-  [
-    () => {
-      return sizeList.value[props.index].width
-    },
-    () => {
-      return sizeList.value[props.index].height
-    },
-  ],
-  () => {
-    emit('size-change')
-  }
-)
+// 触发事件
+const emit = defineEmits(["size-change"]);
 
-// 拖动方法
-let drag = null
-if (!props.disabled) {
-  drag = new Drag(
-    (...args) => {
-      onDragStart(...args)
-    },
-    (...args) => {
-      onDrag(props.index, ...args)
-    },
-    (...args) => {
-      proxy.$eventEmitter.emit('dragOver', ...args)
+// hooks部分
+
+// 初始化
+const useInit = ({ props }) => {
+  const dir = inject("dir");
+  const titleStr = computed(() => {
+    return dir.value === 'h' ? props.title.split('').join('<br>') : props.title
+  })
+
+  return {
+    dir,
+    titleStr
+  };
+};
+
+// 尺寸列表处理
+const useSizeList = ({ emit }) => {
+  const sizeList = inject("sizeList");
+
+  watch(
+    [
+      () => {
+        return sizeList.value[props.index].width;
+      },
+      () => {
+        return sizeList.value[props.index].height;
+      },
+    ],
+    () => {
+      emit("size-change");
     }
-  )
-}
+  );
 
-const onMousedown = (e) => {
-  proxy.$eventEmitter.emit('dragStart')
-  drag && drag.onMousedown(e)
-}
+  return {
+    sizeList,
+  };
+};
 
-// 即将解除挂载
-onBeforeUnmount(() => {
-  drag && drag.off()
-})
+// 拖动处理
+const useDrag = ({ props }) => {
+  const { proxy } = getCurrentInstance();
+  const onDragStart = inject("onDragStart");
+  const onDrag = inject("onDrag");
+  // 拖动方法
+  let drag = null;
+  if (!props.disabled) {
+    drag = new Drag(
+      (...args) => {
+        onDragStart(...args);
+      },
+      (...args) => {
+        onDrag(props.index, ...args);
+      },
+      (...args) => {
+        proxy.$eventEmitter.emit("dragOver", ...args);
+      }
+    );
+  }
+
+  // 拖动条鼠标按下事件
+  const onMousedown = (e) => {
+    proxy.$eventEmitter.emit("dragStart");
+    drag && drag.onMousedown(e);
+  };
+
+  // 即将解除挂载
+  onBeforeUnmount(() => {
+    drag && drag.off();
+  });
+
+  return {
+    onMousedown,
+  };
+};
+
+// created部分
+const { dir, titleStr } = useInit({ props });
+const { sizeList } = useSizeList({ emit });
+const { onMousedown } = useDrag({ props });
 </script>
 
 <style scoped lang="less">
 .dragItem {
   display: flex;
-  overflow: hidden;
+  background-color: var(--editor-background);
 
   &.hide {
     display: none;
@@ -135,7 +169,7 @@ onBeforeUnmount(() => {
   .touchBar {
     flex-grow: 0;
     flex-shrink: 0;
-    background-color: #333642;
+    background-color: var(--touch-bar-background);
 
     &.canDrag {
       &.v {
@@ -148,11 +182,12 @@ onBeforeUnmount(() => {
     }
 
     &.h {
-      border-left: 1px solid rgba(255, 255, 255, 0.05);
-      border-right: 1px solid rgba(0, 0, 0, 0.4);
+      border-left: 1px solid var(--touch-bar-border-left-color);
+      border-right: 1px solid var(--touch-bar-border-right-color);
       height: 100%;
 
       .title {
+        display: block;
         margin-left: 0px;
         margin-top: 5px;
         text-align: center;
@@ -160,15 +195,15 @@ onBeforeUnmount(() => {
     }
 
     &.v {
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
-      border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+      border-top: 1px solid var(--touch-bar-border-left-color);
+      border-bottom: 1px solid var(--touch-bar-border-right-color);
       width: 100%;
     }
 
     .title {
       display: flex;
       align-items: center;
-      color: #aaaebc;
+      color: var(--editor-header-title-color);
       font-size: 12px;
       margin-left: 5px;
     }

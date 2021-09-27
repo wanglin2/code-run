@@ -1,4 +1,5 @@
 import { base } from '@/config'
+import loadjs from 'loadjs'
 
 // 记录加载状态
 const preprocessorLoaded = {
@@ -7,7 +8,6 @@ const preprocessorLoaded = {
     css: true,
     less: false,
     scss: false,
-    sass: false,
     stylus: false,
     postcss: false,
     pug: false,
@@ -22,7 +22,8 @@ const preprocessorLoaded = {
 // 需要加载多个文件
 const resources = {
     postcss: ['postcss-cssnext', 'postcss'],
-    vue3: ['vue2']
+    vue3: ['vue2'],
+    scss: ['sass']
 }
 
 export const load = (preprocessorList) => {

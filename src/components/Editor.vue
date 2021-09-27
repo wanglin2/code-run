@@ -1,35 +1,41 @@
 <template>
   <div class="editorBox" :class="{ hide: hide }">
-    <Drag :number="editorItemList.length" :dir="dir">
+    <Drag v-if="show" :number="editorItemList.length" :dir="dir">
       <DragItem
         v-for="(item, index) in editorItemList"
         :key="item.title"
         :index="index"
         :disabled="item.disableDrag"
         :showTouchBar="item.showTouchBar"
-        @size-change="sizeChange"
+        :title="item.showTitle ? item.title : ''"
       >
         <EditorItem
           :title="item.title"
           :language="item.language"
+          :codeTheme="codeTheme"
+          :codeFontSize="codeFontSize"
           :content="item.content"
           :preprocessorList="preprocessorListMap[item.title]"
           :showAddBtn="item.showAddBtn"
-          :codeTheme="codeTheme"
           :dir="dir"
           :showAllAddResourcesBtn="['vue2'].includes(item.language)"
           @code-change="
             (code) => {
-              codeChange(item, code);
+              codeChange(item, code)
             }
           "
           @preprocessor-change="
             (p) => {
-              preprocessorChange(item, p);
+              preprocessorChange(item, p)
             }
           "
-          @add-resource="(languageType) => {
-            addResource(languageType || item.title)
+          @add-resource="
+            (languageType) => {
+              addResource(languageType || item.title)
+            }
+          "
+          @space-change="(noSpace) => {
+            item.showTitle = noSpace
           }"
         ></EditorItem>
       </DragItem>
@@ -111,19 +117,31 @@ import {
   computed,
   getCurrentInstance,
   watch,
-  reactive,
-} from "vue";
-import { useStore } from "vuex";
-import EditorItem from "@/components/EditorItem.vue";
-import Drag from "./Drag.vue";
-import DragItem from "./DragItem.vue";
+  onUnmounted,
+} from 'vue'
+import { useStore } from 'vuex'
+import EditorItem from '@/components/EditorItem.vue'
+import Drag from './Drag.vue'
+import DragItem from './DragItem.vue'
 import {
   defaultEditorMap,
   preprocessorListMap,
   cdnSiteList,
-} from "@/config/constants";
-
-const { proxy } = getCurrentInstance();
+} from '@/config/constants'
+import {
+  ElButton,
+  ElDialog,
+  ElTable,
+  ElDropdownMenu,
+  ElDropdownItem,
+  ElDropdown,
+  ElInput,
+  ElTableColumn,
+  ElMessage,
+} from 'element-plus'
+import { codeThemeList } from '@/config/codeThemeList'
+import { base } from '@/config'
+import * as monaco from 'monaco-editor/esm/vs/editor/editor.api'
 
 // props
 const props = defineProps({
@@ -135,271 +153,349 @@ const props = defineProps({
   // 排布方向
   dir: {
     type: String,
-    default: 'h'// v（垂直）、h（水平）
+    default: 'h', // v（垂直）、h（水平）
   },
   // 要显示的编辑器列表
   showList: {
     type: Array,
-    default: ['HTML', 'CSS', 'JS']// 目前共有四种编辑器：'HTML'、 'CSS'、 'JS'、 'VUE'
+    default() {
+      return ['HTML', 'CSS', 'JS']
+    }, // 目前共有四种编辑器：'HTML'、 'CSS'、 'JS'、 'VUE'
+  },
+})
+
+// hooks定义部分
+// 初始化数据
+const useInit = () => {
+  const store = useStore()
+  return {
+    store,
+    proxy: getCurrentInstance().proxy,
+    editData: computed(() => store.state.editData), // 数据
+    codeTheme: computed(() => store.state.editData.config.codeTheme), // 代码主题
+    codeFontSize: computed(() => store.state.editData.config.codeFontSize), // 代码字号
   }
-});
-
-// vuex
-const store = useStore();
-// 数据
-const editData = computed(() => store.state.editData);
-// 代码主题
-const codeTheme = computed(() => store.state.editData.config.codeTheme);
-// 布局
-const layout = computed(() => {
-  return store.state.editData.config.layout;
-});
-const openAlmightyConsole = computed(() => {
-  return store.state.editData.config.openAlmightyConsole;
-});
-
-// 编辑器列表
-let editorItemList = ref([])
-
-/** 
- * @Author: 王林25 
- * @Date: 2021-09-13 14:52:51 
- * @Desc: 初始化编辑器列表数据 
- */
-const initEditorItemList = () => {
-  editorItemList = ref(props.showList.map((item, index) => {
-    if (typeof item === 'string') {
-      return {
-        ...defaultEditorMap[item]
-      }
-    } else {
-      return {
-        ...defaultEditorMap[item.title],
-        ...item
-      }
-    }
-  }))
 }
 
-initEditorItemList()
+// 初始化编辑器列表
+const useInitEditorList = ({ props, editData }) => {
+  let show = ref(false)
+  // 编辑器列表
+  let editorItemList = ref([])
 
-watch(
-  () => {
+  // 初始化编辑器列表数据
+  const initEditorItemList = () => {
+    editorItemList = ref(
+      props.showList.map((item) => {
+        if (typeof item === 'string') {
+          return {
+            ...defaultEditorMap[item],
+            showTitle: false
+          }
+        } else {
+          return {
+            ...defaultEditorMap[item.title],
+            ...item,
+            showTitle: false
+          }
+        }
+      })
+    )
+  }
+  initEditorItemList()
+
+  // 数据变化后重新初始化
+  watch(() => {
     return props.showList
-  },
-  initEditorItemList
-)
+  }, initEditorItemList)
 
-watch(
-  () => {
-    return openAlmightyConsole.value;
-  },
-  () => {
-    runCode();
+  // 设置编辑器列表初始数据
+  const setInitData = () => {
+    const code = editData.value.code
+    Object.keys(code).forEach((type) => {
+      let index = getIndexByType(type)
+      if (index === -1) {
+        return
+      }
+      editorItemList.value[index].content = code[type].content
+      editorItemList.value[index].language = code[type].language
+    })
   }
-);
 
-/**
- * @Author: 王林25
- * @Date: 2021-05-17 20:24:11
- * @Desc: 尺寸变化
- */
-const sizeChange = () => {};
+  return {
+    show,
+    editorItemList,
+    setInitData,
+  }
+}
 
-/**
- * @Author: 王林25
- * @Date: 2021-05-13 09:05:02
- * @Desc: 获取指定语言的数据
- */
-const getIndexByType = (type) => {
-  return editorItemList.value.findIndex((item) => {
-    return item.title === type;
-  });
-};
-
-/**
- * @Author: 王林25
- * @Date: 2021-05-06 16:52:16
- * @Desc: 设置初始数据
- */
-const setInitData = () => {
-  const code = editData.value.code;
-  Object.keys(code).forEach((type) => {
-    let index = getIndexByType(type);
-    if (index === -1) {
-      return;
+// 处理主题
+const useTheme = ({ codeTheme, proxy }) => {
+  // 加载主题
+  const loadTheme = async () => {
+    try {
+      if (!codeTheme.value) {
+        return
+      }
+      let item = codeThemeList.find((item) => {
+        return item.value === codeTheme.value
+      })
+      let themeData = null
+      if (item && item.custom) {
+        // 该主题已加载，直接使用缓存
+        if (item.loaded) {
+          themeData = item.cache
+        } else {
+          // 未加载，则先加载
+          themeData = await (
+            await fetch(`${base}themes/${codeTheme.value}.json`)
+          ).json()
+          item.loaded = true
+          item.cache = themeData
+        }
+        monaco.editor.defineTheme(codeTheme.value, themeData)
+        
+      }
+      monaco.editor.setTheme(codeTheme.value)
+      proxy.$eventEmitter.emit('set-theme', themeData)
+    } catch (error) {
+      console.log(error)
+      ElMessage.error('主题加载失败，请重试')
     }
-    editorItemList.value[index].content = code[type].content;
-    editorItemList.value[index].language = code[type].language;
-  });
-};
-
-/**
- * @Author: 王林25
- * @Date: 2021-05-14 11:37:21
- * @Desc: 重新设置代码数据
- */
-const resetCode = () => {
-  setInitData();
-  runCode();
-};
-
-proxy.$eventEmitter.on("reset_code", resetCode);
-
-/**
- * @Author: 王林
- * @Date: 2021-05-15 08:29:29
- * @Desc: 自动运行
- */
-let autoRunTimer = null;
-const isAutoRun = computed(() => {
-  return store.state.editData.config.autoRun;
-});
-const autoRun = () => {
-  if (!isAutoRun.value) {
-    return;
   }
-  clearTimeout(autoRunTimer);
-  autoRunTimer = setTimeout(() => {
-    runCode();
-  }, 1000);
-};
 
-/**
- * @Author: 王林25
- * @Date: 2021-05-06 17:15:54
- * @Desc: 代码修改事件
- */
-const codeChange = (item, code) => {
-  store.commit("setCodeContent", {
-    type: item.title,
-    code,
-  });
-  autoRun();
-};
+  // 监听设置代码主题
+  watch(codeTheme, () => {
+    loadTheme()
+  })
 
-/**
- * @Author: 王林25
- * @Date: 2021-05-12 19:17:26
- * @Desc: 修改预处理器
- */
-const preprocessorChange = (item, p) => {
-  let index = getIndexByType(item.title);
-  editorItemList.value[index].language = p;
-  editorItemList.value[index].content = editData.value.code[item.title].content;
-  store.commit("setCodePreprocessor", {
-    type: item.title,
-    preprocessor: p,
-  });
-  runCode();
-};
+  return {
+    loadTheme,
+  }
+}
 
-// -------------------添加资源部分---------------
+// 代码运行
+const useRunCode = ({ store, proxy }) => {
+  // 布局
+  const layout = computed(() => {
+    return store.state.editData.config.layout
+  })
 
-const addResourceDialogVisible = ref(false);
-const resourceData = ref([]);
-const addResourceType = ref("");
+  // 发送运行代码的通知
+  const runCode = () => {
+    proxy.$eventEmitter.emit('run')
+    if (layout.value === 'newWindowPreview') {
+      proxy.$eventEmitter.emit('preview_window_run')
+    }
+  }
 
-/**
- * @Author: 王林25
- * @Date: 2021-05-13 20:12:56
- * @Desc: 跳转到cdn服务
- */
-const handleCdnCommand = (url) => {
-  let a = document.createElement("a");
-  a.target = "_blank";
-  a.href = url;
-  a.click();
-  a = null;
-};
+  // 开启关闭全能console后重新运行代码
+  const openAlmightyConsole = computed(() => {
+    return store.state.editData.config.openAlmightyConsole
+  })
+  watch(
+    () => {
+      return openAlmightyConsole.value
+    },
+    () => {
+      runCode()
+    }
+  )
 
-/**
- * @Author: 王林25
- * @Date: 2021-05-13 19:31:18
- * @Desc: 添加资源
- */
-const addResource = (item) => {
-  addResourceType.value = item;
-  resourceData.value = (editData.value.code[item].resources || []).map(
-    (r) => {
+  return {
+    runCode,
+  }
+}
+
+// 代码编辑器状态改变
+const useEditorChange = ({
+  setInitData,
+  store,
+  editorItemList,
+  autoRun,
+  runCode,
+  editData,
+  proxy,
+}) => {
+  // 重新设置代码数据
+  const resetCode = () => {
+    setInitData()
+    runCode()
+  }
+  proxy.$eventEmitter.on('reset_code', resetCode)
+  onUnmounted(() => {
+    proxy.$eventEmitter.off('reset_code', resetCode)
+  })
+
+  // 代码修改事件
+  const codeChange = (item, code) => {
+    store.commit('setCodeContent', {
+      type: item.title,
+      code,
+    })
+    autoRun()
+  }
+
+  // 获取指定语言的数据
+  const getIndexByType = (type) => {
+    return editorItemList.value.findIndex((item) => {
+      return item.title === type
+    })
+  }
+
+  // 修改预处理器
+  const preprocessorChange = (item, p) => {
+    let index = getIndexByType(item.title)
+    editorItemList.value[index].language = p
+    editorItemList.value[index].content =
+      editData.value.code[item.title].content
+    store.commit('setCodePreprocessor', {
+      type: item.title,
+      preprocessor: p,
+    })
+    runCode()
+  }
+
+  return {
+    codeChange,
+    getIndexByType,
+    preprocessorChange,
+  }
+}
+
+// 自动运行
+const useAutoRun = ({ store, runCode }) => {
+  let autoRunTimer = null
+  const isAutoRun = computed(() => {
+    return store.state.editData.config.autoRun
+  })
+  const autoRun = () => {
+    if (!isAutoRun.value) {
+      return
+    }
+    clearTimeout(autoRunTimer)
+    autoRunTimer = setTimeout(() => {
+      runCode()
+    }, 1000)
+  }
+  return {
+    autoRun,
+  }
+}
+
+// 静态资源管理
+const useHandleAssets = ({ store, runCode, editData }) => {
+  const addResourceDialogVisible = ref(false)
+  const resourceData = ref([])
+  const addResourceType = ref('')
+
+  // 跳转到cdn服务
+  const handleCdnCommand = (url) => {
+    let a = document.createElement('a')
+    a.target = '_blank'
+    a.href = url
+    a.click()
+    a = null
+  }
+
+  // 添加资源
+  const addResource = (item) => {
+    addResourceType.value = item
+    resourceData.value = (editData.value.code[item].resources || []).map(
+      (r) => {
+        return {
+          ...r,
+        }
+      }
+    )
+    addResourceDialogVisible.value = true
+  }
+
+  // 删除一个资源
+  const deleteResource = (e) => {
+    resourceData.value.splice(e.$index, 1)
+  }
+
+  // 添加一个资源
+  const addOneResource = () => {
+    resourceData.value.push({
+      url: '',
+      name: '',
+    })
+  }
+
+  // 取消添加资源
+  const cancelAddResource = () => {
+    addResourceDialogVisible.value = false
+    addResourceType.value = ''
+    resourceData.value = []
+  }
+
+  // 确认添加资源
+  const confirmAddResource = () => {
+    let resources = resourceData.value.map((item) => {
       return {
-        ...r,
-      };
-    }
-  );
-  addResourceDialogVisible.value = true;
-};
-
-/**
- * @Author: 王林25
- * @Date: 2021-05-13 19:45:50
- * @Desc: 删除一个资源
- */
-const deleteResource = (e) => {
-  resourceData.value.splice(e.$index, 1);
-};
-
-/**
- * @Author: 王林25
- * @Date: 2021-05-13 19:45:56
- * @Desc: 添加一个资源
- */
-const addOneResource = () => {
-  resourceData.value.push({
-    url: "",
-    name: "",
-  });
-};
-
-/**
- * @Author: 王林25
- * @Date: 2021-05-13 19:50:06
- * @Desc: 取消添加资源
- */
-const cancelAddResource = () => {
-  addResourceDialogVisible.value = false;
-  addResourceType.value = "";
-  resourceData.value = [];
-};
-
-/**
- * @Author: 王林25
- * @Date: 2021-05-13 19:50:01
- * @Desc: 确认添加资源
- */
-const confirmAddResource = () => {
-  let resources = resourceData.value.map((item) => {
-    return {
-      ...item,
-    };
-  });
-  store.commit("setCodeResource", {
-    type: addResourceType.value,
-    resources,
-  });
-  cancelAddResource();
-  runCode();
-};
-
-/**
- * @Author: 王林25
- * @Date: 2021-05-14 11:38:21
- * @Desc: 发送运行代码的通知
- */
-const runCode = () => {
-  proxy.$eventEmitter.emit("run");
-  if (layout.value === "newWindowPreview") {
-    proxy.$eventEmitter.emit("preview_window_run");
+        ...item,
+      }
+    })
+    store.commit('setCodeResource', {
+      type: addResourceType.value,
+      resources,
+    })
+    cancelAddResource()
+    runCode()
   }
-};
 
-// 挂载完成
+  return {
+    resourceData,
+    addResourceType,
+    addResourceDialogVisible,
+    handleCdnCommand,
+    addResource,
+    deleteResource,
+    addOneResource,
+    cancelAddResource,
+    confirmAddResource,
+  }
+}
+
+// created部分
+const { store, editData, codeTheme, proxy, codeFontSize } = useInit()
+const { show, editorItemList, setInitData } = useInitEditorList({
+  props,
+  editData,
+})
+const { loadTheme } = useTheme({ codeTheme, proxy })
+const { runCode } = useRunCode({ store, proxy })
+const { autoRun } = useAutoRun({ store, runCode })
+const { getIndexByType, preprocessorChange, codeChange } = useEditorChange({
+  setInitData,
+  store,
+  editorItemList,
+  autoRun,
+  runCode,
+  editData,
+  proxy,
+})
+const {
+  resourceData,
+  addResourceType,
+  addResourceDialogVisible,
+  handleCdnCommand,
+  addResource,
+  deleteResource,
+  addOneResource,
+  cancelAddResource,
+  confirmAddResource,
+} = useHandleAssets({ store, runCode, editData })
 onMounted(async () => {
   // 获取代码数据
-  await store.dispatch("getData");
-  setInitData();
-  runCode();
-});
+  await store.dispatch('getData')
+  await loadTheme()
+  setInitData()
+  show.value = true
+  runCode()
+})
 </script>
 
 <style lang="less" scoped>

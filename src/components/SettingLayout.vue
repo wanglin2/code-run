@@ -27,26 +27,42 @@
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
 import { layoutList, previewImgMap } from "@/config/constants";
+import { ElSelect, ElButton, ElOption } from "element-plus";
 
-// vuex
-const store = useStore();
-
-const previewImg = computed(() => {
-  return previewImgMap[layout.value];
-});
-
-// 布局
-const layout = ref("");
-layout.value = store.state.editData.config.layout;
-
-/**
- * @Author: 王林
- * @Date: 2021-05-15 08:07:04
- * @Desc: 切换布局
- */
-const confirm = () => {
-  store.commit("setLayout", layout.value);
+// 初始化
+const useInit = () => {
+  const store = useStore();
+  return {
+    store,
+  };
 };
+
+// 布局处理
+const useLayout = ({ store }) => {
+  // 预览图片
+  const previewImg = computed(() => {
+    return previewImgMap[layout.value];
+  });
+
+  // 布局
+  const layout = ref("");
+  layout.value = store.state.editData.config.layout;
+
+  // 切换布局
+  const confirm = () => {
+    store.commit("setLayout", layout.value);
+  };
+
+  return {
+    previewImg,
+    layout,
+    confirm,
+  };
+};
+
+// created部分
+const { store } = useInit();
+const { previewImg, layout, confirm } = useLayout({ store });
 </script>
 
 <style scoped lang="less">
