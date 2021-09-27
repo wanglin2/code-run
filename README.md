@@ -4,7 +4,7 @@
 
 项目demo：[https://wanglin2.github.io/code-run-online/](https://wanglin2.github.io/code-run-online/)。
 
-在本项目基础上开发的带用户登录相关功能的版本：[http://lxqnsys.com/code-run/](http://lxqnsys.com/code-run/)。
+在本项目基础上开发的带用户登录相关功能的版本（功能可能滞后）：[http://lxqnsys.com/code-run/](http://lxqnsys.com/code-run/)。
 
 # 相关文章
 
@@ -99,7 +99,9 @@ UI库：`element-plus`
 - `npm run buildConsole`：编译项目的`/public/console/index.js`文件为`ES5`语法，输出到同目录下的`compile.js`，该文件会在页面预览的`iframe`里进行加载，请勿直接修改`compile.js`文件。
 
 - `npm run buildMonacoWorker`：打包`Monaco Editor`编辑器的`worker`文件，如果使用的`Monaco Editor`编辑器版本变化了需要重新打包。
+
 - `npm run convertTheme`：将`VSCode`主题文件转换成`Monaco Editor`主题文件。
+
 - `npm run createThemeList`：根据主题文件列表自动生成配置文件。
 
 # 新增代码模板

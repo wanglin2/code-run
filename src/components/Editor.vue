@@ -224,7 +224,7 @@ const useInitEditorList = ({ props, editData }) => {
 }
 
 // 处理主题
-const useTheme = ({ codeTheme }) => {
+const useTheme = ({ codeTheme, proxy }) => {
   // 加载主题
   const loadTheme = async () => {
     try {
@@ -234,8 +234,8 @@ const useTheme = ({ codeTheme }) => {
       let item = codeThemeList.find((item) => {
         return item.value === codeTheme.value
       })
+      let themeData = null
       if (item && item.custom) {
-        let themeData = {}
         // 该主题已加载，直接使用缓存
         if (item.loaded) {
           themeData = item.cache
@@ -248,8 +248,10 @@ const useTheme = ({ codeTheme }) => {
           item.cache = themeData
         }
         monaco.editor.defineTheme(codeTheme.value, themeData)
+        
       }
       monaco.editor.setTheme(codeTheme.value)
+      proxy.$eventEmitter.emit('set-theme', themeData)
     } catch (error) {
       console.log(error)
       ElMessage.error('主题加载失败，请重试')
@@ -457,7 +459,7 @@ const { show, editorItemList, setInitData } = useInitEditorList({
   props,
   editData,
 })
-const { loadTheme } = useTheme({ codeTheme })
+const { loadTheme } = useTheme({ codeTheme, proxy })
 const { runCode } = useRunCode({ store, proxy })
 const { autoRun } = useAutoRun({ store, runCode })
 const { getIndexByType, preprocessorChange, codeChange } = useEditorChange({

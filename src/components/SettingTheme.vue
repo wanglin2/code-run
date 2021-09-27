@@ -14,6 +14,13 @@
         </el-select>
       </div>
     </div>
+    <!-- 页面主题是否与代码主题同步 -->
+    <div class="settingRow">
+      <span class="name">页面主题是否同步代码主题</span>
+      <div class="control">
+        <el-switch v-model="pageThemeSyncCodeTheme" />
+      </div>
+    </div>
     <!-- 字号 -->
     <div class="settingRow">
       <span class="name">代码字号</span>
@@ -36,10 +43,10 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, watch, ref } from 'vue'
 import { useStore } from 'vuex'
 import { codeThemeList } from '@/config/codeThemeList'
-import { ElSelect, ElOption } from 'element-plus'
+import { ElSelect, ElOption, ElSwitch } from 'element-plus'
 import { codeFontSizeList } from '@/config/constants'
 
 // hooks定义部分
@@ -50,14 +57,23 @@ const useInit = () => {
   const store = useStore()
   return {
     store,
+    config: store.state.editData.config
   }
 }
 
 // 处理主题
-const useTheme = ({ store }) => {
-  const codeTheme = computed(() => {
-    return store.state.editData.config.codeTheme
-  })
+const useTheme = ({ store, config }) => {
+  const codeTheme = ref('')
+  codeTheme.value = config.codeTheme
+
+  watch(
+    () => {
+      return config.codeTheme
+    },
+    (value) => {
+      codeTheme.value = value
+    }
+  )
 
   // 切换代码主题
   const codeThemeChange = async (e) => {
@@ -70,11 +86,34 @@ const useTheme = ({ store }) => {
   }
 }
 
-// 处理字号
-const useFontSize = ({ store }) => {
-  const codeFontSize = computed(() => {
-    return store.state.editData.config.codeFontSize
+// 处理主题同步
+const useThemeSync = ({ store, config }) => {
+  const pageThemeSyncCodeTheme = ref(false)
+  pageThemeSyncCodeTheme.value =
+    config.pageThemeSyncCodeTheme
+
+  watch(pageThemeSyncCodeTheme, (value) => {
+    store.commit('setPageThemeSyncCodeTheme', value)
   })
+
+  return {
+    pageThemeSyncCodeTheme,
+  }
+}
+
+// 处理字号
+const useFontSize = ({ store, config }) => {
+  const codeFontSize = ref(0)
+  codeFontSize.value = config.codeFontSize
+
+  watch(
+    () => {
+      return config.codeFontSize
+    },
+    (value) => {
+      codeFontSize.value = value
+    }
+  )
 
   // 切换字号
   const codeFontSizeChange = async (e) => {
@@ -88,9 +127,10 @@ const useFontSize = ({ store }) => {
 }
 
 // created部分
-const { store } = useInit()
-const { codeTheme, codeThemeChange } = useTheme({ store })
-const { codeFontSize, codeFontSizeChange } = useFontSize({ store })
+const { store, config } = useInit()
+const { codeTheme, codeThemeChange } = useTheme({ store, config })
+const { pageThemeSyncCodeTheme } = useThemeSync({ store, config })
+const { codeFontSize, codeFontSizeChange } = useFontSize({ store, config })
 </script>
 
 <style scoped lang="less">

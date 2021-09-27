@@ -151,6 +151,7 @@ const { onMousedown } = useDrag({ props });
 <style scoped lang="less">
 .dragItem {
   display: flex;
+  background-color: var(--editor-background);
 
   &.hide {
     display: none;
@@ -163,7 +164,7 @@ const { onMousedown } = useDrag({ props });
   .touchBar {
     flex-grow: 0;
     flex-shrink: 0;
-    background-color: #333642;
+    background-color: var(--touch-bar-background);
 
     &.canDrag {
       &.v {
@@ -176,8 +177,8 @@ const { onMousedown } = useDrag({ props });
     }
 
     &.h {
-      border-left: 1px solid rgba(255, 255, 255, 0.05);
-      border-right: 1px solid rgba(0, 0, 0, 0.4);
+      border-left: 1px solid var(--touch-bar-border-left-color);
+      border-right: 1px solid var(--touch-bar-border-right-color);
       height: 100%;
 
       .title {
@@ -188,15 +189,15 @@ const { onMousedown } = useDrag({ props });
     }
 
     &.v {
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
-      border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+      border-top: 1px solid var(--touch-bar-border-left-color);
+      border-bottom: 1px solid var(--touch-bar-border-right-color);
       width: 100%;
     }
 
     .title {
       display: flex;
       align-items: center;
-      color: #aaaebc;
+      color: var(--editor-header-title-color);
       font-size: 12px;
       margin-left: 5px;
     }

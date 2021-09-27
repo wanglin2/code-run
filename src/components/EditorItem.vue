@@ -121,7 +121,7 @@ const props = defineProps({
   },
   codeFontSize: {
     type: Number,
-    default: 16
+    default: 16,
   },
   content: {
     type: String,
@@ -162,7 +162,7 @@ const useCreateEditor = ({ props, emit, updateDoc }) => {
         fontSize: props.codeFontSize || 16,
         fontFamily: 'MonoLisa, monospace',
         contextmenu: false, // 不显示右键菜单
-        fixedOverflowWidgets: true// 让语法提示层能溢出容器
+        fixedOverflowWidgets: true, // 让语法提示层能溢出容器
       })
       // 设置文档内容
       updateDoc(props.content, props.language)
@@ -178,13 +178,16 @@ const useCreateEditor = ({ props, emit, updateDoc }) => {
       })
     }
     // 更新字号
-    watch(() => {
-      return props.codeFontSize
-    }, (val) => {
-      editor.updateOptions({
-        fontSize: val
-      })
-    })
+    watch(
+      () => {
+        return props.codeFontSize
+      },
+      (val) => {
+        editor.updateOptions({
+          fontSize: val,
+        })
+      }
+    )
   }
 
   return {
@@ -362,9 +365,9 @@ useInit({ createEditor })
 .editorItem {
   width: 100%;
   height: 100%;
-  background-color: #1d1e22;
   display: flex;
   overflow: hidden;
+  background-color: var(--editor-background);
 
   .editorContent {
     width: 100%;
@@ -375,8 +378,8 @@ useInit({ createEditor })
     .editorContentHeader {
       width: 100%;
       height: 35px;
-      background-color: rgba(0, 0, 0, 0.1);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      background: var(--editor-header-background);
+      border-bottom: 1px solid var(--editor-header-border-bottom-color);
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -387,7 +390,7 @@ useInit({ createEditor })
 
       .title {
         font-weight: bold;
-        color: #aaaebc;
+        color: var(--editor-header-title-color);
         font-size: 18px;
         transition: all 0.2s;
 
@@ -405,11 +408,12 @@ useInit({ createEditor })
       /deep/ .el-input__inner {
         width: 120px;
         background-color: transparent;
-        border-color: #606266;
+        border-color: var(--editor-header-color);
+        color: var(--editor-header-color);
       }
 
       /deep/ .el-select .el-input .el-select__caret {
-        color: #606266;
+        color: var(--editor-header-color);
       }
 
       .right {
@@ -423,15 +427,17 @@ useInit({ createEditor })
           justify-content: center;
           align-items: center;
           margin-right: 10px;
-          color: #606266;
+          color: var(--editor-header-color);
           font-weight: bold;
           cursor: pointer;
           border-radius: 3px;
           overflow: hidden;
           transition: all 0.3s;
+          opacity: 0.7;
 
           &:hover {
-            background-color: #333642;
+            background-color: transparent;
+            opacity: 1;
           }
         }
       }
