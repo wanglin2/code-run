@@ -32,15 +32,6 @@ const props = defineProps({
 
 // hooks定义部分
 
-// 初始化拖动元素
-const useInitDragBox = () => {
-  const dragBox = ref(null);
-
-  return {
-    dragBox,
-  };
-};
-
 // 初始化resize实例
 const useInitResize = ({ props }) => {
   const resize = new Resize();
@@ -127,7 +118,7 @@ const useInitSize = ({ sizeList, props }) => {
 };
 
 // 初始化
-const useResizeInit = ({ dragBox, setInitSize, resize, props, sizeList }) => {
+const useResizeInit = ({ setInitSize, resize, props, sizeList }) => {
   const containerWidth = ref(0);
   const containerHeight = ref(0);
   const resizeInit = () => {
@@ -150,7 +141,7 @@ const useResizeInit = ({ dragBox, setInitSize, resize, props, sizeList }) => {
 };
 
 // 尺寸变化处理
-const useSizeChange = ({ resizeInit, dragBox }) => {
+const useSizeChange = ({ resizeInit }) => {
   // 监听dom大小变化
   const ro = new ResizeObserver((entries) => {
     for (const entry of entries) {
@@ -170,18 +161,17 @@ const useSizeChange = ({ resizeInit, dragBox }) => {
 };
 
 //  created部分
-const { dragBox } = useInitDragBox();
+const dragBox = ref(null);
 const { resize } = useInitResize({ props });
 const { sizeList } = useInitSizeList({ props });
 const { setInitSize } = useInitSize({ sizeList, props });
 const { resizeInit } = useResizeInit({
-  dragBox,
   setInitSize,
   resize,
   props,
   sizeList,
 });
-useSizeChange({ resizeInit, dragBox });
+useSizeChange({ resizeInit });
 </script>
 
 <style scoped lang="less">

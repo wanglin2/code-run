@@ -7,6 +7,7 @@
         :index="index"
         :disabled="item.disableDrag"
         :showTouchBar="item.showTouchBar"
+        :title="item.showTitle ? item.title : ''"
       >
         <EditorItem
           :title="item.title"
@@ -33,6 +34,9 @@
               addResource(languageType || item.title)
             }
           "
+          @space-change="(noSpace) => {
+            item.showTitle = noSpace
+          }"
         ></EditorItem>
       </DragItem>
     </Drag>
@@ -186,11 +190,13 @@ const useInitEditorList = ({ props, editData }) => {
         if (typeof item === 'string') {
           return {
             ...defaultEditorMap[item],
+            showTitle: false
           }
         } else {
           return {
             ...defaultEditorMap[item.title],
             ...item,
+            showTitle: false
           }
         }
       })
