@@ -2,9 +2,7 @@
   <div class="header">
     <!-- logo -->
     <div class="left">
-      <h1>
-        <img src="../assets/logo.png" alt="" />
-      </h1>
+      <h1>CodeRun</h1>
     </div>
     <!-- 工具栏 -->
     <div class="right">
@@ -81,153 +79,177 @@
 </template>
 
 <script setup>
-import { getCurrentInstance, ref, computed, onBeforeUnmount, nextTick } from 'vue'
+import { getCurrentInstance, ref, computed, onBeforeUnmount, nextTick, shallowRef } from 'vue'
 import templateList from '@/config/templates'
 import { useStore } from 'vuex'
 import Setting from './Setting.vue'
 import SettingLayout from './SettingLayout.vue'
 import SettingTheme from './SettingTheme.vue'
 import exportZip from '@/utils/exportZip'
-import { ElMessage } from 'element-plus'
+import { ElMessage, ElButton, ElDialog, ElInput, ElTabs, ElTabPane } from 'element-plus'
 
-const { proxy } = getCurrentInstance()
+// hooks定义部分
 
-// vuex
-const store = useStore()
-const editData = computed(() => store.state.editData)
-const layout = computed(() => {
-  return store.state.editData.config.layout
-})
-
-/**
- * @Author: 王林25
- * @Date: 2021-05-14 10:33:04
- * @Desc: 运行
- */
-const run = () => {
-  proxy.$eventEmitter.emit('run')
-  if (layout.value === 'newWindowPreview') {
-    proxy.$eventEmitter.emit('preview_window_run')
-  }
-}
-
-// ------------- 模板选择功能 ---------------------
-
-const templateDialogVisible = ref(false)
-const templateData = ref(templateList)
-
-/**
- * @Author: 王林25
- * @Date: 2021-05-14 10:42:51
- * @Desc: 打开选择模板弹窗
- */
-const openTemplate = () => {
-  templateDialogVisible.value = true
-}
-
-/** 
- * @Author: 王林25 
- * @Date: 2021-09-10 15:27:33 
- * @Desc: 检查布局是否和模板对应 
- */
-const checkLayout = (data) => {
-  if (data.isVueSFC) {
-    if (layout.value !== 'vue') {
-      store.commit("setLayout", 'vue');
-    }
-  } else {
-    if (layout.value === 'vue') {
-      store.commit("setLayout", 'default');
-    }
-  }
-}
-
-/**
- * @Author: 王林25
- * @Date: 2021-05-14 11:22:32
- * @Desc: 选择某个模板
- */
-const selectTemplate = (data) => {
-  checkLayout(data)
-  nextTick(() => {
-    store.commit('setCode', JSON.parse(JSON.stringify(data.code)))
-    proxy.$eventEmitter.emit('reset_code')
-    templateDialogVisible.value = false
+// 初始化
+const useInit = () => {
+  const { proxy } = getCurrentInstance()
+  const store = useStore()
+  const layout = computed(() => {
+    return store.state.editData.config.layout
   })
+
+  return {
+    proxy,
+    store,
+    layout
+  };
 }
 
-// ------------- 设置功能 ---------------------
+// 导出
+const useExport = ({ hideToolList, store }) => {
+  const exportNameInputDialogVisible = ref(false)
+  const exportName = ref('')
+  const editData = computed(() => store.state.editData)
 
-const settingDialogVisible = ref(false)
-const settingType = ref('layout')
-const componentsMap = ref({
-  theme: SettingTheme,
-  layout: SettingLayout,
-  setting: Setting,
-})
-
-/**
- * @Author: 王林
- * @Date: 2021-05-15 07:28:49
- * @Desc: 打开设置弹窗
- */
-const openSetting = () => {
-  settingDialogVisible.value = true
-}
-
-// ------------- 工具功能 ---------------------
-
-const showToolsList = ref(false)
-
-/**
- * @Author: 王林25
- * @Date: 2021-05-20 09:49:12
- * @Desc: 隐藏工具下拉菜单
- */
-const hideToolList = () => {
-  showToolsList.value = false
-}
-
-document.body.addEventListener('click', hideToolList)
-
-const exportNameInputDialogVisible = ref(false)
-const exportName = ref('')
-
-/**
- * @Author: 王林25
- * @Date: 2021-05-20 09:52:20
- * @Desc: 导出zip
- */
-const exportZipFile = () => {
-  exportNameInputDialogVisible.value = true
-  hideToolList()
-}
-
-/**
- * @Author: 王林25
- * @Date: 2021-05-20 14:08:08
- * @Desc: 确认导出
- */
-const confirmExport = () => {
-  if (exportName.value.trim() === '') {
-    ElMessage.warning({
-      message: '请输入文件名',
-      type: 'warning',
-    })
-    return
+  // 导出zip
+  const exportZipFile = () => {
+    exportNameInputDialogVisible.value = true
+    hideToolList()
   }
-  exportNameInputDialogVisible.value = false
-  exportZip(editData, exportName.value.trim())
+
+  // 确认导出
+  const confirmExport = () => {
+    if (exportName.value.trim() === '') {
+      ElMessage.warning({
+        message: '请输入文件名',
+        type: 'warning',
+      })
+      return
+    }
+    exportNameInputDialogVisible.value = false
+    exportZip(editData, exportName.value.trim())
+  }
+
+  return {
+    exportNameInputDialogVisible,
+    exportName,
+    exportZipFile,
+    confirmExport
+  };
 }
 
-onBeforeUnmount(() => {
-  document.body.removeEventListener('click', hideToolList)
-})
+// 模板选择
+const useTemplate = ({ layout, store, proxy }) => {
+  const templateDialogVisible = ref(false)
+  const templateData = ref(templateList)
+
+  // 打开选择模板弹窗
+  const openTemplate = () => {
+    templateDialogVisible.value = true
+  }
+
+  // 检查布局是否和模板对应
+  const checkLayout = (data) => {
+    if (data.isVueSFC) {
+      if (layout.value !== 'vue') {
+        store.commit("setLayout", 'vue');
+      }
+    } else {
+      if (layout.value === 'vue') {
+        store.commit("setLayout", 'default');
+      }
+    }
+  }
+
+  // 选择某个模板
+  const selectTemplate = (data) => {
+    checkLayout(data)
+    nextTick(() => {
+      store.commit('setCode', JSON.parse(JSON.stringify(data.code)))
+      proxy.$eventEmitter.emit('reset_code')
+      templateDialogVisible.value = false
+    })
+  }
+
+  return {
+    templateDialogVisible,
+    templateData,
+    openTemplate,
+    selectTemplate
+  };
+}
+
+// 运行
+const useRun = ({ proxy, layout }) => {
+  const run = () => {
+    proxy.$eventEmitter.emit('run')
+    if (layout.value === 'newWindowPreview') {
+      proxy.$eventEmitter.emit('preview_window_run')
+    }
+  }
+
+  return {
+    run
+  };
+}
+
+// 设置弹窗
+const useSettingDialog = () => {
+  const settingDialogVisible = ref(false)
+  const settingType = ref('layout')
+  const componentsMap = shallowRef({
+    theme: SettingTheme,
+    layout: SettingLayout,
+    setting: Setting,
+  })
+
+  // 打开设置弹窗
+  const openSetting = () => {
+    settingDialogVisible.value = true
+  }
+
+  return {
+    settingDialogVisible,
+    settingType,
+    componentsMap,
+    openSetting
+  }
+}
+
+// 工具按钮菜单
+const useToolMenu = () => {
+  const showToolsList = ref(false)
+
+  // 隐藏工具下拉菜单
+  const hideToolList = () => {
+    showToolsList.value = false
+  }
+
+  document.body.addEventListener('click', hideToolList)
+
+  onBeforeUnmount(() => {
+    document.body.removeEventListener('click', hideToolList)
+  })
+
+  return {
+    showToolsList,
+    hideToolList
+  };
+}
+
+// created部分
+const { proxy, store, layout } = useInit()
+const { showToolsList, hideToolList } = useToolMenu()
+const { exportNameInputDialogVisible, exportName, exportZipFile, confirmExport } = useExport({ hideToolList, store })
+const { templateDialogVisible, templateData, openTemplate, selectTemplate } = useTemplate({ layout, store, proxy })
+const { run } = useRun({ proxy, layout })
+const { settingDialogVisible, settingType, componentsMap, openSetting } = useSettingDialog()
+
 </script>
 
 <style scoped lang="less">
 .header {
-  background: #1e1f26;
+  background: var(--header-background);
   width: 100%;
   height: 65px;
   display: flex;
@@ -239,12 +261,7 @@ onBeforeUnmount(() => {
 
   .left {
     h1 {
-      color: #fff;
-
-      img {
-        height: 50px;
-        margin-left: -20px;
-      }
+      color: var(--header-logo-color);
     }
   }
 
@@ -263,9 +280,9 @@ onBeforeUnmount(() => {
         white-space: nowrap;
         opacity: 0;
         visibility: hidden;
-        background: #1e1f26;
+        background: var(--dropdown-background);
         border-radius: 6px 0 6px 6px;
-        box-shadow: 0 2rem 4rem #0a0a0c;
+        border: 1px solid var(--dropdown-box-border-color);
         transform: scale(0.5);
         transform-origin: top right;
         transition: all 0.2s ease-in-out;
@@ -284,20 +301,21 @@ onBeforeUnmount(() => {
           cursor: pointer;
           padding: 0 10px;
           line-height: 30px;
-          color: #fff;
+          color: var(--dropdown-color);
           font-size: 14px;
 
           &:hover {
-            background: #444857;
+            background: var(--dropdown-hover-background);
+            color: var(--dropdown-hover-color);
           }
         }
       }
     }
 
     .btn {
-      background: none;
-      border: 3px solid #444857;
-      color: #fff;
+      background: var(--header-btn-background);
+      border: 1px solid var(--header-btn-border-color);
+      color: var(--header-btn-color);
       min-width: 40px;
       height: 40px;
       display: flex;
@@ -312,10 +330,10 @@ onBeforeUnmount(() => {
       font-weight: 400 !important;
       cursor: pointer;
       transition: all 0.3s;
+      opacity: 0.7;
 
       &:hover {
-        background-color: #5a5f73;
-        border-color: #5a5f73;
+        opacity: 1;
       }
 
       &:active {

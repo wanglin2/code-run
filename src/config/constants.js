@@ -27,7 +27,7 @@ export const supportLanguage = {
 	less: 'less',
 	scss: 'scss',
 	sass: 'scss',
-	stylus: 'scss',
+	stylus: 'css',
 	postcss: 'css',
 	html: 'html',
 	pug: 'pug',
@@ -42,7 +42,7 @@ export const supportLanguage = {
 // 支持美化的语言
 export const formatterParserMap = {
 	css: 'css',
-	sass: 'scss',
+	scss: 'scss',
 	less: 'less',
 	postcss: 'css',
 	html: 'html',
@@ -51,6 +51,45 @@ export const formatterParserMap = {
 	typescript: 'typescript',
 	vue2: 'html',
 	vue3: 'html'
+}
+
+// monaco editor包含的语言，可通过vue.config.js的MonacoWebpackPlugin插件进行配置
+export const monacoEditorInnerLanguages = ['css', 'html', 'javascript', 'less', 'pug', 'scss', 'typescript', 'coffee']
+
+// 语言id到作用域名称的映射
+export const scopeNameMap = {
+	html: 'text.html.basic',
+	pug: 'text.pug',
+	css: 'source.css',
+	less: 'source.css.less',
+	scss: 'source.css.scss',
+	sass: 'source.sassdoc',
+	typescript: 'source.ts',
+	javascript: 'source.js',
+	javascriptreact: 'source.js.jsx',
+	coffeescript: 'source.coffee'
+}
+
+
+// 作用域名称到语法文件的映射
+export const tmGrammarJsonMap = {
+	'text.html.basic': 'html.tmLanguage.json',
+	'text.pug': 'pug.tmLanguage.json',
+	'source.css': 'css.tmLanguage.json',
+	'source.css.less': 'less.tmLanguage.json',
+	'source.less': 'less.tmLanguage.json',
+	'source.css.scss': 'scss.tmLanguage.json',
+	'source.sass': 'scss.tmLanguage.json',
+	'source.sassdoc': 'sassdoc.tmLanguage.json',
+	'source.stylus': 'css.tmLanguage.json',
+	'source.ts': 'TypeScript.tmLanguage.json',
+	'source.js': 'JavaScript.tmLanguage.json',
+	'source.js.jsx': 'JavaScriptReact.tmLanguage.json',
+	'source.coffee': 'coffeescript.tmLanguage.json',
+	'source.js.regexp': {
+		format: 'plist',
+		path: 'Regular Expressions (JavaScript).tmLanguage'
+	}
 }
 
 // 编辑器列表
@@ -91,8 +130,7 @@ export const defaultEditorMap = {
 
 // 预处理器列表
 export const preprocessorListMap = {
-	HTML: [
-		{
+	HTML: [{
 			label: 'HTML',
 			value: 'html',
 		},
@@ -101,8 +139,7 @@ export const preprocessorListMap = {
 			value: 'pug',
 		},
 	],
-	JS: [
-		{
+	JS: [{
 			label: 'JavaScript',
 			value: 'javascript',
 		},
@@ -119,14 +156,17 @@ export const preprocessorListMap = {
 			value: 'coffeescript',
 		},
 	],
-	CSS: [
-		{
+	CSS: [{
 			label: 'CSS',
 			value: 'css',
 		},
 		{
 			label: 'LESS',
 			value: 'less',
+		},
+		{
+			label: 'SCSS',
+			value: 'scss',
 		},
 		{
 			label: 'SASS',
@@ -141,8 +181,7 @@ export const preprocessorListMap = {
 			value: 'postcss',
 		},
 	],
-	VUE: [
-		{
+	VUE: [{
 			label: 'Vue2',
 			value: 'vue2',
 		},
@@ -154,8 +193,7 @@ export const preprocessorListMap = {
 }
 
 // 常用cdn服务
-export const cdnSiteList = [
-	{
+export const cdnSiteList = [{
 		name: 'BootCDN',
 		url: 'https://www.bootcdn.cn/',
 	},
@@ -186,8 +224,7 @@ export const cdnSiteList = [
 ]
 
 // 布局列表
-export const layoutList = [
-	{
+export const layoutList = [{
 		name: '默认',
 		value: 'default',
 	},
@@ -261,72 +298,62 @@ export const layoutMap = {
 	vue: VueSFC
 }
 
-// 代码编辑器主题列表
-export const codeThemeList = [
-	{
-		name: "经典",
-		value: "vs",
-	},
-	{
-		name: "深色",
-		value: "vs-dark",
-	},
-	{
-		name: "高对比度深色",
-		value: "hc-black",
-	},
-	{
-		name: "One Dark Pro",
-		value: "OneDarkPro",
-		custom: true,
-		loaded: false
-	},
-	{
-		name: "Horla Color Theme",
-		value: "HorlaColorTheme",
-		custom: true,
-		loaded: false
-	},
-	{
-		name: "Tokyo Night Storm",
-		value: "TokyoNightStorm",
-		custom: true,
-		loaded: false
-	},
-	{
-		name: "Eva Light",
-		value: "EvaLight",
-		custom: true,
-		loaded: false
-	},
-	{
-		name: "Bluloco Light",
-		value: "BlulocoLight",
-		custom: true,
-		loaded: false
-	},
-	{
-		name: "Snazzy Light Color Theme",
-		value: "SnazzyLightColorTheme",
-		custom: true,
-		loaded: false
-	},
-	{
-		name: "Atlantic Night",
-		value: "AtlanticNight",
-		custom: true,
-		loaded: false
-	},
-	{
-		name: "Aurora X",
-		value: "AuroraX",
-		custom: true,
-		loaded: false
-	},
-	{
-		name: "Darktooth",
-		value: "Darktooth",
-		custom: true,
-		loaded: false
+// 编辑器字号
+export const codeFontSizeList = [12, 14, 16, 18, 20, 22, 24].map((item) => {
+	return {
+		name: item + 'px',
+		value: item,
 	}
-];
+})
+
+// 默认的界面主题配置
+// https://code.visualstudio.com/api/references/theme-color
+export const defaultViewThemeConfig = {
+	// 标题栏背景颜色
+	'--header-background': ['titleBar.activeBackground', 'titleBar.inactiveBackground', '#1e1f26'],
+	// 标题栏logo颜色
+	'--header-logo-color': ['titleBar.activeForeground', 'titleBar.inactiveForeground', '#fff'],
+
+	// 标题栏按钮的背景颜色
+	'--header-btn-background': ['none'],
+	// 标题栏的按钮边框颜色
+	'--header-btn-border-color': ['titleBar.activeForeground', '#444857'],
+	// 标题栏的按钮颜色
+	'--header-btn-color': ['titleBar.activeForeground', '#fff'],
+
+	// 标题栏的下拉菜单的背景颜色
+	'--dropdown-background': ['menu.background', 'dropdown.background', '#1e1f26'],
+	// 标题栏的下拉菜单的边框颜色
+	'--dropdown-box-border-color': ['menu.border', 'dropdown.border', 'none'],
+	// 标题栏的下拉菜单的颜色
+	'--dropdown-color': ['menu.foreground', 'dropdown.foreground', '#fff'],
+	// 标题栏的下拉菜单hover时的背景颜色
+	'--dropdown-hover-background': ['menu.selectionBackground', '#5a5f73'],
+	// 标题栏的下拉菜单hover时的颜色
+	'--dropdown-hover-color': ['menu.selectionForeground', '#fff'],
+
+	// 拖动条的背景颜色
+	'--touch-bar-background': ['scrollbarSlider.background', 'scrollbarSlider.activeBackground', 'scrollbarSlider.hoverBackground', '#333642'],
+	// 拖动条左/上边框颜色
+	'--touch-bar-border-left-color': ['menu.separatorBackground', 'rgba(255, 255, 255, 0.05)'],
+	// 拖动条右/下边框颜色
+	'--touch-bar-border-right-color': ['menu.separatorBackground', 'rgba(0, 0, 0, 0.4)'],
+
+	// 编辑器背景颜色
+	'--editor-background': ['editor.background', '#1d1e22'],
+	// 编辑器标题栏的背景颜色
+	'--editor-header-background': ['editorGroupHeader.tabsBackground', 'editor.background', '#1d1e22'],
+	// 编辑器标题栏的标题颜色
+	'--editor-header-title-color': ['tab.activeForeground', 'editor.foreground', '#aaaebc'],
+	// 编辑器标题栏的其他部分颜色
+	'--editor-header-color': ['tab.activeForeground', 'editor.foreground', '#606266'],
+	// 编辑器标题栏下边框颜色
+	'--editor-header-border-bottom-color': ['editorGroup.border', 'editorGroupHeader.tabsBorder', 'rgba(255, 255, 255, 0.05)'],
+
+	// 控制台背景颜色
+	'--console-background': ['panel.background' ,'terminal.background', '#131417'],
+	// 命令输入栏背景颜色
+	'--command-background': ['terminal.background', 'rgba(255, 255, 255, 0.1)'],
+	// 命令输入栏颜色
+	'--command-color': ['terminal.foreground', '#fff']
+}

@@ -4,7 +4,7 @@
 
 项目demo：[https://wanglin2.github.io/code-run-online/](https://wanglin2.github.io/code-run-online/)。
 
-在本项目基础上开发的带用户登录相关功能的版本：[http://lxqnsys.com/code-run/](http://lxqnsys.com/code-run/)。
+在本项目基础上开发的带用户登录相关功能的版本（功能可能滞后）：[http://lxqnsys.com/code-run/](http://lxqnsys.com/code-run/)。
 
 # 相关文章
 
@@ -30,7 +30,7 @@
 
 - [x] 支持`vue`单文件
 
-- [x] 内置多种代码主题
+- [x] 支持直接移植`VSCode`主题，并且已经内置了大量优质主题
 
 # 安装
 
@@ -58,11 +58,9 @@ npm run dev
 
 请先确认打包后应用的基路径，项目默认的基路径为`code-run-online`，所以大部分情况下你都需要修改为你自己的路径，步骤如下：
 
-1.修改`vite.config.js`文件里的`base`字段。
+1.修改`vue.config.js`文件里的`publicPath`字段。
 
-2.修改`index.html`文件里的【Monaco Editor的模块系统配置】的`require.paths.vs`配置。
-
-3.修改`src/config/index.js`文件的`base`字段。
+2.修改`src/config/index.js`文件的`base`字段。
 
 ## 修改路由模式
 
@@ -74,33 +72,37 @@ npm run dev
 npm run build
 ```
 
-# 项目主要依赖
+# 项目主要技术
 
-构建工具： `Vite`
+脚手架： `Vue CLI`
 
-视图库：`VUE 3.X`
+框架：`Vue 3.X`全家桶，通过`script setup`使用`组合式API`
 
 UI库：`element-plus`
 
-编辑器：`Monaco Editor`
+代码编辑器：`Monaco Editor`
 
 # 界面截图
 
-![界面截图1](./assets/Jietu20210830-220337.jpg)
-
-![界面截图2](./assets/Jietu20210830-220311.jpg)
+![界面截图1](./assets/view1.jpg)
 
 # 主题新增教程
 
-本教程针对迁移vscode主题。
+本教程针对迁移`VSCode`主题。
 
-1.确定要新增的主题，先在本地vscode上安装并切换到该主题，然后去[vscode主题商店](https://marketplace.visualstudio.com/search?target=VSCode&category=Themes&sortBy=Installs)搜索该主题，进入主题详情页面后点击右侧的【Download Extension】按钮下载该主题。
+1.确定要新增的主题，先在本地`VSCode`上安装并切换到该主题，然后按`F1`或`Command/Control + Shift + P`或鼠标右键点击`Command Palette/命令面板`，接着找到并点击`Developer:Generate Color Theme From Current Setting/开发人员:使用当前设置生成颜色主题`，然后`VSCode`就会生成一份`json`数据，保存到项目的`/scripts/vscodeThemes/`目录下。
 
-2.找到刚才下载的vscode主题，文件应该是以.vsix结尾的，直接把该后缀改成.zip，然后解压缩，打开其中的/extension/themes/文件夹，里面的.json文件即主题文件，打开该文件。
+2.然后命令行执行命令`npm run convertTheme`，转换后的主题会被输出到项目的`/public/themes`目录下，接下来再执行命令`npm run createThemeList`即可生成主题配置，接下来即可在`设置->主题设置里看到所有主题，并可以切换使用`。
 
-3.在本项目的/public/themes/目录下新增主题文件，文件名即主题名，内容模板可复制example.js里面的【内容模板】,如果新增的是亮色主题，那么`base`选项使用`vs`，暗色主题，`base`选项修改为`vs-dark`, 然后去/src/config/constants.js文件里找到【codeThemeList】配置，新增一项，`value`值即刚才创建的文件名，现在即可以在设置里切换到该主题。
+# 相关命令介绍
 
-4.接下来填充刚才创建的主题文件，【colors】选项直接去复制最开始打开的主题文件里的【colors】选项的内容。【rules】选项里的每一个`foreground`字段代表该`token`的颜色，可以打开/public/themes/目录下的三个测试文件：`test.js`、`test.css`、`test.html`，然后根据【rules】选项里的每一项的`token`注释，找到在测试文件里的对应内容，比如要确定【注释】`comment`的颜色，可以打开`test.js`文件，然后使用快捷键`command + shift + p`，然后找到并点击`Developer:Inspect Editor Tokens and Scopes`，然后再将鼠标点击到【注释】代码上，就会显示出该注释对应的颜色，复制并粘贴到【rules】选项里即可，注意【rules】里的颜色值不需要带`#`，颜色值全部填充完即可刷新页面查看效果。
+- `npm run buildConsole`：编译项目的`/public/console/index.js`文件为`ES5`语法，输出到同目录下的`compile.js`，该文件会在页面预览的`iframe`里进行加载，请勿直接修改`compile.js`文件。
+
+- `npm run buildMonacoWorker`：打包`Monaco Editor`编辑器的`worker`文件，如果使用的`Monaco Editor`编辑器版本变化了需要重新打包。
+
+- `npm run convertTheme`：将`VSCode`主题文件转换成`Monaco Editor`主题文件。
+
+- `npm run createThemeList`：根据主题文件列表自动生成配置文件。
 
 # 新增代码模板
 

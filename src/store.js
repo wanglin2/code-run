@@ -11,11 +11,13 @@ const store = createStore({
             uuid: generateUUID(),
             editData: {
                 config: {
-                    codeTheme: 'vs-dark',
+                    codeTheme: 'OneDarkPro',
+                    pageThemeSyncCodeTheme: true,
                     openAlmightyConsole: false,
                     autoRun: false,
                     layout: 'default',
-                    keepPreviousLogs: true
+                    keepPreviousLogs: true,
+                    codeFontSize: 16
                 },
                 code: {
                     HTML: {
@@ -146,6 +148,26 @@ const store = createStore({
         setKeepPreviousLogs(state, keepPreviousLogs) {
             state.editData.config.keepPreviousLogs = keepPreviousLogs
         },
+
+        /** 
+         * javascript comment 
+         * @Author: 王林25 
+         * @Date: 2021-09-26 15:04:09 
+         * @Desc: 设置编辑器字号 
+         */
+        setCodeFontSize(state, codeFontSize) {
+            state.editData.config.codeFontSize = codeFontSize
+        },
+
+        /** 
+         * javascript comment 
+         * @Author: 王林25 
+         * @Date: 2021-09-27 10:27:03 
+         * @Desc: 设置主题同步 
+         */
+        setPageThemeSyncCodeTheme(state, pageThemeSyncCodeTheme) {
+            state.editData.config.pageThemeSyncCodeTheme = pageThemeSyncCodeTheme
+        }
     },
     actions: {
         /** 

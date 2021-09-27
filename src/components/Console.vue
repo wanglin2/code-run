@@ -48,170 +48,179 @@
 <script setup>
 import {
   ref,
-  defineProps,
-  onMounted,
   onBeforeUnmount,
   getCurrentInstance,
   nextTick,
   computed,
-} from 'vue'
+} from "vue";
 
-const { proxy } = getCurrentInstance()
+//  hooks定义部分
 
-// props
-defineProps({})
+// 初始化
+const useInit = () => {
+  const { proxy } = getCurrentInstance();
 
-const logList = ref([])
-const logBoxRef = ref(null)
-const errorCount = computed(() => {
-  return logList.value.filter((item) => {
-    return item.type === 'error'
-  }).length
-})
+  return {
+    proxy,
+  };
+};
 
-/**
- * @Author: 王林25
- * @Date: 2021-05-10 09:53:54
- * @Desc: 接收打印信息
- */
-const onMessage = ({ data = {} }) => {
-  if (data.type === 'console') {
-    if (data.method === 'clear') {
-      // 清空控制台
-      clear()
-    } else {
-      logList.value.push({
-        type: data.method,
-        data: data.data,
-      })
-      nextTick(() => {
-        logBoxRef.value.scrollTop = logBoxRef.value.scrollHeight
-      })
-    }
-  }
-}
+// 日志处理
+const logBoxRef = ref(null); // 日志容器dom
+const useLog = ({ proxy }) => {
+  const logList = ref([]); // 日志信息列表
 
-// 监听iframe信息
-window.addEventListener('message', onMessage)
+  // 错误信息数量
+  const errorCount = computed(() => {
+    return logList.value.filter((item) => {
+      return item.type === "error";
+    }).length;
+  });
 
-/**
- * @Author: 王林25
- * @Date: 2021-05-07 19:18:31
- * @Desc: 清空
- */
-const clear = () => {
-  logList.value = []
-}
+  // 清空控制台日志
+  const clear = () => {
+    logList.value = [];
+  };
 
-proxy.$eventEmitter.on('clear_logs', clear)
+  proxy.$eventEmitter.on("clear_logs", clear);
 
-/**
- * @Author: 王林25
- * @Date: 2021-05-08 14:56:36
- * @Desc: 获取指定类名的第一个子节点
- */
-const getChildByClassName = (el, className) => {
-  let children = el.children
-  for (let i = 0; i < children.length; i++) {
-    if (children[i].classList.contains(className)) {
-      return children[i]
-    }
-  }
-  return null
-}
-
-/**
- * @Author: 王林25
- * @Date: 2021-05-08 14:50:05
- * @Desc: json数据展开收缩
- */
-let expandIndex = 0
-const jsonClick = (e) => {
-  // 点击是展开收缩按钮
-  if (e.target && e.target.classList.contains('expandBtn')) {
-    let target = e.target
-    let parent = target.parentNode
-    // id，每个展开收缩按钮唯一的标志
-    let index = target.getAttribute('data-index')
-    if (index === null) {
-      index = expandIndex++
-      target.setAttribute('data-index', index)
-    }
-    // 获取当前状态，0表示收缩、1表示展开
-    let status = target.getAttribute('expand-status') || '1'
-    // 在子节点里找到wrap元素
-    let wrapEl = getChildByClassName(parent, 'wrap')
-    // 找到下层所有的按钮节点
-    let btnEls = wrapEl.querySelectorAll('.expandBtn')
-    // 收缩状态 -> 展开状态
-    if (status === '0') {
-      // 设置状态为展开
-      target.setAttribute('expand-status', '1')
-      // 展开
-      wrapEl.style.height = 'auto'
-      // 按钮箭头旋转
-      target.classList.remove('shrink')
-      // 移除省略号元素
-      let ellipsisEl = getChildByClassName(parent, 'ellipsis')
-      parent.removeChild(ellipsisEl)
-      // 显示下级展开收缩按钮
-      for (let i = 0; i < btnEls.length; i++) {
-        let _index = btnEls[i].getAttribute('data-for-index')
-        // 只有被当前按钮收缩的按钮才显示
-        if (_index === index) {
-          btnEls[i].removeAttribute('data-for-index')
-          btnEls[i].style.display = 'inline-block'
-        }
-      }
-    } else if (status === '1') {
-      // 展开状态 -> 收缩状态
-      target.setAttribute('expand-status', '0')
-      wrapEl.style.height = 0
-      target.classList.add('shrink')
-      let ellipsisEl = document.createElement('div')
-      ellipsisEl.textContent = '...'
-      ellipsisEl.className = 'ellipsis'
-      parent.insertBefore(ellipsisEl, wrapEl)
-      for (let i = 0; i < btnEls.length; i++) {
-        let _index = btnEls[i].getAttribute('data-for-index')
-        // 只隐藏当前可以被隐藏的按钮
-        if (_index === null) {
-          btnEls[i].setAttribute('data-for-index', index)
-          btnEls[i].style.display = 'none'
-        }
+  // 接收打印信息
+  const onMessage = ({ data = {} }) => {
+    if (data.type === "console") {
+      if (data.method === "clear") {
+        clear();
+      } else {
+        logList.value.push({
+          type: data.method,
+          data: data.data,
+        });
+        nextTick(() => {
+          logBoxRef.value.scrollTop = logBoxRef.value.scrollHeight;
+        });
       }
     }
-  }
-}
+  };
 
-const jsInput = ref('')
+  // 监听iframe信息
+  window.addEventListener("message", onMessage);
 
-/**
- * @Author: 王林25
- * @Date: 2021-05-12 15:07:04
- * @Desc: 动态执行js
- */
-const implementJs = (e) => {
-  if (e.shiftKey) {
-    return
-  }
-  e.preventDefault()
-  if (jsInput.value.trim()) {
-    proxy.$eventEmitter.emit('dynamic_js_command', jsInput.value.trim())
-    jsInput.value = ''
-  }
-}
+  onBeforeUnmount(() => {
+    window.removeEventListener("message", onMessage);
+    proxy.$eventEmitter.off("clear_logs", clear);
+  });
 
-// 挂载完成
-onMounted(() => {
-  // proxy.$eventEmitter.on('iframeMouseup', onMouseup)
-})
+  return {
+    logList,
+    errorCount,
+    clear,
+  };
+};
 
-// 即将解除挂载
-onBeforeUnmount(() => {
-  window.removeEventListener('message', onMessage)
-  // proxy.$eventEmitter.off('iframeMouseup', onMouseup)
-})
+// 动态执行js
+const useImplementJs = ({ proxy }) => {
+  const jsInput = ref("");
+
+  // 动态执行js
+  const implementJs = (e) => {
+    if (e.shiftKey) {
+      return;
+    }
+    e.preventDefault();
+    if (jsInput.value.trim()) {
+      proxy.$eventEmitter.emit("dynamic_js_command", jsInput.value.trim());
+      jsInput.value = "";
+    }
+  };
+
+  return {
+    jsInput,
+    implementJs,
+  };
+};
+
+// json数据格式化
+const useJSONFormat = () => {
+  // 获取指定类名的第一个子节点
+  const getChildByClassName = (el, className) => {
+    let children = el.children;
+    for (let i = 0; i < children.length; i++) {
+      if (children[i].classList.contains(className)) {
+        return children[i];
+      }
+    }
+    return null;
+  };
+
+  // json数据展开收缩
+  let expandIndex = 0;
+  const jsonClick = (e) => {
+    // 点击是展开收缩按钮
+    if (e.target && e.target.classList.contains("expandBtn")) {
+      let target = e.target;
+      let parent = target.parentNode;
+      // id，每个展开收缩按钮唯一的标志
+      let index = target.getAttribute("data-index");
+      if (index === null) {
+        index = expandIndex++;
+        target.setAttribute("data-index", index);
+      }
+      // 获取当前状态，0表示收缩、1表示展开
+      let status = target.getAttribute("expand-status") || "1";
+      // 在子节点里找到wrap元素
+      let wrapEl = getChildByClassName(parent, "wrap");
+      // 找到下层所有的按钮节点
+      let btnEls = wrapEl.querySelectorAll(".expandBtn");
+      // 收缩状态 -> 展开状态
+      if (status === "0") {
+        // 设置状态为展开
+        target.setAttribute("expand-status", "1");
+        // 展开
+        wrapEl.style.height = "auto";
+        // 按钮箭头旋转
+        target.classList.remove("shrink");
+        // 移除省略号元素
+        let ellipsisEl = getChildByClassName(parent, "ellipsis");
+        parent.removeChild(ellipsisEl);
+        // 显示下级展开收缩按钮
+        for (let i = 0; i < btnEls.length; i++) {
+          let _index = btnEls[i].getAttribute("data-for-index");
+          // 只有被当前按钮收缩的按钮才显示
+          if (_index === index) {
+            btnEls[i].removeAttribute("data-for-index");
+            btnEls[i].style.display = "inline-block";
+          }
+        }
+      } else if (status === "1") {
+        // 展开状态 -> 收缩状态
+        target.setAttribute("expand-status", "0");
+        wrapEl.style.height = 0;
+        target.classList.add("shrink");
+        let ellipsisEl = document.createElement("div");
+        ellipsisEl.textContent = "...";
+        ellipsisEl.className = "ellipsis";
+        parent.insertBefore(ellipsisEl, wrapEl);
+        for (let i = 0; i < btnEls.length; i++) {
+          let _index = btnEls[i].getAttribute("data-for-index");
+          // 只隐藏当前可以被隐藏的按钮
+          if (_index === null) {
+            btnEls[i].setAttribute("data-for-index", index);
+            btnEls[i].style.display = "none";
+          }
+        }
+      }
+    }
+  };
+
+  return {
+    jsonClick,
+  };
+};
+
+// created部分
+const { proxy } = useInit();
+const { logList, errorCount, clear } = useLog({ proxy });
+const { jsInput, implementJs } = useImplementJs({ proxy });
+const { jsonClick } = useJSONFormat();
 </script>
 
 <style scoped lang="less">
@@ -219,7 +228,7 @@ onBeforeUnmount(() => {
   position: relative;
   width: 100%;
   height: 100%;
-  background-color: #131417;
+  background-color: var(--console-background);
   overflow: hidden;
 
   .header {
@@ -228,8 +237,8 @@ onBeforeUnmount(() => {
     top: 0;
     width: 100%;
     height: 30px;
-    background-color: #333642;
-    color: #aaaebc;
+    background-color: var(--touch-bar-background);
+    color: var(--editor-header-title-color);
     font-size: 12px;
     padding: 0 5px;
     display: flex;
@@ -244,17 +253,18 @@ onBeforeUnmount(() => {
 
     .btn {
       border: 3px solid transparent;
-      color: white;
+      color: var(--command-color);
       cursor: pointer;
       font-size: 12px;
       padding: 0 5px;
+      opacity: 0.7;
 
       &:active {
         transform: translateY(1px);
       }
 
       &:hover {
-        background: #444857;
+        opacity: 1;
       }
     }
 
@@ -398,7 +408,7 @@ onBeforeUnmount(() => {
     bottom: 0;
     width: 100%;
     height: 30px;
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--command-background);
     padding: 0 8px 0 0;
     display: flex;
 
@@ -408,7 +418,7 @@ onBeforeUnmount(() => {
       display: flex;
       justify-content: center;
       align-items: center;
-      color: #fff;
+      color: var(--command-color);
       flex-grow: 0;
       flex-shrink: 0;
     }
@@ -419,7 +429,7 @@ onBeforeUnmount(() => {
       border: none;
       background-color: transparent;
       outline: none;
-      color: #fff;
+      color: var(--command-color);
       padding: 7px 0 7px 7px;
       resize: none;
     }

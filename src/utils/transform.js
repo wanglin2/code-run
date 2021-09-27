@@ -17,6 +17,7 @@ const html = (preprocessor, code) => {
                     break;
                 case 'pug':
                     resolve(window.pug.render(code))
+                    break;
                 default:
                     resolve('')
                     break;
@@ -51,6 +52,7 @@ const js = (preprocessor, code) => {
                         ]
                     }).code
                     resolve(_code)
+                    break;
                 case 'typescript':
                     _code = window.typescript.transpileModule(code, {
                         reportDiagnostics: true,
@@ -98,10 +100,13 @@ const css = (preprocessor, code) => {
                             });
                     break;
                 case 'sass':
+                case 'scss':
                     if (!sass) {
                         sass = new window.Sass();
                     }
-                    sass.compile(code, (result) => {
+                    sass.compile(code, {
+                        indentedSyntax: preprocessor === 'sass'
+                    }, (result) => {
                         resolve(result.text)
                     });
                     break;
@@ -222,7 +227,8 @@ const parseVue2ScriptPlugin = (data) => {
  * @Desc: 解析vue3 script语法 
  */
 const parseVue3ScriptPlugin = (data) => {
-    return function () {
+    return function (babel) {
+        let t = babel.types
         return {
             visitor: {
                 // export default -> Vue.create

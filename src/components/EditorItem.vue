@@ -49,7 +49,7 @@
               placement="bottom"
               v-if="showAddBtn"
             >
-              <div class="addBtn" @click="addResource">
+              <div class="addBtn" @click="addResource()">
                 <span class="el-icon-plus"></span>
               </div>
             </el-tooltip>
@@ -79,286 +79,296 @@
 import {
   ref,
   defineProps,
-  useContext,
   onBeforeUnmount,
   onMounted,
   watch,
   nextTick,
-} from "vue";
-import { ElMessage } from "element-plus";
-import ResizeObserver from "resize-observer-polyfill";
-import { supportLanguage, formatterParserMap } from "@/config/constants";
-import { codeThemeList } from "@/config/constants";
-import { base } from '@/config'
+  defineEmits,
+} from 'vue'
+import ResizeObserver from 'resize-observer-polyfill'
+import { supportLanguage, formatterParserMap } from '@/config/constants'
+import { ElTooltip, ElSelect, ElOption } from 'element-plus'
+import * as monaco from 'monaco-editor/esm/vs/editor/editor.api'
+import { wire } from '@/utils/monacoEditor'
 
 // 触发事件
-const { emit } = useContext();
+const emit = defineEmits([
+  'preprocessor-change',
+  'code-change',
+  'blur',
+  'add-resource',
+  'space-change'
+])
 
 // props
 const props = defineProps({
   preprocessorList: {
     type: Array,
     default() {
-      return [];
+      return []
     },
   },
   title: {
     type: String,
-    default: "",
+    default: '',
   },
   language: {
     type: String,
-    default: "",
+    default: '',
+  },
+  codeTheme: {
+    type: String,
+    default: '',
+  },
+  codeFontSize: {
+    type: Number,
+    default: 16,
   },
   content: {
     type: String,
-    default: "",
+    default: '',
   },
   showAddBtn: {
     type: Boolean,
     default: false,
   },
-  codeTheme: {
-    type: String,
-    default: "",
-  },
   dir: {
     type: String,
-    default: "",
+    default: '',
   },
   showAllAddResourcesBtn: {
     type: Boolean,
     default: false,
-  }
-});
+  },
+})
 
+// hooks定义部分
+
+// 创建编辑器
+let editor = null // 编辑器实例
 // 编辑器容器
-const editorEl = ref(null);
-// 编辑器
-let editor = null;
-// 预处理器
-const preprocessor = ref(props.language);
-const noSpace = ref(false);
-
-/**
- * @Author: 王林25
- * @Date: 2021-05-12 19:16:00
- * @Desc: 修改预处理器
- */
-const preprocessorChange = (e) => {
-  emit("preprocessor-change", e);
-};
-
-/**
- * @Author: 王林25
- * @Date: 2021-04-29 20:05:50
- * @Desc: 创建编辑器
- */
-const tryMaxCount = 10;
-let tryCount = 0;
-const createEditor = () => {
-  if (!editor) {
-    // 有时候monaco对象还不存在，所以递归进行检查
-    if (!window.monaco) {
-      console.log("Monaco对象不存在，正在重新获取");
-      if (tryCount > tryMaxCount) {
-        return ElMessage.error("页面加载出错，请刷新重试");
-      }
-      tryCount++;
-      setTimeout(() => {
-        createEditor();
-      }, 0);
-      return;
-    }
-    // 创建编辑器
-    editor = window.monaco.editor.create(editorEl.value, {
-      model: null,
-      minimap: {
-        enabled: false, // 关闭小地图
-      },
-      wordWrap: "on", // 代码超出换行
-      theme: props.codeTheme || "vs-dark", // 主题
-      fontSize: 18,
-      fontFamily: "MonoLisa, monospace",
-    });
-    // 设置文档内容
-    updateDoc(props.content, props.language);
-    // 监听编辑事件
-    editor.onDidChangeModelContent((e) => {
-      emit("code-change", editor.getValue());
-    });
-    // 监听失焦事件
-    editor.onDidBlurEditorText((e) => {
-      emit("blur", editor.getValue());
-    });
-  }
-};
-
-/** 
- * @Author: 王林 
- * @Date: 2021-09-11 23:40:29 
- * @Desc: 加载主题 
- */
-const loadTheme = async () => {
-  try {
-    if (!props.codeTheme) {
-      return;
-    }
-    let item = codeThemeList.find((item) => {
-      return item.value === props.codeTheme;
-    })
-    if (item && item.custom && !item.loaded) {
-      await loadjs([`${ base }themes/${props.codeTheme}.js`], {
-          returnPromise: true
+const editorEl = ref(null)
+const useCreateEditor = ({ props, emit, updateDoc }) => {
+  // 创建编辑器
+  const createEditor = async () => {
+    if (!editor) {
+      // 创建编辑器
+      editor = monaco.editor.create(editorEl.value, {
+        model: null,
+        minimap: {
+          enabled: false, // 关闭小地图
+        },
+        wordWrap: 'on', // 代码超出换行
+        theme: props.codeTheme || 'vs-dark', // 主题
+        fontSize: props.codeFontSize || 16,
+        fontFamily: 'MonoLisa, monospace',
+        contextmenu: false, // 不显示右键菜单
+        fixedOverflowWidgets: true, // 让语法提示层能溢出容器
       })
-      item.loaded = true
+      // 设置文档内容
+      updateDoc(props.content, props.language)
+      // 支持textMate语法解析
+      wire(props.language, editor)
+      // 监听编辑事件
+      editor.onDidChangeModelContent(() => {
+        emit('code-change', editor.getValue())
+      })
+      // 监听失焦事件
+      editor.onDidBlurEditorText(() => {
+        emit('blur', editor.getValue())
+      })
     }
-  } catch (error) {
-    console.log(error)
-    ElMessage.error('主题加载失败，请重试')
+    // 更新字号
+    watch(
+      () => {
+        return props.codeFontSize
+      },
+      (val) => {
+        editor.updateOptions({
+          fontSize: val,
+        })
+      }
+    )
+  }
+
+  return {
+    createEditor,
   }
 }
 
-// 监听设置代码主题
-watch(
-  () => {
-    return props.codeTheme;
-  },
-  async () => {
-    await loadTheme()  
-    monaco.editor.setTheme(props.codeTheme);
+// 选择预处理器
+const usePreprocessor = ({ props, emit, updateDoc }) => {
+  // 预处理器
+  const preprocessor = ref(props.language)
+  // 修改预处理器
+  const preprocessorChange = (e) => {
+    emit('preprocessor-change', e)
   }
-);
+  // 更新语言
+  watch(
+    () => {
+      return props.language
+    },
+    () => {
+      preprocessor.value = props.language
+      updateDoc(props.content, props.language)
+      wire(props.language, editor)
+    }
+  )
 
-/**
- * @Author: 王林25
- * @Date: 2021-05-13 09:38:24
- * @Desc: 更新编辑器文档模型
- */
-const updateDoc = (code, language) => {
-  if (!editor) {
-    return;
+  return {
+    preprocessor,
+    preprocessorChange,
   }
-  let oldModel = editor.getModel();
-  let newModel = window.monaco.editor.createModel(
-    code,
-    supportLanguage[language]
-  );
-  editor.setModel(newModel);
-  if (oldModel) {
-    oldModel.dispose();
+}
+
+// 处理尺寸调整
+const editorItem = ref(null)
+const useSizeChange = ({ props }) => {
+  const noSpace = ref(false)
+  // 更新尺寸
+  let timer = null
+  const resize = () => {
+    // 100ms内只执行一次，优化卡顿问题
+    if (timer) {
+      return
+    }
+    timer = setTimeout(() => {
+      nextTick(() => {
+        let { width, height } = editorItem.value.getBoundingClientRect()
+        // 宽度小于100像素则旋转标题
+        noSpace.value = (props.dir === 'h' ? width : height) <= 100
+        emit('space-change', noSpace.value)
+        editor && editor.layout()
+        timer = null
+      })
+    }, 100)
   }
-};
 
-/**
- * @Author: 王林25
- * @Date: 2021-04-30 17:19:25
- * @Desc: 获取文档内容
- */
-const getValue = () => {
-  return editor.getValue();
-};
+  // 监听dom大小变化
+  const ro = new ResizeObserver((entries) => {
+    for (const entry of entries) {
+      if (entry.target.classList.contains('dragItem')) {
+        resize()
+      }
+    }
+  })
 
-/**
- * @Author: 王林25
- * @Date: 2021-05-13 19:30:08
- * @Desc: 点击添加资源
- */
-const addResource = (languageType) => {
-  emit("add-resource", languageType);
-};
+  // 挂载完成
+  onMounted(() => {
+    ro.observe(editorItem.value.parentNode)
+  })
 
-// 更新文档内容
-watch(
-  () => {
-    return props.content;
-  },
-  () => {
-    updateDoc(props.content, props.language);
+  // 即将解除挂载
+  onBeforeUnmount(() => {
+    ro.unobserve(editorItem.value.parentNode)
+  })
+
+  return {
+    noSpace,
   }
-);
+}
 
-// 更新语言
-watch(
-  () => {
-    return props.language;
-  },
-  () => {
-    preprocessor.value = props.language;
-    updateDoc(props.content, props.language);
-  }
-);
-
-const editorItem = ref(null);
-
-// 更新尺寸
-let timer = null;
-const resize = () => {
-  // 100ms内只执行一次，优化卡顿问题
-  if (timer) {
-    return;
-  }
-  timer = setTimeout(() => {
-    nextTick(() => {
-      let { width, height } = editorItem.value.getBoundingClientRect();
-      noSpace.value = (props.dir === "h" ? width : height) <= 100;
-      editor && editor.layout();
-      timer = null;
-    });
-  }, 100);
-};
-
-/**
- * @Author: 王林25
- * @Date: 2021-05-18 10:16:50
- * @Desc: 监听dom大小变化
- */
-const ro = new ResizeObserver((entries, observer) => {
-  for (const entry of entries) {
-    if (entry.target.classList.contains("editorItem")) {
-      resize();
+// 处理文档内容
+const useDoc = ({ props }) => {
+  // 更新编辑器文档模型
+  const updateDoc = (code, language) => {
+    if (!editor) {
+      return
+    }
+    let oldModel = editor.getModel()
+    let newModel = monaco.editor.createModel(code, supportLanguage[language])
+    editor.setModel(newModel)
+    if (oldModel) {
+      oldModel.dispose()
     }
   }
-});
 
-/**
- * @Author: 王林25
- * @Date: 2021-05-20 16:06:31
- * @Desc: 代码格式化
- */
-const codeFormatter = () => {
-  let str = prettier.format(getValue(), {
-    parser: formatterParserMap[props.language],
-    plugins: prettierPlugins,
-  });
-  // 设置文档内容
-  updateDoc(str, props.language);
-  // 监听编辑事件
-  editor.onDidChangeModelContent((e) => {
-    emit("code-change", editor.getValue());
-  });
-};
+  // 获取文档内容
+  const getValue = () => {
+    return editor.getValue()
+  }
 
-// 挂载完成
-onMounted(async () => {
-  await loadTheme()
-  createEditor();
-  ro.observe(editorItem.value);
-});
+  // 更新文档内容
+  watch(
+    () => {
+      return props.content
+    },
+    () => {
+      updateDoc(props.content, props.language)
+    }
+  )
 
-// 即将解除挂载
-onBeforeUnmount(() => {
-  ro.unobserve(editorItem.value);
-});
+  return {
+    updateDoc,
+    getValue,
+  }
+}
+
+// 处理资源
+const useResource = ({ emit }) => {
+  // 点击添加资源
+  const addResource = (languageType) => {
+    emit('add-resource', languageType)
+  }
+  return {
+    addResource,
+  }
+}
+
+// 代码格式化
+const useCodeFormat = ({ getValue, updateDoc, emit }) => {
+  // 代码格式化
+  const codeFormatter = () => {
+    let str = window.prettier.format(getValue(), {
+      parser: formatterParserMap[props.language],
+      plugins: window.prettierPlugins,
+    })
+    // 设置文档内容
+    updateDoc(str, props.language)
+    // 监听编辑事件
+    editor.onDidChangeModelContent(() => {
+      emit('code-change', editor.getValue())
+    })
+  }
+
+  return {
+    codeFormatter,
+  }
+}
+
+// 初始化
+const useInit = ({ createEditor }) => {
+  onMounted(() => {
+    createEditor()
+  })
+}
+
+// created部分
+const { updateDoc, getValue } = useDoc({ props })
+const { createEditor } = useCreateEditor({
+  props,
+  emit,
+  updateDoc,
+})
+const { preprocessor, preprocessorChange } = usePreprocessor({
+  props,
+  emit,
+  updateDoc,
+})
+const { noSpace } = useSizeChange({ props })
+const { addResource } = useResource({ emit })
+const { codeFormatter } = useCodeFormat({ getValue, updateDoc, emit })
+useInit({ createEditor })
 </script>
 
 <style scoped lang="less">
 .editorItem {
   width: 100%;
   height: 100%;
-  background-color: #1d1e22;
   display: flex;
-  // overflow: hidden;
+  overflow: hidden;
+  background-color: var(--editor-background);
 
   .editorContent {
     width: 100%;
@@ -369,8 +379,8 @@ onBeforeUnmount(() => {
     .editorContentHeader {
       width: 100%;
       height: 35px;
-      background-color: rgba(0, 0, 0, 0.1);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      background: var(--editor-header-background);
+      border-bottom: 1px solid var(--editor-header-border-bottom-color);
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -381,7 +391,7 @@ onBeforeUnmount(() => {
 
       .title {
         font-weight: bold;
-        color: #aaaebc;
+        color: var(--editor-header-title-color);
         font-size: 18px;
         transition: all 0.2s;
 
@@ -399,11 +409,12 @@ onBeforeUnmount(() => {
       /deep/ .el-input__inner {
         width: 120px;
         background-color: transparent;
-        border-color: #606266;
+        border-color: var(--editor-header-color);
+        color: var(--editor-header-color);
       }
 
       /deep/ .el-select .el-input .el-select__caret {
-        color: #606266;
+        color: var(--editor-header-color);
       }
 
       .right {
@@ -417,15 +428,17 @@ onBeforeUnmount(() => {
           justify-content: center;
           align-items: center;
           margin-right: 10px;
-          color: #606266;
+          color: var(--editor-header-color);
           font-weight: bold;
           cursor: pointer;
           border-radius: 3px;
           overflow: hidden;
           transition: all 0.3s;
+          opacity: 0.7;
 
           &:hover {
-            background-color: #333642;
+            background-color: transparent;
+            opacity: 1;
           }
         }
       }
@@ -434,7 +447,6 @@ onBeforeUnmount(() => {
     .editorContentBody {
       width: 100%;
       height: 100%;
-      overflow: hidden;
     }
   }
 }

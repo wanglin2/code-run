@@ -1,0 +1,249 @@
+{
+    "inherit": false,
+    "base": "vs-dark",
+    "colors": {
+        "editor.background": "#fdfdfd",
+        "editor.foreground": "#474747",
+        "editor.lineHighlightBackground": "#d1f6ff60",
+        "editor.selectionBackground": "#d1f6ff",
+        "editorCursor.foreground": "#3b3b3b",
+        "editorWhitespace.foreground": "#424242",
+        "titleBar.activeBackground": "#f3f3f3"
+    },
+    "rules": [
+        {
+            "foreground": "#555555",
+            "fontStyle": "italic",
+            "token": "comment"
+        },
+        {
+            "foreground": "#3D9CA9",
+            "token": "string"
+        },
+        {
+            "foreground": "#CC5200",
+            "token": "constant.numeric"
+        },
+        {
+            "foreground": "#CC5200",
+            "token": " support.constant"
+        },
+        {
+            "foreground": "#CC5200",
+            "token": " constant.character"
+        },
+        {
+            "foreground": "#D43C47",
+            "token": "constant.language"
+        },
+        {
+            "foreground": "#D37612",
+            "token": "constant.character"
+        },
+        {
+            "foreground": "#D37612",
+            "token": " constant.other"
+        },
+        {
+            "foreground": "#059481",
+            "token": ">constant.other.object.key"
+        },
+        {
+            "foreground": "#059481",
+            "token": "constant.other.object.key.js"
+        },
+        {
+            "foreground": "#0078DE",
+            "fontStyle": "",
+            "token": "variable"
+        },
+        {
+            "foreground": "#333333",
+            "token": "variable.other.readwrite"
+        },
+        {
+            "foreground": "#11A0D4",
+            "token": "meta.object.member"
+        },
+        {
+            "foreground": "#964BB4",
+            "token": "variable.other.property"
+        },
+        {
+            "foreground": "#964BB4",
+            "token": "support.variable.property"
+        },
+        {
+            "foreground": "#007AE6",
+            "fontStyle": "bold",
+            "token": "support.other.variable"
+        },
+        {
+            "foreground": "#05AD97",
+            "token": "variable.language"
+        },
+        {
+            "foreground": "#05AD97",
+            "token": "variable.other.member"
+        },
+        {
+            "foreground": "#E04528",
+            "token": "variable.parameter"
+        },
+        {
+            "foreground": "#E04528",
+            "token": "meta.parameters"
+        },
+        {
+            "foreground": "#E04528",
+            "token": "meta.function.parameters"
+        },
+        {
+            "foreground": "#E04528",
+            "token": "meta.function.parameters.js"
+        },
+        {
+            "foreground": "#05AD97",
+            "token": "keyword"
+        },
+        {
+            "foreground": "#4D4D4D",
+            "token": "keyword.operator"
+        },
+        {
+            "foreground": "#4D4D4D",
+            "token": "meta.delimiter.comma"
+        },
+        {
+            "foreground": "#05AD97",
+            "token": "keyword.operator.logical.python"
+        },
+        {
+            "foreground": "#05AD97",
+            "token": "keyword.operator.in.js"
+        },
+        {
+            "foreground": "#05AD97",
+            "token": "keyword.operator.of.js"
+        },
+        {
+            "foreground": "#059481",
+            "token": "keyword.control.go"
+        },
+        {
+            "foreground": "#CC4A33",
+            "token": "storage"
+        },
+        {
+            "foreground": "#3396CC",
+            "token": "storage.modifier"
+        },
+        {
+            "foreground": "#D10771",
+            "token": "storage.type"
+        },
+        {
+            "foreground": "#D10771",
+            "token": "entity.name.type"
+        },
+        {
+            "foreground": "#1292E3",
+            "token": "entity.name.type.namespace"
+        },
+        {
+            "foreground": "#1292E3",
+            "token": " markup.heading.markdown"
+        },
+        {
+            "foreground": "#D43C47",
+            "token": "markup.underline.link"
+        },
+        {
+            "foreground": "#09A177",
+            "token": "beginning.punctuation.definition.list.markdown"
+        },
+        {
+            "foreground": "#05AD97",
+            "token": "entity.name.class"
+        },
+        {
+            "foreground": "#05AD97",
+            "token": "entity.name.type.class"
+        },
+        {
+            "foreground": "#05AD97",
+            "token": "entity.other.inherited-class"
+        },
+        {
+            "foreground": "#8D12BA",
+            "token": "entity.name.function"
+        },
+        {
+            "foreground": "#8D12BA",
+            "token": "variable.function"
+        },
+        {
+            "foreground": "#8D12BA",
+            "token": "meta.function-call.generic.python"
+        },
+        {
+            "foreground": "#8D12BA",
+            "token": "support.function.any-method"
+        },
+        {
+            "foreground": "#0F8EBD",
+            "token": "entity.name.tag"
+        },
+        {
+            "foreground": "#B017E8",
+            "token": "entity.other.attribute-name"
+        },
+        {
+            "foreground": "#7B10A2",
+            "token": "support.function"
+        },
+        {
+            "foreground": "#3396CC",
+            "token": "support.constant"
+        },
+        {
+            "foreground": "#3396CC",
+            "token": "support.type"
+        },
+        {
+            "foreground": "#3396CC",
+            "token": " support.class"
+        },
+        {
+            "foreground": "#C5074A",
+            "fontStyle": "bold",
+            "token": "invalid"
+        },
+        {
+            "foreground": "#C5074A",
+            "fontStyle": "bold",
+            "token": "invalid.deprecated"
+        },
+        {
+            "foreground": "#316BCD",
+            "token": "token.info-token"
+        },
+        {
+            "foreground": "#CD9731",
+            "token": "token.warn-token"
+        },
+        {
+            "foreground": "#CD3131",
+            "token": "token.error-token"
+        },
+        {
+            "foreground": "#800080",
+            "token": "token.debug-token"
+        },
+        {
+            "token": "",
+            "foreground": "#474747"
+        }
+    ],
+    "encodedTokensColors": []
+}

@@ -1,6 +1,5 @@
 ! function (e, a) {
-    // "object" == typeof exports && "object" == typeof module ? module.exports = a() : "function" == typeof define && define.amd ? define([], a) : "object" == typeof exports ? exports.Babel = a() : e.Babel = a()
-    e.Babel = a()
+    "object" == typeof exports && "object" == typeof module ? module.exports = a() : "function" == typeof define && define.amd ? define([], a) : "object" == typeof exports ? exports.Babel = a() : e.Babel = a()
 }(this, function () {
     return function (e) {
         function a(n) {
