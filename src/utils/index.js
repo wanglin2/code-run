@@ -102,3 +102,15 @@ export const compileVue = async (vueLanguage, vueContent) => {
             })
     })
 }
+
+/** 
+ * javascript comment 
+ * @Author: 王林25 
+ * @Date: 2021-09-28 11:16:28 
+ * @Desc: 分割驼峰式字符串 
+ */
+export const splitHumpStr = (str, char = ' ') => {
+    return str.replace(/([A-Z])/g, '-$1').split('-').filter((item) => {
+        return !!item;
+    }).join(char)
+}

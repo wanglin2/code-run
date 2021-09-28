@@ -39,6 +39,7 @@
     "monaco-editor": "^0.26.0",
     "monaco-editor-textmate": "^3.0.0",
     "resize-observer-polyfill": "^1.5.1",
+    "vscode-theme-to-monaco-theme-web": "^1.0.0",
     "vue": "^3.2.4",
     "vue-router": "^4.0.6",
     "vuex": "^4.0.0"
