@@ -44,6 +44,13 @@ export const codeThemeList = [
         "cache": ""
     },
     {
+        "name": "Code Sand Box",
+        "value": "CodeSandBox",
+        "custom": true,
+        "loaded": false,
+        "cache": ""
+    },
+    {
         "name": "Darktooth",
         "value": "Darktooth",
         "custom": true,
@@ -86,6 +93,13 @@ export const codeThemeList = [
         "cache": ""
     },
     {
+        "name": "Kimbie Dark",
+        "value": "KimbieDark",
+        "custom": true,
+        "loaded": false,
+        "cache": ""
+    },
+    {
         "name": "Monokai Dimmed",
         "value": "MonokaiDimmed",
         "custom": true,
@@ -121,15 +135,15 @@ export const codeThemeList = [
         "cache": ""
     },
     {
-        "name": "Re U I",
-        "value": "ReUI",
+        "name": "Remedy Dark",
+        "value": "RemedyDark",
         "custom": true,
         "loaded": false,
         "cache": ""
     },
     {
-        "name": "Remedy Dark",
-        "value": "RemedyDark",
+        "name": "Re U I",
+        "value": "ReUI",
         "custom": true,
         "loaded": false,
         "cache": ""

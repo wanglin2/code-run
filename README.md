@@ -34,14 +34,6 @@
 
 - [x] 支持直接移植`VSCode`主题，并且已经内置了大量优质主题
 
-# 安装
-
-`npm`安装其实没啥用，推荐还是进行下一步的【本地构建】。
-
-```bash
-npm i @wanglin1994/code-run
-```
-
 # 本地构建
 
 ```bash
@@ -51,7 +43,7 @@ cd code-run
 
 npm i
 
-npm run dev
+npm run serve
 ```
 
 # 打包
