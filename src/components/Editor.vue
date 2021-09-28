@@ -240,8 +240,11 @@ const useTheme = ({ codeTheme, proxy }) => {
       let item = codeThemeList.find((item) => {
         return item.value === codeTheme.value
       })
+      if (!item) {
+        return
+      }
       let themeData = null
-      if (item && item.custom) {
+      if (item.custom) {
         // 该主题已加载，直接使用缓存
         if (item.loaded) {
           themeData = item.cache
@@ -254,7 +257,6 @@ const useTheme = ({ codeTheme, proxy }) => {
           item.cache = themeData
         }
         monaco.editor.defineTheme(codeTheme.value, themeData)
-        
       }
       monaco.editor.setTheme(codeTheme.value)
       proxy.$eventEmitter.emit('set-theme', themeData)
