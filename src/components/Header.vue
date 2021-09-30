@@ -7,13 +7,13 @@
     <!-- 工具栏 -->
     <div class="right">
       <div class="btn" @click="openSetting">
-        <span class="icon el-icon-s-tools"></span> 设置
+        <span class="icon el-icon-setting"></span> 设置
       </div>
       <div class="btn" @click="openTemplate">
         <span class="icon el-icon-s-opportunity"></span> 模板
       </div>
       <div class="dropdownBtn" @click.stop>
-        <div class="btn" @click="showToolsList = !showToolsList">
+        <div class="btn" @click="toggleToolsList()">
           <span class="icon el-icon-s-tools"></span> 工具
         </div>
         <ul class="toolList" :class="{ show: showToolsList }">
@@ -22,6 +22,21 @@
       </div>
       <div class="btn" @click="run">
         <span class="icon el-icon-s-promotion"></span> 运行
+      </div>
+      <div class="btn" @click="save">
+        <span class="icon el-icon-cloudy"></span> 保存
+      </div>
+      <div class="dropdownBtn" @click.stop>
+        <div class="btn" @click="toggleMoreList()">
+          <span class="icon el-icon-more"></span>
+        </div>
+        <ul class="toolList" :class="{ show: showMoreList }">
+          <li class="toolItem">创建新项目</li>
+          <li class="toolItem">我的gist</li>
+          <li class="toolItem" @click="githubToken ? logout() : login()">
+            {{ githubToken ? '退出' : '登录' }}
+          </li>
+        </ul>
       </div>
     </div>
     <!-- 模板弹窗 -->
@@ -75,18 +90,55 @@
         </span>
       </template>
     </el-dialog>
+    <!-- token弹窗 -->
+    <el-dialog
+      title="请输入你的github token"
+      v-model="githubTokenInputDialogVisible"
+      :width="600"
+    >
+      <el-input v-model="githubTokenValue"></el-input>
+      <p class="tip">
+        如果你没有创建过github token，或者忘记了之前创建的，可以去创建一个新的<a
+          href="https://github.com/settings/tokens/new?scopes=repo"
+          >token</a
+        >，注意一定要勾选上【scopes】里的【gist】选项。
+      </p>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="cancelGithubTokenValueInput">取 消</el-button>
+          <el-button type="primary" @click="confirmGithubTokenValueInput"
+            >确 定</el-button
+          >
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
 <script setup>
-import { getCurrentInstance, ref, computed, onBeforeUnmount, nextTick, shallowRef } from 'vue'
+import {
+  getCurrentInstance,
+  ref,
+  computed,
+  onBeforeUnmount,
+  nextTick,
+  shallowRef,
+} from 'vue'
 import templateList from '@/config/templates'
 import { useStore } from 'vuex'
 import Setting from './Setting.vue'
 import SettingLayout from './SettingLayout.vue'
 import SettingTheme from './SettingTheme.vue'
 import exportZip from '@/utils/exportZip'
-import { ElMessage, ElButton, ElDialog, ElInput, ElTabs, ElTabPane } from 'element-plus'
+import {
+  ElMessage,
+  ElButton,
+  ElDialog,
+  ElInput,
+  ElTabs,
+  ElTabPane,
+} from 'element-plus'
+import { request } from '@/utils/octokit'
 
 // hooks定义部分
 
@@ -101,12 +153,12 @@ const useInit = () => {
   return {
     proxy,
     store,
-    layout
-  };
+    layout,
+  }
 }
 
 // 导出
-const useExport = ({ hideToolList, store }) => {
+const useExport = ({ toggleToolsList, store }) => {
   const exportNameInputDialogVisible = ref(false)
   const exportName = ref('')
   const editData = computed(() => store.state.editData)
@@ -114,7 +166,7 @@ const useExport = ({ hideToolList, store }) => {
   // 导出zip
   const exportZipFile = () => {
     exportNameInputDialogVisible.value = true
-    hideToolList()
+    toggleToolsList(false)
   }
 
   // 确认导出
@@ -134,8 +186,8 @@ const useExport = ({ hideToolList, store }) => {
     exportNameInputDialogVisible,
     exportName,
     exportZipFile,
-    confirmExport
-  };
+    confirmExport,
+  }
 }
 
 // 模板选择
@@ -152,11 +204,11 @@ const useTemplate = ({ layout, store, proxy }) => {
   const checkLayout = (data) => {
     if (data.isVueSFC) {
       if (layout.value !== 'vue') {
-        store.commit("setLayout", 'vue');
+        store.commit('setLayout', 'vue')
       }
     } else {
       if (layout.value === 'vue') {
-        store.commit("setLayout", 'default');
+        store.commit('setLayout', 'default')
       }
     }
   }
@@ -175,8 +227,8 @@ const useTemplate = ({ layout, store, proxy }) => {
     templateDialogVisible,
     templateData,
     openTemplate,
-    selectTemplate
-  };
+    selectTemplate,
+  }
 }
 
 // 运行
@@ -189,8 +241,8 @@ const useRun = ({ proxy, layout }) => {
   }
 
   return {
-    run
-  };
+    run,
+  }
 }
 
 // 设置弹窗
@@ -212,39 +264,135 @@ const useSettingDialog = () => {
     settingDialogVisible,
     settingType,
     componentsMap,
-    openSetting
+    openSetting,
   }
 }
 
-// 工具按钮菜单
-const useToolMenu = () => {
+// 下拉菜单
+const useDropDownMenu = () => {
+  // 工具下拉菜单
   const showToolsList = ref(false)
-
-  // 隐藏工具下拉菜单
-  const hideToolList = () => {
-    showToolsList.value = false
+  const toggleToolsList = (value) => {
+    showToolsList.value = value !== undefined ? value : !showToolsList.value
+    hideAllList(showToolsList)
   }
-
-  document.body.addEventListener('click', hideToolList)
-
+  // 更多下拉菜单
+  const showMoreList = ref(false)
+  const toggleMoreList = (value) => {
+    showMoreList.value = value !== undefined ? value : !showMoreList.value
+    hideAllList(showMoreList)
+  }
+  // 隐藏所有下拉菜单
+  const hideAllList = (extra) => {
+    [showToolsList, showMoreList]
+      .filter((item) => {
+        return item !== extra
+      })
+      .forEach((item) => {
+        item.value = false
+      })
+  }
+  document.body.addEventListener('click', hideAllList)
   onBeforeUnmount(() => {
-    document.body.removeEventListener('click', hideToolList)
+    document.body.removeEventListener('click', hideAllList)
   })
 
   return {
     showToolsList,
-    hideToolList
-  };
+    toggleToolsList,
+    showMoreList,
+    toggleMoreList,
+  }
+}
+
+// 登录退出
+const useLogin = ({ store }) => {
+  const githubTokenInputDialogVisible = ref(false)
+  const githubTokenValue = ref('')
+  // github token
+  const githubToken = computed(() => {
+    return store.state.githubToken
+  })
+  // 登录
+  const login = () => {
+    githubTokenInputDialogVisible.value = true
+  }
+  // 退出登录
+  const logout = () => {
+    store.dispatch('saveGithubToken', null)
+  }
+  // 确认输入
+  const confirmGithubTokenValueInput = () => {
+    let trimValue = githubTokenValue.value
+    if (!trimValue) {
+      ElMessage.warning('请输入token')
+      return
+    }
+    store.dispatch('saveGithubToken', trimValue)
+    githubTokenInputDialogVisible.value = false
+    githubTokenValue.value = ''
+  }
+  // 取消输入
+  const cancelGithubTokenValueInput = () => {
+    githubTokenInputDialogVisible.value = false
+    githubTokenValue.value = ''
+  }
+  return {
+    githubTokenInputDialogVisible,
+    githubTokenValue,
+    githubToken,
+    confirmGithubTokenValueInput,
+    cancelGithubTokenValueInput,
+    login,
+    logout,
+  }
+}
+
+// 保存
+const useSave = ({ githubToken, login }) => {
+  const save = async () => {
+    if (githubToken.value === '') {
+      login()
+      return
+    }
+    try {
+      await request('GET /gists')
+    } catch (error) {
+      console.log(error)
+      ElMessage.error('保存失败，请检查此token的权限是否包含创建gist')
+    }
+  }
+
+  return {
+    save,
+  }
 }
 
 // created部分
 const { proxy, store, layout } = useInit()
-const { showToolsList, hideToolList } = useToolMenu()
-const { exportNameInputDialogVisible, exportName, exportZipFile, confirmExport } = useExport({ hideToolList, store })
-const { templateDialogVisible, templateData, openTemplate, selectTemplate } = useTemplate({ layout, store, proxy })
+const {
+  githubTokenInputDialogVisible,
+  githubTokenValue,
+  githubToken,
+  confirmGithubTokenValueInput,
+  cancelGithubTokenValueInput,
+  login,
+  logout,
+} = useLogin({ store })
+const { showToolsList, toggleToolsList, showMoreList, toggleMoreList } =
+  useDropDownMenu()
+const {
+  exportNameInputDialogVisible,
+  exportName,
+  exportZipFile,
+  confirmExport,
+} = useExport({ toggleToolsList, store })
+const { templateDialogVisible, templateData, openTemplate, selectTemplate } =
+  useTemplate({ layout, store, proxy })
 const { run } = useRun({ proxy, layout })
-const { settingDialogVisible, settingType, componentsMap, openSetting } = useSettingDialog()
-
+const { settingDialogVisible, settingType, componentsMap, openSetting } =
+  useSettingDialog()
+const { save } = useSave({ githubToken, login })
 </script>
 
 <style scoped lang="less">
@@ -405,5 +553,9 @@ const { settingDialogVisible, settingType, componentsMap, openSetting } = useSet
       padding: 10px;
     }
   }
+}
+
+.tip {
+  margin-top: 10px;
 }
 </style>

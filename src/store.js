@@ -4,6 +4,9 @@ import {
 import {
     generateUUID
 } from '@/utils'
+import {
+    create
+} from '@/utils/octokit'
 
 const store = createStore({
     state() {
@@ -41,6 +44,7 @@ const store = createStore({
                     }
                 }
             },
+            githubToken: ''
         }
     },
     mutations: {
@@ -167,6 +171,17 @@ const store = createStore({
          */
         setPageThemeSyncCodeTheme(state, pageThemeSyncCodeTheme) {
             state.editData.config.pageThemeSyncCodeTheme = pageThemeSyncCodeTheme
+        },
+
+        /** 
+         * javascript comment 
+         * @Author: 王林25 
+         * @Date: 2021-09-30 14:21:32 
+         * @Desc: 设置github token 
+         */
+        setGithubToken(state, githubToken) {
+            state.githubToken = githubToken || ''
+            create(githubToken)
         }
     },
     actions: {
@@ -176,10 +191,10 @@ const store = createStore({
          * @Date: 2021-05-12 19:49:17 
          * @Desc:  获取数据
          */
-        getData(context) {
+        getData(ctx) {
             return new Promise((resolve) => {
                 // setTimeout(() => {
-                //     context.commit('setEditData', {
+                //     ctx.commit('setEditData', {
                 //         config: {
                 //             openAlmightyConsole: false
                 //         },
@@ -202,6 +217,34 @@ const store = createStore({
                 // }, 1000);
                 resolve()
             })
+        },
+
+        /** 
+         * javascript comment 
+         * @Author: 王林25 
+         * @Date: 2021-09-30 14:48:40 
+         * @Desc: 保存github token 
+         */
+        saveGithubToken(ctx, githubToken) {
+            ctx.commit('setGithubToken', githubToken)
+            if (githubToken) {
+                localStorage.setItem('codeRun:githubToken', githubToken)
+            } else {
+                localStorage.removeItem('codeRun:githubToken')
+            }
+        },
+
+        /** 
+         * javascript comment 
+         * @Author: 王林25 
+         * @Date: 2021-09-30 14:23:10 
+         * @Desc:  从本地存储获取github token 
+         */
+        getGithubToken(ctx) {
+            let githubToken = localStorage.getItem('codeRun:githubToken')
+            if (githubToken !== null) {
+                ctx.commit('setGithubToken', githubToken)
+            }
         }
     }
 })
