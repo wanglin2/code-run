@@ -121,6 +121,27 @@ export const codeThemeList = [
         "cache": ""
     },
     {
+        "name": "Noctis Azureus",
+        "value": "NoctisAzureus",
+        "custom": true,
+        "loaded": false,
+        "cache": ""
+    },
+    {
+        "name": "Noctis Bordo",
+        "value": "NoctisBordo",
+        "custom": true,
+        "loaded": false,
+        "cache": ""
+    },
+    {
+        "name": "Noctis Lux",
+        "value": "NoctisLux",
+        "custom": true,
+        "loaded": false,
+        "cache": ""
+    },
+    {
         "name": "One Dark Pro",
         "value": "OneDarkPro",
         "custom": true,
@@ -135,15 +156,15 @@ export const codeThemeList = [
         "cache": ""
     },
     {
-        "name": "Remedy Dark",
-        "value": "RemedyDark",
+        "name": "Re U I",
+        "value": "ReUI",
         "custom": true,
         "loaded": false,
         "cache": ""
     },
     {
-        "name": "Re U I",
-        "value": "ReUI",
+        "name": "Remedy Dark",
+        "value": "RemedyDark",
         "custom": true,
         "loaded": false,
         "cache": ""
@@ -163,8 +184,22 @@ export const codeThemeList = [
         "cache": ""
     },
     {
+        "name": "Snazzy Operator",
+        "value": "SnazzyOperator",
+        "custom": true,
+        "loaded": false,
+        "cache": ""
+    },
+    {
         "name": "Sublime Material Theme Dark",
         "value": "SublimeMaterialThemeDark",
+        "custom": true,
+        "loaded": false,
+        "cache": ""
+    },
+    {
+        "name": "Synth Wave84",
+        "value": "SynthWave84",
         "custom": true,
         "loaded": false,
         "cache": ""

@@ -491,8 +491,6 @@ const {
   confirmAddResource,
 } = useHandleAssets({ store, runCode, editData })
 onMounted(async () => {
-  // 获取代码数据
-  await store.dispatch('getData')
   await loadTheme()
   setInitData()
   show.value = true

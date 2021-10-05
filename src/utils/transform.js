@@ -212,7 +212,7 @@ const parseVue2ScriptPlugin = (data) => {
                             traverseAddProperty(path, t, data)
                         }
                     } catch (error) {
-                        console.log(error)
+                        // console.log(error)
                     }
                 }
             }

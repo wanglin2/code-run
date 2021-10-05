@@ -235,6 +235,9 @@ const useSizeChange = ({ props }) => {
     }
     timer = setTimeout(() => {
       nextTick(() => {
+        if (!editorItem.value) {
+          return ;
+        }
         let { width, height } = editorItem.value.getBoundingClientRect()
         // 宽度小于100像素则旋转标题
         noSpace.value = (props.dir === 'h' ? width : height) <= 100
