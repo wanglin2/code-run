@@ -4,8 +4,6 @@
 
 在线示例：[https://wanglin2.github.io/code-run-online/](https://wanglin2.github.io/code-run-online/)。
 
-在本项目基础上开发的带用户登录相关功能的版本（功能可能滞后）：[http://lxqnsys.com/code-run/](http://lxqnsys.com/code-run/)。
-
 # 相关文章
 
 [快速搭建一个代码在线编辑预览工具](https://juejin.cn/post/6965467528600485919)
@@ -33,6 +31,8 @@
 - [x] 支持`vue`单文件
 
 - [x] 支持直接移植`VSCode`主题，并且已经内置了大量优质主题
+
+- [x] 内置支持保存到github gist【[gist API](https://docs.github.com/cn/rest/reference/gists)】，想要保存到自己的存储体系修改也十分简单
 
 # 本地构建
 

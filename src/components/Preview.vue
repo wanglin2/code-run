@@ -152,6 +152,7 @@ const useCreateHtml = () => {
           ${cssStr}
       <\/style>
       ${_cssResources}
+      <script src="${base}base/index.js"><\/script>
       <script src="${base}console/compile.js"><\/script>
     `;
     let body = `
@@ -249,20 +250,18 @@ const useRun = ({
           cssContent.value
         );
       }
-      let _cssResources = cssResources.value
+      let _cssResources = _cssResourcesPlus.concat(cssResources.value
         .map((item) => {
           return {
             ...item,
           };
-        })
-        .concat(_cssResourcesPlus);
-      let _jsResources = jsResources.value
+        }));
+      let _jsResources = _jsResourcesPlus.concat(jsResources.value
         .map((item) => {
           return {
             ...item,
           };
-        })
-        .concat(_jsResourcesPlus);
+        }));
       srcdoc.value = createHtml(
         compiledData.html,
         compiledData.js,

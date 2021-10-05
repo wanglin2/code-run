@@ -4,6 +4,10 @@
     <div class="left">
       <h1>CodeRun</h1>
     </div>
+    <!-- 标题输入栏 -->
+    <div class="center">
+      <input type="text" :value="codeTitle" @input="onCodeTitleInput" />
+    </div>
     <!-- 工具栏 -->
     <div class="right">
       <div class="btn" @click="openSetting">
@@ -18,12 +22,15 @@
         </div>
         <ul class="toolList" :class="{ show: showToolsList }">
           <li class="toolItem" @click="exportZipFile">导出zip</li>
+          <li class="toolItem" @click="createShareUrl" v-if="isEdit">
+            生成分享链接
+          </li>
         </ul>
       </div>
       <div class="btn" @click="run">
         <span class="icon el-icon-s-promotion"></span> 运行
       </div>
-      <div class="btn" @click="save">
+      <div class="btn" @click="save" v-loading="loading">
         <span class="icon el-icon-cloudy"></span> 保存
       </div>
       <div class="dropdownBtn" @click.stop>
@@ -31,10 +38,10 @@
           <span class="icon el-icon-more"></span>
         </div>
         <ul class="toolList" :class="{ show: showMoreList }">
-          <li class="toolItem">创建新项目</li>
-          <li class="toolItem">我的gist</li>
+          <li class="toolItem" @click="createNew">创建新项目</li>
+          <li class="toolItem" @click="showMyGists">我的gist</li>
           <li class="toolItem" @click="githubToken ? logout() : login()">
-            {{ githubToken ? '退出' : '登录' }}
+            {{ githubToken ? "退出" : "登录" }}
           </li>
         </ul>
       </div>
@@ -100,6 +107,7 @@
       <p class="tip">
         如果你没有创建过github token，或者忘记了之前创建的，可以去创建一个新的<a
           href="https://github.com/settings/tokens/new?scopes=repo"
+          target="_blank"
           >token</a
         >，注意一定要勾选上【scopes】里的【gist】选项。
       </p>
@@ -112,6 +120,75 @@
         </span>
       </template>
     </el-dialog>
+    <!-- 我的gists -->
+    <el-drawer
+      v-model="drawer"
+      title="我的gists"
+      direction="rtl"
+      size="50%"
+      @open="onDrawerOpen"
+      @closed="onDrawerClosed"
+    >
+      <div class="gistBox">
+        <el-table
+          class="tableBox"
+          :data="gistList"
+          style="width: 100%"
+          empty-text="好像没有更多了~"
+          v-loading="gistloading"
+        >
+          <el-table-column label="名称" prop="description" />
+          <el-table-column label="是否公开" prop="public">
+            <template #default="scope">
+              {{ scope.row.public ? "是" : "否" }}
+            </template>
+          </el-table-column>
+          <el-table-column label="创建时间" prop="created_at">
+            <template #default="scope">
+              {{ dayjs(scope.row.created_at).format("YYYY/MM/DD HH:mm:ss") }}
+            </template>
+          </el-table-column>
+          <el-table-column label="更新时间" prop="updated_at">
+            <template #default="scope">
+              {{ dayjs(scope.row.updated_at).format("YYYY/MM/DD HH:mm:ss") }}
+            </template>
+          </el-table-column>
+          <el-table-column fixed="right" label="操作" width="120">
+            <template #default="scope">
+              <el-button
+                type="primary"
+                icon="el-icon-edit"
+                circle
+                size="small"
+                @click="updateGist(scope.row.id)"
+              ></el-button>
+              <el-button
+                type="danger"
+                icon="el-icon-delete"
+                circle
+                size="small"
+                @click="deleteGist(scope.row.id)"
+              ></el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+        <div class="paginationBox">
+          <el-pagination
+            layout="prev, next"
+            :current-page="gistPageNo"
+            :page-count="gistPageCount"
+            prev-text="上一页"
+            next-text="下一页"
+            @current-change="gistCurrentChange"
+          ></el-pagination>
+        </div>
+      </div>
+    </el-drawer>
+    <!-- 分享弹窗 -->
+    <el-dialog title="分享" v-model="shareDialogVisible" :width="600">
+      <el-input v-model="shareUrl" readonly ref="shareUrlInput"></el-input>
+      <p class="tip">复制url进行分享吧~</p>
+    </el-dialog>
   </div>
 </template>
 
@@ -123,13 +200,13 @@ import {
   onBeforeUnmount,
   nextTick,
   shallowRef,
-} from 'vue'
-import templateList from '@/config/templates'
-import { useStore } from 'vuex'
-import Setting from './Setting.vue'
-import SettingLayout from './SettingLayout.vue'
-import SettingTheme from './SettingTheme.vue'
-import exportZip from '@/utils/exportZip'
+} from "vue";
+import templateList from "@/config/templates";
+import { useStore } from "vuex";
+import Setting from "./Setting.vue";
+import SettingLayout from "./SettingLayout.vue";
+import SettingTheme from "./SettingTheme.vue";
+import exportZip from "@/utils/exportZip";
 import {
   ElMessage,
   ElButton,
@@ -137,206 +214,218 @@ import {
   ElInput,
   ElTabs,
   ElTabPane,
-} from 'element-plus'
-import { request } from '@/utils/octokit'
+  ElDrawer,
+  ElTable,
+  ElTableColumn,
+  ElPagination,
+} from "element-plus";
+import { request } from "@/utils/octokit";
+import dayjs from "dayjs";
+import { useRouter, useRoute } from "vue-router";
+import { routerMode, base } from "@/config";
 
 // hooks定义部分
 
 // 初始化
 const useInit = () => {
-  const { proxy } = getCurrentInstance()
-  const store = useStore()
+  const { proxy } = getCurrentInstance();
+  const store = useStore();
   const layout = computed(() => {
-    return store.state.editData.config.layout
-  })
+    return store.state.editData.config.layout;
+  });
 
   return {
     proxy,
     store,
     layout,
-  }
-}
+    router: useRouter(),
+    route: useRoute(),
+  };
+};
 
 // 导出
 const useExport = ({ toggleToolsList, store }) => {
-  const exportNameInputDialogVisible = ref(false)
-  const exportName = ref('')
-  const editData = computed(() => store.state.editData)
+  const exportNameInputDialogVisible = ref(false);
+  const exportName = ref("");
+  const editData = computed(() => store.state.editData);
 
   // 导出zip
   const exportZipFile = () => {
-    exportNameInputDialogVisible.value = true
-    toggleToolsList(false)
-  }
+    exportNameInputDialogVisible.value = true;
+    toggleToolsList(false);
+  };
 
   // 确认导出
   const confirmExport = () => {
-    if (exportName.value.trim() === '') {
+    if (exportName.value.trim() === "") {
       ElMessage.warning({
-        message: '请输入文件名',
-        type: 'warning',
-      })
-      return
+        message: "请输入文件名",
+        type: "warning",
+      });
+      return;
     }
-    exportNameInputDialogVisible.value = false
-    exportZip(editData, exportName.value.trim())
-  }
+    exportNameInputDialogVisible.value = false;
+    exportZip(editData, exportName.value.trim());
+  };
 
   return {
     exportNameInputDialogVisible,
     exportName,
     exportZipFile,
     confirmExport,
-  }
-}
+  };
+};
 
 // 模板选择
 const useTemplate = ({ layout, store, proxy }) => {
-  const templateDialogVisible = ref(false)
-  const templateData = ref(templateList)
+  const templateDialogVisible = ref(false);
+  const templateData = ref(templateList);
 
   // 打开选择模板弹窗
   const openTemplate = () => {
-    templateDialogVisible.value = true
-  }
+    templateDialogVisible.value = true;
+  };
 
   // 检查布局是否和模板对应
   const checkLayout = (data) => {
     if (data.isVueSFC) {
-      if (layout.value !== 'vue') {
-        store.commit('setLayout', 'vue')
+      if (layout.value !== "vue") {
+        store.commit("setLayout", "vue");
       }
     } else {
-      if (layout.value === 'vue') {
-        store.commit('setLayout', 'default')
+      if (layout.value === "vue") {
+        store.commit("setLayout", "default");
       }
     }
-  }
+  };
 
   // 选择某个模板
   const selectTemplate = (data) => {
-    checkLayout(data)
+    checkLayout(data);
     nextTick(() => {
-      store.commit('setCode', JSON.parse(JSON.stringify(data.code)))
-      proxy.$eventEmitter.emit('reset_code')
-      templateDialogVisible.value = false
-    })
-  }
+      store.commit("setCode", JSON.parse(JSON.stringify(data.code)));
+      proxy.$eventEmitter.emit("reset_code");
+      templateDialogVisible.value = false;
+    });
+  };
 
   return {
     templateDialogVisible,
     templateData,
     openTemplate,
     selectTemplate,
-  }
-}
+  };
+};
 
 // 运行
 const useRun = ({ proxy, layout }) => {
   const run = () => {
-    proxy.$eventEmitter.emit('run')
-    if (layout.value === 'newWindowPreview') {
-      proxy.$eventEmitter.emit('preview_window_run')
+    proxy.$eventEmitter.emit("run");
+    if (layout.value === "newWindowPreview") {
+      proxy.$eventEmitter.emit("preview_window_run");
     }
-  }
+  };
 
   return {
     run,
-  }
-}
+  };
+};
 
 // 设置弹窗
 const useSettingDialog = () => {
-  const settingDialogVisible = ref(false)
-  const settingType = ref('layout')
+  const settingDialogVisible = ref(false);
+  const settingType = ref("layout");
   const componentsMap = shallowRef({
     theme: SettingTheme,
     layout: SettingLayout,
     setting: Setting,
-  })
+  });
 
   // 打开设置弹窗
   const openSetting = () => {
-    settingDialogVisible.value = true
-  }
+    settingDialogVisible.value = true;
+  };
 
   return {
     settingDialogVisible,
     settingType,
     componentsMap,
     openSetting,
-  }
-}
+  };
+};
 
 // 下拉菜单
 const useDropDownMenu = () => {
   // 工具下拉菜单
-  const showToolsList = ref(false)
+  const showToolsList = ref(false);
   const toggleToolsList = (value) => {
-    showToolsList.value = value !== undefined ? value : !showToolsList.value
-    hideAllList(showToolsList)
-  }
+    showToolsList.value = value !== undefined ? value : !showToolsList.value;
+    hideAllList(showToolsList);
+  };
   // 更多下拉菜单
-  const showMoreList = ref(false)
+  const showMoreList = ref(false);
   const toggleMoreList = (value) => {
-    showMoreList.value = value !== undefined ? value : !showMoreList.value
-    hideAllList(showMoreList)
-  }
+    showMoreList.value = value !== undefined ? value : !showMoreList.value;
+    hideAllList(showMoreList);
+  };
   // 隐藏所有下拉菜单
   const hideAllList = (extra) => {
     [showToolsList, showMoreList]
       .filter((item) => {
-        return item !== extra
+        return item !== extra;
       })
       .forEach((item) => {
-        item.value = false
-      })
-  }
-  document.body.addEventListener('click', hideAllList)
+        item.value = false;
+      });
+  };
+  document.body.addEventListener("click", hideAllList);
   onBeforeUnmount(() => {
-    document.body.removeEventListener('click', hideAllList)
-  })
+    document.body.removeEventListener("click", hideAllList);
+  });
 
   return {
     showToolsList,
     toggleToolsList,
     showMoreList,
     toggleMoreList,
-  }
-}
+  };
+};
 
 // 登录退出
-const useLogin = ({ store }) => {
-  const githubTokenInputDialogVisible = ref(false)
-  const githubTokenValue = ref('')
+const useLogin = ({ store, router }) => {
+  const githubTokenInputDialogVisible = ref(false);
+  const githubTokenValue = ref("");
   // github token
   const githubToken = computed(() => {
-    return store.state.githubToken
-  })
+    return store.state.githubToken;
+  });
   // 登录
   const login = () => {
-    githubTokenInputDialogVisible.value = true
-  }
+    githubTokenInputDialogVisible.value = true;
+  };
   // 退出登录
   const logout = () => {
-    store.dispatch('saveGithubToken', null)
-  }
+    store.dispatch("saveGithubToken", null);
+    router.replace({
+      name: "Editor",
+    });
+  };
   // 确认输入
   const confirmGithubTokenValueInput = () => {
-    let trimValue = githubTokenValue.value
+    let trimValue = githubTokenValue.value;
     if (!trimValue) {
-      ElMessage.warning('请输入token')
-      return
+      ElMessage.warning("请输入token");
+      return;
     }
-    store.dispatch('saveGithubToken', trimValue)
-    githubTokenInputDialogVisible.value = false
-    githubTokenValue.value = ''
-  }
+    store.dispatch("saveGithubToken", trimValue);
+    githubTokenInputDialogVisible.value = false;
+    githubTokenValue.value = "";
+  };
   // 取消输入
   const cancelGithubTokenValueInput = () => {
-    githubTokenInputDialogVisible.value = false
-    githubTokenValue.value = ''
-  }
+    githubTokenInputDialogVisible.value = false;
+    githubTokenValue.value = "";
+  };
   return {
     githubTokenInputDialogVisible,
     githubTokenValue,
@@ -345,31 +434,197 @@ const useLogin = ({ store }) => {
     cancelGithubTokenValueInput,
     login,
     logout,
-  }
-}
+  };
+};
+
+// 标题
+const useTitle = ({ store }) => {
+  const codeTitle = computed(() => {
+    return store.state.editData.title;
+  });
+  const onCodeTitleInput = (e) => {
+    store.commit("setCodeTitle", e.target.value);
+  };
+  return {
+    codeTitle,
+    onCodeTitleInput,
+  };
+};
 
 // 保存
-const useSave = ({ githubToken, login }) => {
+const useSave = ({ githubToken, login, store, router, route }) => {
+  const loading = ref(false);
+  const isEdit = computed(() => {
+    return route.name === "Edit" && !!route.params.id;
+  });
+  const createData = () => {
+    let data = {
+      description: store.state.editData.title,
+      files: {},
+      public: true,
+    };
+    data.files["coderun.json"] = {
+      content: JSON.stringify(store.state.editData),
+    };
+    return data;
+  };
   const save = async () => {
-    if (githubToken.value === '') {
-      login()
-      return
+    if (githubToken.value === "") {
+      login();
+      return;
     }
     try {
-      await request('GET /gists')
+      loading.value = true;
+      let fileData = createData();
+      let id = route.params.id;
+      let method = "POST";
+      let path = "";
+      if (isEdit.value) {
+        method = "PATCH";
+        path = "/" + id;
+        fileData.gist_id = id;
+      }
+      let { data } = await request(`${method} /gists${path}`, fileData);
+      loading.value = false;
+      ElMessage.success("保存成功，请注意：保存不是一个同步的过程！");
+      router.replace({
+        name: "Edit",
+        params: {
+          id: data.id,
+        },
+      });
     } catch (error) {
-      console.log(error)
-      ElMessage.error('保存失败，请检查此token的权限是否包含创建gist')
+      console.log(error);
+      loading.value = false;
+      ElMessage.error("保存失败，请检查此token的权限是否包含创建gist");
     }
-  }
+  };
+  const createNew = () => {
+    router.replace({
+      name: "Editor",
+    });
+  };
 
   return {
     save,
-  }
-}
+    loading,
+    createNew,
+    isEdit,
+  };
+};
+
+// 我的gists
+const useDrawer = ({ router, route, githubToken, login }) => {
+  const drawer = ref(false);
+  const gistList = ref([]);
+  const gistloading = ref(false);
+  const gistPageNo = ref(1);
+  const gistPageCount = ref(1);
+  const onDrawerOpen = async () => {
+    try {
+      gistloading.value = true;
+      let { data } = await request("GET /gists", {
+        page: gistPageNo.value,
+        per_page: 20,
+      });
+      if (data.length > 0) {
+        gistPageCount.value = gistPageNo.value + 1;
+      }
+      gistList.value = data;
+      gistloading.value = false;
+    } catch (e) {
+      gistloading.value = false;
+      ElMessage.error("获取失败");
+    }
+  };
+  const gistCurrentChange = (pageNo) => {
+    gistPageNo.value = pageNo;
+    onDrawerOpen();
+  };
+  const onDrawerClosed = () => {
+    gistList.value = [];
+    gistPageNo.value = 1;
+  };
+  const deleteGist = async (id) => {
+    try {
+      gistloading.value = true;
+      await request(`DELETE /gists/${id}`, {
+        gist_id: id,
+      });
+      gistloading.value = false;
+      ElMessage.success(
+        "删除成功，请注意：删除不是一个同步的过程，五分钟内请不要重复删除！"
+      );
+      if (id === route.params.id) {
+        router.replace({
+          name: "Editor",
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      gistloading.value = false;
+      ElMessage.error("删除失败");
+    }
+  };
+  const updateGist = (id) => {
+    drawer.value = false;
+    router.replace({
+      name: "Edit",
+      params: {
+        id,
+      },
+    });
+  };
+  const showMyGists = () => {
+    if (githubToken.value === "") {
+      login();
+      return;
+    }
+    drawer.value = true;
+  };
+  return {
+    drawer,
+    onDrawerOpen,
+    onDrawerClosed,
+    gistList,
+    deleteGist,
+    updateGist,
+    showMyGists,
+    gistloading,
+    gistPageCount,
+    gistCurrentChange,
+    gistPageNo,
+  };
+};
+
+// 分享
+const shareUrlInput = ref(null);
+const useShare = ({ route, isEdit }) => {
+  const shareDialogVisible = ref(false);
+  const shareUrl = ref("");
+  const createShareUrl = () => {
+    if (!isEdit.value) {
+      return;
+    }
+    shareUrl.value = `${location.origin}${base}${
+      routerMode === "hash"
+        ? "#/share/" + route.params.id
+        : "share/" + route.params.id
+    }`;
+    shareDialogVisible.value = true;
+    nextTick(() => {
+      shareUrlInput.value.select();
+    });
+  };
+  return {
+    shareDialogVisible,
+    shareUrl,
+    createShareUrl,
+  };
+};
 
 // created部分
-const { proxy, store, layout } = useInit()
+const { proxy, store, layout, router, route } = useInit();
 const {
   githubTokenInputDialogVisible,
   githubTokenValue,
@@ -378,21 +633,45 @@ const {
   cancelGithubTokenValueInput,
   login,
   logout,
-} = useLogin({ store })
+} = useLogin({ store, router });
 const { showToolsList, toggleToolsList, showMoreList, toggleMoreList } =
-  useDropDownMenu()
+  useDropDownMenu();
 const {
   exportNameInputDialogVisible,
   exportName,
   exportZipFile,
   confirmExport,
-} = useExport({ toggleToolsList, store })
+} = useExport({ toggleToolsList, store });
 const { templateDialogVisible, templateData, openTemplate, selectTemplate } =
-  useTemplate({ layout, store, proxy })
-const { run } = useRun({ proxy, layout })
+  useTemplate({ layout, store, proxy });
+const { run } = useRun({ proxy, layout });
 const { settingDialogVisible, settingType, componentsMap, openSetting } =
-  useSettingDialog()
-const { save } = useSave({ githubToken, login })
+  useSettingDialog();
+const { codeTitle, onCodeTitleInput } = useTitle({ store });
+const { save, loading, createNew, isEdit } = useSave({
+  githubToken,
+  login,
+  store,
+  router,
+  route,
+});
+const {
+  drawer,
+  onDrawerOpen,
+  onDrawerClosed,
+  gistList,
+  deleteGist,
+  updateGist,
+  showMyGists,
+  gistloading,
+  gistPageCount,
+  gistCurrentChange,
+  gistPageNo,
+} = useDrawer({ router, route, githubToken, login });
+const { shareDialogVisible, shareUrl, createShareUrl } = useShare({
+  route,
+  isEdit,
+});
 </script>
 
 <style scoped lang="less">
@@ -410,6 +689,21 @@ const { save } = useSave({ githubToken, login })
   .left {
     h1 {
       color: var(--header-logo-color);
+    }
+  }
+
+  .center {
+    height: 100%;
+
+    input {
+      width: 250px;
+      height: 100%;
+      border: none;
+      outline: none;
+      background-color: transparent;
+      text-align: center;
+      color: var(--header-btn-color);
+      font-size: 18px;
     }
   }
 
@@ -557,5 +851,29 @@ const { save } = useSave({ githubToken, login })
 
 .tip {
   margin-top: 10px;
+}
+
+/deep/ .el-drawer__body {
+  overflow: hidden;
+
+  .gistBox {
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+
+    .tableBox {
+      flex-grow: 1;
+      height: 100%;
+      overflow: auto;
+    }
+
+    .paginationBox {
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
 }
 </style>

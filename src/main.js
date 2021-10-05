@@ -7,12 +7,14 @@ import store from './store'
 import EventEmitter from 'eventemitter3'
 import './assets/style/monolisa.css'
 import 'element-plus/dist/index.css'
+import { ElLoadingDirective } from 'element-plus';
 
 const create = () => {
     const app = createApp(App)
     app.config.globalProperties.$eventEmitter = new EventEmitter()
     app.use(router)
     app.use(store)
+    app.directive('loading', ElLoadingDirective)
     app.mount('#app')
 }
 

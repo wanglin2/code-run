@@ -5,45 +5,54 @@ import {
     generateUUID
 } from '@/utils'
 import {
-    create
+    create,
+    request
 } from '@/utils/octokit'
+// 存储github token的本地存储的key
+const githubTokenSaveKey = 'codeRun:githubToken'
+
+// 生成默认编辑数据
+const createDefaultData = () => {
+    return {
+        config: {
+            codeTheme: 'OneDarkPro',
+            pageThemeSyncCodeTheme: true,
+            openAlmightyConsole: false,
+            autoRun: false,
+            layout: 'default',
+            keepPreviousLogs: true,
+            codeFontSize: 16
+        },
+        title: '未命名',
+        code: {
+            HTML: {
+                language: 'html',
+                content: ``
+            },
+            CSS: {
+                language: 'css',
+                content: ``,
+                resources: []
+            },
+            JS: {
+                language: 'javascript',
+                content: ``,
+                resources: []
+            },
+            VUE: {
+                language: 'vue2',
+                content: ``,
+                resources: []
+            }
+        }
+    };
+}
 
 const store = createStore({
     state() {
         return {
             uuid: generateUUID(),
-            editData: {
-                config: {
-                    codeTheme: 'OneDarkPro',
-                    pageThemeSyncCodeTheme: true,
-                    openAlmightyConsole: false,
-                    autoRun: false,
-                    layout: 'default',
-                    keepPreviousLogs: true,
-                    codeFontSize: 16
-                },
-                code: {
-                    HTML: {
-                        language: 'html',
-                        content: ``
-                    },
-                    CSS: {
-                        language: 'css',
-                        content: ``,
-                        resources: []
-                    },
-                    JS: {
-                        language: 'javascript',
-                        content: ``,
-                        resources: []
-                    },
-                    VUE: {
-                        language: 'vue2',
-                        content: ``,
-                        resources: []
-                    }
-                }
-            },
+            editData: createDefaultData(),
             githubToken: ''
         }
     },
@@ -182,6 +191,15 @@ const store = createStore({
         setGithubToken(state, githubToken) {
             state.githubToken = githubToken || ''
             create(githubToken)
+        },
+
+        /** 
+         * @Author: 王林 
+         * @Date: 2021-10-03 12:57:16 
+         * @Desc: 设置代码标题 
+         */
+        setCodeTitle(state, title) {
+            state.editData.title = title
         }
     },
     actions: {
@@ -191,31 +209,21 @@ const store = createStore({
          * @Date: 2021-05-12 19:49:17 
          * @Desc:  获取数据
          */
-        getData(ctx) {
-            return new Promise((resolve) => {
-                // setTimeout(() => {
-                //     ctx.commit('setEditData', {
-                //         config: {
-                //             openAlmightyConsole: false
-                //         },
-                //         code: {
-                //             HTML: {
-                //                 language: 'html',
-                //                 content: '<div class="box"></div>'
-                //             },
-                //             CSS: {
-                //                 language: 'less',
-                //                 content: `body{\n.box{\n  width: 100px;\n  height:100px;\n  background-color: red;\n}\n}`
-                //             },
-                //             JS: {
-                //                 language: 'javascript',
-                //                 content: 'console.log(123)'
-                //             }
-                //         }
-                //     }, )
-                //     resolve()
-                // }, 1000);
-                resolve()
+        getData(ctx, id) {
+            return new Promise(async (resolve) => {
+                try {
+                    let parseData = createDefaultData()
+                    if (id) {
+                        let { data } = await request(`GET /gists/${id}`, {
+                            gist_id: id
+                        })
+                        parseData = JSON.parse(data.files['coderun.json'].content)
+                    }
+                    ctx.commit('setEditData', parseData)
+                    resolve()
+                } catch (e) {
+                    console.log(e)
+                }
             })
         },
 
@@ -228,9 +236,9 @@ const store = createStore({
         saveGithubToken(ctx, githubToken) {
             ctx.commit('setGithubToken', githubToken)
             if (githubToken) {
-                localStorage.setItem('codeRun:githubToken', githubToken)
+                localStorage.setItem(githubTokenSaveKey, githubToken)
             } else {
-                localStorage.removeItem('codeRun:githubToken')
+                localStorage.removeItem(githubTokenSaveKey)
             }
         },
 
@@ -241,10 +249,8 @@ const store = createStore({
          * @Desc:  从本地存储获取github token 
          */
         getGithubToken(ctx) {
-            let githubToken = localStorage.getItem('codeRun:githubToken')
-            if (githubToken !== null) {
-                ctx.commit('setGithubToken', githubToken)
-            }
+            let githubToken = localStorage.getItem(githubTokenSaveKey)
+            ctx.commit('setGithubToken', githubToken)
         }
     }
 })

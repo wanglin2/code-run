@@ -11,13 +11,9 @@ let octokit = null
  * @Desc: 创建实例 
  */
 export const create = (token) => {
-    if (octokit) {
-        octokit = null
-        return
-    }
-    octokit = new Octokit({
+    octokit = token ? new Octokit({
         auth: token
-    })
+    }) : new Octokit()
 }
 
 /** 

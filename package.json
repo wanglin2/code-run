@@ -34,6 +34,7 @@
     "@element-plus/icons": "^0.0.11",
     "@octokit/core": "^3.5.1",
     "core-js": "^3.6.5",
+    "dayjs": "^1.10.7",
     "element-plus": "*",
     "eventemitter3": "^4.0.7",
     "jszip": "^3.7.1",

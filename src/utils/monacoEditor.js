@@ -13,7 +13,7 @@ import {
 } from "onigasm"
 import { monacoEditorInnerLanguages, scopeNameMap, tmGrammarJsonMap } from '@/config/constants'
 
-let hasGetAllWorkUrl = false
+let hasGetWorkUrl = false
 
 // 初始化编辑器
 export const initMonacoEditor = async () => {
@@ -22,7 +22,7 @@ export const initMonacoEditor = async () => {
     // 配置编辑器运行环境
     window.MonacoEnvironment = {
         getWorkerUrl: function (moduleId, label) {
-            hasGetAllWorkUrl = true
+            hasGetWorkUrl = true
             if (label === 'json') {
                 return './monaco/json.worker.bundle.js'
             }
@@ -47,6 +47,8 @@ export const initMonacoEditor = async () => {
  * @Desc: 创建语法关联 
  */
 export const wire = async (languageId, editor) => {
+    // vue单文件使用html语法高亮
+    languageId = languageId === 'vue2' ? 'html' : languageId
     if (!scopeNameMap[languageId]) {
         return
     }
@@ -79,7 +81,7 @@ export const wire = async (languageId, editor) => {
 
     // fix：https://github.com/Microsoft/monaco-editor/issues/884
     let loop = () => {
-        if (hasGetAllWorkUrl) {
+        if (hasGetWorkUrl) {
             Promise.resolve().then(async () => {
                 await wireTmGrammars(monaco, registry, grammars, editor)
             })

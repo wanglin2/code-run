@@ -10,6 +10,17 @@ import { routerMode, base } from './config';
 const routes = [
     {
         path: '/',
+        name: 'Editor',
+        component: Edit
+    },
+    {
+        path: '/:id',
+        name: 'Edit',
+        component: Edit
+    },
+    {
+        path: '/share/:id',
+        name: 'Share',
         component: Edit
     },
     {
