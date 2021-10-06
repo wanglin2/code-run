@@ -251,6 +251,7 @@ const useExport = ({ toggleToolsList, store }) => {
 
   // 导出zip
   const exportZipFile = () => {
+    exportName.value = store.state.editData.title || ''
     exportNameInputDialogVisible.value = true;
     toggleToolsList(false);
   };

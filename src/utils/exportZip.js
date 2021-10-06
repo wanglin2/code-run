@@ -2,7 +2,8 @@ import JSzip from 'jszip'
 import saveAs from './FileSaver'
 import {
     assembleHtml,
-    compile
+    compile,
+    compileVue
 } from './index'
 
 const suffixMap = {
@@ -16,7 +17,10 @@ const suffixMap = {
     less: 'less',
     scss: 'scss',
     stylus: 'styl',
-    postcss: 'css'
+    postcss: 'css',
+    vue: 'vue',
+    vue2: 'vue',
+    vue3: 'vue'
 }
 
 /** 
@@ -50,29 +54,13 @@ const createHtml = (title, htmlStr, cssResources, jsResources) => {
     return assembleHtml(head, body)
 }
 
-/** 
- * javascript comment 
- * @Author: 王林25 
- * @Date: 2021-05-20 10:00:40 
- * @Desc: 导出zip 
- */
-const exportZip = async (data, fileName) => {
+const handleNormal = async (data, fileName, cssResources, jsResources) => {
     let html = data.value.code.HTML.content
     let htmlLan = data.value.code.HTML.language
     let js = data.value.code.JS.content
     let jsLan = data.value.code.JS.language
     let css = data.value.code.CSS.content
     let cssLan = data.value.code.CSS.language
-    let cssResources = data.value.code.CSS.resources.map((item) => {
-        return {
-            ...item,
-        }
-    })
-    let jsResources = data.value.code.JS.resources.map((item) => {
-        return {
-            ...item,
-        }
-    })
     let zip = new JSzip()
     // 源代码
     zip.folder('src')
@@ -86,10 +74,55 @@ const exportZip = async (data, fileName) => {
     zip.file('dist/index.html', _html)
     zip.file('dist/script.js', compiledData.js)
     zip.file('dist/style.css', compiledData.css)
+    return zip
+}
+
+const handleVue2 = async (data, fileName, cssResources, jsResources) => {
+    let content = data.value.code.VUE.content
+    let lang = data.value.code.VUE.language
+    let zip = new JSzip()
+    // 源代码
+    zip.folder('src')
+    zip.file('src/index.' + suffixMap[lang], content)
+    // 编译后的代码
+    zip.folder('dist')
+    let compiledData = await compileVue(lang, content)
+    let _html = createHtml(fileName, compiledData.html, cssResources, jsResources)
+    zip.file('dist/index.html', _html)
+    zip.file('dist/script.js', compiledData.js)
+    zip.file('dist/style.css', compiledData.css)
+    return zip
+}
+
+/** 
+ * javascript comment 
+ * @Author: 王林25 
+ * @Date: 2021-05-20 10:00:40 
+ * @Desc: 导出zip 
+ */
+const exportZip = async (data, fileName) => {
+    let zip = null
+    let cssResources = data.value.code.CSS.resources.map((item) => {
+        return {
+            ...item,
+        }
+    })
+    let jsResources = data.value.code.JS.resources.map((item) => {
+        return {
+            ...item,
+        }
+    })
+    switch (data.value.config.layout) {
+        case 'vue':
+            zip = await handleVue2(data, fileName, cssResources, jsResources)
+            break;
+        default:
+            zip = await handleNormal(data, fileName, cssResources, jsResources)
+    }
     // 下载
     zip.generateAsync({
-            type: "blob"
-        })
+        type: "blob"
+    })
         .then((content) => {
             saveAs(content, fileName + ".zip", {
                 autoBom: true

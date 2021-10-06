@@ -7,7 +7,8 @@ import store from './store'
 import EventEmitter from 'eventemitter3'
 import './assets/style/monolisa.css'
 import 'element-plus/dist/index.css'
-import { ElLoadingDirective } from 'element-plus';
+import { ElLoadingDirective } from 'element-plus'
+import 'nprogress/nprogress.css'
 
 const create = () => {
     const app = createApp(App)
