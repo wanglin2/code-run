@@ -14,6 +14,7 @@ import { useStore } from "vuex";
 import { layoutMap, defaultViewThemeConfig } from "@/config/constants";
 import { useRouter, useRoute } from "vue-router";
 import { initMonacoEditor } from "@/utils/monacoEditor";
+import nprogress from "nprogress";
 
 // hooks定义部分
 const useInit = () => {
@@ -29,8 +30,10 @@ const useInit = () => {
   const route = useRoute();
   // 获取当前编辑数据
   const getData = async () => {
+    nprogress.start();
     await store.dispatch("getData", route.params.id);
     proxy.$eventEmitter.emit("reset_code");
+    nprogress.done();
   };
   // 监听路由变化
   watch(
@@ -218,5 +221,17 @@ init(() => {
     height: 100%;
     overflow: hidden;
   }
+}
+</style>
+<style lang="less">
+#nprogress .bar {
+  background: var(--header-btn-color) !important;
+}
+#nprogress .peg {
+  box-shadow: 0 0 10px var(--header-btn-color), 0 0 5px var(--header-btn-color) !important;
+}
+#nprogress .spinner-icon {
+  border-top-color: var(--header-btn-color) !important;
+  border-left-color: var(--header-btn-color) !important;
 }
 </style>
