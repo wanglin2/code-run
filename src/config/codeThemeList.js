@@ -156,6 +156,13 @@ export const codeThemeList = [
         "cache": ""
     },
     {
+        "name": "Panda",
+        "value": "Panda",
+        "custom": true,
+        "loaded": false,
+        "cache": ""
+    },
+    {
         "name": "Re U I",
         "value": "ReUI",
         "custom": true,
@@ -214,6 +221,13 @@ export const codeThemeList = [
     {
         "name": "Tomorrow Night Blue",
         "value": "TomorrowNightBlue",
+        "custom": true,
+        "loaded": false,
+        "cache": ""
+    },
+    {
+        "name": "Twilight",
+        "value": "Twilight",
         "custom": true,
         "loaded": false,
         "cache": ""

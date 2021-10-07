@@ -66,6 +66,10 @@ const js = (preprocessor, code) => {
                     _code = window.CoffeeScript.compile(code)
                     resolve(_code)
                     break;
+                case 'livescript':
+                    _code = window.LiveScript.compile(code)
+                    resolve(_code)
+                    break;
                 default:
                     resolve('')
                     break;
@@ -224,7 +228,7 @@ const parseVue2ScriptPlugin = (data) => {
  * javascript comment 
  * @Author: 王林25 
  * @Date: 2021-09-10 16:05:31 
- * @Desc: 解析vue3 script语法 
+ * @Desc: TODO: 解析vue3 script语法 
  */
 const parseVue3ScriptPlugin = (data) => {
     return function (babel) {

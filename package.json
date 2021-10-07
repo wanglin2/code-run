@@ -28,7 +28,8 @@
     "buildConsole": "babel --config-file ./public/console/babel.config.json ./public/console/index.js --out-file ./public/console/compile.js",
     "buildMonacoWorker": "node ./scripts/buildMonacoWorker.js",
     "convertTheme": "node ./scripts/convertTheme.js",
-    "createThemeList": "node ./scripts/createThemeList.js"
+    "createThemeList": "node ./scripts/createThemeList.js",
+    "buildLiveScript": "node ./scripts/buildLiveScript.js"
   },
   "dependencies": {
     "@element-plus/icons": "^0.0.11",
@@ -38,6 +39,7 @@
     "element-plus": "*",
     "eventemitter3": "^4.0.7",
     "jszip": "^3.7.1",
+    "livescript": "^1.6.0",
     "loadjs": "^4.2.0",
     "monaco-editor": "^0.26.0",
     "monaco-editor-textmate": "^3.0.0",

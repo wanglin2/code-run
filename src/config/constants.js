@@ -21,7 +21,7 @@ import Js from '../pages/edit/layouts/Js.vue'
 import NewWindowPreview from '../pages/edit/layouts/NewWindowPreview.vue'
 import VueSFC from '../pages/edit/layouts/VueSFC.vue'
 
-// 支持的语言
+// Monaco Editor支持的语言
 export const supportLanguage = {
 	css: 'css',
 	less: 'less',
@@ -36,7 +36,8 @@ export const supportLanguage = {
 	typescript: 'typescript',
 	coffeescript: 'coffeescript',
 	vue2: 'html',
-	vue3: 'html'
+	vue3: 'html',
+	livescript: 'javascript'
 }
 
 // 支持美化的语言
@@ -154,6 +155,10 @@ export const preprocessorListMap = {
 		{
 			label: 'CoffeeScript',
 			value: 'coffeescript',
+		},
+		{
+			label: 'LiveScript',
+			value: 'livescript',
 		},
 	],
 	CSS: [{
