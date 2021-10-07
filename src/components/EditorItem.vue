@@ -68,6 +68,8 @@
             >
             </el-option>
           </el-select>
+          <!-- 更多 -->
+          <Dropdown style="margin-left: 10px;" :list="dropdownList" @click="onDropdownClick"></Dropdown>
         </div>
       </div>
       <div class="editorContentBody" ref="editorEl"></div>
@@ -90,6 +92,8 @@ import { supportLanguage, formatterParserMap } from '@/config/constants'
 import { ElTooltip, ElSelect, ElOption } from 'element-plus'
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api'
 import { wire } from '@/utils/monacoEditor'
+import Dropdown from './Dropdown'
+import { codeToImg } from '@/utils/codeToImg'
 
 // 触发事件
 const emit = defineEmits([
@@ -347,6 +351,47 @@ const useInit = ({ createEditor }) => {
   })
 }
 
+// 生成代码图片
+const useCreateCodeImg = ({ props }) => {
+  const createCodeImg = () => {
+    codeToImg({
+      height: editor.getContentHeight(),
+      codeTheme: props.codeTheme, 
+      codeFontSize: props.codeFontSize, 
+      content: props.content, 
+      language: props.language
+    })
+  }
+
+  return {
+    createCodeImg
+  };
+}
+
+// 下拉菜单
+const useDropdown = ({createCodeImg}) => {
+  const dropdownList = [
+    {
+      name: '生成代码图片',
+      value: 'createCodeImg'
+    }
+  ]
+  const onDropdownClick = (item) => {
+    switch (item.value) {
+      case 'createCodeImg':
+        createCodeImg()
+        break;
+      default:
+        break;
+    }
+  }
+
+  return {
+    dropdownList,
+    onDropdownClick
+  }
+}
+
 // created部分
 const { updateDoc, getValue } = useDoc({ props })
 const { createEditor } = useCreateEditor({
@@ -363,6 +408,8 @@ const { noSpace } = useSizeChange({ props })
 const { addResource } = useResource({ emit })
 const { codeFormatter } = useCodeFormat({ getValue, updateDoc, emit })
 useInit({ createEditor })
+const { createCodeImg } = useCreateCodeImg({ props })
+const { dropdownList, onDropdownClick } = useDropdown({createCodeImg})
 </script>
 
 <style scoped lang="less">
