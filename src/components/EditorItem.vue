@@ -93,7 +93,6 @@ import { ElTooltip, ElSelect, ElOption } from 'element-plus'
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api'
 import { wire } from '@/utils/monacoEditor'
 import Dropdown from './Dropdown'
-import { codeToImg } from '@/utils/codeToImg'
 
 // 触发事件
 const emit = defineEmits([
@@ -101,7 +100,8 @@ const emit = defineEmits([
   'code-change',
   'blur',
   'add-resource',
-  'space-change'
+  'space-change',
+  'create-code-img'
 ])
 
 // props
@@ -334,9 +334,11 @@ const useCodeFormat = ({ getValue, updateDoc, emit }) => {
     // 设置文档内容
     updateDoc(str, props.language)
     // 监听编辑事件
-    editor.onDidChangeModelContent(() => {
-      emit('code-change', editor.getValue())
-    })
+    emit('code-change', str)
+    // editor.onDidChangeModel(() => {
+    //   console.log('编辑')
+    //   emit('code-change', editor.getValue())
+    // })
   }
 
   return {
@@ -352,15 +354,9 @@ const useInit = ({ createEditor }) => {
 }
 
 // 生成代码图片
-const useCreateCodeImg = ({ props }) => {
+const useCreateCodeImg = () => {
   const createCodeImg = () => {
-    codeToImg({
-      height: editor.getContentHeight(),
-      codeTheme: props.codeTheme, 
-      codeFontSize: props.codeFontSize, 
-      content: props.content, 
-      language: props.language
-    })
+    emit('create-code-img', editor)
   }
 
   return {
