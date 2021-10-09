@@ -79,6 +79,13 @@ export const codeThemeList = [
         "cache": ""
     },
     {
+        "name": "Hopscotch",
+        "value": "Hopscotch",
+        "custom": true,
+        "loaded": false,
+        "cache": ""
+    },
+    {
         "name": "Horla Light Theme",
         "value": "HorlaLightTheme",
         "custom": true,
@@ -95,6 +102,13 @@ export const codeThemeList = [
     {
         "name": "Kimbie Dark",
         "value": "KimbieDark",
+        "custom": true,
+        "loaded": false,
+        "cache": ""
+    },
+    {
+        "name": "Lucario",
+        "value": "Lucario",
         "custom": true,
         "loaded": false,
         "cache": ""
@@ -163,15 +177,15 @@ export const codeThemeList = [
         "cache": ""
     },
     {
-        "name": "Re U I",
-        "value": "ReUI",
+        "name": "Remedy Dark",
+        "value": "RemedyDark",
         "custom": true,
         "loaded": false,
         "cache": ""
     },
     {
-        "name": "Remedy Dark",
-        "value": "RemedyDark",
+        "name": "Re U I",
+        "value": "ReUI",
         "custom": true,
         "loaded": false,
         "cache": ""
@@ -231,17 +245,5 @@ export const codeThemeList = [
         "custom": true,
         "loaded": false,
         "cache": ""
-    },
-    {
-        "name": "经典",
-        "value": "vs"
-    },
-    {
-        "name": "深色",
-        "value": "vs-dark"
-    },
-    {
-        "name": "高对比度深色",
-        "value": "hc-black"
     }
 ]

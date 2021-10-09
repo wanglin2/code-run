@@ -19,20 +19,20 @@ files.forEach((file) => {
 		cache: ''
     })
 })
-list.push(
-    {
-		name: "经典",
-		value: "vs",
-	},
-	{
-		name: "深色",
-		value: "vs-dark",
-	},
-	{
-		name: "高对比度深色",
-		value: "hc-black",
-	}
-)
+// list.push(
+//     {
+// 		name: "经典",
+// 		value: "vs",
+// 	},
+// 	{
+// 		name: "深色",
+// 		value: "vs-dark",
+// 	},
+// 	{
+// 		name: "高对比度深色",
+// 		value: "hc-black",
+// 	}
+// )
 fs.ensureFileSync(filePath)
 const fileData = `
 // 该文件根据 /public/themes 目录下的主题文件自动生成，请勿直接修改，请运行命令：npm run createThemeList
