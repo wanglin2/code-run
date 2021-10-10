@@ -68,6 +68,8 @@
             >
             </el-option>
           </el-select>
+          <!-- 更多 -->
+          <Dropdown style="margin-left: 10px;" :list="dropdownList" @click="onDropdownClick"></Dropdown>
         </div>
       </div>
       <div class="editorContentBody" ref="editorEl"></div>
@@ -90,6 +92,7 @@ import { supportLanguage, formatterParserMap } from '@/config/constants'
 import { ElTooltip, ElSelect, ElOption } from 'element-plus'
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api'
 import { wire } from '@/utils/monacoEditor'
+import Dropdown from './Dropdown'
 
 // 触发事件
 const emit = defineEmits([
@@ -97,7 +100,8 @@ const emit = defineEmits([
   'code-change',
   'blur',
   'add-resource',
-  'space-change'
+  'space-change',
+  'create-code-img'
 ])
 
 // props
@@ -330,9 +334,11 @@ const useCodeFormat = ({ getValue, updateDoc, emit }) => {
     // 设置文档内容
     updateDoc(str, props.language)
     // 监听编辑事件
-    editor.onDidChangeModelContent(() => {
-      emit('code-change', editor.getValue())
-    })
+    emit('code-change', str)
+    // editor.onDidChangeModel(() => {
+    //   console.log('编辑')
+    //   emit('code-change', editor.getValue())
+    // })
   }
 
   return {
@@ -345,6 +351,41 @@ const useInit = ({ createEditor }) => {
   onMounted(() => {
     createEditor()
   })
+}
+
+// 生成代码图片
+const useCreateCodeImg = () => {
+  const createCodeImg = () => {
+    emit('create-code-img', editor)
+  }
+
+  return {
+    createCodeImg
+  };
+}
+
+// 下拉菜单
+const useDropdown = ({createCodeImg}) => {
+  const dropdownList = [
+    {
+      name: '生成代码图片',
+      value: 'createCodeImg'
+    }
+  ]
+  const onDropdownClick = (item) => {
+    switch (item.value) {
+      case 'createCodeImg':
+        createCodeImg()
+        break;
+      default:
+        break;
+    }
+  }
+
+  return {
+    dropdownList,
+    onDropdownClick
+  }
 }
 
 // created部分
@@ -363,6 +404,8 @@ const { noSpace } = useSizeChange({ props })
 const { addResource } = useResource({ emit })
 const { codeFormatter } = useCodeFormat({ getValue, updateDoc, emit })
 useInit({ createEditor })
+const { createCodeImg } = useCreateCodeImg({ props })
+const { dropdownList, onDropdownClick } = useDropdown({createCodeImg})
 </script>
 
 <style scoped lang="less">
