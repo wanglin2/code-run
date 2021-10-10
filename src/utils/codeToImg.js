@@ -18,7 +18,7 @@ const updateDoc = (editor, code, language) => {
 }
 
 // 创建编辑器
-const createEditor = async ({
+const createEditor = ({
     el,
     codeTheme,
     codeFontSize,
@@ -27,13 +27,14 @@ const createEditor = async ({
     bottom = 20,
     top = 20,
     lineNumbers = true
-}, callback = () => {}) => {
+}, callback = () => { }) => {
     // 创建编辑器
     const editor = monaco.editor.create(el, {
         model: null,
         minimap: {
             enabled: false, // 关闭小地图
         },
+        wordWrap: 'on', // 代码超出换行
         theme: codeTheme || 'vs-dark', // 主题
         fontSize: codeFontSize || 16,
         fontFamily: 'MonoLisa, monospace',
@@ -54,40 +55,35 @@ const createEditor = async ({
             enabled: false
         }
     })
-    editor.onDidChangeModelDecorations(() => {
+    let timeoutTimer = null
+    timeoutTimer = setTimeout(() => {
         callback()
+    }, 10000);
+    editor.onDidChangeModelDecorations(() => {
+        clearTimeout(timeoutTimer)
+        callback(editor)
     })
     updateDoc(editor, content, language)
     return editor;
 }
 
 // 创建容器
-const createElement = (editor, {
+const createElement = ({
     lineNumbers = true,
-    top = 20,
-    bottom = 20,
     radius = 5,
     width = 1000,
     showDots = true
 }, themeData) => {
-    // 代码部分高度
-    let lines = editor.getModel().getLineCount()
-    let lineHeight = 22
-    try {
-        lineHeight = editor.getDomNode().querySelector('.view-lines .view-line').getBoundingClientRect().height
-    } catch (error) {
-        console.log(error)
-    }
-    let height = lineHeight * lines + top + bottom
     // 小圆点部分高度
     let dotHeight = showDots ? 36 : 0
     // 容器
     const el = document.createElement('div')
     el.style.cssText = `
         position: fixed;
+        top: 0px;
         left: -999999px;
         width: ${width}px;
-        height: ${height + dotHeight}px;
+        height: ${dotHeight}px;
         border-radius: ${radius}px;
         overflow: hidden;
     `
@@ -99,7 +95,7 @@ const createElement = (editor, {
             height: ${dotHeight}px;
             align-items: center;
             padding-left: ${lineNumbers ? 50 : 25}px;
-            background-color: ${themeData && themeData.colors && themeData.colors['editor.background'] ? themeData.colors['editor.background']: '#000'};
+            background-color: ${themeData && themeData.colors && themeData.colors['editor.background'] ? themeData.colors['editor.background'] : '#000'};
             padding-top: 24px;
         `
         dotEl.innerHTML = `
@@ -113,7 +109,7 @@ const createElement = (editor, {
     const editorEl = document.createElement('div')
     editorEl.style.cssText = `
         width: 100%;
-        height: ${height}%
+        height: 0px;
     `
     el.appendChild(editorEl)
     document.body.appendChild(el)
@@ -139,11 +135,17 @@ export const codeToImg = ({
         const {
             el,
             editorEl
-        } = createElement(editor, data, themeData)
+        } = createElement(data, themeData)
         createEditor({
             el: editorEl,
             ...data
-        }, () => {
+        }, (editor) => {
+            // 获取代码部分真实高度
+            let h = editor.getContentHeight()
+            // 调整为真实高度
+            el.style.height = (el.getBoundingClientRect().height + h) + 'px'
+            editorEl.style.height = h + 'px'
+            editor.layout()
             setTimeout(() => {
                 html2canvas(el, {
                     backgroundColor: 'rgba(255,255,255,0)'
