@@ -5,18 +5,7 @@ import loadjs from 'loadjs'
 const preprocessorLoaded = {
     html: true,
     javascript: true,
-    css: true,
-    less: false,
-    scss: false,
-    stylus: false,
-    postcss: false,
-    pug: false,
-    babel: false,
-    typescript: false,
-    coffeeScript: false,
-    coffeeScript2: false,
-    vue2: false,
-    vue3: false
+    css: true
 }
 
 // 需要加载多个文件
