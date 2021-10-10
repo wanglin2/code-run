@@ -34,6 +34,8 @@
 
 - [x] 内置支持保存到github gist【[gist API](https://docs.github.com/cn/rest/reference/gists)】，想要保存到自己的存储体系修改也十分简单
 
+- [x] 内置支持生成和[carbon](https://carbon.now.sh/)一样漂亮美观的代码图片
+
 # 本地构建
 
 ```bash
