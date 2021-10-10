@@ -618,7 +618,7 @@ const useCreateCodeImg = ({
     top: 20,
     bottom: 20,
     radius: 5,
-    width: 1920,
+    width: 1000,
     showDots: true,
     delay: 3
   })
@@ -636,6 +636,9 @@ const useCreateCodeImg = ({
   // 关闭弹窗
   const cancelCreateCodeImg = () => {
     createCodeImgSettingDialogVisible.value = false
+    creatingCodeImg.value = false
+    editor = null
+    createItem = null
   }
 
   // 确认生成代码图片
