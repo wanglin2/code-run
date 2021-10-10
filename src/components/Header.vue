@@ -131,11 +131,11 @@
     >
       <div class="gistBox">
         <el-table
-          class="tableBox"
           :data="gistList"
           style="width: 100%"
           empty-text="好像没有更多了~"
           v-loading="gistloading"
+          height="100%"
         >
           <el-table-column label="名称" prop="description" />
           <el-table-column label="是否公开" prop="public">
@@ -862,12 +862,6 @@ const { shareDialogVisible, shareUrl, createShareUrl } = useShare({
     overflow: hidden;
     display: flex;
     flex-direction: column;
-
-    .tableBox {
-      flex-grow: 1;
-      height: 100%;
-      overflow: auto;
-    }
 
     .paginationBox {
       height: 50px;
