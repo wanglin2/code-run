@@ -251,3 +251,7 @@ const showList = reactive([
 |   title   |   编辑器名称，可选项：`HTML`、 `CSS`、 `JS`、`VUE`   |   String   |      |
 |   disableDrag   |   是否禁止拖动缩放该编辑器   |   Boolean   |      |
 |   showTouchBar   |   是否显示该编辑器的推动条   |   Boolean   |      |
+
+# 致谢
+
+本项目中预处理/扩展语言的编译部分、其他一些细节有参考了项目[codepan](https://github.com/egoist/codepan)的实现。
