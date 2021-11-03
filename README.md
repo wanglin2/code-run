@@ -252,6 +252,12 @@ const showList = reactive([
 |   disableDrag   |   是否禁止拖动缩放该编辑器   |   Boolean   |      |
 |   showTouchBar   |   是否显示该编辑器的推动条   |   Boolean   |      |
 
+# 暂未解决的问题
+
+1.生成代码图片功能偶尔生成的图片高度超出了代码实际的高度，目前暂未找到原因及根本解决方法。可选方法之一为生成图片后再提供一个图片裁剪的功能。
+
+2.极少数情况下会出现主题不生效的问题。
+
 # 致谢
 
 本项目中预处理/扩展语言的编译部分、其他一些细节有参考了项目[codepan](https://github.com/egoist/codepan)的实现。
