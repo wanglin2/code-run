@@ -255,3 +255,7 @@ const showList = reactive([
 # 致谢
 
 本项目中预处理/扩展语言的编译部分、其他一些细节有参考了项目[codepan](https://github.com/egoist/codepan)的实现。
+
+# License
+
+[MIT](https://opensource.org/licenses/MIT)
