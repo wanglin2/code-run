@@ -688,16 +688,19 @@ const { shareDialogVisible, shareUrl, createShareUrl } = useShare({
   padding: 0 20px;
 
   .left {
+    flex-shrink: 0;
+
     h1 {
       color: var(--header-logo-color);
     }
   }
 
   .center {
+    flex-grow: 1;
     height: 100%;
 
     input {
-      width: 250px;
+      width: 100%;
       height: 100%;
       border: none;
       outline: none;
@@ -710,6 +713,7 @@ const { shareDialogVisible, shareUrl, createShareUrl } = useShare({
 
   .right {
     display: flex;
+    flex-shrink: 0;
 
     .dropdownBtn {
       position: relative;
