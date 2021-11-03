@@ -226,6 +226,10 @@ export const cdnSiteList = [{
 		name: 'jsDelivr',
 		url: 'https://www.jsdelivr.com/',
 	},
+	{
+		name: 'Skypack',
+		url: 'https://www.skypack.dev/',
+	},
 ]
 
 // 布局列表
