@@ -92,15 +92,28 @@
             <el-input
               v-model="resourceData[scope.$index].url"
               size="small"
+              @change="resourceInputChange(scope.$index)"
             ></el-input>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="50">
+        <el-table-column label="操作" width="100">
           <template #default="scope">
             <el-button
               @click="deleteResource(scope)"
               type="text"
               icon="el-icon-delete"
+            ></el-button>
+            <el-button
+              @click="upResource(scope)"
+              type="text"
+              icon="el-icon-top"
+              :disabled="scope.$index <= 0"
+            ></el-button>
+            <el-button
+              @click="downResource(scope)"
+              type="text"
+              icon="el-icon-bottom"
+              :disabled="scope.$index >= resourceData.length - 1"
             ></el-button>
           </template>
         </el-table-column>
@@ -536,6 +549,36 @@ const useHandleAssets = ({ store, runCode, editData }) => {
     })
   }
 
+  // 上移
+  const upResource = (e) => {
+    let index = e.$index
+    if (index <= 0) {
+      return
+    }
+    let tmp = resourceData.value[index]
+    resourceData.value[index] = resourceData.value[index - 1]
+    resourceData.value[index - 1] = tmp
+  }
+
+  // 下移
+  const downResource = (e) => {
+    let index = e.$index
+    if (index >= resourceData.value.length - 1) {
+      return
+    }
+    let tmp = resourceData.value[index]
+    resourceData.value[index] = resourceData.value[index + 1]
+    resourceData.value[index + 1] = tmp
+  }
+
+  // 自动填充名称
+  const resourceInputChange = (index) => {
+    if (resourceData.value[index].url) {
+      let arr = resourceData.value[index].url.split('/')
+      resourceData.value[index].name = arr[arr.length - 1] || ''
+    }
+  }
+
   // 取消添加资源
   const cancelAddResource = () => {
     addResourceDialogVisible.value = false
@@ -568,6 +611,9 @@ const useHandleAssets = ({ store, runCode, editData }) => {
     addOneResource,
     cancelAddResource,
     confirmAddResource,
+    upResource,
+    downResource,
+    resourceInputChange
   }
 }
 
@@ -696,6 +742,9 @@ const {
   addOneResource,
   cancelAddResource,
   confirmAddResource,
+  upResource,
+  downResource,
+  resourceInputChange
 } = useHandleAssets({ store, runCode, editData })
 const {
   codeImgPreviewDialogVisible,
