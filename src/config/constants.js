@@ -197,6 +197,24 @@ export const preprocessorListMap = {
 	]
 }
 
+// 语言文件类型映射列表
+export const langTypeMap = {
+	html: ['text/html'],
+	pug: ['.pug'],
+	javascript: ['.js'],
+	babel: ['.js', '.jsx'],
+	typescript: ['.ts'],
+	coffeescript: ['.coffee'],
+	livescript: ['.mlx'],
+	css: ['text/css'],
+	less: ['.less'],
+	scss: ['.scss'],
+	sass: ['.sass'],
+	stylus: ['.styl'],
+	postcss: ['.pcss'],
+	vue2: ['.vue']
+}
+
 // 常用cdn服务
 export const cdnSiteList = [{
 		name: 'BootCDN',
