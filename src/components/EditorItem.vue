@@ -88,7 +88,7 @@ import {
   defineEmits,
 } from 'vue'
 import ResizeObserver from 'resize-observer-polyfill'
-import { supportLanguage, formatterParserMap } from '@/config/constants'
+import { supportLanguage, formatterParserMap, langTypeMap } from '@/config/constants'
 import { ElTooltip, ElSelect, ElOption } from 'element-plus'
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api'
 import { wire } from '@/utils/monacoEditor'
@@ -364,18 +364,58 @@ const useCreateCodeImg = () => {
   };
 }
 
+// 打开本地文件
+const useOpenLocalFile = ({ updateDoc, emit }) => {
+  // 打开文件
+  const openLocalFile = () => {
+    let el = document.createElement('input')
+    el.type = 'file'
+    el.accept = langTypeMap[props.language] ? langTypeMap[props.language].join(',') : ''
+    el.addEventListener('input', (e) => {
+      let file = e.target.files[0]
+      let reader = new FileReader()
+      reader.readAsText(file)
+      reader.addEventListener('loadend', () => {
+        let str = reader.result
+        // 设置文档内容
+        updateDoc(str, props.language)
+        // 监听编辑事件
+        emit('code-change', str)
+        el.value = null
+        el = null
+      })
+      reader.addEventListener('error', () => {
+        el.value = null
+        el = null
+      })
+    })
+    el.click()
+  }
+
+  return {
+    openLocalFile,
+  }
+}
+
 // 下拉菜单
-const useDropdown = ({createCodeImg}) => {
+const useDropdown = ({ createCodeImg, openLocalFile }) => {
   const dropdownList = [
     {
       name: '生成代码图片',
       value: 'createCodeImg'
+    },
+    {
+      name: '打开本地文件',
+      value: 'openLocalFile'
     }
   ]
   const onDropdownClick = (item) => {
     switch (item.value) {
       case 'createCodeImg':
         createCodeImg()
+        break;
+      case 'openLocalFile':
+        openLocalFile()
         break;
       default:
         break;
@@ -405,7 +445,8 @@ const { addResource } = useResource({ emit })
 const { codeFormatter } = useCodeFormat({ getValue, updateDoc, emit })
 useInit({ createEditor })
 const { createCodeImg } = useCreateCodeImg({ props })
-const { dropdownList, onDropdownClick } = useDropdown({createCodeImg})
+const { openLocalFile } = useOpenLocalFile({ props, updateDoc, emit })
+const { dropdownList, onDropdownClick } = useDropdown({ createCodeImg, openLocalFile })
 </script>
 
 <style scoped lang="less">
