@@ -28,7 +28,7 @@
 
 - [x] 美观强大的控制台
 
-- [x] 支持`vue`单文件
+- [x] 支持`vue`单文件（2.x、3.x）
 
 - [x] 支持直接移植`VSCode`主题，并且已经内置了大量优质主题
 
@@ -99,6 +99,8 @@ UI库：`element-plus`
 - `npm run convertTheme`：将`VSCode`主题文件转换成`Monaco Editor`主题文件。
 
 - `npm run createThemeList`：根据主题文件列表自动生成配置文件。
+
+- `npm run buildVueSFCCompiler`：打包`@vue/compiler-sfc`文件。
 
 # 新增代码模板
 

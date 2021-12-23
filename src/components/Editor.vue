@@ -18,7 +18,7 @@
           :preprocessorList="preprocessorListMap[item.title]"
           :showAddBtn="item.showAddBtn"
           :dir="dir"
-          :showAllAddResourcesBtn="['vue2'].includes(item.language)"
+          :showAllAddResourcesBtn="['vue2', 'vue3'].includes(item.language)"
           @code-change="
             (code) => {
               codeChange(item, code)

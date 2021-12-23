@@ -42,6 +42,53 @@ const = {
 }
 */
 
+const vue3SFC = {
+    name: 'Vue 3单文件',
+    isVueSFC: true,
+    icon: vueIcon,
+    code: {
+        HTML: {
+            language: 'html',
+            content: ``,
+            resources: []
+        },
+        CSS: {
+            language: 'css',
+            content: '',
+            resources: []
+        },
+        JS: {
+            language: 'javascript',
+            content: ``,
+            resources: [{
+                name: 'Vue 3',
+                url: 'https://cdn.bootcdn.net/ajax/libs/vue/3.2.0-beta.7/vue.global.js'
+            }]
+        },
+        VUE: {
+            language: 'vue3',
+            content: `<template>
+    <h1>{{ msg }}</h1>
+    <input v-model="msg">
+</template>
+
+<script setup>
+import { ref } from 'vue'
+
+const msg = ref('Hello World!')
+</script>
+
+<style lang="less">
+h1 {
+    color: red;
+}
+</style>  
+            `,
+            resources: []
+        },
+    },
+}
+
 const vue2SFC = {
     name: 'Vue 2单文件',
     isVueSFC: true,
@@ -689,6 +736,7 @@ layer.draw();`,
  * @Desc: 模板列表 
  */
 const templateList = [
+    vue3SFC,
     vue2SFC,
     vue3,
     vue2,
@@ -704,6 +752,7 @@ const templateList = [
     konva
 ]
 const templateMap = {
+    vue3SFC,
     vue2SFC,
     vue3,
     vue2,
