@@ -28,7 +28,7 @@
 
 - [x] 美观强大的控制台
 
-- [x] 支持`vue`单文件
+- [x] 支持`vue`单文件（2.x、3.x）
 
 - [x] 支持直接移植`VSCode`主题，并且已经内置了大量优质主题
 
@@ -99,6 +99,8 @@ UI库：`element-plus`
 - `npm run convertTheme`：将`VSCode`主题文件转换成`Monaco Editor`主题文件。
 
 - `npm run createThemeList`：根据主题文件列表自动生成配置文件。
+
+- `npm run buildVueSFCCompiler`：打包`@vue/compiler-sfc`文件。
 
 # 新增代码模板
 
@@ -251,3 +253,17 @@ const showList = reactive([
 |   title   |   编辑器名称，可选项：`HTML`、 `CSS`、 `JS`、`VUE`   |   String   |      |
 |   disableDrag   |   是否禁止拖动缩放该编辑器   |   Boolean   |      |
 |   showTouchBar   |   是否显示该编辑器的推动条   |   Boolean   |      |
+
+# 暂未解决的问题
+
+1.生成代码图片功能偶尔生成的图片高度超出了代码实际的高度，目前暂未找到原因及根本解决方法。可选方法之一为生成图片后再提供一个图片裁剪的功能。
+
+2.极少数情况下会出现主题不生效的问题。
+
+# 致谢
+
+本项目中预处理/扩展语言的编译部分、其他一些细节有参考了项目[codepan](https://github.com/egoist/codepan)的实现。
+
+# License
+
+[MIT](https://opensource.org/licenses/MIT)
