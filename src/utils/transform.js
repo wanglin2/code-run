@@ -142,9 +142,9 @@ const css = (preprocessor, code) => {
  * javascript comment 
  * @Author: 王林25 
  * @Date: 2021-09-13 16:06:15 
- * @Desc: 遍历匹配节点，添加el、template属性 
+ * @Desc: vue2，遍历匹配节点，添加el、template属性 
  */
-const traverseAddProperty = (path, t, data) => {
+const traverseVue2AddProperty = (path, t, data) => {
     path.traverse({
         ObjectExpression(path2) {
             if (path2.parent && path2.parent.type === 'NewExpression') {
@@ -154,12 +154,16 @@ const traverseAddProperty = (path, t, data) => {
                         t.identifier('el'),
                         t.stringLiteral('#app')
                     ),
-                    // template
-                    t.objectProperty(
-                        t.identifier('template'),
-                        t.stringLiteral(data.template.content)
-                    ),
                 )
+                if (data.template && data.template.content) {
+                    // template
+                    path2.node.properties.push(
+                        t.objectProperty(
+                            t.identifier('template'),
+                            t.stringLiteral(data.template.content)
+                        )
+                    )
+                }
                 path2.stop()
             }
         }
@@ -191,7 +195,7 @@ const parseVue2ScriptPlugin = (data) => {
                         )
                     );
                     // 添加el和template属性
-                    traverseAddProperty(path, t, data)
+                    traverseVue2AddProperty(path, t, data)
                 },
                 // 解析module.exports模块语法
                 AssignmentExpression(path) {
@@ -213,7 +217,7 @@ const parseVue2ScriptPlugin = (data) => {
                                 )
                             )
                             // 添加el和template属性
-                            traverseAddProperty(path, t, data)
+                            traverseVue2AddProperty(path, t, data)
                         }
                     } catch (error) {
                         // console.log(error)
@@ -227,8 +231,35 @@ const parseVue2ScriptPlugin = (data) => {
 /** 
  * javascript comment 
  * @Author: 王林25 
+ * @Date: 2021-09-13 16:06:15 
+ * @Desc: vue3，遍历匹配节点，添加el、template属性 
+ */
+ const traverseVue3AddProperty = (path, t, data) => {
+    let first = true
+    path.traverse({
+        ObjectExpression(path2) {
+            if (first) {
+                first = false
+                if (data.template && data.template.content) {
+                    path2.node.properties.push(
+                        // template
+                        t.objectProperty(
+                            t.identifier('template'),
+                            t.stringLiteral(data.template.content)
+                        ),
+                    )
+                }
+                path2.stop()
+            }
+        }
+    });
+}
+
+/** 
+ * javascript comment 
+ * @Author: 王林25 
  * @Date: 2021-09-10 16:05:31 
- * @Desc: TODO: 解析vue3 script语法 
+ * @Desc: 解析vue3 script语法 
  */
 const parseVue3ScriptPlugin = (data) => {
     return function (babel) {
@@ -239,14 +270,26 @@ const parseVue3ScriptPlugin = (data) => {
                 ExportDefaultDeclaration(path) {
                     path.replaceWith(
                         t.expressionStatement(
-                            t.newExpression(
-                                t.identifier('Vue'),
+                            t.callExpression(
+                                t.memberExpression(
+                                    t.callExpression(
+                                        t.memberExpression(
+                                            t.identifier('Vue'),
+                                            t.identifier('createApp')
+                                        ),
+                                       [
+                                            path.get('declaration').node
+                                       ] 
+                                    ),
+                                    t.identifier('mount')
+                                ),
                                 [
-                                    path.get('declaration').node
+                                    t.stringLiteral('#app')
                                 ]
                             )
                         )
                     );
+                    traverseVue3AddProperty(path, t, data)
                 }
             }
         }
@@ -311,8 +354,27 @@ const vue = (preprocessor, code) => {
                     resolve(parseData)
                     break;
                 case 'vue3':
-                    componentData = window.VueTemplateCompiler.parseComponent(code)
-                    parseData = await parseVueComponentData(componentData, parseVue3ScriptPlugin)
+                    componentData = window.Vue3TemplateCompiler.parse(code)
+                    // 使用了setup语法
+                    if (componentData.descriptor.scriptSetup) {
+                        componentData.descriptor.script = null
+                        let compiledScript = window.Vue3TemplateCompiler.compileScript(componentData.descriptor, {
+                            refSugar: true
+                        })
+                        componentData.descriptor.script = {
+                            content: compiledScript.content
+                        }
+                    }
+                    parseData = await parseVueComponentData(componentData.descriptor, parseVue3ScriptPlugin)
+                    // vue3的响应式可能需要引入各种方法，babel会把import编译为require语法，所以手动注入一个
+                    parseData.js = parseData.js.replace('"use strict";', `
+                        "use strict";
+                        if (!window.require) {
+                            window.require = function(tar) {
+                                return tar === 'vue' ? window.Vue : window[tar];
+                            }
+                        }
+                    `)
                     resolve(parseData)
                     break;
                 default:
