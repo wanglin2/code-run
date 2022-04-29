@@ -15,7 +15,6 @@ import { layoutMap, defaultViewThemeConfig } from "@/config/constants";
 import { useRouter, useRoute } from "vue-router";
 import { initMonacoEditor } from "@/utils/monacoEditor";
 import nprogress from "nprogress";
-import { ElNotification } from 'element-plus'
 
 // hooks定义部分
 const useInit = () => {
@@ -192,29 +191,6 @@ const useTheme = ({ proxy, store }) => {
   });
 };
 
-// 提示
-const useTip = () => {
-  ElNotification({
-    title: '最近更新',
-    dangerouslyUseHTMLString: true,
-    duration: 0,
-    message: `
-      <div>可以在<span>JavaScript</span><span>TypeScript</span><span>Vue2</span>模式下支持直接使用es6模块语法，比如：</div>
-      <div>
-        <pre>
-          <code>
-// 使用最新版本
-import moment from 'moment'
-// 使用指定版本
-import moment from 'moment@2'
-console.log(moment().format('YYYY/MM/DD'))
-          </code>
-        </pre>
-      </div>
-    `,
-  })
-}
-
 // created部分
 const { proxy, router, store, init, showContent } = useInit();
 const { layout, activeLayout } = useLayout({ store });
@@ -225,7 +201,6 @@ const { previewLayoutHandle } = useWindowPreview({
   proxy,
 });
 useTheme({ proxy, store });
-useTip();
 init(() => {
   previewLayoutHandle();
 });
