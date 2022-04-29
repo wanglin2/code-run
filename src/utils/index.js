@@ -64,10 +64,10 @@ export const compile = async (htmlLanguage, jsLanguage, cssLanguage, htmlContent
     let cssTransform = transform.css(cssLanguage, cssContent)
     return new Promise((resolve, reject) => {
         Promise.all([htmlTransform, jsTransform, cssTransform])
-            .then(([htmlStr, jsStr, cssStr]) => {
+            .then(([htmlStr, jsData, cssStr]) => {
                 resolve({
                     html: htmlStr,
-                    js: jsStr,
+                    js: jsData,
                     css: cssStr
                 })
             })
