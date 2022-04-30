@@ -9,6 +9,7 @@ import angularIcon from '../assets/templateIcons/angular.png'
 import vantIcon from '../assets/templateIcons/vant.png'
 import leafletIcon from '../assets/templateIcons/leaflet.png'
 import konvaIcon from '../assets/templateIcons/konva.png'
+import es6Icon from '../assets/templateIcons/es6.webp'
 
 /*
 const = {
@@ -42,6 +43,42 @@ const = {
 }
 */
 
+const es6Module = {
+    name: '使用ES6模块语法',
+    icon: es6Icon,
+    code: {
+        HTML: {
+            language: 'html',
+            content: `<div id="app">
+{{ message }}
+</div>`,
+            resources: []
+        },
+        CSS: {
+            language: 'css',
+            content: '',
+            resources: []
+        },
+        JS: {
+            language: 'javascript',
+            content: `import Vue from 'vue@2.6.11/dist/vue.esm.browser.js'
+import moment from 'moment'
+var app = new Vue({
+    el: '#app',
+    data: {
+        message: 'Hello ' + moment().format('YYYY')
+    }
+})`,
+            resources: []
+        },
+        VUE: {
+            language: 'vue2',
+            content: ``,
+            resources: []
+        }
+    },
+}
+
 const vue3SFC = {
     name: 'Vue 3单文件',
     isVueSFC: true,
@@ -60,10 +97,7 @@ const vue3SFC = {
         JS: {
             language: 'javascript',
             content: ``,
-            resources: [{
-                name: 'Vue 3',
-                url: 'https://cdn.bootcdn.net/ajax/libs/vue/3.2.0-beta.7/vue.global.js'
-            }]
+            resources: []
         },
         VUE: {
             language: 'vue3',
@@ -736,6 +770,7 @@ layer.draw();`,
  * @Desc: 模板列表 
  */
 const templateList = [
+    es6Module,
     vue3SFC,
     vue2SFC,
     vue3,
@@ -752,6 +787,7 @@ const templateList = [
     konva
 ]
 const templateMap = {
+    es6Module,
     vue3SFC,
     vue2SFC,
     vue3,
