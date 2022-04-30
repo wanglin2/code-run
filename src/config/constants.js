@@ -54,6 +54,13 @@ export const formatterParserMap = {
 	vue3: 'html'
 }
 
+// 支持使用es6模块语法
+export const supportESModuleMap = {
+	javascript: true,
+	typescript: true,
+	vue2: true
+}
+
 // monaco editor包含的语言，可通过vue.config.js的MonacoWebpackPlugin插件进行配置
 export const monacoEditorInnerLanguages = ['css', 'html', 'javascript', 'less', 'pug', 'scss', 'typescript', 'coffee']
 

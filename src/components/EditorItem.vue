@@ -4,6 +4,15 @@
       <div class="editorContentHeader">
         <div class="title" :class="[{ rotate: noSpace }, dir]">{{ title }}</div>
         <div class="right">
+          <!-- 支持es6模块提示 -->
+          <el-popover placement="bottom" effect="dark" trigger="hover" v-if="supportESModuleMap[language]">
+            <template #reference>
+              <div class="addBtn">
+                <span class="el-icon-sunny"></span>
+              </div>
+            </template>
+            支持使用ES6模块语法，了解更多<a href='https://www.skypack.dev/' target='_blank'>skypack</a>
+          </el-popover>
           <!-- 格式化按钮 -->
           <el-tooltip
             class="item"
@@ -88,8 +97,8 @@ import {
   defineEmits,
 } from 'vue'
 import ResizeObserver from 'resize-observer-polyfill'
-import { supportLanguage, formatterParserMap, langTypeMap } from '@/config/constants'
-import { ElTooltip, ElSelect, ElOption } from 'element-plus'
+import { supportLanguage, formatterParserMap, langTypeMap, supportESModuleMap } from '@/config/constants'
+import { ElTooltip, ElSelect, ElOption, ElPopover } from 'element-plus'
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api'
 import { wire } from '@/utils/monacoEditor'
 import Dropdown from './Dropdown'

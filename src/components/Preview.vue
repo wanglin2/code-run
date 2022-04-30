@@ -133,7 +133,8 @@ const useCreateHtml = () => {
     cssStr,
     cssResources,
     jsResources,
-    openAlmightyConsole
+    openAlmightyConsole,
+    useImport
   ) => {
     // 添加依赖资源
     let _cssResources = cssResources
@@ -155,6 +156,23 @@ const useCreateHtml = () => {
       <script src="${base}base/index.js"><\/script>
       <script src="${base}console/compile.js"><\/script>
     `;
+    let jsContent = ''
+    if (useImport) {
+      jsContent = `<script type="module">
+        ${openAlmightyConsole ? "eruda.init();" : ""}
+        ${jsStr}
+      <\/script>`
+    } else {
+      jsContent = `<script>
+        ${openAlmightyConsole ? "eruda.init();" : ""}
+        try {
+          ${jsStr}
+        } catch (err) {
+          console.error('js代码运行出错')
+          console.error(err)
+        }
+      <\/script>`
+    }
     let body = `
       ${htmlStr}
       ${_jsResources}
@@ -163,15 +181,7 @@ const useCreateHtml = () => {
           ? `<script src="${base}eruda/eruda.js"><\/script>`
           : ""
       }
-      <script>
-          ${openAlmightyConsole ? "eruda.init();" : ""}
-          try {
-            ${jsStr}
-          } catch (err) {
-            console.error('js代码运行出错')
-            console.error(err)
-          }
-      <\/script>
+      ${jsContent}
     `;
     return assembleHtml(head, body);
   };
@@ -264,11 +274,12 @@ const useRun = ({
         }));
       srcdoc.value = createHtml(
         compiledData.html,
-        compiledData.js,
+        compiledData.js.js,
         compiledData.css,
         _cssResources,
         _jsResources,
-        openAlmightyConsole.value
+        openAlmightyConsole.value,
+        compiledData.js.useImport
       );
       isNewWindowPreview.value = false;
     } catch (error) {
