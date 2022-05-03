@@ -25,6 +25,11 @@ const transformJsImport = (jsStr) => {
     }
 }
 
+// 检查是否是裸导入
+const isBareImport = (source) => {
+    return !(/^https?:\/\//.test(source) || /^(\/|\.\/|\.\.\/)/.test(source));
+}
+
 // 修改import from语句
 const parseJsImportPlugin = () => {
     return function (babel) {
@@ -32,7 +37,7 @@ const parseJsImportPlugin = () => {
         return {
             visitor: {
                 ImportDeclaration(path) {
-                    if (!/cdn\.skypack\.dev/.test(path.node.source.value)) {
+                    if (isBareImport(path.node.source.value)) {
                         path.replaceWith(t.importDeclaration(
                             path.node.specifiers,
                             t.stringLiteral(`https://cdn.skypack.dev/${path.node.source.value}`)
