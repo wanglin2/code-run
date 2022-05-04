@@ -391,3 +391,6 @@ export const defaultViewThemeConfig = {
 	// 命令输入栏颜色
 	'--command-color': ['terminal.foreground', '#fff']
 }
+
+// ES模块CDN
+export const  esModuleCdnUrl = 'https://cdn.skypack.dev/'
