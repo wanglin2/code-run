@@ -36,6 +36,8 @@
 
 - [x] 内置支持生成和[carbon](https://carbon.now.sh/)一样漂亮美观的代码图片
 
+- [x] 内置使用[Skypack](https://www.skypack.dev/)支持在浏览器上使用ES模块语法。
+
 # 本地构建
 
 ```bash

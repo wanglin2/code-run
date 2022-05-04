@@ -1,6 +1,7 @@
 import {
     load
 } from '@/utils/load'
+import { esModuleCdnUrl } from '@/config/constants';
 
 /** 
  * javascript comment 
@@ -40,7 +41,7 @@ const parseJsImportPlugin = () => {
                     if (isBareImport(path.node.source.value)) {
                         path.replaceWith(t.importDeclaration(
                             path.node.specifiers,
-                            t.stringLiteral(`https://cdn.skypack.dev/${path.node.source.value}`)
+                            t.stringLiteral(`${esModuleCdnUrl}${path.node.source.value}`)
                         ))
                     }
                 }
@@ -73,8 +74,6 @@ const checkIsHasImport = (jsStr) => {
     })
     return res
 }
-
-
 
 /** 
  * javascript comment 
@@ -169,6 +168,18 @@ const js = (preprocessor, code) => {
 }
 
 /** 
+ * @Author: 王林 
+ * @Date: 2022-05-04 11:05:20 
+ * @Desc: 转换css导入 
+ */
+const transformCssImport = (cssStr) => {
+    return cssStr.replace(/(@import\s+)('|")([^'"]+)('|")/g, (str, ...matches) => {
+        let source = isBareImport(matches[2]) ? `${esModuleCdnUrl}${matches[2]}` : matches[2]
+        return `${matches[0]}${matches[1]}${source}${matches[1]}`
+    })
+}
+
+/** 
  * javascript comment 
  * @Author: 王林25 
  * @Date: 2021-05-13 11:35:34 
@@ -180,12 +191,12 @@ const css = (preprocessor, code) => {
         try {
             switch (preprocessor) {
                 case 'css':
-                    resolve(code)
+                    resolve(transformCssImport(code))
                     break;
                 case 'less':
                     window.less.render(code)
                         .then((output) => {
-                                resolve(output.css)
+                                resolve(transformCssImport(output.css))
                             },
                             (error) => {
                                 reject(error)
@@ -199,7 +210,7 @@ const css = (preprocessor, code) => {
                     sass.compile(code, {
                         indentedSyntax: preprocessor === 'sass'
                     }, (result) => {
-                        resolve(result.text)
+                        resolve(transformCssImport(result.text))
                     });
                     break;
                 case 'stylus':
@@ -207,13 +218,13 @@ const css = (preprocessor, code) => {
                         if (err) {
                             reject(err)
                         } else {
-                            resolve(css)
+                            resolve(transformCssImport(css))
                         }
                     });
                     break;
                 case 'postcss':
                     window.postcss([window.cssnext]).process(code).then(result => {
-                        resolve(result.css)
+                        resolve(transformCssImport(result.css))
                     })
                     break;
                 default:
