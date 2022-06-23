@@ -1,5 +1,6 @@
 import Edit from '@/pages/edit/Index.vue'
 import Preview from '@/pages/edit/Preview.vue'
+import Embed from '@/pages/embed/Index.vue'
 import {
     createRouter,
     createWebHistory,
@@ -27,6 +28,11 @@ const routes = [
         path: '/preview',
         name: 'Preview',
         component: Preview
+    },
+    {
+        path: '/embed/:id',
+        name: 'Embed',
+        component: Embed
     },
 ]
 

@@ -25,6 +25,12 @@
           <li class="toolItem" @click="createShareUrl" v-if="isEdit">
             生成分享链接
           </li>
+          <li class="toolItem" @click="createEmbedUrl" v-if="isEdit">
+            生成嵌入链接
+          </li>
+          <li class="toolItem" @click="createEmbedCode" v-if="isEdit">
+            生成嵌入代码
+          </li>
         </ul>
       </div>
       <div class="btn" @click="run">
@@ -185,9 +191,19 @@
       </div>
     </el-drawer>
     <!-- 分享弹窗 -->
-    <el-dialog title="分享" v-model="shareDialogVisible" :width="600">
-      <el-input v-model="shareUrl" readonly ref="shareUrlInput"></el-input>
-      <p class="tip">复制url进行分享吧~</p>
+    <el-dialog 
+      :title="copyDialogTitle" 
+      v-model="shareDialogVisible" 
+      :width="600"
+    >
+      <el-input 
+        v-model="shareUrl" 
+        type="textarea" 
+        autosize 
+        readonly 
+        ref="shareUrlInput"
+      ></el-input>
+      <p class="tip">{{copyDialogTip}}</p>
     </el-dialog>
   </div>
 </template>
@@ -222,7 +238,7 @@ import {
 import { request } from "@/utils/octokit";
 import dayjs from "dayjs";
 import { useRouter, useRoute } from "vue-router";
-import { routerMode, base } from "@/config";
+import { createShareUrl as createShareUrlUtil, createEmbedUrl as createEmbedUrlUtil } from '@/utils';
 
 // hooks定义部分
 
@@ -601,26 +617,44 @@ const useDrawer = ({ router, route, githubToken, login }) => {
 // 分享
 const shareUrlInput = ref(null);
 const useShare = ({ route, isEdit }) => {
+  const copyDialogTitle = ref('');
+  const copyDialogTip = ref('');
   const shareDialogVisible = ref(false);
   const shareUrl = ref("");
-  const createShareUrl = () => {
+  const showUrl = (url) => {
     if (!isEdit.value) {
       return;
     }
-    shareUrl.value = `${location.origin}${base}${
-      routerMode === "hash"
-        ? "#/share/" + route.params.id
-        : "share/" + route.params.id
-    }`;
+    shareUrl.value = url;
     shareDialogVisible.value = true;
     nextTick(() => {
       shareUrlInput.value.select();
     });
+  }
+  const createShareUrl = () => {
+    copyDialogTitle.value = '分享';
+    copyDialogTip.value = '复制url进行分享吧~'
+    showUrl(createShareUrlUtil(route.params.id));
   };
+  const createEmbedUrl = () => {
+    copyDialogTitle.value = '嵌入';
+    copyDialogTip.value = '复制url嵌入到你页面的iframe里吧~';
+    showUrl(createEmbedUrlUtil(route.params.id));
+  }
+  const createEmbedCode = () => {
+    copyDialogTitle.value = '嵌入';
+    copyDialogTip.value = '复制代码插入到你页面里吧~';
+    let code = `<iframe height="500" style="width: 100%;" scrolling="no" src="${createEmbedUrlUtil(route.params.id)}" frameborder="no" loading="lazy" allowtransparency="true" allowfullscreen="true"></iframe>`;
+    showUrl(code);
+  }
   return {
+    copyDialogTitle,
+    copyDialogTip,
     shareDialogVisible,
     shareUrl,
     createShareUrl,
+    createEmbedUrl,
+    createEmbedCode
   };
 };
 
@@ -669,7 +703,7 @@ const {
   gistCurrentChange,
   gistPageNo,
 } = useDrawer({ router, route, githubToken, login });
-const { shareDialogVisible, shareUrl, createShareUrl } = useShare({
+const { copyDialogTitle, copyDialogTip, shareDialogVisible, shareUrl, createShareUrl, createEmbedUrl, createEmbedCode } = useShare({
   route,
   isEdit,
 });
@@ -778,6 +812,7 @@ const { shareDialogVisible, shareUrl, createShareUrl } = useShare({
       cursor: pointer;
       transition: all 0.3s;
       opacity: 0.7;
+      user-select: none;
 
       &:hover {
         opacity: 1;
