@@ -20,6 +20,7 @@ import PreviewOnly2 from '../pages/edit/layouts/PreviewOnly2.vue'
 import Js from '../pages/edit/layouts/Js.vue'
 import NewWindowPreview from '../pages/edit/layouts/NewWindowPreview.vue'
 import VueSFC from '../pages/edit/layouts/VueSFC.vue'
+import Embed from '../pages/edit/layouts/Embed.vue'
 
 // Monaco Editor支持的语言
 export const supportLanguage = {
@@ -329,7 +330,8 @@ export const layoutMap = {
 	previewOnly2: PreviewOnly2,
 	js: Js,
 	newWindowPreview: NewWindowPreview,
-	vue: VueSFC
+	vue: VueSFC,
+	embed: Embed
 }
 
 // 编辑器字号
@@ -394,3 +396,24 @@ export const defaultViewThemeConfig = {
 
 // ES模块CDN
 export const  esModuleCdnUrl = 'https://cdn.skypack.dev/'
+
+// 嵌入模式的编辑器tab列表
+export const getEmbedCodeTypeListMap = (layout) => {
+	return layout === 'vue' ? ['VUE'] : ['HTML', 'CSS', 'JS']
+}
+
+// 嵌入模式的缩放列表
+export const scaleTypeList = [
+	{
+		name: '1x',
+		value: 1
+	},
+	{
+		name: '0.5x',
+		value: 0.5
+	},
+	{
+		name: '0.25x',
+		value: 0.25
+	}
+]

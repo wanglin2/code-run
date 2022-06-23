@@ -3,8 +3,8 @@
     class="dragItem"
     :class="[dir, { hide: hide }]"
     :style="{
-      width: sizeList[index].width + '%',
-      height: sizeList[index].height + '%',
+      width: sizeList.length  > 0 ? sizeList[index].width + '%' : 0,
+      height: sizeList.length  > 0 ? sizeList[index].height + '%' : 0,
     }"
   >
     <div
@@ -94,10 +94,10 @@ const useSizeList = ({ emit }) => {
   watch(
     [
       () => {
-        return sizeList.value[props.index].width;
+        return sizeList.value.length > 0 ? sizeList.value[props.index].width : 0;
       },
       () => {
-        return sizeList.value[props.index].height;
+        return sizeList.value.length > 0 ? sizeList.value[props.index].height : 0;
       },
     ],
     () => {
