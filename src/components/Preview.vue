@@ -3,7 +3,12 @@
     class="previewBox"
     :class="{ hide: hide, disabledEvents: disabledEvents }"
   >
-    <iframe class="iframe" ref="iframeRef" :srcdoc="srcdoc"></iframe>
+    <iframe 
+      class="iframe" 
+      ref="iframeRef" 
+      :srcdoc="srcdoc" 
+      :style="iframeStyle"
+    ></iframe>
   </div>
 </template>
 
@@ -22,11 +27,15 @@ import { getTemplate } from "@/config/templates";
 import { base } from "@/config";
 
 // props
-defineProps({
+const props = defineProps({
   hide: {
     type: Boolean,
     default: false,
   },
+  scale: {
+    type: Number,
+    default: 1
+  }
 });
 
 // hooks定义部分
@@ -364,6 +373,25 @@ const useDynamicRunJs = ({ proxy }) => {
   });
 };
 
+// 缩放
+const useScale = () => {
+  const iframeStyle = computed(() => {
+    let style = {
+      transform: `scale(${props.scale})`
+    }
+    if (props.scale !== 1) {
+      let multiple = (1 / props.scale) * 100
+      style.width = `${multiple}%`
+      style.height = `${multiple}%`
+    }
+    return style
+  })
+
+  return {
+    iframeStyle
+  }
+}
+
 // created部分
 const {
   proxy,
@@ -406,6 +434,7 @@ const { srcdoc, run } = useRun({
 useNewWindowPreview({ newWindowPreviewData, isNewWindowPreview, run });
 const { disabledEvents } = useDrag({ proxy });
 useDynamicRunJs({ proxy });
+const { iframeStyle } = useScale();
 </script>
 
 <style scoped lang="less">
@@ -429,6 +458,7 @@ useDynamicRunJs({ proxy });
     width: 100%;
     height: 100%;
     border: none;
+    transform-origin: 0 0;
   }
 }
 </style>

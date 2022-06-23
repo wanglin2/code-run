@@ -1,20 +1,32 @@
 <template>
   <div class="editContainer">
-    <Header></Header>
+    <Header v-if="!embed"></Header>
     <div class="content" v-if="showContent">
-      <component :is="activeLayout" :key="layout"></component>
+      <component 
+        :is="activeLayout" 
+        :key="layout" 
+        :layout="layout"
+      ></component>
     </div>
   </div>
 </template>
 
 <script setup>
 import Header from "@/components/Header.vue";
-import { computed, watch, getCurrentInstance, onUnmounted, ref } from "vue";
+import { computed, watch, getCurrentInstance, onUnmounted, ref, defineProps } from "vue";
 import { useStore } from "vuex";
 import { layoutMap, defaultViewThemeConfig } from "@/config/constants";
 import { useRouter, useRoute } from "vue-router";
 import { initMonacoEditor } from "@/utils/monacoEditor";
 import nprogress from "nprogress";
+
+const props = defineProps({
+  // 是否是嵌入模式
+  embed: {
+    type: Boolean,
+    default: false
+  }
+})
 
 // hooks定义部分
 const useInit = () => {
@@ -60,7 +72,7 @@ const useLayout = ({ store }) => {
     return store.state.editData.config.layout;
   });
   const activeLayout = computed(() => {
-    return layoutMap[layout.value];
+    return props.embed ? layoutMap['embed'] : layoutMap[layout.value];
   });
   return {
     layout,

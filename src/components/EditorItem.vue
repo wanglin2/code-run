@@ -1,7 +1,7 @@
 <template>
   <div class="editorItem" ref="editorItem">
     <div class="editorContent">
-      <div class="editorContentHeader">
+      <div class="editorContentHeader" v-if="showHeader">
         <div class="title" :class="[{ rotate: noSpace }, dir]">{{ title }}</div>
         <div class="right">
           <!-- 支持es6模块提示 -->
@@ -153,6 +153,14 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  showHeader: {
+    type: Boolean,
+    default: true,
+  },
+  readOnly: {
+    type: Boolean,
+    default: false,
+  }
 })
 
 // hooks定义部分
@@ -177,6 +185,7 @@ const useCreateEditor = ({ props, emit, updateDoc }) => {
         fontFamily: 'MonoLisa, monospace',
         contextmenu: false, // 不显示右键菜单
         fixedOverflowWidgets: true, // 让语法提示层能溢出容器
+        readOnly: props.readOnly
       })
       // 设置文档内容
       updateDoc(props.content, props.language)
