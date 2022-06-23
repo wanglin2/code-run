@@ -19,6 +19,8 @@
           :showAddBtn="item.showAddBtn"
           :dir="dir"
           :showAllAddResourcesBtn="['vue2', 'vue3'].includes(item.language)"
+          :showHeader="showHeader"
+          :readOnly="readOnly"
           @code-change="
             (code) => {
               codeChange(item, code)
@@ -279,6 +281,21 @@ const props = defineProps({
       return ['HTML', 'CSS', 'JS']
     }, // 目前共有四种编辑器：'HTML'、 'CSS'、 'JS'、 'VUE'
   },
+  // 是否要显示编辑器的头部
+  showHeader: {
+    type: Boolean,
+    default: true,
+  },
+  // 不要触发代码运行
+  notRunCode: {
+    type: Boolean,
+    default: false,
+  },
+  // 编辑器只读
+  readOnly: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 // hooks定义部分
@@ -324,7 +341,9 @@ const useInitEditorList = ({ props, editData }) => {
   // 数据变化后重新初始化
   watch(() => {
     return props.showList
-  }, initEditorItemList)
+  }, initEditorItemList, {
+    deep: true
+  })
 
   // 设置编辑器列表初始数据
   const setInitData = () => {
@@ -408,6 +427,7 @@ const useRunCode = ({ store, proxy }) => {
 
   // 发送运行代码的通知
   const runCode = () => {
+    if (props.notRunCode) return
     proxy.$eventEmitter.emit('run')
     if (layout.value === 'newWindowPreview') {
       proxy.$eventEmitter.emit('preview_window_run')

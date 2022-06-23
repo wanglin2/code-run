@@ -2,6 +2,7 @@ import {
     load
 } from '@/utils/load'
 import transform from '@/utils/transform'
+import { routerMode, base } from "@/config";
 
 /** 
  * javascript comment 
@@ -113,4 +114,45 @@ export const splitHumpStr = (str, char = ' ') => {
     return str.replace(/([A-Z])/g, '-$1').split('-').filter((item) => {
         return !!item;
     }).join(char)
+}
+
+/** 
+ * javascript comment 
+ * @Author: 王林25 
+ * @Date: 2022-06-23 18:41:17 
+ * @Desc: 在新窗口打开url 
+ */
+export const newWindowOpenUrl = (url) => {
+    let a = document.createElement('a')
+    a.href = url
+    a.target = '_blank'
+    a.click()
+}
+
+/** 
+ * javascript comment 
+ * @Author: 王林25 
+ * @Date: 2022-06-23 18:42:01 
+ * @Desc: 生成分享url 
+ */
+export const createShareUrl = (id) => {
+    return `${location.origin}${base}${
+        routerMode === "hash"
+            ? "#/share/" + id
+            : "share/" + id
+    }`;
+}
+
+/** 
+ * javascript comment 
+ * @Author: 王林25 
+ * @Date: 2022-06-23 18:49:05 
+ * @Desc: 生成嵌入url 
+ */
+export const createEmbedUrl = (id) => {
+    return `${location.origin}${base}${
+        routerMode === "hash"
+            ? "#/embed/" + id
+            : "embed/" + id
+    }`;
 }
