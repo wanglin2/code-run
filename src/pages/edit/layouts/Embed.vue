@@ -245,6 +245,7 @@ const toCodeRun = () => {
   .embedContent {
     flex-grow: 1;
     display: flex;
+    background-color: #fff;
 
     .embedCodeEditor {
       flex: 1;
