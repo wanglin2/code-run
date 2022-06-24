@@ -10,6 +10,7 @@ import vantIcon from '../assets/templateIcons/vant.png'
 import leafletIcon from '../assets/templateIcons/leaflet.png'
 import konvaIcon from '../assets/templateIcons/konva.png'
 import es6Icon from '../assets/templateIcons/es6.webp'
+import { base } from '@/config'
 
 /*
 const = {
@@ -97,7 +98,10 @@ const vue3SFC = {
         JS: {
             language: 'javascript',
             content: ``,
-            resources: []
+            resources: [{
+                name: 'Vue 3',
+                url: base + 'lib/vue3.2.0-beta.7.global.js'
+            }]
         },
         VUE: {
             language: 'vue3',
@@ -143,7 +147,7 @@ const vue2SFC = {
             content: ``,
             resources: [{
                 name: 'Vue 2',
-                url: 'https://cdn.jsdelivr.net/npm/vue/dist/vue.js'
+                url: base + 'lib/vue@2.6.14.js'
             }]
         },
         VUE: {
@@ -212,7 +216,7 @@ data() {
 Vue.createApp(HelloVueApp).mount('#hello-vue')`,
             resources: [{
                 name: 'Vue 3',
-                url: 'https://cdn.bootcdn.net/ajax/libs/vue/3.2.0-beta.7/vue.global.js'
+                url: base + 'lib/vue3.2.0-beta.7.global.js'
             }]
         },
         VUE: {
@@ -249,7 +253,7 @@ data: {
 })`,
             resources: [{
                 name: 'Vue 2',
-                url: 'https://cdn.jsdelivr.net/npm/vue/dist/vue.js'
+                url: base + 'lib/vue@2.6.14.js'
             }]
         },
         VUE: {
@@ -282,11 +286,11 @@ document.getElementById('root')
 );`,
             resources: [{
                     name: 'React',
-                    url: 'https://unpkg.com/react/umd/react.development.js'
+                    url: base + 'lib/react@18.2.0.js'
                 },
                 {
                     name: 'react-dom',
-                    url: 'https://unpkg.com/react-dom/umd/react-dom.development.js'
+                    url: base + 'lib/react-dom@18.2.0.js'
                 },
             ]
         },
@@ -314,7 +318,7 @@ const elementPlus = {
             content: '',
             resources: [{
                 name: 'element-plus',
-                url: 'https://unpkg.com/element-plus/lib/theme-chalk/index.css'
+                url: base + 'lib/element-plus@2.2.6.css'
             }]
         },
         JS: {
@@ -331,10 +335,10 @@ app.use(ElementPlus);
 app.mount("#app");`,
             resources: [{
                 name: 'Vue 3',
-                url: 'https://unpkg.com/vue@next'
+                url: base + 'lib/vue3.2.0-beta.7.global.js'
             }, {
                 name: 'element-plus',
-                url: 'https://unpkg.com/element-plus/lib/index.full.js'
+                url: base + 'lib/element-plus@.2.26.js'
             }]
         },
         VUE: {
@@ -364,7 +368,7 @@ const elementUi = {
             content: '',
             resources: [{
                 name: 'element-ui',
-                url: 'https://unpkg.com/element-ui/lib/theme-chalk/index.css'
+                url: base + 'lib/element-ui@2.15.9.css'
             }]
         },
         JS: {
@@ -377,11 +381,11 @@ data: function() {
 })`,
             resources: [{
                     name: 'Vue 2',
-                    url: 'https://cdn.jsdelivr.net/npm/vue/dist/vue.js'
+                    url: base + 'lib/vue@2.6.14.js'
                 },
                 {
                     name: 'element-ui',
-                    url: 'https://unpkg.com/element-ui/lib/index.js'
+                    url: base + 'lib/element-ui@2.15.9.js'
                 }
             ]
         },
@@ -410,7 +414,7 @@ width: 100%;
 }`,
             resources: [{
                 name: 'OpenLayers',
-                url: 'https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/css/ol.css'
+                url: base + 'lib/ol@6.5.0.css'
             }]
         },
         JS: {
@@ -429,7 +433,7 @@ width: 100%;
 });`,
             resources: [{
                 name: 'OpenLayers',
-                url: 'https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/build/ol.js'
+                url: base + 'lib/ol@6.5.0.js'
             }]
         },
         VUE: {
@@ -484,7 +488,7 @@ series: [{
 myChart.setOption(option);`,
             resources: [{
                 name: 'ECharts',
-                url: 'https://cdn.bootcdn.net/ajax/libs/echarts/5.1.0/echarts.min.js'
+                url: base + 'lib/echarts@5.1.0.js'
             }]
         },
         VUE: {
@@ -569,7 +573,7 @@ data.forEach((item) => {
 chart.render();`,
             resources: [{
                 name: 'g2',
-                url: 'https://gw.alipayobjects.com/os/lib/antv/g2/4.1.16/dist/g2.min.js'
+                url: base + 'lib/g2@4.1.16.js'
             }]
         },
         VUE: {
@@ -603,7 +607,7 @@ const angular = {
             content: ``,
             resources: [{
                 name: 'angular',
-                url: 'https://cdn.staticfile.org/angular.js/1.4.6/angular.min.js'
+                url: base + 'lib/angular@1.4.6.js'
             }]
         },
         VUE: {
@@ -628,7 +632,7 @@ const leaflet = {
             content: '#mapid { height: 180px; }',
             resources: [{
                 name: 'leaflet',
-                url: 'https://unpkg.com/leaflet@1.7.1/dist/leaflet.css'
+                url: base + 'lib/leaflet@1.7.1.css'
             }]
         },
         JS: {
@@ -645,7 +649,7 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 }).addTo(mymap);`,
             resources: [{
                 name: 'leaflet',
-                url: 'https://unpkg.com/leaflet@1.7.1/dist/leaflet.js'
+                url: base + 'lib/leaflet@1.7.1.js'
             }]
         },
         VUE: {
@@ -662,7 +666,9 @@ const vant = {
     code: {
         HTML: {
             language: 'html',
-            content: ``,
+            content: `
+<div id="app"></div>            
+            `,
             resources: []
         },
         CSS: {
@@ -670,7 +676,7 @@ const vant = {
             content: '',
             resources: [{
                 name: 'vant',
-                url: 'https://cdn.jsdelivr.net/npm/vant@2.12/lib/index.css'
+                url: base + 'lib/vant@2.12.css'
             }]
         },
         JS: {
@@ -689,10 +695,10 @@ vant.Toast('提示');
 Vue.use(vant.Lazyload);`,
             resources: [{
                 name: 'vue',
-                url: 'https://cdn.jsdelivr.net/npm/vue@2.6/dist/vue.min.js'
+                url: base + 'lib/vue@2.6.14.js'
             }, {
                 name: 'vant',
-                url: 'https://cdn.jsdelivr.net/npm/vant@2.12/lib/vant.min.js'
+                url: base + 'lib/vant@2.12.js'
             }]
         },
         VUE: {
@@ -752,7 +758,7 @@ stage.add(layer);
 layer.draw();`,
             resources: [{
                 name: 'konva',
-                url: 'https://unpkg.com/konva@7.0.3/konva.min.js'
+                url: base + 'lib/konva@7.0.3.js'
             }]
         },
         VUE: {

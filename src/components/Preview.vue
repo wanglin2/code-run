@@ -251,7 +251,7 @@ const useRun = ({
         compiledData = await compileVue(vueLanguage.value, vueContent.value);
         if (compiledData) {
           // 自动引入vue资源
-          _jsResourcesPlus = getTemplate(vueLanguage.value).code.JS.resources;
+          // _jsResourcesPlus = getTemplate(vueLanguage.value).code.JS.resources;
         } else {
           compiledData = {
             html: "",
