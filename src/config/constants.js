@@ -220,7 +220,8 @@ export const langTypeMap = {
 	sass: ['.sass'],
 	stylus: ['.styl'],
 	postcss: ['.pcss'],
-	vue2: ['.vue']
+	vue2: ['.vue'],
+	vue3: ['.vue']
 }
 
 // 常用cdn服务

@@ -68,6 +68,10 @@ npm run serve
 
 默认的路由模式为`hash模式`，如果需要使用`history`模式请修改`src/config/index.js`文件的`routerMode`字段。
 
+另外history模式下如果存在多级路径，可能需要修改以下文件：
+
+1.修改`/public/index.html`文件的`prettier`相关`js`资源的路径；
+
 ## 打包命令
 
 ```bash
