@@ -1,7 +1,7 @@
 {
   "name": "@wanglin1994/code-run",
   "description": "一个简单的前端代码在线运行平台",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "authors": [
     {
       "name": "街角小林",
