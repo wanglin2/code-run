@@ -18,24 +18,24 @@ let hasGetWorkUrl = false
 // 初始化编辑器
 export const initMonacoEditor = async () => {
     // 加载onigasm的WebAssembly文件
-    await loadWASM(`${base}/onigasm/onigasm.wasm`)
+    await loadWASM(`${base}onigasm/onigasm.wasm`)
     // 配置编辑器运行环境
     window.MonacoEnvironment = {
         getWorkerUrl: function (moduleId, label) {
             hasGetWorkUrl = true
             if (label === 'json') {
-                return './monaco/json.worker.bundle.js'
+                return base + 'monaco/json.worker.bundle.js'
             }
             if (label === 'css' || label === 'scss' || label === 'less') {
-                return './monaco/css.worker.bundle.js'
+                return base + 'monaco/css.worker.bundle.js'
             }
             if (label === 'html' || label === 'handlebars' || label === 'razor') {
-                return './monaco/html.worker.bundle.js'
+                return base + 'monaco/html.worker.bundle.js'
             }
             if (label === 'typescript' || label === 'javascript') {
-                return './monaco/ts.worker.bundle.js'
+                return base + 'monaco/ts.worker.bundle.js'
             }
-            return './monaco/editor.worker.bundle.js'
+            return base + 'monaco/editor.worker.bundle.js'
         },
     }
 }
@@ -48,7 +48,7 @@ export const initMonacoEditor = async () => {
  */
 export const wire = async (languageId, editor) => {
     // vue单文件使用html语法高亮
-    languageId = languageId === 'vue2' ? 'html' : languageId
+    languageId = languageId === 'vue2' || languageId === 'vue3' ? 'html' : languageId
     if (!scopeNameMap[languageId]) {
         return
     }

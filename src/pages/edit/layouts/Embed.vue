@@ -116,6 +116,7 @@ import { getEmbedCodeTypeListMap, scaleTypeList } from "@/config/constants";
 import { useRoute } from "vue-router";
 import { createShareUrl, newWindowOpenUrl } from "@/utils";
 import { useStore } from "vuex";
+// import { getTemplate } from "@/config/templates";
 
 const props = defineProps({
   layout: {
@@ -130,15 +131,20 @@ const editData = computed(() => store.state.editData);
 const resourcesBlockList = computed(() => {
   let res = [];
   Object.keys(editData.value.code).forEach((item) => {
-    console.log(item);
     let itemData = editData.value.code[item];
-    if (itemData.resources.length > 0) {
+    if (itemData.resources && itemData.resources.length > 0) {
       res.push({
         type: itemData.language,
         list: itemData.resources,
       });
     }
   });
+  // if (props.layout === 'vue') {
+  //   res.push({
+  //     type: 'vue',
+  //     list: getTemplate(editData.value.code.VUE.language).code.JS.resources,
+  //   });
+  // }
   return res;
 });
 const codeTypes = ref([]);
