@@ -26,6 +26,8 @@ import { assembleHtml, compile, compileVue } from "@/utils";
 import { getTemplate } from "@/config/templates";
 import { base } from "@/config";
 
+const dev = process.env.NODE_ENV !== "production";
+
 // props
 const props = defineProps({
   hide: {
@@ -163,13 +165,19 @@ const useCreateHtml = () => {
       <\/style>
       ${_cssResources}
       <script src="${base}base/index.js"><\/script>
-      <script src="${base}console/compile.js"><\/script>
+      <script src="${base}console/${dev ? 'index.js' : 'compile.js'}"><\/script>
     `;
     let jsContent = ''
+    let successRunNotify = `
+      window.parent.postMessage({
+        type: 'successRun'
+      })
+    `
     if (useImport) {
       jsContent = `<script type="module">
         ${openAlmightyConsole ? "eruda.init();" : ""}
         ${jsStr}
+        ${successRunNotify}
       <\/script>`
     } else {
       jsContent = `<script>
@@ -180,6 +188,7 @@ const useCreateHtml = () => {
           console.error('js代码运行出错')
           console.error(err)
         }
+        ${successRunNotify}
       <\/script>`
     }
     let body = `
@@ -237,8 +246,11 @@ const useRun = ({
     return editData.value.config.keepPreviousLogs;
   });
   // 运行
+  const runStartTime = ref(0);
   const run = async () => {
     try {
+      runStartTime.value = Date.now();
+      proxy.$eventEmitter.emit("startRun");
       if (!keepPreviousLogs.value) {
         proxy.$eventEmitter.emit("clear_logs");
       }
@@ -311,6 +323,7 @@ const useRun = ({
   return {
     srcdoc,
     run,
+    runStartTime
   };
 };
 
@@ -319,6 +332,7 @@ const useNewWindowPreview = ({
   newWindowPreviewData,
   isNewWindowPreview,
   run,
+  runStartTime
 }) => {
   // 新开窗口预览模式接收预览通知
   window.addEventListener("message", ({ data = {} }) => {
@@ -326,6 +340,8 @@ const useNewWindowPreview = ({
       newWindowPreviewData.value = data.data;
       isNewWindowPreview.value = true;
       run();
+    } else if (data.type === "successRun") {
+      proxy.$eventEmitter.emit("successRun", Date.now() - runStartTime.value);
     }
   });
 };
@@ -412,7 +428,7 @@ const {
 } = useInitData();
 const { log } = useLog({ proxy });
 const { createHtml } = useCreateHtml();
-const { srcdoc, run } = useRun({
+const { srcdoc, run, runStartTime } = useRun({
   store,
   isNewWindowPreview,
   newWindowPreviewData,
@@ -431,7 +447,7 @@ const { srcdoc, run } = useRun({
   createHtml,
   log,
 });
-useNewWindowPreview({ newWindowPreviewData, isNewWindowPreview, run });
+useNewWindowPreview({ newWindowPreviewData, isNewWindowPreview, run, runStartTime });
 const { disabledEvents } = useDrag({ proxy });
 useDynamicRunJs({ proxy });
 const { iframeStyle } = useScale();
