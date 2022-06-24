@@ -7,6 +7,10 @@
           ><span class="icon el-icon-error"></span>{{ errorCount }}</span
         >
       </div>
+      <div class="center">
+        <div class="loading" v-if="showRunLoading"></div>
+        <div class="tip">{{ runTip }}</div>
+      </div>
       <div class="right"></div>
     </div>
     <div class="logBox" ref="logBoxRef">
@@ -52,6 +56,7 @@ import {
   getCurrentInstance,
   nextTick,
   computed,
+  onUnmounted,
 } from "vue";
 
 //  hooks定义部分
@@ -216,11 +221,42 @@ const useJSONFormat = () => {
   };
 };
 
+// 运行状态提示
+const useRunStatus = ({ proxy }) => {
+  const showRunLoading = ref(false);
+  const runTip = ref('');
+  const onStartRun = () => {
+    showRunLoading.value = true;
+    runTip.value = '运行中...';
+  }
+  let timer = null;
+  const onSuccessRun = (duration) => {
+    showRunLoading.value = false;
+    runTip.value = '运行成功，耗时：' + (duration / 1000).toFixed(2) + '秒';
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      runTip.value = '';
+    }, 3000);
+  }
+  proxy.$eventEmitter.on('startRun', onStartRun);
+  proxy.$eventEmitter.on('successRun', onSuccessRun);
+  onUnmounted(() => {
+    proxy.$eventEmitter.off('startRun', onStartRun);
+    proxy.$eventEmitter.off('successRun', onSuccessRun);
+  })
+
+  return {
+    showRunLoading,
+    runTip
+  }
+}
+
 // created部分
 const { proxy } = useInit();
 const { logList, errorCount, clear } = useLog({ proxy });
 const { jsInput, implementJs } = useImplementJs({ proxy });
 const { jsonClick } = useJSONFormat();
+const { showRunLoading, runTip } = useRunStatus({ proxy });
 </script>
 
 <style scoped lang="less">
@@ -274,6 +310,46 @@ const { jsonClick } = useJSONFormat();
       .icon {
         color: #f56c6c;
         margin-right: 3px;
+      }
+    }
+
+    .center {
+      display: flex;
+      align-items: center;
+
+      .loading {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        display: inline-block;
+        position: relative;
+        animation: rotation 1s linear infinite;
+
+        &:after {
+          content: "";
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+          border: 3px solid transparent;
+          border-bottom-color: var(--editor-header-title-color);
+        }
+
+        @keyframes rotation {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
+        }
+      }
+
+      .tip {
+        margin-left: 10px;
       }
     }
   }
