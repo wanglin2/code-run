@@ -9,6 +9,7 @@
    * @Desc: 错误监听 
    */
   window.onerror = function (message, source, lineno, colno, error) {
+    errorRun();
     window.parent.postMessage({
       type: 'console',
       method: 'string',
@@ -19,6 +20,7 @@
   };
 
   window.addEventListener('unhandledrejection', function (err) {
+    errorRun();
     window.parent.postMessage({
       type: 'console',
       method: 'string',
@@ -28,9 +30,22 @@
   /** 
    * javascript comment 
    * @Author: 王林25 
+   * @Date: 2022-07-18 17:57:27 
+   * @Desc: 发送运行出错的通知 
+   */
+
+  var errorRun = function errorRun() {
+    window.parent.postMessage({
+      type: 'errorRun'
+    });
+  };
+  /** 
+   * javascript comment 
+   * @Author: 王林25 
    * @Date: 2021-05-07 20:22:41 
    * @Desc: 判断类型 
    */
+
 
   var type = function type(obj) {
     return Object.prototype.toString.call(obj).slice(8, -1).toLowerCase();
