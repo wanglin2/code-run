@@ -173,6 +173,11 @@ const useCreateHtml = () => {
         type: 'successRun'
       })
     `
+    let errorRunNotify = `
+      window.parent.postMessage({
+        type: 'errorRun'
+      })
+    `
     if (useImport) {
       jsContent = `<script type="module">
         ${openAlmightyConsole ? "eruda.init();" : ""}
@@ -184,11 +189,12 @@ const useCreateHtml = () => {
         ${openAlmightyConsole ? "eruda.init();" : ""}
         try {
           ${jsStr}
+          ${successRunNotify}
         } catch (err) {
           console.error('js代码运行出错')
           console.error(err)
+          ${errorRunNotify}
         }
-        ${successRunNotify}
       <\/script>`
     }
     let body = `
@@ -342,6 +348,8 @@ const useNewWindowPreview = ({
       run();
     } else if (data.type === "successRun") {
       proxy.$eventEmitter.emit("successRun", Date.now() - runStartTime.value);
+    } else if (data.type === "errorRun") {
+      proxy.$eventEmitter.emit("errorRun");
     }
   });
 };
