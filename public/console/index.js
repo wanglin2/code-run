@@ -11,6 +11,7 @@
      * @Desc: 错误监听 
      */
     window.onerror = function (message, source, lineno, colno, error) {
+        errorRun()
         window.parent.postMessage({
             type: 'console',
             method: 'string',
@@ -20,12 +21,25 @@
         })
     }
     window.addEventListener('unhandledrejection', err => {
+        errorRun()
         window.parent.postMessage({
             type: 'console',
             method: 'string',
             data: [handleData(err.reason.stack)]
         })
     })
+
+    /** 
+     * javascript comment 
+     * @Author: 王林25 
+     * @Date: 2022-07-18 17:57:27 
+     * @Desc: 发送运行出错的通知 
+     */
+    const errorRun = () => {
+        window.parent.postMessage({
+            type: 'errorRun'
+        })
+    }
 
     /** 
      * javascript comment 
