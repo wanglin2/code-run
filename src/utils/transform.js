@@ -1,7 +1,7 @@
 import {
     load
 } from '@/utils/load'
-import { esModuleCdnUrl } from '@/config/constants';
+import { handleEsModuleCdnUrl } from '@/config/constants';
 
 /** 
  * javascript comment 
@@ -9,7 +9,7 @@ import { esModuleCdnUrl } from '@/config/constants';
  * @Date: 2022-04-29 09:36:44 
  * @Desc: 修改import语句 
  */
-const transformJsImport = (jsStr) => {
+const transformJsImport = (jsStr, importMap) => {
     if (!checkIsHasImport(jsStr)) {
         return {
             useImport: false,
@@ -20,7 +20,7 @@ const transformJsImport = (jsStr) => {
         useImport: true,
         js: window.Babel.transform(jsStr, {
             plugins: [
-                parseJsImportPlugin()
+                parseJsImportPlugin(importMap)
             ]
         }).code
     }
@@ -32,16 +32,22 @@ const isBareImport = (source) => {
 }
 
 // 修改import from语句
-const parseJsImportPlugin = () => {
+const parseJsImportPlugin = (importMap = {}) => {
+    let visited = {}
     return function (babel) {
         let t = babel.types
         return {
             visitor: {
                 ImportDeclaration(path) {
-                    if (isBareImport(path.node.source.value)) {
+                    let source = path.node.source.value
+                    if (isBareImport(source) && !visited[source]) {
+                        if (!importMap[source]) {
+                            source = handleEsModuleCdnUrl(source)
+                        }
+                        visited[source] = true
                         path.replaceWith(t.importDeclaration(
                             path.node.specifiers,
-                            t.stringLiteral(`${esModuleCdnUrl}${path.node.source.value}`)
+                            t.stringLiteral(source)
                         ))
                     }
                 }
@@ -107,7 +113,7 @@ const html = (preprocessor, code) => {
  * @Date: 2021-05-13 11:35:30 
  * @Desc: 编译js 
  */
-const js = (preprocessor, code) => {
+const js = (preprocessor, code, importMap) => {
     return new Promise(async (resolve, reject) => {
         try {
             // 加载babel解析器
@@ -115,7 +121,7 @@ const js = (preprocessor, code) => {
             let _code = ''
             switch (preprocessor) {
                 case 'javascript':
-                    resolve(transformJsImport(code))
+                    resolve(transformJsImport(code, importMap))
                     break;
                 case 'babel':
                     _code = window.Babel.transform(code, {
@@ -138,7 +144,7 @@ const js = (preprocessor, code) => {
                             module: 'es2015'
                         }
                     }).outputText
-                    resolve(transformJsImport(_code))
+                    resolve(transformJsImport(_code, importMap))
                     break;
                 case 'coffeescript':
                     _code = window.CoffeeScript.compile(code)
@@ -149,10 +155,10 @@ const js = (preprocessor, code) => {
                     break;
                 case 'livescript':
                     _code = window.LiveScript.compile(code)
-                    resolve(transformJsImport({
+                    resolve({
                         useImport: false,
                         js: _code
-                    }))
+                    })
                     break;
                 default:
                     resolve({
@@ -174,7 +180,7 @@ const js = (preprocessor, code) => {
  */
 const transformCssImport = (cssStr) => {
     return cssStr.replace(/(@import\s+)('|")([^'"]+)('|")/g, (str, ...matches) => {
-        let source = isBareImport(matches[2]) ? `${esModuleCdnUrl}${matches[2]}` : matches[2]
+        let source = isBareImport(matches[2]) ? handleEsModuleCdnUrl(matches[2], false) : matches[2]
         return `${matches[0]}${matches[1]}${source}${matches[1]}`
     })
 }
@@ -401,7 +407,7 @@ const parseVue3ScriptPlugin = (data) => {
  * @Date: 2021-09-09 13:54:12 
  * @Desc: 解析出html、js、css 
  */
-const parseVueComponentData = async (data, parseVueScriptPlugin, version) => {
+const parseVueComponentData = async (data, parseVueScriptPlugin, version, importMap) => {
     // html就直接渲染一个挂载vue实例的节点
     let htmlStr = `<div id="app"></div>`
     // 加载babel解析器
@@ -414,7 +420,7 @@ const parseVueComponentData = async (data, parseVueScriptPlugin, version) => {
                 useImport: true,
                 js: window.Babel.transform(data.script.content, {
                     plugins: [
-                        parseJsImportPlugin(),
+                        parseJsImportPlugin(importMap),
                         parseVueScriptPlugin(data)
                     ]
                 }).code
@@ -459,7 +465,7 @@ const parseVueComponentData = async (data, parseVueScriptPlugin, version) => {
  * @Date: 2021-09-08 20:07:46 
  * @Desc: 编译vue单文件 
  */
-const vue = (preprocessor, code) => {
+const vue = (preprocessor, code, importMap) => {
     return new Promise(async (resolve, reject) => {
         try {
             let componentData
@@ -467,7 +473,7 @@ const vue = (preprocessor, code) => {
             switch (preprocessor) {
                 case 'vue2':
                     componentData = window.VueTemplateCompiler.parseComponent(code)
-                    parseData = await parseVueComponentData(componentData, parseVue2ScriptPlugin, 'vue2')
+                    parseData = await parseVueComponentData(componentData, parseVue2ScriptPlugin, 'vue2', importMap)
                     resolve(parseData)
                     break;
                 case 'vue3':

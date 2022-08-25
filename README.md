@@ -38,7 +38,7 @@
 
 - [x] 内置支持生成和[carbon](https://carbon.now.sh/)一样漂亮美观的代码图片
 
-- [x] 内置使用[Skypack](https://www.skypack.dev/)支持在浏览器上使用ES模块语法
+- [x] 内置使用[unpkg](https://unpkg.com/)及[importmap](https://github.com/WICG/import-maps)支持在浏览器上使用ES模块语法
 
 - [x] 支持嵌入模式，方便在文档网站中使用，让文档示例更轻松
 

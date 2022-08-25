@@ -62,7 +62,7 @@ const es6Module = {
         },
         JS: {
             language: 'javascript',
-            content: `import Vue from 'vue@2.6.11/dist/vue.esm.browser.js'
+            content: `import Vue from 'vue'
 import moment from 'moment'
 var app = new Vue({
     el: '#app',
@@ -70,7 +70,14 @@ var app = new Vue({
         message: 'Hello ' + moment().format('YYYY')
     }
 })`,
-            resources: []
+            resources: [],
+            importMap: `
+{
+    "imports": {
+        "vue": "http://unpkg.dev.hikhub.net/vue@2.7.8/dist/vue.esm.js"
+    }
+}
+            `
         },
         VUE: {
             language: 'vue2',

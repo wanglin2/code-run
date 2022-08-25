@@ -92,6 +92,11 @@ const useInitData = () => {
       ? newWindowPreviewData.value.code.JS.resources
       : editData.value.code.JS.resources;
   });
+  const importMap = computed(() => {
+    return JSON.parse((isNewWindowPreview.value
+      ? newWindowPreviewData.value.code.JS.importMap
+      : editData.value.code.JS.importMap) || '{}');
+  });
   const vueLanguage = computed(() => {
     return editData.value.code.VUE.language;
   });
@@ -113,6 +118,7 @@ const useInitData = () => {
     cssContent,
     cssResources,
     jsResources,
+    importMap,
     vueLanguage,
     vueContent,
   };
@@ -144,6 +150,7 @@ const useCreateHtml = () => {
     cssStr,
     cssResources,
     jsResources,
+    importMap,
     openAlmightyConsole,
     useImport
   ) => {
@@ -178,8 +185,24 @@ const useCreateHtml = () => {
         type: 'errorRun'
       })
     `
+    // 使用ESM
     if (useImport) {
-      jsContent = `<script type="module">
+      // 使用了importmap
+      if (importMap) {
+        jsContent += `<script type="importmap">
+          ${JSON.stringify(importMap)}
+        <\/script>`
+      }
+      jsContent += `
+      <script>
+        // 修复某些包会使用这个判断环境导致报错的问题
+        window.process = {
+          env: {
+            NODE_ENV: 'production'
+          }
+        }
+      <\/script>
+      <script type="module">
         ${openAlmightyConsole ? "eruda.init();" : ""}
         ${jsStr}
         ${successRunNotify}
@@ -232,6 +255,7 @@ const useRun = ({
   cssContent,
   cssResources,
   jsResources,
+  importMap,
   createHtml,
   log,
 }) => {
@@ -266,7 +290,7 @@ const useRun = ({
       let compiledData = null;
       // vue单文件
       if (layout.value === "vue") {
-        compiledData = await compileVue(vueLanguage.value, vueContent.value);
+        compiledData = await compileVue(vueLanguage.value, vueContent.value, importMap.value.imports || {});
         if (compiledData) {
           // 自动引入vue资源
           // _jsResourcesPlus = getTemplate(vueLanguage.value).code.JS.resources;
@@ -284,6 +308,7 @@ const useRun = ({
           cssLanguage.value,
           htmlContent.value,
           jsContent.value,
+          importMap.value.imports || {},
           cssContent.value
         );
       }
@@ -305,6 +330,7 @@ const useRun = ({
         compiledData.css,
         _cssResources,
         _jsResources,
+        importMap.value,
         openAlmightyConsole.value,
         compiledData.js.useImport
       );
@@ -431,6 +457,7 @@ const {
   cssContent,
   cssResources,
   jsResources,
+  importMap,
   vueLanguage,
   vueContent,
 } = useInitData();
@@ -452,6 +479,7 @@ const { srcdoc, run, runStartTime } = useRun({
   cssContent,
   cssResources,
   jsResources,
+  importMap,
   createHtml,
   log,
 });
