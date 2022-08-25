@@ -36,6 +36,7 @@
               addResource(languageType || item.title)
             }
           "
+          @add-importmap="addImportmap(item)"
           @space-change="
             (noSpace) => {
               item.showTitle = noSpace
@@ -136,6 +137,8 @@
       :codeTheme="codeTheme" 
       :codeFontSize="codeFontSize"
     ></CodeToImg>
+    <!-- importmap编辑 -->
+    <EditImportMap :codeTheme="codeTheme" :codeFontSize="codeFontSize"></EditImportMap>
   </div>
 </template>
 
@@ -173,6 +176,7 @@ import { codeThemeList } from '@/config/codeThemeList'
 import { base } from '@/config'
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api'
 import CodeToImg from '@/components/CodeToImg.vue'
+import EditImportMap from './EditImportMap.vue';
 
 // props
 const props = defineProps({
@@ -345,6 +349,8 @@ const useRunCode = ({ store, proxy }) => {
       proxy.$eventEmitter.emit('preview_window_run')
     }
   }
+
+  proxy.$eventEmitter.on('run-code', runCode)
 
   // 开启关闭全能console后重新运行代码
   const openAlmightyConsole = computed(() => {
@@ -533,12 +539,22 @@ const useHandleAssets = ({ store, runCode, editData }) => {
     runCode()
   }
 
+  /** 
+   * @Author: 王林25 
+   * @Date: 2022-08-25 18:52:56 
+   * @Desc: 编辑import map 
+   */
+  const addImportmap = (item) => {
+    proxy.$eventEmitter.emit('show_edit_importmap_dialog', item)
+  }
+
   return {
     resourceData,
     addResourceType,
     addResourceDialogVisible,
     handleCdnCommand,
     addResource,
+    addImportmap,
     deleteResource,
     addOneResource,
     cancelAddResource,
@@ -586,6 +602,7 @@ const {
   addResourceDialogVisible,
   handleCdnCommand,
   addResource,
+  addImportmap,
   deleteResource,
   addOneResource,
   cancelAddResource,

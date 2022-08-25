@@ -109,6 +109,16 @@ const store = createStore({
         /** 
          * javascript comment 
          * @Author: 王林25 
+         * @Date: 2022-08-25 19:41:37 
+         * @Desc: 设置import map 
+         */
+        setImportMap(state, importMap) {
+            state.editData.code.JS.importMap = importMap
+        },
+
+        /** 
+         * javascript comment 
+         * @Author: 王林25 
          * @Date: 2021-05-14 11:25:01 
          * @Desc: 设置代码数据 
          */
