@@ -25,6 +25,7 @@ import { useStore } from "vuex";
 import { assembleHtml, compile, compileVue } from "@/utils";
 import { getTemplate } from "@/config/templates";
 import { base } from "@/config";
+import { defaultImportMapStr } from '@/config/constants';
 
 const dev = process.env.NODE_ENV !== "production";
 
@@ -95,7 +96,7 @@ const useInitData = () => {
   const importMap = computed(() => {
     return JSON.parse((isNewWindowPreview.value
       ? newWindowPreviewData.value.code.JS.importMap
-      : editData.value.code.JS.importMap) || '{}');
+      : editData.value.code.JS.importMap) || defaultImportMapStr);
   });
   const vueLanguage = computed(() => {
     return editData.value.code.VUE.language;

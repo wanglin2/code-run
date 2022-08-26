@@ -74,7 +74,7 @@ var app = new Vue({
             importMap: `
 {
     "imports": {
-        "vue": "http://unpkg.dev.hikhub.net/vue@2.7.8/dist/vue.esm.js"
+        "vue": "https://unpkg.com/vue@2.7.10/dist/vue.esm.browser.js"
     }
 }
             `
@@ -105,10 +105,14 @@ const vue3SFC = {
         JS: {
             language: 'javascript',
             content: ``,
-            resources: [{
-                name: 'Vue 3',
-                url: base + 'lib/vue3.2.0-beta.7.global.js'
-            }]
+            resources: [],
+            importMap: `
+{
+    "imports": {
+        "vue": "https://unpkg.com/vue@3.2.37/dist/vue.esm-browser.js"
+    }
+}
+            `
         },
         VUE: {
             language: 'vue3',
@@ -118,13 +122,75 @@ const vue3SFC = {
 </template>
 
 <script setup>
-import { ref } from 'vue'
-
-const msg = ref('Hello World!')
+import { ref, createApp } from 'vue'
+import moment from 'moment'
+// 导出createApp是必须的
+const msg = ref('Hello World!' + moment().format('YYYY'))
 </script>
 
 <style lang="less">
 h1 {
+    color: red;
+}
+</style>  
+            `,
+            resources: []
+        },
+    },
+}
+
+const vue2SFC_ESM = {
+    name: 'Vue 2单文件 ESM版',
+    isVueSFC: true,
+    icon: vueIcon,
+    code: {
+        HTML: {
+            language: 'html',
+            content: ``,
+            resources: []
+        },
+        CSS: {
+            language: 'css',
+            content: '',
+            resources: []
+        },
+        JS: {
+            language: 'javascript',
+            content: ``,
+            resources: [],
+            importMap: `
+{
+    "imports": {
+        "vue": "https://unpkg.com/vue@2.7.10/dist/vue.esm.browser.js"
+    }
+}
+            `
+        },
+        VUE: {
+            language: 'vue2',
+            content: `
+<template>
+    <div>
+        <div class="example">{{ msg }}</div>
+        <input v-model="msg">
+    </div>
+</template>
+
+<script>
+import Vue from 'vue'
+import moment from 'moment'
+
+export default {
+    data () {
+        return {
+            msg: 'Hello world!' + moment().format('YYYY')
+        }
+    }
+}
+</script>
+
+<style>
+.example {
     color: red;
 }
 </style>  
@@ -161,7 +227,10 @@ const vue2SFC = {
             language: 'vue2',
             content: `
 <template>
-    <div class="example">{{ msg }}</div>
+    <div>
+        <div class="example">{{ msg }}</div>
+        <input v-model="msg">
+    </div>
 </template>
 
 <script>
@@ -785,6 +854,7 @@ layer.draw();`,
 const templateList = [
     es6Module,
     vue3SFC,
+    vue2SFC_ESM,
     vue2SFC,
     vue3,
     vue2,
@@ -802,6 +872,7 @@ const templateList = [
 const templateMap = {
     es6Module,
     vue3SFC,
+    vue2SFC_ESM,
     vue2SFC,
     vue3,
     vue2,

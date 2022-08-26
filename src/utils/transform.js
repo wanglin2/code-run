@@ -377,10 +377,7 @@ const parseVue3ScriptPlugin = (data) => {
                             t.callExpression(
                                 t.memberExpression(
                                     t.callExpression(
-                                        t.memberExpression(
-                                            t.identifier('Vue'),
-                                            t.identifier('createApp')
-                                        ),
+                                        t.identifier('createApp'),
                                        [
                                             path.get('declaration').node
                                        ] 
@@ -414,7 +411,8 @@ const parseVueComponentData = async (data, parseVueScriptPlugin, version, import
     // babel编译，通过编写插件来完成对ast的修改
     let jsData = null
     if (data.script) {
-        if (version === 'vue2' && checkIsHasImport(data.script.content)) {
+        // Vue2支持全局变量的方式及ESM方式，Vue3只支持ESM方式
+        if ((version === 'vue2' && checkIsHasImport(data.script.content)) || version === 'vue3') {
             jsData = {
                 useImport: true,
                 js: window.Babel.transform(data.script.content, {
@@ -429,9 +427,7 @@ const parseVueComponentData = async (data, parseVueScriptPlugin, version, import
                 useImport: false,
                 js: window.Babel.transform(data.script.content, {
                     presets: [
-                        'es2015',
-                        'es2016',
-                        'es2017',
+                        'env'
                     ],
                     plugins: [
                         parseVueScriptPlugin(data)
@@ -487,16 +483,7 @@ const vue = (preprocessor, code, importMap) => {
                             content: compiledScript.content
                         }
                     }
-                    parseData = await parseVueComponentData(componentData.descriptor, parseVue3ScriptPlugin, 'vue3')
-                    // vue3的响应式可能需要引入各种方法，babel会把import编译为require语法，所以手动注入一个
-                    parseData.js.js = parseData.js.js.replace('"use strict";', `
-                        "use strict";
-                        if (!window.require) {
-                            window.require = function(tar) {
-                                return tar === 'vue' ? window.Vue : window[tar];
-                            }
-                        }
-                    `)
+                    parseData = await parseVueComponentData(componentData.descriptor, parseVue3ScriptPlugin, 'vue3', importMap)
                     resolve(parseData)
                     break;
                 default:

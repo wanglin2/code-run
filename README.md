@@ -96,6 +96,22 @@ UI库：`element-plus`
 
 ![界面截图3](./assets/view3.jpg)
 
+# 关于使用ESM
+
+目前在`JavaScript`、`TypeScript`、`CoffeeScript`、`Vue3`、`Vue2`等模式下支持使用`ESM`，默认情况下，如果你直接按下列方式导入模块的话：
+
+```js
+import moment from 'moment'
+```
+
+最后会转换成：
+
+```js
+import moment from 'https://unpkg.com/moment?module'
+```
+
+也就是使用[unpkg](https://unpkg.com/)，但是有些模块`unpkg`获取不到`ESM`版本，或者直接这样获取到的版本不是我们所期望的，比如导入`vue`时，我们需要的是`https://unpkg.com/vue@3.2.37/dist/vue.esm-browser.js`，但是`https://unpkg.com/vue?module`默认返回的是`https://unpkg.com/vue@3.2.37/dist/vue.runtime.esm-bundler.js?module`，这个版本无法运行在浏览器上，所以这时候就可以通过手动添加[importmap](https://github.com/WICG/import-maps)来设置导入模块的来源。
+
 # 主题新增教程
 
 本教程针对迁移`VSCode`主题。
@@ -114,7 +130,7 @@ UI库：`element-plus`
 
 - `npm run createThemeList`：根据主题文件列表自动生成配置文件。
 
-- `npm run buildVueSFCCompiler`：打包`@vue/compiler-sfc`文件。
+- `npm run buildVueSFCCompiler`：打包`@vue/compiler-sfc`文件，针对`Vue3`。
 
 # 编译器更新指南
 
