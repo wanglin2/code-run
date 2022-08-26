@@ -11,7 +11,7 @@
                 <span class="el-icon-sunny"></span>
               </div>
             </template>
-            支持使用ES6模块语法，了解更多<a href='https://unpkg.com/' target='_blank'>unpkg</a>
+            支持使用ES6模块语法，了解更多<a href='https://github.com/wanglin2/code-run#关于使用ESM' target='_blank'>关于使用ESM</a>
           </el-popover>
           <!-- 格式化按钮 -->
           <el-tooltip

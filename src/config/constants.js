@@ -61,7 +61,8 @@ export const supportESModuleMap = {
 	javascript: true,
 	typescript: true,
 	coffeescript: true,
-	vue2: true
+	vue2: true,
+	vue3: true
 }
 
 // monaco editor包含的语言，可通过vue.config.js的MonacoWebpackPlugin插件进行配置
@@ -425,3 +426,9 @@ export const scaleTypeList = [
 		value: 0.25
 	}
 ]
+
+// 默认的importMap
+export const defaultImportMapStr = `{
+	"imports": {
+	}
+}`

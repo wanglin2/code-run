@@ -25,7 +25,7 @@ import {
 import { ElButton, ElDialog } from "element-plus";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import { wire } from "@/utils/monacoEditor";
-import { supportLanguage } from "@/config/constants";
+import { supportLanguage, defaultImportMapStr } from "@/config/constants";
 import { useStore } from "vuex";
 
 // props
@@ -70,7 +70,7 @@ const createEditor = async () => {
     });
     // 设置文档内容
     updateDoc(
-      editData.value.code.JS.importMap || "{}",
+      editData.value.code.JS.importMap || defaultImportMapStr,
       supportLanguage.json
     );
     // 支持textMate语法解析
