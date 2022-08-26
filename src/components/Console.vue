@@ -108,10 +108,12 @@ const useLog = ({ proxy }) => {
 
   // 监听iframe信息
   window.addEventListener("message", onMessage);
+  proxy.$eventEmitter.on("custom_logs", onMessage);
 
   onBeforeUnmount(() => {
     window.removeEventListener("message", onMessage);
     proxy.$eventEmitter.off("clear_logs", clear);
+    proxy.$eventEmitter.off("custom_logs", onMessage);
   });
 
   return {

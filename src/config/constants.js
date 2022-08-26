@@ -60,6 +60,7 @@ export const formatterParserMap = {
 export const supportESModuleMap = {
 	javascript: true,
 	typescript: true,
+	coffeescript: true,
 	vue2: true
 }
 

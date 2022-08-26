@@ -194,14 +194,6 @@ const useCreateHtml = () => {
         <\/script>`
       }
       jsContent += `
-      <script>
-        // 修复某些包会使用这个判断环境导致报错的问题
-        window.process = {
-          env: {
-            NODE_ENV: 'production'
-          }
-        }
-      <\/script>
       <script type="module">
         ${openAlmightyConsole ? "eruda.init();" : ""}
         ${jsStr}
@@ -337,7 +329,19 @@ const useRun = ({
       isNewWindowPreview.value = false;
     } catch (error) {
       console.log(error);
-      log("log_error", error.message);
+      proxy.$eventEmitter.emit("custom_logs", {
+        data: {
+          type: 'console',
+          method: 'error',
+          data: [
+            {
+              content: error.message ? error.message : error,
+              contentType: 'string'
+            }
+          ]
+        }
+      });
+      proxy.$eventEmitter.emit("errorRun");
     }
   };
 
