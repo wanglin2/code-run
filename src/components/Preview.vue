@@ -23,7 +23,6 @@ import {
 } from "vue";
 import { useStore } from "vuex";
 import { assembleHtml, compile, compileVue } from "@/utils";
-import { getTemplate } from "@/config/templates";
 import { base } from "@/config";
 import { defaultImportMapStr } from '@/config/constants';
 
