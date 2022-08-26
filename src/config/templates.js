@@ -74,7 +74,7 @@ var app = new Vue({
             importMap: `
 {
     "imports": {
-        "vue": "https://unpkg.com/vue@2.7.10/dist/vue.esm.browser.js"
+        "vue": "./lib/vue@2.7.10.esm.browser.js"
     }
 }
             `
@@ -109,7 +109,7 @@ const vue3SFC = {
             importMap: `
 {
     "imports": {
-        "vue": "https://unpkg.com/vue@3.2.37/dist/vue.esm-browser.js"
+        "vue": "./lib/vue@3.2.37.esm-browser.js"
     }
 }
             `
@@ -161,7 +161,7 @@ const vue2SFC_ESM = {
             importMap: `
 {
     "imports": {
-        "vue": "https://unpkg.com/vue@2.7.10/dist/vue.esm.browser.js"
+        "vue": "./lib/vue@2.7.10.esm.browser.js"
     }
 }
             `
