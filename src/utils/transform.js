@@ -126,11 +126,12 @@ const js = (preprocessor, code, importMap) => {
                 case 'babel':
                     _code = window.Babel.transform(code, {
                         presets: [
-                            'es2015',
-                            'es2016',
-                            'es2017',
-                            'react'
-                        ]
+                            'env',
+                            // 'es2015',
+                            // 'es2016',
+                            // 'es2017',
+                            // 'react',
+                        ],
                     }).code
                     resolve({
                         useImport: false,
@@ -138,7 +139,7 @@ const js = (preprocessor, code, importMap) => {
                     })
                     break;
                 case 'typescript':
-                    _code = window.typescript.transpileModule(code, {
+                    _code = window.ts.transpileModule(code, {
                         reportDiagnostics: true,
                         compilerOptions: {
                             module: 'es2015'
@@ -148,13 +149,11 @@ const js = (preprocessor, code, importMap) => {
                     break;
                 case 'coffeescript':
                     _code = window.CoffeeScript.compile(code)
-                    resolve({
-                        useImport: false,
-                        js: _code
-                    })
+                    resolve(transformJsImport(_code, importMap))
                     break;
                 case 'livescript':
-                    _code = window.LiveScript.compile(code)
+                    let liveScript = window.require("livescript")
+                    _code = liveScript.compile(code)
                     resolve({
                         useImport: false,
                         js: _code
@@ -178,7 +177,7 @@ const js = (preprocessor, code, importMap) => {
  * @Date: 2022-05-04 11:05:20 
  * @Desc: 转换css导入 
  */
-const transformCssImport = (cssStr) => {
+const transformCssImport = (cssStr = '') => {
     return cssStr.replace(/(@import\s+)('|")([^'"]+)('|")/g, (str, ...matches) => {
         let source = isBareImport(matches[2]) ? handleEsModuleCdnUrl(matches[2], false) : matches[2]
         return `${matches[0]}${matches[1]}${source}${matches[1]}`

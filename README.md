@@ -116,6 +116,42 @@ UI库：`element-plus`
 
 - `npm run buildVueSFCCompiler`：打包`@vue/compiler-sfc`文件。
 
+# 编译器更新指南
+
+因为本项目是纯前端项目，所以在使用`less`、`sass`、`typescript`等预处理语言或扩展语言时需要在线进行编译，这个工作是由各个语言的编译器处理的，这些编译器你可以在`/public/parses/`目录下找到，随着时间的推移，肯定会落后于它们的新版本，所以你需要定期更新它们，获取它们的浏览器使用版本并不是一件易事，所以在这里将有些仅有的经验分享给大家。
+
+- `less`
+
+首先`npm i less`，然后在`node_modules`找到`less/dist/`目录，该目录下的两个文件都是`umd`格式的，可以直接使用。
+
+- `sass`
+
+`sass`目前使用的是这个项目[sass.js](https://github.com/medialize/sass.js)，但是这个项目已经三年没有更新了，官方的[dart-sass](https://sass-lang.com/dart-sass)应该也是可以编译成纯`javascript`版本，后续也会进行尝试。
+
+- `postcss`
+
+`postcss`没有直接提供浏览器使用版本，需要自己编译。
+
+- `stylus`
+
+`stylus`没有直接提供浏览器使用版本，需要自己编译。
+
+- `babel`
+
+`babel`提供了浏览器使用版本，具体可以参考官方文档[@babel/standalone](https://babeljs.io/docs/en/babel-standalone)。
+
+- `typescript`
+
+`typescript`直接`npm i typescript`，然后找到`node_modules/typescript/lib/typescript.js`文件，它也是支持直接在浏览器上使用的。
+
+- `coffeescript`
+
+`coffeescript`也是直接`npm i coffeescript`，然后找到`node_modules/coffeescript/coffeescript-browser-compiler-legacy/coffeescript.js`文件，支持直接在浏览器上使用。
+
+- `livescript`
+
+`livescript`的浏览器使用版本可以直接去其官方仓库下载[browser](https://github.com/gkz/LiveScript/blob/master/browser/)，不过也两年没有更新了。
+
 # 新增代码模板
 
 项目内置了几个常用的代码模板，可以根据需要进行增减，模板配置文件在`src/config/templates.js`。
