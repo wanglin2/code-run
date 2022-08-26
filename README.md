@@ -126,15 +126,7 @@ UI库：`element-plus`
 
 - `sass`
 
-`sass`目前使用的是这个项目[sass.js](https://github.com/medialize/sass.js)，但是这个项目已经三年没有更新了，官方的[dart-sass](https://sass-lang.com/dart-sass)应该也是可以编译成纯`javascript`版本，后续也会进行尝试。
-
-- `postcss`
-
-`postcss`没有直接提供浏览器使用版本，需要自己编译。
-
-- `stylus`
-
-`stylus`没有直接提供浏览器使用版本，需要自己编译。
+`sass`目前使用的是这个项目[sass.js](https://github.com/medialize/sass.js)，但是这个项目已经三年没有更新了。
 
 - `babel`
 
@@ -151,6 +143,10 @@ UI库：`element-plus`
 - `livescript`
 
 `livescript`的浏览器使用版本可以直接去其官方仓库下载[browser](https://github.com/gkz/LiveScript/blob/master/browser/)，不过也两年没有更新了。
+
+- 其他
+
+`postcss`、`stylus`暂时没有找到浏览器使用版本或编译成功，知道的朋友欢迎提个`issue`。
 
 # 新增代码模板
 
