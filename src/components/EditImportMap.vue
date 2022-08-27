@@ -54,28 +54,26 @@ let editor = null; // 编辑器实例
 const importMapEditBox = ref(null);
 // 创建编辑器
 const createEditor = async () => {
-  if (!editor) {
-    // 创建编辑器
-    editor = monaco.editor.create(importMapEditBox.value, {
-      model: null,
-      minimap: {
-        enabled: false, // 关闭小地图
-      },
-      wordWrap: "on", // 代码超出换行
-      theme: props.codeTheme || "vs-dark", // 主题
-      fontSize: props.codeFontSize || 16,
-      fontFamily: "MonoLisa, monospace",
-      contextmenu: false, // 不显示右键菜单
-      fixedOverflowWidgets: true, // 让语法提示层能溢出容器
-    });
-    // 设置文档内容
-    updateDoc(
-      editData.value.code.JS.importMap || defaultImportMapStr,
-      supportLanguage.json
-    );
-    // 支持textMate语法解析
-    wire(supportLanguage.json, editor);
-  }
+  // 创建编辑器
+  editor = monaco.editor.create(importMapEditBox.value, {
+    model: null,
+    minimap: {
+      enabled: false, // 关闭小地图
+    },
+    wordWrap: "on", // 代码超出换行
+    theme: props.codeTheme || "vs-dark", // 主题
+    fontSize: props.codeFontSize || 16,
+    fontFamily: "MonoLisa, monospace",
+    contextmenu: false, // 不显示右键菜单
+    fixedOverflowWidgets: true, // 让语法提示层能溢出容器
+  });
+  // 设置文档内容
+  updateDoc(
+    editData.value.code.JS.importMap || defaultImportMapStr,
+    supportLanguage.json
+  );
+  // 支持textMate语法解析
+  wire(supportLanguage.json, editor);
   // 更新字号
   watch(
     () => {
@@ -117,6 +115,11 @@ watch(dialogVisible, (val) => {
     nextTick(() => {
       createEditor();
     });
+  } else {
+    if (editor) {
+      editor.dispose();
+      editor = null;
+    }
   }
 });
 </script>
