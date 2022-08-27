@@ -8,10 +8,10 @@
           <el-popover placement="bottom" effect="dark" trigger="hover" v-if="supportESModuleMap[language]">
             <template #reference>
               <div class="addBtn">
-                <span class="el-icon-sunny"></span>
+                <span class="iconfont icon-tishi"></span>
               </div>
             </template>
-            支持使用ES6模块语法，了解更多<a href='https://www.skypack.dev/' target='_blank'>skypack</a>
+            支持使用ES6模块语法，了解更多<a href='https://github.com/wanglin2/code-run#关于使用ESM' target='_blank'>关于使用ESM</a>
           </el-popover>
           <!-- 格式化按钮 -->
           <el-tooltip
@@ -22,7 +22,7 @@
             v-if="formatterParserMap[language]"
           >
             <div class="addBtn" @click="codeFormatter">
-              <span class="el-icon-s-open"></span>
+              <span class="iconfont icon-meihuadaima"></span>
             </div>
           </el-tooltip>
           <!-- 添加资源按钮 -->
@@ -35,7 +35,7 @@
               v-if="showAddBtn"
             >
               <div class="addBtn" @click="addResource('CSS')">
-                <span class="el-icon-plus"></span>
+                <span class="iconfont icon-css3"></span>
               </div>
             </el-tooltip>
             <el-tooltip
@@ -46,7 +46,7 @@
               v-if="showAddBtn"
             >
               <div class="addBtn" @click="addResource('JS')">
-                <span class="el-icon-plus"></span>
+                <span class="iconfont icon-logo-javascript"></span>
               </div>
             </el-tooltip>
           </template>
@@ -59,10 +59,22 @@
               v-if="showAddBtn"
             >
               <div class="addBtn" @click="addResource()">
-                <span class="el-icon-plus"></span>
+                <span class="iconfont icon-chuangjiantianjiapiliangtianjia"></span>
               </div>
             </el-tooltip>
           </template>
+          <!-- 添加importMap -->
+          <el-tooltip
+            class="item"
+            effect="dark"
+            content="添加Import Map"
+            placement="bottom"
+            v-if="supportESModuleMap[language]"
+          >
+            <div class="addBtn" @click="addImportMap">
+              <span class="iconfont icon-brackets-curly"></span>
+            </div>
+          </el-tooltip>
           <!-- 选择语言 -->
           <el-select
             size="mini"
@@ -110,7 +122,8 @@ const emit = defineEmits([
   'blur',
   'add-resource',
   'space-change',
-  'create-code-img'
+  'create-code-img',
+  'add-importmap'
 ])
 
 // props
@@ -336,8 +349,13 @@ const useResource = ({ emit }) => {
   const addResource = (languageType) => {
     emit('add-resource', languageType)
   }
+  // 点击添加importMap
+  const addImportMap = () => {
+    emit('add-importmap')
+  }
   return {
     addResource,
+    addImportMap
   }
 }
 
@@ -459,7 +477,7 @@ const { preprocessor, preprocessorChange } = usePreprocessor({
   updateDoc,
 })
 const { noSpace } = useSizeChange({ props })
-const { addResource } = useResource({ emit })
+const { addResource, addImportMap } = useResource({ emit })
 const { codeFormatter } = useCodeFormat({ getValue, updateDoc, emit })
 useInit({ createEditor })
 const { createCodeImg } = useCreateCodeImg({ props })

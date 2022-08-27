@@ -1,7 +1,7 @@
 {
   "name": "@wanglin1994/code-run",
   "description": "一个简单的前端代码在线运行平台",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "authors": [
     {
       "name": "街角小林",
@@ -64,7 +64,7 @@
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
-    "@vue/compiler-sfc": "^3.2.26",
+    "@vue/compiler-sfc": "^3.2.37",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^7.0.0",

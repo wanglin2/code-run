@@ -44,6 +44,13 @@ export const codeThemeList = [
         "cache": ""
     },
     {
+        "name": "Brackets Light Pro",
+        "value": "BracketsLightPro",
+        "custom": true,
+        "loaded": false,
+        "cache": ""
+    },
+    {
         "name": "Code Sand Box",
         "value": "CodeSandBox",
         "custom": true,
@@ -107,8 +114,22 @@ export const codeThemeList = [
         "cache": ""
     },
     {
+        "name": "Laser Wave",
+        "value": "LaserWave",
+        "custom": true,
+        "loaded": false,
+        "cache": ""
+    },
+    {
         "name": "Lucario",
         "value": "Lucario",
+        "custom": true,
+        "loaded": false,
+        "cache": ""
+    },
+    {
+        "name": "Min",
+        "value": "Min",
         "custom": true,
         "loaded": false,
         "cache": ""
@@ -177,15 +198,15 @@ export const codeThemeList = [
         "cache": ""
     },
     {
-        "name": "Remedy Dark",
-        "value": "RemedyDark",
+        "name": "Re U I",
+        "value": "ReUI",
         "custom": true,
         "loaded": false,
         "cache": ""
     },
     {
-        "name": "Re U I",
-        "value": "ReUI",
+        "name": "Remedy Dark",
+        "value": "RemedyDark",
         "custom": true,
         "loaded": false,
         "cache": ""
@@ -242,6 +263,13 @@ export const codeThemeList = [
     {
         "name": "Twilight",
         "value": "Twilight",
+        "custom": true,
+        "loaded": false,
+        "cache": ""
+    },
+    {
+        "name": "Winter Is Coming",
+        "value": "WinterIsComing",
         "custom": true,
         "loaded": false,
         "cache": ""

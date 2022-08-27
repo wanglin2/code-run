@@ -1,7 +1,7 @@
 import {
     load
 } from '@/utils/load'
-import { esModuleCdnUrl } from '@/config/constants';
+import { handleEsModuleCdnUrl } from '@/config/constants';
 
 /** 
  * javascript comment 
@@ -9,7 +9,7 @@ import { esModuleCdnUrl } from '@/config/constants';
  * @Date: 2022-04-29 09:36:44 
  * @Desc: 修改import语句 
  */
-const transformJsImport = (jsStr) => {
+const transformJsImport = (jsStr, importMap) => {
     if (!checkIsHasImport(jsStr)) {
         return {
             useImport: false,
@@ -20,7 +20,7 @@ const transformJsImport = (jsStr) => {
         useImport: true,
         js: window.Babel.transform(jsStr, {
             plugins: [
-                parseJsImportPlugin()
+                parseJsImportPlugin(importMap)
             ]
         }).code
     }
@@ -32,16 +32,22 @@ const isBareImport = (source) => {
 }
 
 // 修改import from语句
-const parseJsImportPlugin = () => {
+const parseJsImportPlugin = (importMap = {}) => {
+    let visited = {}
     return function (babel) {
         let t = babel.types
         return {
             visitor: {
                 ImportDeclaration(path) {
-                    if (isBareImport(path.node.source.value)) {
+                    let source = path.node.source.value
+                    if (isBareImport(source) && !visited[source]) {
+                        if (!importMap[source]) {
+                            source = handleEsModuleCdnUrl(source)
+                        }
+                        visited[source] = true
                         path.replaceWith(t.importDeclaration(
                             path.node.specifiers,
-                            t.stringLiteral(`${esModuleCdnUrl}${path.node.source.value}`)
+                            t.stringLiteral(source)
                         ))
                     }
                 }
@@ -107,7 +113,7 @@ const html = (preprocessor, code) => {
  * @Date: 2021-05-13 11:35:30 
  * @Desc: 编译js 
  */
-const js = (preprocessor, code) => {
+const js = (preprocessor, code, importMap) => {
     return new Promise(async (resolve, reject) => {
         try {
             // 加载babel解析器
@@ -115,16 +121,17 @@ const js = (preprocessor, code) => {
             let _code = ''
             switch (preprocessor) {
                 case 'javascript':
-                    resolve(transformJsImport(code))
+                    resolve(transformJsImport(code, importMap))
                     break;
                 case 'babel':
                     _code = window.Babel.transform(code, {
                         presets: [
-                            'es2015',
-                            'es2016',
-                            'es2017',
-                            'react'
-                        ]
+                            'env',
+                            // 'es2015',
+                            // 'es2016',
+                            // 'es2017',
+                            // 'react',
+                        ],
                     }).code
                     resolve({
                         useImport: false,
@@ -132,27 +139,25 @@ const js = (preprocessor, code) => {
                     })
                     break;
                 case 'typescript':
-                    _code = window.typescript.transpileModule(code, {
+                    _code = window.ts.transpileModule(code, {
                         reportDiagnostics: true,
                         compilerOptions: {
                             module: 'es2015'
                         }
                     }).outputText
-                    resolve(transformJsImport(_code))
+                    resolve(transformJsImport(_code, importMap))
                     break;
                 case 'coffeescript':
                     _code = window.CoffeeScript.compile(code)
+                    resolve(transformJsImport(_code, importMap))
+                    break;
+                case 'livescript':
+                    let liveScript = window.require("livescript")
+                    _code = liveScript.compile(code)
                     resolve({
                         useImport: false,
                         js: _code
                     })
-                    break;
-                case 'livescript':
-                    _code = window.LiveScript.compile(code)
-                    resolve(transformJsImport({
-                        useImport: false,
-                        js: _code
-                    }))
                     break;
                 default:
                     resolve({
@@ -172,9 +177,9 @@ const js = (preprocessor, code) => {
  * @Date: 2022-05-04 11:05:20 
  * @Desc: 转换css导入 
  */
-const transformCssImport = (cssStr) => {
+const transformCssImport = (cssStr = '') => {
     return cssStr.replace(/(@import\s+)('|")([^'"]+)('|")/g, (str, ...matches) => {
-        let source = isBareImport(matches[2]) ? `${esModuleCdnUrl}${matches[2]}` : matches[2]
+        let source = isBareImport(matches[2]) ? handleEsModuleCdnUrl(matches[2], false) : matches[2]
         return `${matches[0]}${matches[1]}${source}${matches[1]}`
     })
 }
@@ -333,7 +338,7 @@ const parseVue2ScriptPlugin = (data) => {
  * @Date: 2021-09-13 16:06:15 
  * @Desc: vue3，遍历匹配节点，添加el、template属性 
  */
- const traverseVue3AddProperty = (path, t, data) => {
+const traverseVue3AddProperty = (path, t, data) => {
     let first = true
     path.traverse({
         ObjectExpression(path2) {
@@ -372,13 +377,10 @@ const parseVue3ScriptPlugin = (data) => {
                             t.callExpression(
                                 t.memberExpression(
                                     t.callExpression(
-                                        t.memberExpression(
-                                            t.identifier('Vue'),
-                                            t.identifier('createApp')
-                                        ),
-                                       [
+                                        t.identifier('createApp'),
+                                        [
                                             path.get('declaration').node
-                                       ] 
+                                        ] 
                                     ),
                                     t.identifier('mount')
                                 ),
@@ -401,20 +403,24 @@ const parseVue3ScriptPlugin = (data) => {
  * @Date: 2021-09-09 13:54:12 
  * @Desc: 解析出html、js、css 
  */
-const parseVueComponentData = async (data, parseVueScriptPlugin, version) => {
+const parseVueComponentData = async (data, parseVueScriptPlugin, version, importMap) => {
     // html就直接渲染一个挂载vue实例的节点
     let htmlStr = `<div id="app"></div>`
     // 加载babel解析器
     await load(['babel'])
     // babel编译，通过编写插件来完成对ast的修改
-    let jsData = null
+    let jsData = {
+        useImport: false,
+        js: ''
+    }
     if (data.script) {
-        if (version === 'vue2' && checkIsHasImport(data.script.content)) {
+        // Vue2支持全局变量的方式及ESM方式，Vue3只支持ESM方式
+        if ((version === 'vue2' && checkIsHasImport(data.script.content)) || version === 'vue3') {
             jsData = {
                 useImport: true,
                 js: window.Babel.transform(data.script.content, {
                     plugins: [
-                        parseJsImportPlugin(),
+                        parseJsImportPlugin(importMap),
                         parseVueScriptPlugin(data)
                     ]
                 }).code
@@ -424,9 +430,7 @@ const parseVueComponentData = async (data, parseVueScriptPlugin, version) => {
                 useImport: false,
                 js: window.Babel.transform(data.script.content, {
                     presets: [
-                        'es2015',
-                        'es2016',
-                        'es2017',
+                        'env'
                     ],
                     plugins: [
                         parseVueScriptPlugin(data)
@@ -459,7 +463,7 @@ const parseVueComponentData = async (data, parseVueScriptPlugin, version) => {
  * @Date: 2021-09-08 20:07:46 
  * @Desc: 编译vue单文件 
  */
-const vue = (preprocessor, code) => {
+const vue = (preprocessor, code, importMap) => {
     return new Promise(async (resolve, reject) => {
         try {
             let componentData
@@ -467,7 +471,7 @@ const vue = (preprocessor, code) => {
             switch (preprocessor) {
                 case 'vue2':
                     componentData = window.VueTemplateCompiler.parseComponent(code)
-                    parseData = await parseVueComponentData(componentData, parseVue2ScriptPlugin, 'vue2')
+                    parseData = await parseVueComponentData(componentData, parseVue2ScriptPlugin, 'vue2', importMap)
                     resolve(parseData)
                     break;
                 case 'vue3':
@@ -476,22 +480,14 @@ const vue = (preprocessor, code) => {
                     if (componentData.descriptor.scriptSetup) {
                         componentData.descriptor.script = null
                         let compiledScript = window.Vue3TemplateCompiler.compileScript(componentData.descriptor, {
-                            refSugar: true
+                            refSugar: true,
+                            id: Math.random() + ''
                         })
                         componentData.descriptor.script = {
                             content: compiledScript.content
                         }
                     }
-                    parseData = await parseVueComponentData(componentData.descriptor, parseVue3ScriptPlugin, 'vue3')
-                    // vue3的响应式可能需要引入各种方法，babel会把import编译为require语法，所以手动注入一个
-                    parseData.js.js = parseData.js.js.replace('"use strict";', `
-                        "use strict";
-                        if (!window.require) {
-                            window.require = function(tar) {
-                                return tar === 'vue' ? window.Vue : window[tar];
-                            }
-                        }
-                    `)
+                    parseData = await parseVueComponentData(componentData.descriptor, parseVue3ScriptPlugin, 'vue3', importMap)
                     resolve(parseData)
                     break;
                 default:

@@ -58,10 +58,10 @@ export const generateUUID = () => {
  * @Date: 2021-05-20 14:14:01 
  * @Desc: 编译
  */
-export const compile = async (htmlLanguage, jsLanguage, cssLanguage, htmlContent, jsContent, cssContent) => {
+export const compile = async (htmlLanguage, jsLanguage, cssLanguage, htmlContent, jsContent, importMap, cssContent) => {
     await load([htmlLanguage, jsLanguage, cssLanguage])
     let htmlTransform = transform.html(htmlLanguage, htmlContent)
-    let jsTransform = transform.js(jsLanguage, jsContent)
+    let jsTransform = transform.js(jsLanguage, jsContent, importMap)
     let cssTransform = transform.css(cssLanguage, cssContent)
     return new Promise((resolve, reject) => {
         Promise.all([htmlTransform, jsTransform, cssTransform])
@@ -84,9 +84,9 @@ export const compile = async (htmlLanguage, jsLanguage, cssLanguage, htmlContent
  * @Date: 2021-09-08 16:12:36 
  * @Desc: 编译vue单文件 
  */
-export const compileVue = async (vueLanguage, vueContent) => {
+export const compileVue = async (vueLanguage, vueContent, importMap) => {
     await load([vueLanguage])
-    let vueTransform = transform.vue(vueLanguage, vueContent)
+    let vueTransform = transform.vue(vueLanguage, vueContent, importMap)
     return new Promise((resolve, reject) => {
         Promise.all([vueTransform])
             .then(([vueData]) => {
