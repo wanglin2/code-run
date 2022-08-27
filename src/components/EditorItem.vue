@@ -8,7 +8,7 @@
           <el-popover placement="bottom" effect="dark" trigger="hover" v-if="supportESModuleMap[language]">
             <template #reference>
               <div class="addBtn">
-                <span class="el-icon-sunny"></span>
+                <span class="iconfont icon-tishi"></span>
               </div>
             </template>
             支持使用ES6模块语法，了解更多<a href='https://github.com/wanglin2/code-run#关于使用ESM' target='_blank'>关于使用ESM</a>
@@ -22,7 +22,7 @@
             v-if="formatterParserMap[language]"
           >
             <div class="addBtn" @click="codeFormatter">
-              <span class="el-icon-s-open"></span>
+              <span class="iconfont icon-meihuadaima"></span>
             </div>
           </el-tooltip>
           <!-- 添加资源按钮 -->
@@ -35,7 +35,7 @@
               v-if="showAddBtn"
             >
               <div class="addBtn" @click="addResource('CSS')">
-                <span class="el-icon-plus"></span>
+                <span class="iconfont icon-css3"></span>
               </div>
             </el-tooltip>
             <el-tooltip
@@ -46,7 +46,7 @@
               v-if="showAddBtn"
             >
               <div class="addBtn" @click="addResource('JS')">
-                <span class="el-icon-plus"></span>
+                <span class="iconfont icon-logo-javascript"></span>
               </div>
             </el-tooltip>
           </template>
@@ -59,7 +59,7 @@
               v-if="showAddBtn"
             >
               <div class="addBtn" @click="addResource()">
-                <span class="el-icon-plus"></span>
+                <span class="iconfont icon-chuangjiantianjiapiliangtianjia"></span>
               </div>
             </el-tooltip>
           </template>
@@ -72,7 +72,7 @@
             v-if="supportESModuleMap[language]"
           >
             <div class="addBtn" @click="addImportMap">
-              <span class="el-icon-plus"></span>
+              <span class="iconfont icon-brackets-curly"></span>
             </div>
           </el-tooltip>
           <!-- 选择语言 -->

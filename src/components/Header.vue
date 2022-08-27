@@ -11,14 +11,14 @@
     <!-- 工具栏 -->
     <div class="right">
       <div class="btn" @click="openSetting">
-        <span class="icon el-icon-setting"></span> 设置
+        <span class="icon iconfont icon-shezhitianchong"></span> 设置
       </div>
       <div class="btn" @click="openTemplate">
-        <span class="icon el-icon-s-opportunity"></span> 模板
+        <span class="icon iconfont icon-moban"></span> 模板
       </div>
       <div class="dropdownBtn" @click.stop>
         <div class="btn" @click="toggleToolsList()">
-          <span class="icon el-icon-s-tools"></span> 工具
+          <span class="icon iconfont icon-gongju"></span> 工具
         </div>
         <ul class="toolList" :class="{ show: showToolsList }">
           <li class="toolItem" @click="exportZipFile">导出zip</li>
@@ -34,14 +34,14 @@
         </ul>
       </div>
       <div class="btn" @click="run">
-        <span class="icon el-icon-s-promotion"></span> 运行
+        <span class="icon iconfont icon-shuaxin"></span> 运行
       </div>
       <div class="btn" @click="save" v-loading="loading">
-        <span class="icon el-icon-cloudy"></span> 保存
+        <span class="icon iconfont icon-w_yunduan"></span> 保存
       </div>
       <div class="dropdownBtn" @click.stop>
         <div class="btn" @click="toggleMoreList()">
-          <span class="icon el-icon-more"></span>
+          <span class="icon iconfont icon-gengduo"></span>
         </div>
         <ul class="toolList" :class="{ show: showMoreList }">
           <li class="toolItem" @click="createNew">创建新项目</li>
@@ -751,6 +751,12 @@ const { copyDialogTitle, copyDialogTip, shareDialogVisible, shareUrl, createShar
 
     .dropdownBtn {
       position: relative;
+
+      .btn {
+        .icon {
+          margin-right: 0;
+        }
+      }
 
       .toolList {
         position: absolute;

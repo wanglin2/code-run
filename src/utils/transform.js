@@ -338,7 +338,7 @@ const parseVue2ScriptPlugin = (data) => {
  * @Date: 2021-09-13 16:06:15 
  * @Desc: vue3，遍历匹配节点，添加el、template属性 
  */
- const traverseVue3AddProperty = (path, t, data) => {
+const traverseVue3AddProperty = (path, t, data) => {
     let first = true
     path.traverse({
         ObjectExpression(path2) {
@@ -378,9 +378,9 @@ const parseVue3ScriptPlugin = (data) => {
                                 t.memberExpression(
                                     t.callExpression(
                                         t.identifier('createApp'),
-                                       [
+                                        [
                                             path.get('declaration').node
-                                       ] 
+                                        ] 
                                     ),
                                     t.identifier('mount')
                                 ),
@@ -409,7 +409,10 @@ const parseVueComponentData = async (data, parseVueScriptPlugin, version, import
     // 加载babel解析器
     await load(['babel'])
     // babel编译，通过编写插件来完成对ast的修改
-    let jsData = null
+    let jsData = {
+        useImport: false,
+        js: ''
+    }
     if (data.script) {
         // Vue2支持全局变量的方式及ESM方式，Vue3只支持ESM方式
         if ((version === 'vue2' && checkIsHasImport(data.script.content)) || version === 'vue3') {
@@ -477,7 +480,8 @@ const vue = (preprocessor, code, importMap) => {
                     if (componentData.descriptor.scriptSetup) {
                         componentData.descriptor.script = null
                         let compiledScript = window.Vue3TemplateCompiler.compileScript(componentData.descriptor, {
-                            refSugar: true
+                            refSugar: true,
+                            id: Math.random() + ''
                         })
                         componentData.descriptor.script = {
                             content: compiledScript.content
