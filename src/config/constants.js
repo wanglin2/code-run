@@ -38,7 +38,8 @@ export const supportLanguage = {
 	coffeescript: 'coffeescript',
 	vue2: 'html',
 	vue3: 'html',
-	livescript: 'javascript'
+	livescript: 'javascript',
+	json: 'json'
 }
 
 // 支持美化的语言
@@ -59,7 +60,9 @@ export const formatterParserMap = {
 export const supportESModuleMap = {
 	javascript: true,
 	typescript: true,
-	vue2: true
+	coffeescript: true,
+	vue2: true,
+	vue3: true
 }
 
 // monaco editor包含的语言，可通过vue.config.js的MonacoWebpackPlugin插件进行配置
@@ -76,7 +79,8 @@ export const scopeNameMap = {
 	typescript: 'source.ts',
 	javascript: 'source.js',
 	javascriptreact: 'source.js.jsx',
-	coffeescript: 'source.coffee'
+	coffeescript: 'source.coffee',
+	json: 'source.json'
 }
 
 
@@ -98,7 +102,8 @@ export const tmGrammarJsonMap = {
 	'source.js.regexp': {
 		format: 'plist',
 		path: 'Regular Expressions (JavaScript).tmLanguage'
-	}
+	},
+	'source.json': 'JSON.tmLanguage.json'
 }
 
 // 编辑器列表
@@ -254,8 +259,8 @@ export const cdnSiteList = [{
 		url: 'https://www.jsdelivr.com/',
 	},
 	{
-		name: 'Skypack',
-		url: 'https://www.skypack.dev/',
+		name: 'unpkg',
+		url: 'https://unpkg.com/',
 	},
 ]
 
@@ -396,7 +401,10 @@ export const defaultViewThemeConfig = {
 }
 
 // ES模块CDN
-export const  esModuleCdnUrl = 'https://cdn.skypack.dev/'
+export const esModuleCdnUrl = 'https://unpkg.com/'
+export const handleEsModuleCdnUrl = (module, useModule = true) => {
+	return `${esModuleCdnUrl}${module}${useModule ? '?module' : ''}`
+}
 
 // 嵌入模式的编辑器tab列表
 export const getEmbedCodeTypeListMap = (layout) => {
@@ -418,3 +426,9 @@ export const scaleTypeList = [
 		value: 0.25
 	}
 ]
+
+// 默认的importMap
+export const defaultImportMapStr = `{
+	"imports": {
+	}
+}`

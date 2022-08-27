@@ -23,8 +23,8 @@ import {
 } from "vue";
 import { useStore } from "vuex";
 import { assembleHtml, compile, compileVue } from "@/utils";
-import { getTemplate } from "@/config/templates";
 import { base } from "@/config";
+import { defaultImportMapStr } from '@/config/constants';
 
 const dev = process.env.NODE_ENV !== "production";
 
@@ -92,6 +92,11 @@ const useInitData = () => {
       ? newWindowPreviewData.value.code.JS.resources
       : editData.value.code.JS.resources;
   });
+  const importMap = computed(() => {
+    return JSON.parse((isNewWindowPreview.value
+      ? newWindowPreviewData.value.code.JS.importMap
+      : editData.value.code.JS.importMap) || defaultImportMapStr);
+  });
   const vueLanguage = computed(() => {
     return editData.value.code.VUE.language;
   });
@@ -113,6 +118,7 @@ const useInitData = () => {
     cssContent,
     cssResources,
     jsResources,
+    importMap,
     vueLanguage,
     vueContent,
   };
@@ -144,6 +150,7 @@ const useCreateHtml = () => {
     cssStr,
     cssResources,
     jsResources,
+    importMap,
     openAlmightyConsole,
     useImport
   ) => {
@@ -178,8 +185,16 @@ const useCreateHtml = () => {
         type: 'errorRun'
       })
     `
+    // 使用ESM
     if (useImport) {
-      jsContent = `<script type="module">
+      // 使用了importmap
+      if (importMap) {
+        jsContent += `<script type="importmap">
+          ${JSON.stringify(importMap)}
+        <\/script>`
+      }
+      jsContent += `
+      <script type="module">
         ${openAlmightyConsole ? "eruda.init();" : ""}
         ${jsStr}
         ${successRunNotify}
@@ -232,6 +247,7 @@ const useRun = ({
   cssContent,
   cssResources,
   jsResources,
+  importMap,
   createHtml,
   log,
 }) => {
@@ -266,7 +282,7 @@ const useRun = ({
       let compiledData = null;
       // vue单文件
       if (layout.value === "vue") {
-        compiledData = await compileVue(vueLanguage.value, vueContent.value);
+        compiledData = await compileVue(vueLanguage.value, vueContent.value, importMap.value.imports || {});
         if (compiledData) {
           // 自动引入vue资源
           // _jsResourcesPlus = getTemplate(vueLanguage.value).code.JS.resources;
@@ -284,6 +300,7 @@ const useRun = ({
           cssLanguage.value,
           htmlContent.value,
           jsContent.value,
+          importMap.value.imports || {},
           cssContent.value
         );
       }
@@ -305,13 +322,26 @@ const useRun = ({
         compiledData.css,
         _cssResources,
         _jsResources,
+        importMap.value,
         openAlmightyConsole.value,
         compiledData.js.useImport
       );
       isNewWindowPreview.value = false;
     } catch (error) {
       console.log(error);
-      log("log_error", error.message);
+      proxy.$eventEmitter.emit("custom_logs", {
+        data: {
+          type: 'console',
+          method: 'error',
+          data: [
+            {
+              content: error.message ? error.message : error,
+              contentType: 'string'
+            }
+          ]
+        }
+      });
+      proxy.$eventEmitter.emit("errorRun");
     }
   };
 
@@ -431,6 +461,7 @@ const {
   cssContent,
   cssResources,
   jsResources,
+  importMap,
   vueLanguage,
   vueContent,
 } = useInitData();
@@ -452,6 +483,7 @@ const { srcdoc, run, runStartTime } = useRun({
   cssContent,
   cssResources,
   jsResources,
+  importMap,
   createHtml,
   log,
 });

@@ -1,10 +1,15476 @@
-var LiveScript=function(t){var e={};function n(r){if(e[r])return e[r].exports;var i=e[r]={i:r,l:!1,exports:{}};return t[r].call(i.exports,i,i.exports,n),i.l=!0,i.exports}return n.m=t,n.c=e,n.d=function(t,e,r){n.o(t,e)||Object.defineProperty(t,e,{enumerable:!0,get:r})},n.r=function(t){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(t,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(t,"__esModule",{value:!0})},n.t=function(t,e){if(1&e&&(t=n(t)),8&e)return t;if(4&e&&"object"==typeof t&&t&&t.__esModule)return t;var r=Object.create(null);if(n.r(r),Object.defineProperty(r,"default",{enumerable:!0,value:t}),2&e&&"string"!=typeof t)for(var i in t)n.d(r,i,function(e){return t[e]}.bind(null,i));return r},n.n=function(t){var e=t&&t.__esModule?function(){return t.default}:function(){return t};return n.d(e,"a",e),e},n.o=function(t,e){return Object.prototype.hasOwnProperty.call(t,e)},n.p="",n(n.s=9)}([function(t,e){e.getArg=function(t,e,n){if(e in t)return t[e];if(3===arguments.length)return n;throw new Error('"'+e+'" is a required argument.')};var n=/^(?:([\w+\-.]+):)?\/\/(?:(\w+:\w+)@)?([\w.-]*)(?::(\d+))?(.*)$/,r=/^data:.+\,.+$/;function i(t){var e=t.match(n);return e?{scheme:e[1],auth:e[2],host:e[3],port:e[4],path:e[5]}:null}function s(t){var e="";return t.scheme&&(e+=t.scheme+":"),e+="//",t.auth&&(e+=t.auth+"@"),t.host&&(e+=t.host),t.port&&(e+=":"+t.port),t.path&&(e+=t.path),e}function o(t){var n=t,r=i(t);if(r){if(!r.path)return t;n=r.path}for(var o,a=e.isAbsolute(n),c=n.split(/\/+/),l=0,u=c.length-1;u>=0;u--)"."===(o=c[u])?c.splice(u,1):".."===o?l++:l>0&&(""===o?(c.splice(u+1,l),l=0):(c.splice(u,2),l--));return""===(n=c.join("/"))&&(n=a?"/":"."),r?(r.path=n,s(r)):n}function a(t,e){""===t&&(t="."),""===e&&(e=".");var n=i(e),a=i(t);if(a&&(t=a.path||"/"),n&&!n.scheme)return a&&(n.scheme=a.scheme),s(n);if(n||e.match(r))return e;if(a&&!a.host&&!a.path)return a.host=e,s(a);var c="/"===e.charAt(0)?e:o(t.replace(/\/+$/,"")+"/"+e);return a?(a.path=c,s(a)):c}e.urlParse=i,e.urlGenerate=s,e.normalize=o,e.join=a,e.isAbsolute=function(t){return"/"===t.charAt(0)||n.test(t)},e.relative=function(t,e){""===t&&(t="."),t=t.replace(/\/$/,"");for(var n=0;0!==e.indexOf(t+"/");){var r=t.lastIndexOf("/");if(r<0)return e;if((t=t.slice(0,r)).match(/^([^\/]+:\/)?\/*$/))return e;++n}return Array(n+1).join("../")+e.substr(t.length+1)};var c=!("__proto__"in Object.create(null));function l(t){return t}function u(t){if(!t)return!1;var e=t.length;if(e<9)return!1;if(95!==t.charCodeAt(e-1)||95!==t.charCodeAt(e-2)||111!==t.charCodeAt(e-3)||116!==t.charCodeAt(e-4)||111!==t.charCodeAt(e-5)||114!==t.charCodeAt(e-6)||112!==t.charCodeAt(e-7)||95!==t.charCodeAt(e-8)||95!==t.charCodeAt(e-9))return!1;for(var n=e-10;n>=0;n--)if(36!==t.charCodeAt(n))return!1;return!0}function h(t,e){return t===e?0:null===t?1:null===e?-1:t>e?1:-1}e.toSetString=c?l:function(t){return u(t)?"$"+t:t},e.fromSetString=c?l:function(t){return u(t)?t.slice(1):t},e.compareByOriginalPositions=function(t,e,n){var r=h(t.source,e.source);return 0!==r||0!==(r=t.originalLine-e.originalLine)||0!==(r=t.originalColumn-e.originalColumn)||n||0!==(r=t.generatedColumn-e.generatedColumn)||0!==(r=t.generatedLine-e.generatedLine)?r:h(t.name,e.name)},e.compareByGeneratedPositionsDeflated=function(t,e,n){var r=t.generatedLine-e.generatedLine;return 0!==r||0!==(r=t.generatedColumn-e.generatedColumn)||n||0!==(r=h(t.source,e.source))||0!==(r=t.originalLine-e.originalLine)||0!==(r=t.originalColumn-e.originalColumn)?r:h(t.name,e.name)},e.compareByGeneratedPositionsInflated=function(t,e){var n=t.generatedLine-e.generatedLine;return 0!==n||0!==(n=t.generatedColumn-e.generatedColumn)||0!==(n=h(t.source,e.source))||0!==(n=t.originalLine-e.originalLine)||0!==(n=t.originalColumn-e.originalColumn)?n:h(t.name,e.name)},e.parseSourceMapInput=function(t){return JSON.parse(t.replace(/^\)]}'[^\n]*\n/,""))},e.computeSourceURL=function(t,e,n){if(e=e||"",t&&("/"!==t[t.length-1]&&"/"!==e[0]&&(t+="/"),e=t+e),n){var r=i(n);if(!r)throw new Error("sourceMapURL could not be parsed");if(r.path){var c=r.path.lastIndexOf("/");c>=0&&(r.path=r.path.substring(0,c+1))}e=a(s(r),e)}return o(e)}},function(t,e,n){(function(t){function n(t,e){for(var n=0,r=t.length-1;r>=0;r--){var i=t[r];"."===i?t.splice(r,1):".."===i?(t.splice(r,1),n++):n&&(t.splice(r,1),n--)}if(e)for(;n--;n)t.unshift("..");return t}function r(t,e){if(t.filter)return t.filter(e);for(var n=[],r=0;r<t.length;r++)e(t[r],r,t)&&n.push(t[r]);return n}e.resolve=function(){for(var e="",i=!1,s=arguments.length-1;s>=-1&&!i;s--){var o=s>=0?arguments[s]:t.cwd();if("string"!=typeof o)throw new TypeError("Arguments to path.resolve must be strings");o&&(e=o+"/"+e,i="/"===o.charAt(0))}return(i?"/":"")+(e=n(r(e.split("/"),(function(t){return!!t})),!i).join("/"))||"."},e.normalize=function(t){var s=e.isAbsolute(t),o="/"===i(t,-1);return(t=n(r(t.split("/"),(function(t){return!!t})),!s).join("/"))||s||(t="."),t&&o&&(t+="/"),(s?"/":"")+t},e.isAbsolute=function(t){return"/"===t.charAt(0)},e.join=function(){var t=Array.prototype.slice.call(arguments,0);return e.normalize(r(t,(function(t,e){if("string"!=typeof t)throw new TypeError("Arguments to path.join must be strings");return t})).join("/"))},e.relative=function(t,n){function r(t){for(var e=0;e<t.length&&""===t[e];e++);for(var n=t.length-1;n>=0&&""===t[n];n--);return e>n?[]:t.slice(e,n-e+1)}t=e.resolve(t).substr(1),n=e.resolve(n).substr(1);for(var i=r(t.split("/")),s=r(n.split("/")),o=Math.min(i.length,s.length),a=o,c=0;c<o;c++)if(i[c]!==s[c]){a=c;break}var l=[];for(c=a;c<i.length;c++)l.push("..");return(l=l.concat(s.slice(a))).join("/")},e.sep="/",e.delimiter=":",e.dirname=function(t){if("string"!=typeof t&&(t+=""),0===t.length)return".";for(var e=t.charCodeAt(0),n=47===e,r=-1,i=!0,s=t.length-1;s>=1;--s)if(47===(e=t.charCodeAt(s))){if(!i){r=s;break}}else i=!1;return-1===r?n?"/":".":n&&1===r?"/":t.slice(0,r)},e.basename=function(t,e){var n=function(t){"string"!=typeof t&&(t+="");var e,n=0,r=-1,i=!0;for(e=t.length-1;e>=0;--e)if(47===t.charCodeAt(e)){if(!i){n=e+1;break}}else-1===r&&(i=!1,r=e+1);return-1===r?"":t.slice(n,r)}(t);return e&&n.substr(-1*e.length)===e&&(n=n.substr(0,n.length-e.length)),n},e.extname=function(t){"string"!=typeof t&&(t+="");for(var e=-1,n=0,r=-1,i=!0,s=0,o=t.length-1;o>=0;--o){var a=t.charCodeAt(o);if(47!==a)-1===r&&(i=!1,r=o+1),46===a?-1===e?e=o:1!==s&&(s=1):-1!==e&&(s=-1);else if(!i){n=o+1;break}}return-1===e||-1===r||0===s||1===s&&e===r-1&&e===n+1?"":t.slice(e,r)};var i="b"==="ab".substr(-1)?function(t,e,n){return t.substr(e,n)}:function(t,e,n){return e<0&&(e=t.length+e),t.substr(e,n)}}).call(this,n(3))},function(t,e){var n;n=function(){return this}();try{n=n||new Function("return this")()}catch(t){"object"==typeof window&&(n=window)}t.exports=n},function(t,e){var n,r,i=t.exports={};function s(){throw new Error("setTimeout has not been defined")}function o(){throw new Error("clearTimeout has not been defined")}function a(t){if(n===setTimeout)return setTimeout(t,0);if((n===s||!n)&&setTimeout)return n=setTimeout,setTimeout(t,0);try{return n(t,0)}catch(e){try{return n.call(null,t,0)}catch(e){return n.call(this,t,0)}}}!function(){try{n="function"==typeof setTimeout?setTimeout:s}catch(t){n=s}try{r="function"==typeof clearTimeout?clearTimeout:o}catch(t){r=o}}();var c,l=[],u=!1,h=-1;function p(){u&&c&&(u=!1,c.length?l=c.concat(l):h=-1,l.length&&f())}function f(){if(!u){var t=a(p);u=!0;for(var e=l.length;e;){for(c=l,l=[];++h<e;)c&&c[h].run();h=-1,e=l.length}c=null,u=!1,function(t){if(r===clearTimeout)return clearTimeout(t);if((r===o||!r)&&clearTimeout)return r=clearTimeout,clearTimeout(t);try{r(t)}catch(e){try{return r.call(null,t)}catch(e){return r.call(this,t)}}}(t)}}function d(t,e){this.fun=t,this.array=e}function g(){}i.nextTick=function(t){var e=new Array(arguments.length-1);if(arguments.length>1)for(var n=1;n<arguments.length;n++)e[n-1]=arguments[n];l.push(new d(t,e)),1!==l.length||u||a(f)},d.prototype.run=function(){this.fun.apply(null,this.array)},i.title="browser",i.browser=!0,i.env={},i.argv=[],i.version="",i.versions={},i.on=g,i.addListener=g,i.once=g,i.off=g,i.removeListener=g,i.removeAllListeners=g,i.emit=g,i.prependListener=g,i.prependOnceListener=g,i.listeners=function(t){return[]},i.binding=function(t){throw new Error("process.binding is not supported")},i.cwd=function(){return"/"},i.chdir=function(t){throw new Error("process.chdir is not supported")},i.umask=function(){return 0}},function(t,e){t.exports=fs},function(t,e,n){e.SourceMapGenerator=n(6).SourceMapGenerator,e.SourceMapConsumer=n(28).SourceMapConsumer,e.SourceNode=n(31).SourceNode},function(t,e,n){var r=n(7),i=n(0),s=n(8).ArraySet,o=n(27).MappingList;function a(t){t||(t={}),this._file=i.getArg(t,"file",null),this._sourceRoot=i.getArg(t,"sourceRoot",null),this._skipValidation=i.getArg(t,"skipValidation",!1),this._sources=new s,this._names=new s,this._mappings=new o,this._sourcesContents=null}a.prototype._version=3,a.fromSourceMap=function(t){var e=t.sourceRoot,n=new a({file:t.file,sourceRoot:e});return t.eachMapping((function(t){var r={generated:{line:t.generatedLine,column:t.generatedColumn}};null!=t.source&&(r.source=t.source,null!=e&&(r.source=i.relative(e,r.source)),r.original={line:t.originalLine,column:t.originalColumn},null!=t.name&&(r.name=t.name)),n.addMapping(r)})),t.sources.forEach((function(r){var s=r;null!==e&&(s=i.relative(e,r)),n._sources.has(s)||n._sources.add(s);var o=t.sourceContentFor(r);null!=o&&n.setSourceContent(r,o)})),n},a.prototype.addMapping=function(t){var e=i.getArg(t,"generated"),n=i.getArg(t,"original",null),r=i.getArg(t,"source",null),s=i.getArg(t,"name",null);this._skipValidation||this._validateMapping(e,n,r,s),null!=r&&(r=String(r),this._sources.has(r)||this._sources.add(r)),null!=s&&(s=String(s),this._names.has(s)||this._names.add(s)),this._mappings.add({generatedLine:e.line,generatedColumn:e.column,originalLine:null!=n&&n.line,originalColumn:null!=n&&n.column,source:r,name:s})},a.prototype.setSourceContent=function(t,e){var n=t;null!=this._sourceRoot&&(n=i.relative(this._sourceRoot,n)),null!=e?(this._sourcesContents||(this._sourcesContents=Object.create(null)),this._sourcesContents[i.toSetString(n)]=e):this._sourcesContents&&(delete this._sourcesContents[i.toSetString(n)],0===Object.keys(this._sourcesContents).length&&(this._sourcesContents=null))},a.prototype.applySourceMap=function(t,e,n){var r=e;if(null==e){if(null==t.file)throw new Error('SourceMapGenerator.prototype.applySourceMap requires either an explicit source file, or the source map\'s "file" property. Both were omitted.');r=t.file}var o=this._sourceRoot;null!=o&&(r=i.relative(o,r));var a=new s,c=new s;this._mappings.unsortedForEach((function(e){if(e.source===r&&null!=e.originalLine){var s=t.originalPositionFor({line:e.originalLine,column:e.originalColumn});null!=s.source&&(e.source=s.source,null!=n&&(e.source=i.join(n,e.source)),null!=o&&(e.source=i.relative(o,e.source)),e.originalLine=s.line,e.originalColumn=s.column,null!=s.name&&(e.name=s.name))}var l=e.source;null==l||a.has(l)||a.add(l);var u=e.name;null==u||c.has(u)||c.add(u)}),this),this._sources=a,this._names=c,t.sources.forEach((function(e){var r=t.sourceContentFor(e);null!=r&&(null!=n&&(e=i.join(n,e)),null!=o&&(e=i.relative(o,e)),this.setSourceContent(e,r))}),this)},a.prototype._validateMapping=function(t,e,n,r){if(e&&"number"!=typeof e.line&&"number"!=typeof e.column)throw new Error("original.line and original.column are not numbers -- you probably meant to omit the original mapping entirely and only map the generated position. If so, pass null for the original mapping instead of an object with empty or null values.");if((!(t&&"line"in t&&"column"in t&&t.line>0&&t.column>=0)||e||n||r)&&!(t&&"line"in t&&"column"in t&&e&&"line"in e&&"column"in e&&t.line>0&&t.column>=0&&e.line>0&&e.column>=0&&n))throw new Error("Invalid mapping: "+JSON.stringify({generated:t,source:n,original:e,name:r}))},a.prototype._serializeMappings=function(){for(var t,e,n,s,o=0,a=1,c=0,l=0,u=0,h=0,p="",f=this._mappings.toArray(),d=0,g=f.length;d<g;d++){if(t="",(e=f[d]).generatedLine!==a)for(o=0;e.generatedLine!==a;)t+=";",a++;else if(d>0){if(!i.compareByGeneratedPositionsInflated(e,f[d-1]))continue;t+=","}t+=r.encode(e.generatedColumn-o),o=e.generatedColumn,null!=e.source&&(s=this._sources.indexOf(e.source),t+=r.encode(s-h),h=s,t+=r.encode(e.originalLine-1-l),l=e.originalLine-1,t+=r.encode(e.originalColumn-c),c=e.originalColumn,null!=e.name&&(n=this._names.indexOf(e.name),t+=r.encode(n-u),u=n)),p+=t}return p},a.prototype._generateSourcesContent=function(t,e){return t.map((function(t){if(!this._sourcesContents)return null;null!=e&&(t=i.relative(e,t));var n=i.toSetString(t);return Object.prototype.hasOwnProperty.call(this._sourcesContents,n)?this._sourcesContents[n]:null}),this)},a.prototype.toJSON=function(){var t={version:this._version,sources:this._sources.toArray(),names:this._names.toArray(),mappings:this._serializeMappings()};return null!=this._file&&(t.file=this._file),null!=this._sourceRoot&&(t.sourceRoot=this._sourceRoot),this._sourcesContents&&(t.sourcesContent=this._generateSourcesContent(t.sources,t.sourceRoot)),t},a.prototype.toString=function(){return JSON.stringify(this.toJSON())},e.SourceMapGenerator=a},function(t,e,n){var r=n(26);e.encode=function(t){var e,n="",i=function(t){return t<0?1+(-t<<1):0+(t<<1)}(t);do{e=31&i,(i>>>=5)>0&&(e|=32),n+=r.encode(e)}while(i>0);return n},e.decode=function(t,e,n){var i,s,o,a,c=t.length,l=0,u=0;do{if(e>=c)throw new Error("Expected more digits in base 64 VLQ value.");if(-1===(s=r.decode(t.charCodeAt(e++))))throw new Error("Invalid base64 digit: "+t.charAt(e-1));i=!!(32&s),l+=(s&=31)<<u,u+=5}while(i);n.value=(a=(o=l)>>1,1==(1&o)?-a:a),n.rest=e}},function(t,e,n){var r=n(0),i=Object.prototype.hasOwnProperty,s="undefined"!=typeof Map;function o(){this._array=[],this._set=s?new Map:Object.create(null)}o.fromArray=function(t,e){for(var n=new o,r=0,i=t.length;r<i;r++)n.add(t[r],e);return n},o.prototype.size=function(){return s?this._set.size:Object.getOwnPropertyNames(this._set).length},o.prototype.add=function(t,e){var n=s?t:r.toSetString(t),o=s?this.has(t):i.call(this._set,n),a=this._array.length;o&&!e||this._array.push(t),o||(s?this._set.set(t,a):this._set[n]=a)},o.prototype.has=function(t){if(s)return this._set.has(t);var e=r.toSetString(t);return i.call(this._set,e)},o.prototype.indexOf=function(t){if(s){var e=this._set.get(t);if(e>=0)return e}else{var n=r.toSetString(t);if(i.call(this._set,n))return this._set[n]}throw new Error('"'+t+'" is not in the set.')},o.prototype.at=function(t){if(t>=0&&t<this._array.length)return this._array[t];throw new Error("No element indexed by "+t)},o.prototype.toArray=function(){return this._array.slice()},e.ArraySet=o},function(t,e,n){var r;(r=n(10)).stab=function(t,e,n){var i;try{r.run(t,{filename:n,map:"embedded"})}catch(t){i=t}"function"==typeof e&&e(i)},r.load=function(t,e){var n;return(n=new XMLHttpRequest).open("GET",t,!0),"overrideMimeType"in n&&n.overrideMimeType("text/plain"),n.onreadystatechange=function(){var i;4===n.readyState&&(200===(i=n.status)||0===i?r.stab(n.responseText,e,t):"function"==typeof e&&e(Error(t+": "+n.status+" "+n.statusText)))},n.send(null),n},r.go=function(){var t,e,n,i,s,o,a;for(t=/^(?:text\/|application\/)?ls$/i,e=function(t){t&&setTimeout((function(){throw t}))},n=0,s=(i=document.getElementsByTagName("script")).length;n<s;++n)o=i[n],t.test(o.type)&&((a=o.src)?r.load(a,e):r.stab(o.innerHTML,e,o.id))},t.exports=r},function(t,e,n){(function(t){var r,i,s,o,a,c={}.toString;r=n(15),i=n(16).parser,s=n(18),n(5).SourceNode,o=n(1),i.yy=s,i.lexer={lex:function(){var t,e,n,r,i,s;return e=(t=this.tokens[++this.pos]||[""])[0],this.yytext=t[1],n=t[2],r=t[3],i=(t=this.tokens[this.pos+1]||[""])[2],s=t[3],this.yylineno=n,this.yylloc={first_line:n,first_column:r,last_line:i,last_column:s},e},setInput:function(t){return this.pos=-1,this.tokens=t},upcomingInput:function(){return""}},a=t.alloc&&t.from||function(e){return new t(e)},e.VERSION="1.6.0",e.compile=function(t,n){var s,c,l,u,h,p,f,d,g;null==n&&(n={}),null==n.warn&&(n.warn=!0),null==n.header&&(n.header=!0),!0===n.header&&(n.header="// Generated by LiveScript "+e.VERSION+"\n");try{return n.json?(s=Function(e.compile(t,{bare:!0,run:!0,print:!0}))(),JSON.stringify(s,null,2)+"\n"):(c=i.parse(r.lex(t)),n.run&&n.print&&c.makeReturn(),l=c.compileRoot(n),n.map&&"none"!==n.map?(u=n.filename,h=n.outputFilename,u||(u="unnamed-"+Math.floor(4294967296*Math.random()).toString(16)+".ls"),l.setFile(o.basename(u)),s=l.toStringWithSourceMap(),"embedded"===n.map&&s.map.setSourceContent(u,t),"linked"===(p=n.map)||"debug"===p?(f=o.basename(h)+".map",s.code+="\n//# sourceMappingURL="+f+"\n"):s.code+="\n//# sourceMappingURL=data:application/json;base64,"+a(s.map.toString()).toString("base64")+"\n",s):l.toString())}catch(t){throw d=t,(g=n.filename)&&(d.message+="\nat "+g),d}},e.ast=function(t){return i.parse("string"==typeof t?r.lex(t):t)},e.tokens=r.lex,e.lex=function(t){return r.lex(t,{raw:!0})},e.run=function(t,n){var r,i;return r=e.compile(t,(function(t,e){var n={}.hasOwnProperty;for(var r in e)n.call(e,r)&&(t[r]=e[r])}(i={},n),i.bare=!0,i)),Function("String"===c.call(r).slice(8,-1)?r:r.code)()},e.tokens.rewrite=r.rewrite,function(t,e){for(var n in e)t[n]=e[n]}(e.ast,i.yy),e.require=n(34)}).call(this,n(11).Buffer)},function(t,e,n){"use strict";(function(t){
-/*!
- * The buffer module from node.js, for the browser.
- *
- * @author   Feross Aboukhadijeh <http://feross.org>
- * @license  MIT
- */
-var r=n(12),i=n(13),s=n(14);function o(){return c.TYPED_ARRAY_SUPPORT?2147483647:1073741823}function a(t,e){if(o()<e)throw new RangeError("Invalid typed array length");return c.TYPED_ARRAY_SUPPORT?(t=new Uint8Array(e)).__proto__=c.prototype:(null===t&&(t=new c(e)),t.length=e),t}function c(t,e,n){if(!(c.TYPED_ARRAY_SUPPORT||this instanceof c))return new c(t,e,n);if("number"==typeof t){if("string"==typeof e)throw new Error("If encoding is specified then the first argument must be a string");return h(this,t)}return l(this,t,e,n)}function l(t,e,n,r){if("number"==typeof e)throw new TypeError('"value" argument must not be a number');return"undefined"!=typeof ArrayBuffer&&e instanceof ArrayBuffer?function(t,e,n,r){if(e.byteLength,n<0||e.byteLength<n)throw new RangeError("'offset' is out of bounds");if(e.byteLength<n+(r||0))throw new RangeError("'length' is out of bounds");e=void 0===n&&void 0===r?new Uint8Array(e):void 0===r?new Uint8Array(e,n):new Uint8Array(e,n,r);c.TYPED_ARRAY_SUPPORT?(t=e).__proto__=c.prototype:t=p(t,e);return t}(t,e,n,r):"string"==typeof e?function(t,e,n){"string"==typeof n&&""!==n||(n="utf8");if(!c.isEncoding(n))throw new TypeError('"encoding" must be a valid string encoding');var r=0|d(e,n),i=(t=a(t,r)).write(e,n);i!==r&&(t=t.slice(0,i));return t}(t,e,n):function(t,e){if(c.isBuffer(e)){var n=0|f(e.length);return 0===(t=a(t,n)).length||e.copy(t,0,0,n),t}if(e){if("undefined"!=typeof ArrayBuffer&&e.buffer instanceof ArrayBuffer||"length"in e)return"number"!=typeof e.length||(r=e.length)!=r?a(t,0):p(t,e);if("Buffer"===e.type&&s(e.data))return p(t,e.data)}var r;throw new TypeError("First argument must be a string, Buffer, ArrayBuffer, Array, or array-like object.")}(t,e)}function u(t){if("number"!=typeof t)throw new TypeError('"size" argument must be a number');if(t<0)throw new RangeError('"size" argument must not be negative')}function h(t,e){if(u(e),t=a(t,e<0?0:0|f(e)),!c.TYPED_ARRAY_SUPPORT)for(var n=0;n<e;++n)t[n]=0;return t}function p(t,e){var n=e.length<0?0:0|f(e.length);t=a(t,n);for(var r=0;r<n;r+=1)t[r]=255&e[r];return t}function f(t){if(t>=o())throw new RangeError("Attempt to allocate Buffer larger than maximum size: 0x"+o().toString(16)+" bytes");return 0|t}function d(t,e){if(c.isBuffer(t))return t.length;if("undefined"!=typeof ArrayBuffer&&"function"==typeof ArrayBuffer.isView&&(ArrayBuffer.isView(t)||t instanceof ArrayBuffer))return t.byteLength;"string"!=typeof t&&(t=""+t);var n=t.length;if(0===n)return 0;for(var r=!1;;)switch(e){case"ascii":case"latin1":case"binary":return n;case"utf8":case"utf-8":case void 0:return j(t).length;case"ucs2":case"ucs-2":case"utf16le":case"utf-16le":return 2*n;case"hex":return n>>>1;case"base64":return F(t).length;default:if(r)return j(t).length;e=(""+e).toLowerCase(),r=!0}}function g(t,e,n){var r=!1;if((void 0===e||e<0)&&(e=0),e>this.length)return"";if((void 0===n||n>this.length)&&(n=this.length),n<=0)return"";if((n>>>=0)<=(e>>>=0))return"";for(t||(t="utf8");;)switch(t){case"hex":return _(this,e,n);case"utf8":case"utf-8":return S(this,e,n);case"ascii":return R(this,e,n);case"latin1":case"binary":return N(this,e,n);case"base64":return C(this,e,n);case"ucs2":case"ucs-2":case"utf16le":case"utf-16le":return T(this,e,n);default:if(r)throw new TypeError("Unknown encoding: "+t);t=(t+"").toLowerCase(),r=!0}}function m(t,e,n){var r=t[e];t[e]=t[n],t[n]=r}function y(t,e,n,r,i){if(0===t.length)return-1;if("string"==typeof n?(r=n,n=0):n>2147483647?n=2147483647:n<-2147483648&&(n=-2147483648),n=+n,isNaN(n)&&(n=i?0:t.length-1),n<0&&(n=t.length+n),n>=t.length){if(i)return-1;n=t.length-1}else if(n<0){if(!i)return-1;n=0}if("string"==typeof e&&(e=c.from(e,r)),c.isBuffer(e))return 0===e.length?-1:v(t,e,n,r,i);if("number"==typeof e)return e&=255,c.TYPED_ARRAY_SUPPORT&&"function"==typeof Uint8Array.prototype.indexOf?i?Uint8Array.prototype.indexOf.call(t,e,n):Uint8Array.prototype.lastIndexOf.call(t,e,n):v(t,[e],n,r,i);throw new TypeError("val must be string, number or Buffer")}function v(t,e,n,r,i){var s,o=1,a=t.length,c=e.length;if(void 0!==r&&("ucs2"===(r=String(r).toLowerCase())||"ucs-2"===r||"utf16le"===r||"utf-16le"===r)){if(t.length<2||e.length<2)return-1;o=2,a/=2,c/=2,n/=2}function l(t,e){return 1===o?t[e]:t.readUInt16BE(e*o)}if(i){var u=-1;for(s=n;s<a;s++)if(l(t,s)===l(e,-1===u?0:s-u)){if(-1===u&&(u=s),s-u+1===c)return u*o}else-1!==u&&(s-=s-u),u=-1}else for(n+c>a&&(n=a-c),s=n;s>=0;s--){for(var h=!0,p=0;p<c;p++)if(l(t,s+p)!==l(e,p)){h=!1;break}if(h)return s}return-1}function b(t,e,n,r){n=Number(n)||0;var i=t.length-n;r?(r=Number(r))>i&&(r=i):r=i;var s=e.length;if(s%2!=0)throw new TypeError("Invalid hex string");r>s/2&&(r=s/2);for(var o=0;o<r;++o){var a=parseInt(e.substr(2*o,2),16);if(isNaN(a))return o;t[n+o]=a}return o}function w(t,e,n,r){return W(j(e,t.length-n),t,n,r)}function k(t,e,n,r){return W(function(t){for(var e=[],n=0;n<t.length;++n)e.push(255&t.charCodeAt(n));return e}(e),t,n,r)}function L(t,e,n,r){return k(t,e,n,r)}function A(t,e,n,r){return W(F(e),t,n,r)}function E(t,e,n,r){return W(function(t,e){for(var n,r,i,s=[],o=0;o<t.length&&!((e-=2)<0);++o)n=t.charCodeAt(o),r=n>>8,i=n%256,s.push(i),s.push(r);return s}(e,t.length-n),t,n,r)}function C(t,e,n){return 0===e&&n===t.length?r.fromByteArray(t):r.fromByteArray(t.slice(e,n))}function S(t,e,n){n=Math.min(t.length,n);for(var r=[],i=e;i<n;){var s,o,a,c,l=t[i],u=null,h=l>239?4:l>223?3:l>191?2:1;if(i+h<=n)switch(h){case 1:l<128&&(u=l);break;case 2:128==(192&(s=t[i+1]))&&(c=(31&l)<<6|63&s)>127&&(u=c);break;case 3:s=t[i+1],o=t[i+2],128==(192&s)&&128==(192&o)&&(c=(15&l)<<12|(63&s)<<6|63&o)>2047&&(c<55296||c>57343)&&(u=c);break;case 4:s=t[i+1],o=t[i+2],a=t[i+3],128==(192&s)&&128==(192&o)&&128==(192&a)&&(c=(15&l)<<18|(63&s)<<12|(63&o)<<6|63&a)>65535&&c<1114112&&(u=c)}null===u?(u=65533,h=1):u>65535&&(u-=65536,r.push(u>>>10&1023|55296),u=56320|1023&u),r.push(u),i+=h}return function(t){var e=t.length;if(e<=4096)return String.fromCharCode.apply(String,t);var n="",r=0;for(;r<e;)n+=String.fromCharCode.apply(String,t.slice(r,r+=4096));return n}(r)}e.Buffer=c,e.SlowBuffer=function(t){+t!=t&&(t=0);return c.alloc(+t)},e.INSPECT_MAX_BYTES=50,c.TYPED_ARRAY_SUPPORT=void 0!==t.TYPED_ARRAY_SUPPORT?t.TYPED_ARRAY_SUPPORT:function(){try{var t=new Uint8Array(1);return t.__proto__={__proto__:Uint8Array.prototype,foo:function(){return 42}},42===t.foo()&&"function"==typeof t.subarray&&0===t.subarray(1,1).byteLength}catch(t){return!1}}(),e.kMaxLength=o(),c.poolSize=8192,c._augment=function(t){return t.__proto__=c.prototype,t},c.from=function(t,e,n){return l(null,t,e,n)},c.TYPED_ARRAY_SUPPORT&&(c.prototype.__proto__=Uint8Array.prototype,c.__proto__=Uint8Array,"undefined"!=typeof Symbol&&Symbol.species&&c[Symbol.species]===c&&Object.defineProperty(c,Symbol.species,{value:null,configurable:!0})),c.alloc=function(t,e,n){return function(t,e,n,r){return u(e),e<=0?a(t,e):void 0!==n?"string"==typeof r?a(t,e).fill(n,r):a(t,e).fill(n):a(t,e)}(null,t,e,n)},c.allocUnsafe=function(t){return h(null,t)},c.allocUnsafeSlow=function(t){return h(null,t)},c.isBuffer=function(t){return!(null==t||!t._isBuffer)},c.compare=function(t,e){if(!c.isBuffer(t)||!c.isBuffer(e))throw new TypeError("Arguments must be Buffers");if(t===e)return 0;for(var n=t.length,r=e.length,i=0,s=Math.min(n,r);i<s;++i)if(t[i]!==e[i]){n=t[i],r=e[i];break}return n<r?-1:r<n?1:0},c.isEncoding=function(t){switch(String(t).toLowerCase()){case"hex":case"utf8":case"utf-8":case"ascii":case"latin1":case"binary":case"base64":case"ucs2":case"ucs-2":case"utf16le":case"utf-16le":return!0;default:return!1}},c.concat=function(t,e){if(!s(t))throw new TypeError('"list" argument must be an Array of Buffers');if(0===t.length)return c.alloc(0);var n;if(void 0===e)for(e=0,n=0;n<t.length;++n)e+=t[n].length;var r=c.allocUnsafe(e),i=0;for(n=0;n<t.length;++n){var o=t[n];if(!c.isBuffer(o))throw new TypeError('"list" argument must be an Array of Buffers');o.copy(r,i),i+=o.length}return r},c.byteLength=d,c.prototype._isBuffer=!0,c.prototype.swap16=function(){var t=this.length;if(t%2!=0)throw new RangeError("Buffer size must be a multiple of 16-bits");for(var e=0;e<t;e+=2)m(this,e,e+1);return this},c.prototype.swap32=function(){var t=this.length;if(t%4!=0)throw new RangeError("Buffer size must be a multiple of 32-bits");for(var e=0;e<t;e+=4)m(this,e,e+3),m(this,e+1,e+2);return this},c.prototype.swap64=function(){var t=this.length;if(t%8!=0)throw new RangeError("Buffer size must be a multiple of 64-bits");for(var e=0;e<t;e+=8)m(this,e,e+7),m(this,e+1,e+6),m(this,e+2,e+5),m(this,e+3,e+4);return this},c.prototype.toString=function(){var t=0|this.length;return 0===t?"":0===arguments.length?S(this,0,t):g.apply(this,arguments)},c.prototype.equals=function(t){if(!c.isBuffer(t))throw new TypeError("Argument must be a Buffer");return this===t||0===c.compare(this,t)},c.prototype.inspect=function(){var t="",n=e.INSPECT_MAX_BYTES;return this.length>0&&(t=this.toString("hex",0,n).match(/.{2}/g).join(" "),this.length>n&&(t+=" ... ")),"<Buffer "+t+">"},c.prototype.compare=function(t,e,n,r,i){if(!c.isBuffer(t))throw new TypeError("Argument must be a Buffer");if(void 0===e&&(e=0),void 0===n&&(n=t?t.length:0),void 0===r&&(r=0),void 0===i&&(i=this.length),e<0||n>t.length||r<0||i>this.length)throw new RangeError("out of range index");if(r>=i&&e>=n)return 0;if(r>=i)return-1;if(e>=n)return 1;if(this===t)return 0;for(var s=(i>>>=0)-(r>>>=0),o=(n>>>=0)-(e>>>=0),a=Math.min(s,o),l=this.slice(r,i),u=t.slice(e,n),h=0;h<a;++h)if(l[h]!==u[h]){s=l[h],o=u[h];break}return s<o?-1:o<s?1:0},c.prototype.includes=function(t,e,n){return-1!==this.indexOf(t,e,n)},c.prototype.indexOf=function(t,e,n){return y(this,t,e,n,!0)},c.prototype.lastIndexOf=function(t,e,n){return y(this,t,e,n,!1)},c.prototype.write=function(t,e,n,r){if(void 0===e)r="utf8",n=this.length,e=0;else if(void 0===n&&"string"==typeof e)r=e,n=this.length,e=0;else{if(!isFinite(e))throw new Error("Buffer.write(string, encoding, offset[, length]) is no longer supported");e|=0,isFinite(n)?(n|=0,void 0===r&&(r="utf8")):(r=n,n=void 0)}var i=this.length-e;if((void 0===n||n>i)&&(n=i),t.length>0&&(n<0||e<0)||e>this.length)throw new RangeError("Attempt to write outside buffer bounds");r||(r="utf8");for(var s=!1;;)switch(r){case"hex":return b(this,t,e,n);case"utf8":case"utf-8":return w(this,t,e,n);case"ascii":return k(this,t,e,n);case"latin1":case"binary":return L(this,t,e,n);case"base64":return A(this,t,e,n);case"ucs2":case"ucs-2":case"utf16le":case"utf-16le":return E(this,t,e,n);default:if(s)throw new TypeError("Unknown encoding: "+r);r=(""+r).toLowerCase(),s=!0}},c.prototype.toJSON=function(){return{type:"Buffer",data:Array.prototype.slice.call(this._arr||this,0)}};function R(t,e,n){var r="";n=Math.min(t.length,n);for(var i=e;i<n;++i)r+=String.fromCharCode(127&t[i]);return r}function N(t,e,n){var r="";n=Math.min(t.length,n);for(var i=e;i<n;++i)r+=String.fromCharCode(t[i]);return r}function _(t,e,n){var r=t.length;(!e||e<0)&&(e=0),(!n||n<0||n>r)&&(n=r);for(var i="",s=e;s<n;++s)i+=D(t[s]);return i}function T(t,e,n){for(var r=t.slice(e,n),i="",s=0;s<r.length;s+=2)i+=String.fromCharCode(r[s]+256*r[s+1]);return i}function O(t,e,n){if(t%1!=0||t<0)throw new RangeError("offset is not uint");if(t+e>n)throw new RangeError("Trying to access beyond buffer length")}function I(t,e,n,r,i,s){if(!c.isBuffer(t))throw new TypeError('"buffer" argument must be a Buffer instance');if(e>i||e<s)throw new RangeError('"value" argument is out of bounds');if(n+r>t.length)throw new RangeError("Index out of range")}function x(t,e,n,r){e<0&&(e=65535+e+1);for(var i=0,s=Math.min(t.length-n,2);i<s;++i)t[n+i]=(e&255<<8*(r?i:1-i))>>>8*(r?i:1-i)}function P(t,e,n,r){e<0&&(e=4294967295+e+1);for(var i=0,s=Math.min(t.length-n,4);i<s;++i)t[n+i]=e>>>8*(r?i:3-i)&255}function M(t,e,n,r,i,s){if(n+r>t.length)throw new RangeError("Index out of range");if(n<0)throw new RangeError("Index out of range")}function B(t,e,n,r,s){return s||M(t,0,n,4),i.write(t,e,n,r,23,4),n+4}function $(t,e,n,r,s){return s||M(t,0,n,8),i.write(t,e,n,r,52,8),n+8}c.prototype.slice=function(t,e){var n,r=this.length;if((t=~~t)<0?(t+=r)<0&&(t=0):t>r&&(t=r),(e=void 0===e?r:~~e)<0?(e+=r)<0&&(e=0):e>r&&(e=r),e<t&&(e=t),c.TYPED_ARRAY_SUPPORT)(n=this.subarray(t,e)).__proto__=c.prototype;else{var i=e-t;n=new c(i,void 0);for(var s=0;s<i;++s)n[s]=this[s+t]}return n},c.prototype.readUIntLE=function(t,e,n){t|=0,e|=0,n||O(t,e,this.length);for(var r=this[t],i=1,s=0;++s<e&&(i*=256);)r+=this[t+s]*i;return r},c.prototype.readUIntBE=function(t,e,n){t|=0,e|=0,n||O(t,e,this.length);for(var r=this[t+--e],i=1;e>0&&(i*=256);)r+=this[t+--e]*i;return r},c.prototype.readUInt8=function(t,e){return e||O(t,1,this.length),this[t]},c.prototype.readUInt16LE=function(t,e){return e||O(t,2,this.length),this[t]|this[t+1]<<8},c.prototype.readUInt16BE=function(t,e){return e||O(t,2,this.length),this[t]<<8|this[t+1]},c.prototype.readUInt32LE=function(t,e){return e||O(t,4,this.length),(this[t]|this[t+1]<<8|this[t+2]<<16)+16777216*this[t+3]},c.prototype.readUInt32BE=function(t,e){return e||O(t,4,this.length),16777216*this[t]+(this[t+1]<<16|this[t+2]<<8|this[t+3])},c.prototype.readIntLE=function(t,e,n){t|=0,e|=0,n||O(t,e,this.length);for(var r=this[t],i=1,s=0;++s<e&&(i*=256);)r+=this[t+s]*i;return r>=(i*=128)&&(r-=Math.pow(2,8*e)),r},c.prototype.readIntBE=function(t,e,n){t|=0,e|=0,n||O(t,e,this.length);for(var r=e,i=1,s=this[t+--r];r>0&&(i*=256);)s+=this[t+--r]*i;return s>=(i*=128)&&(s-=Math.pow(2,8*e)),s},c.prototype.readInt8=function(t,e){return e||O(t,1,this.length),128&this[t]?-1*(255-this[t]+1):this[t]},c.prototype.readInt16LE=function(t,e){e||O(t,2,this.length);var n=this[t]|this[t+1]<<8;return 32768&n?4294901760|n:n},c.prototype.readInt16BE=function(t,e){e||O(t,2,this.length);var n=this[t+1]|this[t]<<8;return 32768&n?4294901760|n:n},c.prototype.readInt32LE=function(t,e){return e||O(t,4,this.length),this[t]|this[t+1]<<8|this[t+2]<<16|this[t+3]<<24},c.prototype.readInt32BE=function(t,e){return e||O(t,4,this.length),this[t]<<24|this[t+1]<<16|this[t+2]<<8|this[t+3]},c.prototype.readFloatLE=function(t,e){return e||O(t,4,this.length),i.read(this,t,!0,23,4)},c.prototype.readFloatBE=function(t,e){return e||O(t,4,this.length),i.read(this,t,!1,23,4)},c.prototype.readDoubleLE=function(t,e){return e||O(t,8,this.length),i.read(this,t,!0,52,8)},c.prototype.readDoubleBE=function(t,e){return e||O(t,8,this.length),i.read(this,t,!1,52,8)},c.prototype.writeUIntLE=function(t,e,n,r){(t=+t,e|=0,n|=0,r)||I(this,t,e,n,Math.pow(2,8*n)-1,0);var i=1,s=0;for(this[e]=255&t;++s<n&&(i*=256);)this[e+s]=t/i&255;return e+n},c.prototype.writeUIntBE=function(t,e,n,r){(t=+t,e|=0,n|=0,r)||I(this,t,e,n,Math.pow(2,8*n)-1,0);var i=n-1,s=1;for(this[e+i]=255&t;--i>=0&&(s*=256);)this[e+i]=t/s&255;return e+n},c.prototype.writeUInt8=function(t,e,n){return t=+t,e|=0,n||I(this,t,e,1,255,0),c.TYPED_ARRAY_SUPPORT||(t=Math.floor(t)),this[e]=255&t,e+1},c.prototype.writeUInt16LE=function(t,e,n){return t=+t,e|=0,n||I(this,t,e,2,65535,0),c.TYPED_ARRAY_SUPPORT?(this[e]=255&t,this[e+1]=t>>>8):x(this,t,e,!0),e+2},c.prototype.writeUInt16BE=function(t,e,n){return t=+t,e|=0,n||I(this,t,e,2,65535,0),c.TYPED_ARRAY_SUPPORT?(this[e]=t>>>8,this[e+1]=255&t):x(this,t,e,!1),e+2},c.prototype.writeUInt32LE=function(t,e,n){return t=+t,e|=0,n||I(this,t,e,4,4294967295,0),c.TYPED_ARRAY_SUPPORT?(this[e+3]=t>>>24,this[e+2]=t>>>16,this[e+1]=t>>>8,this[e]=255&t):P(this,t,e,!0),e+4},c.prototype.writeUInt32BE=function(t,e,n){return t=+t,e|=0,n||I(this,t,e,4,4294967295,0),c.TYPED_ARRAY_SUPPORT?(this[e]=t>>>24,this[e+1]=t>>>16,this[e+2]=t>>>8,this[e+3]=255&t):P(this,t,e,!1),e+4},c.prototype.writeIntLE=function(t,e,n,r){if(t=+t,e|=0,!r){var i=Math.pow(2,8*n-1);I(this,t,e,n,i-1,-i)}var s=0,o=1,a=0;for(this[e]=255&t;++s<n&&(o*=256);)t<0&&0===a&&0!==this[e+s-1]&&(a=1),this[e+s]=(t/o>>0)-a&255;return e+n},c.prototype.writeIntBE=function(t,e,n,r){if(t=+t,e|=0,!r){var i=Math.pow(2,8*n-1);I(this,t,e,n,i-1,-i)}var s=n-1,o=1,a=0;for(this[e+s]=255&t;--s>=0&&(o*=256);)t<0&&0===a&&0!==this[e+s+1]&&(a=1),this[e+s]=(t/o>>0)-a&255;return e+n},c.prototype.writeInt8=function(t,e,n){return t=+t,e|=0,n||I(this,t,e,1,127,-128),c.TYPED_ARRAY_SUPPORT||(t=Math.floor(t)),t<0&&(t=255+t+1),this[e]=255&t,e+1},c.prototype.writeInt16LE=function(t,e,n){return t=+t,e|=0,n||I(this,t,e,2,32767,-32768),c.TYPED_ARRAY_SUPPORT?(this[e]=255&t,this[e+1]=t>>>8):x(this,t,e,!0),e+2},c.prototype.writeInt16BE=function(t,e,n){return t=+t,e|=0,n||I(this,t,e,2,32767,-32768),c.TYPED_ARRAY_SUPPORT?(this[e]=t>>>8,this[e+1]=255&t):x(this,t,e,!1),e+2},c.prototype.writeInt32LE=function(t,e,n){return t=+t,e|=0,n||I(this,t,e,4,2147483647,-2147483648),c.TYPED_ARRAY_SUPPORT?(this[e]=255&t,this[e+1]=t>>>8,this[e+2]=t>>>16,this[e+3]=t>>>24):P(this,t,e,!0),e+4},c.prototype.writeInt32BE=function(t,e,n){return t=+t,e|=0,n||I(this,t,e,4,2147483647,-2147483648),t<0&&(t=4294967295+t+1),c.TYPED_ARRAY_SUPPORT?(this[e]=t>>>24,this[e+1]=t>>>16,this[e+2]=t>>>8,this[e+3]=255&t):P(this,t,e,!1),e+4},c.prototype.writeFloatLE=function(t,e,n){return B(this,t,e,!0,n)},c.prototype.writeFloatBE=function(t,e,n){return B(this,t,e,!1,n)},c.prototype.writeDoubleLE=function(t,e,n){return $(this,t,e,!0,n)},c.prototype.writeDoubleBE=function(t,e,n){return $(this,t,e,!1,n)},c.prototype.copy=function(t,e,n,r){if(n||(n=0),r||0===r||(r=this.length),e>=t.length&&(e=t.length),e||(e=0),r>0&&r<n&&(r=n),r===n)return 0;if(0===t.length||0===this.length)return 0;if(e<0)throw new RangeError("targetStart out of bounds");if(n<0||n>=this.length)throw new RangeError("sourceStart out of bounds");if(r<0)throw new RangeError("sourceEnd out of bounds");r>this.length&&(r=this.length),t.length-e<r-n&&(r=t.length-e+n);var i,s=r-n;if(this===t&&n<e&&e<r)for(i=s-1;i>=0;--i)t[i+e]=this[i+n];else if(s<1e3||!c.TYPED_ARRAY_SUPPORT)for(i=0;i<s;++i)t[i+e]=this[i+n];else Uint8Array.prototype.set.call(t,this.subarray(n,n+s),e);return s},c.prototype.fill=function(t,e,n,r){if("string"==typeof t){if("string"==typeof e?(r=e,e=0,n=this.length):"string"==typeof n&&(r=n,n=this.length),1===t.length){var i=t.charCodeAt(0);i<256&&(t=i)}if(void 0!==r&&"string"!=typeof r)throw new TypeError("encoding must be a string");if("string"==typeof r&&!c.isEncoding(r))throw new TypeError("Unknown encoding: "+r)}else"number"==typeof t&&(t&=255);if(e<0||this.length<e||this.length<n)throw new RangeError("Out of range index");if(n<=e)return this;var s;if(e>>>=0,n=void 0===n?this.length:n>>>0,t||(t=0),"number"==typeof t)for(s=e;s<n;++s)this[s]=t;else{var o=c.isBuffer(t)?t:j(new c(t,r).toString()),a=o.length;for(s=0;s<n-e;++s)this[s+e]=o[s%a]}return this};var U=/[^+\/0-9A-Za-z-_]/g;function D(t){return t<16?"0"+t.toString(16):t.toString(16)}function j(t,e){var n;e=e||1/0;for(var r=t.length,i=null,s=[],o=0;o<r;++o){if((n=t.charCodeAt(o))>55295&&n<57344){if(!i){if(n>56319){(e-=3)>-1&&s.push(239,191,189);continue}if(o+1===r){(e-=3)>-1&&s.push(239,191,189);continue}i=n;continue}if(n<56320){(e-=3)>-1&&s.push(239,191,189),i=n;continue}n=65536+(i-55296<<10|n-56320)}else i&&(e-=3)>-1&&s.push(239,191,189);if(i=null,n<128){if((e-=1)<0)break;s.push(n)}else if(n<2048){if((e-=2)<0)break;s.push(n>>6|192,63&n|128)}else if(n<65536){if((e-=3)<0)break;s.push(n>>12|224,n>>6&63|128,63&n|128)}else{if(!(n<1114112))throw new Error("Invalid code point");if((e-=4)<0)break;s.push(n>>18|240,n>>12&63|128,n>>6&63|128,63&n|128)}}return s}function F(t){return r.toByteArray(function(t){if((t=function(t){return t.trim?t.trim():t.replace(/^\s+|\s+$/g,"")}(t).replace(U,"")).length<2)return"";for(;t.length%4!=0;)t+="=";return t}(t))}function W(t,e,n,r){for(var i=0;i<r&&!(i+n>=e.length||i>=t.length);++i)e[i+n]=t[i];return i}}).call(this,n(2))},function(t,e,n){"use strict";e.byteLength=function(t){var e=l(t),n=e[0],r=e[1];return 3*(n+r)/4-r},e.toByteArray=function(t){var e,n,r=l(t),o=r[0],a=r[1],c=new s(function(t,e,n){return 3*(e+n)/4-n}(0,o,a)),u=0,h=a>0?o-4:o;for(n=0;n<h;n+=4)e=i[t.charCodeAt(n)]<<18|i[t.charCodeAt(n+1)]<<12|i[t.charCodeAt(n+2)]<<6|i[t.charCodeAt(n+3)],c[u++]=e>>16&255,c[u++]=e>>8&255,c[u++]=255&e;2===a&&(e=i[t.charCodeAt(n)]<<2|i[t.charCodeAt(n+1)]>>4,c[u++]=255&e);1===a&&(e=i[t.charCodeAt(n)]<<10|i[t.charCodeAt(n+1)]<<4|i[t.charCodeAt(n+2)]>>2,c[u++]=e>>8&255,c[u++]=255&e);return c},e.fromByteArray=function(t){for(var e,n=t.length,i=n%3,s=[],o=0,a=n-i;o<a;o+=16383)s.push(u(t,o,o+16383>a?a:o+16383));1===i?(e=t[n-1],s.push(r[e>>2]+r[e<<4&63]+"==")):2===i&&(e=(t[n-2]<<8)+t[n-1],s.push(r[e>>10]+r[e>>4&63]+r[e<<2&63]+"="));return s.join("")};for(var r=[],i=[],s="undefined"!=typeof Uint8Array?Uint8Array:Array,o="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/",a=0,c=o.length;a<c;++a)r[a]=o[a],i[o.charCodeAt(a)]=a;function l(t){var e=t.length;if(e%4>0)throw new Error("Invalid string. Length must be a multiple of 4");var n=t.indexOf("=");return-1===n&&(n=e),[n,n===e?0:4-n%4]}function u(t,e,n){for(var i,s,o=[],a=e;a<n;a+=3)i=(t[a]<<16&16711680)+(t[a+1]<<8&65280)+(255&t[a+2]),o.push(r[(s=i)>>18&63]+r[s>>12&63]+r[s>>6&63]+r[63&s]);return o.join("")}i["-".charCodeAt(0)]=62,i["_".charCodeAt(0)]=63},function(t,e){
-/*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */
-e.read=function(t,e,n,r,i){var s,o,a=8*i-r-1,c=(1<<a)-1,l=c>>1,u=-7,h=n?i-1:0,p=n?-1:1,f=t[e+h];for(h+=p,s=f&(1<<-u)-1,f>>=-u,u+=a;u>0;s=256*s+t[e+h],h+=p,u-=8);for(o=s&(1<<-u)-1,s>>=-u,u+=r;u>0;o=256*o+t[e+h],h+=p,u-=8);if(0===s)s=1-l;else{if(s===c)return o?NaN:1/0*(f?-1:1);o+=Math.pow(2,r),s-=l}return(f?-1:1)*o*Math.pow(2,s-r)},e.write=function(t,e,n,r,i,s){var o,a,c,l=8*s-i-1,u=(1<<l)-1,h=u>>1,p=23===i?Math.pow(2,-24)-Math.pow(2,-77):0,f=r?0:s-1,d=r?1:-1,g=e<0||0===e&&1/e<0?1:0;for(e=Math.abs(e),isNaN(e)||e===1/0?(a=isNaN(e)?1:0,o=u):(o=Math.floor(Math.log(e)/Math.LN2),e*(c=Math.pow(2,-o))<1&&(o--,c*=2),(e+=o+h>=1?p/c:p*Math.pow(2,1-h))*c>=2&&(o++,c/=2),o+h>=u?(a=0,o=u):o+h>=1?(a=(e*c-1)*Math.pow(2,i),o+=h):(a=e*Math.pow(2,h-1)*Math.pow(2,i),o=0));i>=8;t[n+f]=255&a,f+=d,a/=256,i-=8);for(o=o<<i|a,l+=i;l>0;t[n+f]=255&o,f+=d,o/=256,l-=8);t[n+f-d]|=128*g}},function(t,e){var n={}.toString;t.exports=Array.isArray||function(t){return"[object Array]"==n.call(t)}},function(t,e){var n,r,i,s,o,a,c,l,u,h,p,f,d,g,m,y,v,b,w,k,L,A,E,C,S,R,N,_,T,O,I,x,P,M=[].slice,B=Array.from||function(t){return M.call(t)};function $(t,e){throw SyntaxError(t+" on line "+-~e)}function U(t,e,n){var r,i;return null==e&&(e=t.length),"ID"===(i=(r=t[e-1])[0])||"]"===i||"?"===i||(n?r.callable||(")"===i||")CALL"===i||"BIOPBP"===i)&&r[1]:"}"===i||")"===i||")CALL"===i||"STRNUM"===i||"LITERAL"===i||"WORDS"===i)}function D(t){var e,n,i;for(e=NaN;n=r.exec(t);)e<=(i=n[0].length-1)||(e=i);return e}function j(t,e){return e?t.replace(j[e]||(j[e]=RegExp("\\n[^\\n\\S]{1,"+e+"}","g")),"\n"):t}function F(t){return t.slice(1+t.lastIndexOf("\n",0))}function W(t,e){return isNaN(t)?(1===(t=t.length>8?"ng":Function("return "+t)()).length||$("bad string in range",e),[t.charCodeAt(),!0]):[+t]}function Y(t){return'"\\u'+("000"+t.toString(16)).slice(-4)+'"'}function z(t,e,n,r){var i,s,o;for(i=0;s=t[e];++e){if(!i&&n(s,e))return r(s,e);if(0>(i+=J(o=s[0],N)||-J(o,_)))return r(s,e)}}function G(t,e){var n,r,i,s;for(n=1,r=T[i=t[e][0]];s=t[++e];)switch(s[0]){case i:++n;break;case r:if(!--n)return e}return-1}function H(t){function e(){}return e.prototype=t,new e}function J(t,e){for(var n=-1,r=e.length>>>0;++n<r;)if(t===e[n])return!0;return!1}e.lex=function(t,n){return H(e).tokenize(t||"",n||{})},e.rewrite=function(t){var e;return t||(t=this.tokens),function(t){var e,n,r,i,s,o,a,c,l,u,h,p,f;e=["NEWLINE","\n",0],n=0;for(;r=t[++n];){switch(i=r[0],s=r[1],o=r[2],a=r[3],i){case"ASSIGN":J(e[1],d)&&"DOT"!==t[n-2][0]&&$("cannot assign to reserved word '"+e[1]+"'",o);break;case"DOT":switch(!1){case!("]"===e[0]&&"["===t[n-2][0]&&"DOT"===t[n-3][0]):t.splice(n-2,3),t[n-3][1]="[]",n-=3;break;case!("}"===e[0]&&"{"===t[n-2][0]&&"DOT"===t[n-3][0]):t.splice(n-2,3),t[n-3][1]="{}",n-=3;break;case!("."===s&&r.spaced&&e.spaced):t[n]=["COMPOSE","<<",o,a];break;default:if(c=t[n+1],"("===e[0]&&")"===c[0])t[n][0]="BIOP";else if("("===e[0])t.splice(n,0,["PARAM(","(",o,a],[")PARAM",")",o,a],["->","~>",o,a],["ID","it",o,a]);else if(")"===c[0]){t.splice(n+1,0,["[","[",o,a],["ID","it",o,a],["]","]",o,a]),l=1;t:for(u=n+1;u>=0;--u)switch(t[h=u][0]){case")":++l;break;case"(":if(0==--l){t.splice(h+1,0,["PARAM(","(",o,a],["ID","it",o,a],[")PARAM",")",o,a],["->","~>",o,a]);break t}}}}break;case"CREMENT":if("++"!==s||!(c=t[n+1]))break;p=["ID","LITERAL","STRNUM"],(e.spaced&&r.spaced||!e.spaced&&!r.spaced&&J(e[0],p)&&J(c[0],p))&&(t[n][0]="CONCAT"),("("===e[0]&&")"===c[0]||"("===e[0]&&r.spaced||")"===c[0]&&e.spaced)&&(t[n][0]="BIOP");break;case"ID":if("async"!==s)break;c=t[n+1],"FUNCTION"!==(f=c[0])&&"GENERATOR"!==f||(r[0]="ASYNC")}e=r}}(t),function(t){var e,n,r,i,s,o,a,c,l;e=0;for(;n=t[++e];)if("->"===(r=n[0])||"THEN"===r||"ELSE"===r||"DEFAULT"===r||"TRY"===r||"FINALLY"===r||"DECL"===r){switch(i=t[e+1][0]){case"IF":if("ELSE"===r)continue;break;case"INDENT":case"THEN":"THEN"===r&&t.splice(e--,1);continue}switch(s=["INDENT",0,n[2],n[3]],o=["DEDENT",0],"THEN"===r?(t[e]=s).then=!0:t.splice(++e,0,s),!1){case"DECL"!==r:break;case"DOT"!==i&&"?"!==i&&","!==i&&"PIPE"!==i&&"BACKPIPE"!==i:--e;case!(("ID"===i||"STRNUM"===i||"LITERAL"===i)&&","===(null!=(a=t[e+2])?a[0]:void 0)):h(0,e+=2),++e;continue;case!(("("===i||"["===i||"{"===i)&&","===(null!=(c=t[l=1+G(t,e+1)])?c[0]:void 0)):h(0,l),++e;continue}z(t,e+1,u,h)}function u(e,n){var i,s;switch(i=e[0],s=r,(r===i||"THEN"===r&&"SWITCH"===i)&&(r=""),i){case"NEWLINE":return";"!==e[1];case"DOT":case"?":case",":case"PIPE":case"BACKPIPE":return t[n-1].eol;case"ELSE":return"THEN"===s;case"CATCH":return"TRY"===s;case"FINALLY":return"TRY"===s||"CATCH"===s||"THEN"===s;case"CASE":case"DEFAULT":return"CASE"===s||"THEN"===s}}function h(e,n){var r;r=t[n-1],t.splice(","===r[0]?n-1:n,0,(o[2]=r[2],o[3]=r[3],o))}}(t),function(t){var e,n,r;e=-1;for(;n=t[++e];)"IF"!==(r=n[0])&&"CLASS"!==r&&"CATCH"!==r||z(t,e+1,i,s);function i(t){var e;return"NEWLINE"===(e=t[0])||"INDENT"===e}function s(e,i){var s,o;"IF"===r?("INDENT"!==e[0]||!e[1]&&!e.then||J(t[i-1][0],P))&&(n[0]="POST_IF"):"INDENT"!==e[0]&&t.splice(i,0,["INDENT",0,s=t[i-1][2],o=t[i-1][3]],["DEDENT",0,s,o])}}(t),function(t){var e,n,r,i,s,o,a,c,l,u,h;e=0,n=[];for(;r=t[++e];){if("do"===r[1]&&"INDENT"===t[e+1][0]&&(i=G(t,e+1),"NEWLINE"===t[i+1][0]&&"WHILE"===(null!=(s=t[i+2])?s[0]:void 0)?(r[0]="DO",t[i+2].done=!0,t.splice(i+1,1)):((r=t[1+e])[0]="(",(o=t[i])[0]=")",r.doblock=!0,t.splice(e,1))),a=r[0],c=t[e-1],"["===a&&n.push("DOT"===c[0]),"]"===c[0]){if(!n.pop())continue;c.index=!0}("FUNCTION"===(l=c[0])||"GENERATOR"===l||"LET"===l||"WHERE"===l||c.spaced&&U(t,e,!0))&&(r.doblock?(r[0]="CALL(",o[0]=")CALL"):p(r)&&("CREMENT"!==a||!r.spaced&&J(null!=(l=t[e+1])?l[0]:void 0,I))&&(u=h=!1,t.splice(e++,0,["CALL(","",r[2],r[3]]),z(t,e,f,d)))}function p(t){var e;return J(e=t[0],x)||!t.spaced&&("+-"===e||"CLONE"===e)}function f(e,n){var r,i,s;if("POST_IF"===(r=e[0])||"PIPE"===r||"BACKPIPE"===r)return!0;if(!u&&(e.alias&&("&&"===(i=e[1])||"||"===i||"xor"===i)||"TO"===r||"BY"===r||"IMPLEMENTS"===r))return!0;switch(s=t[n-1],r){case"NEWLINE":return","!==s[0];case"DOT":case"?":return!u&&(s.spaced||"DEDENT"===s[0]);case"SWITCH":h=!0;case"IF":case"CLASS":case"FUNCTION":case"GENERATOR":case"LET":case"WITH":case"CATCH":u=!0;break;case"CASE":if(!h)return!0;u=!0;break;case"INDENT":return u?u=!1:!J(s[0],P);case"WHILE":if(e.done)return!1;case"FOR":return u=!0,U(t,n)||"CREMENT"===s[0]||"..."===s[0]&&s.spaced}return!1}function d(e,n){t.splice(n,0,[")CALL","",t[n-1][2],t[n-1][3]])}}(t),function(t){var e,n,r,i,s,o,a,c,l,u,h;e=[],n=0;for(;r=t[++n];)if(":"===(i=r[0])){if(o=")"===t[n-1][0],a=o?s[1]:n-1,c=t[a-1],":"===(l=c[0])||"ASSIGN"===l||"IMPORT"===l||"{"!==(null!=(l=e[e.length-1])?l[0]:void 0)){for(e.push(["{"]),u=!c.doblock&&"NEWLINE"!==(h=c[0])&&"INDENT"!==h;"COMMENT"===(null!=(h=t[a-2])?h[0]:void 0);)a-=2;t.splice(a,0,["{","{",t[a][2],t[a][3]]),z(t,1+ ++n,p,f)}}else switch(!1){case!J(i,_):s=e.pop();break;case!J(i,N):"INDENT"===i&&"{"===t[n-1][0]&&(i="{"),e.push([i,n])}function p(e,n){var r,i,s,o;switch(r=e[0]){case",":break;case"NEWLINE":if(u)return!0;break;case"DEDENT":return!0;case"POST_IF":case"FOR":case"WHILE":return u;default:return!1}return(i=null!=(s=t[n+1])?s[0]:void 0)!==(","===r?"NEWLINE":"COMMENT")&&":"!==(null!=(o=t["("===i?1+G(t,n+1):n+2])?o[0]:void 0)}function f(e,n){t.splice(n,0,["}","",e[2],e[3]])}}(t),function(t){var e,r,i,s,o,a,c,l,h,p,f,d,g,m,y,v,b,w,k,L,A,E,C,S,R,N,_;e=0;for(;i=t[++e];){switch(i[0]){case"STRNUM":if(~"-+".indexOf(s=i[1].charAt(0))&&(i[1]=i[1].slice(1),t.splice(e++,0,["+-",s,i[2],i[3]])),i.callable)continue;break;case"TO":case"TIL":if("["!==t[e-1][0]||!("]"===t[e+2][0]&&("'"===(o=t[e+1][1].charAt(0))||'"'===o||+t[e+1][1]>=0)||"BY"===t[e+2][0]&&"STRNUM"===(null!=(o=t[e+3])?o[0]:void 0)&&"]"===(null!=(a=t[e+4])?a[0]:void 0)))continue;"BY"===t[e+2][0]&&(t[e+2][0]="RANGE_BY"),i.op=i[1],r=0;case"RANGE":if(c=i[2],l=i[3],null!=r||"["===t[e-1][0]&&"STRNUM"===t[e+1][0]&&("]"===t[e+2][0]&&("'"===(h=t[e+1][1].charAt(0))||'"'===h||+t[e+1][1]>=0)||"RANGE_BY"===t[e+2][0]&&"STRNUM"===(null!=(h=t[e+3])?h[0]:void 0)&&"]"===(null!=(p=t[e+4])?p[0]:void 0))){if(null==r&&(f=W(i[1],c),r=f[0],d=f[1]),f=W(t[e+1][1],c),g=f[0],m=f[1],(null==g||d^m)&&$('bad "to" in range',c),y=1,(v="RANGE_BY"===(null!=(f=t[e+2])?f[0]:void 0))?(y=+(null!=(b=t[e+3])?b[1]:void 0))||$('bad "by" in range',t[e+2][2]):r>g&&(y=-1),w=[],k=d?u:String,L=T,"to"===i.op)for(A=r;y<0?A>=g:A<=g;A+=y)E=A,L();else for(A=r;y<0?A>g:A<g;A+=y)E=A,L();w.pop()||$("empty range",c),t.splice.apply(t,[e,2+2*v].concat(B(w))),e+=w.length-1}else i[0]="STRNUM","RANGE_BY"===(null!=(C=t[e+2])?C[0]:void 0)&&t.splice(e+2,1,["BY","by",c,l]),t.splice(e+1,0,["TO",i.op,c,l]);r=null;break;case"WORDS":for(w=[["[","[",c=i[2],l=i[3]]],A=0,R=(S=i[1].match(/\S+/g)||"").length;A<R;++A)N=S[A],w.push(["STRNUM",n("'",N,c),c,l],[",",",",c,l]);t.splice.apply(t,[e,1].concat(B(w),[["]","]",c,l]])),e+=w.length;break;case"INDENT":(_=t[e-1])&&("new"===_[1]?t.splice(e++,0,["PARAM(","",i[2],i[3]],[")PARAM","",i[2],i[3]],["->","",i[2],i[3]]):"FUNCTION"!==(S=_[0])&&"GENERATOR"!==S&&"LET"!==S||(t.splice(e,0,["CALL(","",i[2],i[3]],[")CALL","",i[2],i[3]]),e+=2));continue;case"LITERAL":case"}":break;case")":case")CALL":if(i[1])continue;break;case"]":if(i.index)continue;break;case"CREMENT":if(!U(t,e))continue;break;case"BIOP":i.spaced||"+"!==(S=i[1])&&"-"!==S||")"===t[e+1][0]||(t[e][0]="+-");continue;default:continue}i.spaced&&J(t[e+1][0],x)&&t.splice(++e,0,[",",",",i[2],i[3]])}function T(){65536<w.push(["STRNUM",k(E),c,l],[",",",",c,l])&&$("range limit exceeded",c)}}(t),"NEWLINE"===(null!=(e=t[0])?e[0]:void 0)&&t.shift(),t},e.tokenize=function(t,e){var n,r,i,s,o;for(this.inter||(t=t.replace(/[\r\u2028\u2029\uFEFF]/g,"")),t="\n"+t,this.tokens=[this.last=["NEWLINE","\n",0,0]],this.line=~-e.line,this.column=e.column||0,this.dents=[],this.closes=[],this.parens=[],this.flags=[],r=n=0,this.charsCounted=0,this.isAtPrefix=!0;i=t.charAt(n);){if(s=n-r,r=n,this.charsCounted>s)throw new Error("Location information out-of-sync in lexer");switch(this.column+=s-this.charsCounted,this.charsCounted=0,i){case" ":n+=this.doSpace(t,n);break;case"\n":n+=this.doLine(t,n);break;case"\\":n+=this.doBackslash(t,n);break;case"'":case'"':n+=this.doString(t,n,i);break;case"0":case"1":case"2":case"3":case"4":case"5":case"6":case"7":case"8":case"9":n+=this.doNumber(t,n);break;case"/":switch(t.charAt(n+1)){case"*":n+=this.doComment(t,n);break;case"/":n+=this.doHeregex(t,n);break;default:n+=this.doRegex(t,n)||this.doLiteral(t,n)}break;case"`":"`"===t.charAt(n+1)?n+=this.doJS(t,n):n+=this.doLiteral(t,n);break;default:n+=this.doID(t,n)||this.doLiteral(t,n)||this.doSpace(t,n)}}return this.dedent(this.dent),(o=this.closes.pop())&&this.carp("missing `"+o+"`"),this.inter?null==this.rest&&this.carp("unterminated interpolation"):(this.last.spaced=!0,this.newline()),e.raw||this.rewrite(),this.tokens},e.dent=0,e.identifiers={},e.reset=function(){this.dent=0,this.identifiers={}},e.hasOwn=Object.prototype.hasOwnProperty,e.checkConsistency=function(t,e){if(this.hasOwn.call(this.identifiers,t)&&this.identifiers[t]!==e)throw new ReferenceError("Inconsistent use of "+t+" as "+e+" on line "+-~this.line);return this.identifiers[t]=e},e.doID=function(t,e){var n,r,i,s,o,a,l,u;if(!(r=(n=(g.lastIndex=e,g).exec(t))[0]))return 0;if(i=c(n[1]),/-/.test(n[1])&&this.checkConsistency(i,n[1]),R.test(i))try{Function("var "+i)}catch(t){t,this.carp("invalid identifier '"+i+"'")}if(s=this.last,n[2]||"DOT"===s[0]||this.adi())return this.token("ID",J(i,f)?((o=Object(i)).reserved=!0,o):i),n[2]&&this.token(":",":"),r.length;switch(i){case"true":case"false":case"on":case"off":case"yes":case"no":case"null":case"void":case"arguments":case"debugger":a="LITERAL";break;case"new":case"do":case"typeof":case"delete":a="UNARY";break;case"yield":case"await":a="YIELD";break;case"return":case"throw":a="HURL";break;case"break":case"continue":a="JUMP";break;case"this":case"eval":case"super":return this.token("LITERAL",i,!0).length;case"for":i=[],this.fset("for",!0),this.fset("to",!1),this.fset("by",!0);break;case"then":this.fset("for",!1),this.fset("to",!1);break;case"catch":case"function":i="";break;case"in":case"of":if(this.fget("for")){this.fset("for",!1),"in"===i&&(this.fset("by",!0),i="","ID"!==s[0]||","!==(o=(l=this.tokens)[l.length-2][0])&&"]"!==o&&"}"!==o||(i=this.tokens.pop()[1],","===(o=this.tokens)[o.length-1][0]&&this.tokens.pop()));break}case"instanceof":"!"===s[1]&&(i=this.tokens.pop()[1]+i),a="("===(o=this.tokens)[o.length-1][0]?"BIOPR":"RELATION";break;case"not":if(s.alias&&"==="===s[1])return s[1]="!==",3;a="UNARY",i="!";break;case"and":case"or":case"xor":case"is":case"isnt":return this.unline(),a="is"===i||"isnt"===i?"COMPARE":"LOGIC","("===s[0]&&(a="BIOP"),this.token(a,function(){switch(i){case"is":return"===";case"isnt":return"!==";case"or":return"||";case"and":return"&&";case"xor":return"xor"}}()),this.last.alias=!0,i.length;case"unless":a="IF";break;case"until":a="WHILE";break;case"import":"("===s[0]?(i="<<<",a="BIOP"):U(this.tokens)?i="<<<":a="DECL";break;case"export":case"const":case"var":a="DECL";break;case"with":a=function(){switch(!1){case!U(this.tokens):return"CLONEPORT";case"("!==s[0]:return"BIOP";default:return"WITH"}}.call(this);break;case"when":a="CASE";case"case":if(this.doCase())return r.length;break;case"match":a="SWITCH";break;case"loop":return this.token("WHILE",i),this.token("LITERAL","true"),r.length;case"let":case"own":if("FOR"===s[0]&&!J(i,s[1]))return s[1].push(i),3;default:if(J(i,h))break;if(J(i,p)&&this.carp("reserved word '"+i+"'"),!s[1]&&("FUNCTION"===(o=s[0])||"GENERATOR"===o||"LABEL"===o))return s[1]=i,s.spaced=!1,r.length;switch(a="ID",i){case"otherwise":if("CASE"===(o=s[0])||"|"===o)return s[0]="DEFAULT",i.length;break;case"all":if(u="<<<"===s[1]?"<":"import"===s[1]&&"All")return s[1]+=u,3;break;case"from":if("yield"===s[1])return s[1]+="from",4;this.forange()&&(a="FROM");break;case"to":case"til":if(this.forange()&&this.tokens.push(["FROM","",this.line,this.column],["STRNUM","0",this.line,this.column]),this.fget("from"))this.fset("from",!1),this.fset("by",!0),a="TO";else{if(!s.callable&&"STRNUM"===s[0]&&"["===(o=this.tokens)[o.length-2][0])return s[0]="RANGE",s.op=i,i.length;if(J("]",this.closes))return this.token("TO",i),i.length}break;case"by":"STRNUM"===s[0]&&"RANGE"===(o=this.tokens)[o.length-2][0]&&"["===(o=this.tokens)[o.length-3][0]?a="RANGE_BY":J("]",this.closes)?a="BY":this.fget("by")&&"FOR"!==s[0]&&(a="BY",this.fset("by",!1));break;case"ever":"FOR"===s[0]&&(this.fset("for",!1),s[0]="WHILE",a="LITERAL",i="true")}}return a||(a=n[1].toUpperCase()),"COMPARE"!==a&&"LOGIC"!==a&&"RELATION"!==a||"("!==s[0]||(a="RELATION"===a?"BIOPR":"BIOP"),"THEN"!==a&&"IF"!==a&&"WHILE"!==a||(this.fset("for",!1),this.fset("by",!1)),"RELATION"!==a&&"THEN"!==a&&"ELSE"!==a&&"CASE"!==a&&"DEFAULT"!==a&&"CATCH"!==a&&"FINALLY"!==a&&"IN"!==a&&"OF"!==a&&"FROM"!==a&&"TO"!==a&&"BY"!==a&&"EXTENDS"!==a&&"IMPLEMENTS"!==a&&"WHERE"!==a||this.unline(),this.token(a,i),r.length},e.doNumber=function(t,e){var n,r,i,s,o,a,c;if(L.lastIndex=e,!(n=(r=L.exec(t))[0]))return 0;if(i=this.last,r[5]&&("DOT"===i[0]||this.adi()))return this.token("STRNUM",r[4].replace(A,"")),r[4].length;if(s=r[1]){if(o=parseInt(a=r[2].replace(A,""),s),!1,(s>36||s<2)&&(/[0-9]/.exec(a)?this.carp("invalid number base "+s+" (with number "+a+"),base must be from 2 to 36"):!0),isNaN(o)||o===parseInt(a.slice(0,-1),s))return this.strnum(r[1]),this.token("DOT",".~"),this.token("ID",r[2]),n.length;o+=""}else o=(r[3]||n).replace(A,""),r[3]&&"0"===o.charAt()&&""!==(c=o.charAt(1))&&"."!==c&&this.carp("deprecated octal literal "+r[4]);return i.spaced||"+-"!==i[0]?(this.strnum(o),n.length):(i[0]="STRNUM",i[1]+=o,n.length)},e.doString=function(t,e,n){var r,s;return n===t.charAt(e+1)?n===t.charAt(e+2)?this.doHeredoc(t,e,n):(this.strnum(n+n),2):'"'===n?(r=this.interpolate(t,e,n),this.addInterpolated(r,i),r.size):(s=(b.lastIndex=e,b).exec(t)[0]||this.carp("unterminated string"),this.strnum(i(this.string(n,s.slice(1,-1)))),this.countLines(s).length)},e.doHeredoc=function(t,e,n){var r,i,o,a,c,l,u,h,p;if("'"===n)return~(r=t.indexOf(n+n+n,e+3))||this.carp("unterminated heredoc"),o=(i=t.slice(e+3,r)).replace(C,""),this.strnum(s(this.string(n,F(j(o,D(o)))))),this.countLines(i).length+6;for(a=this.interpolate(t,e,n+n+n),c=D(t.slice(e+3,e+a.size-3).replace(C,"")),l=0,u=a.length;l<u;++l)h=l,"S"===(p=a[l])[0]&&(h+1===a.length&&(p[1]=p[1].replace(C,"")),p[1]=j(p[1],c),0===h&&(p[1]=F(p[1])));return this.addInterpolated(a,s),a.size},e.doComment=function(t,e){var n,r,i;return n=~(r=t.indexOf("*/",e+2))?t.slice(e,r+2):t.slice(e)+"*/","NEWLINE"!==(i=this.last[0])&&"INDENT"!==i&&"THEN"!==i||(this.token("COMMENT",j(n,this.dent)),this.token("NEWLINE","\n")),this.countLines(n).length},e.doJS=function(t,e){var n,r;return w.lastIndex=e,n=w.exec(t)[0]||this.carp("unterminated JS literal"),this.token("LITERAL",((r=Object(j(n.slice(2,-2),this.dent))).js=!0,r),!0),this.countLines(n).length},e.doRegex=function(t,e){var n,r,i,s,o;return!(n=U(this.tokens)||"CREMENT"===this.last[0])||this.last.spaced&&" "!==(r=t.charAt(e+1))&&"="!==r?(i=(r=(E.lastIndex=e,E).exec(t))[0],s=r[1],o=r[2],i?this.regex(s,o):n||"("===this.last[0]||this.carp("unterminated regex"),i.length):0},e.doHeregex=function(t,e){var n,r,i,s,c,u,h,p,f,d,g,m;if(n=this.tokens,r=this.last,i=this.interpolate(t,e,"//"),s=t.slice(e+i.size),c=this.validate(/^(?:[gimy]{1,4}|[?$]?)/.exec(s)[0]),i[1]){if("$"===c)this.adi(),this.token("(",'"');else if(n.push(["ID","RegExp",r[2],r[3]],["CALL(","",r[2],r[3]]),"?"===c)for(u=i.length-1;u>=0;--u)if(h=u,"TOKENS"===(p=i[u])[0]){f=i.splice(h,1)[0][1];break}for(u=0,d=i.length;u<d;++u){if(h=u,"TOKENS"===(p=i[u])[0])n.push.apply(n,p[1]);else{if(g=l(p[1]),m&&!g)continue;m=n.push((p[0]="STRNUM",p[1]=this.string("'",o(g)),p))}n.push(["+-","+",n[n.length-1][2],n[n.length-1][3]])}--n.length,(f||c>="g")&&(this.token(",",","),f?n.push.apply(n,f):this.token("STRNUM","'"+c+"'")),this.token("$"===c?")":")CALL","")}else this.regex(a(l(i[0][1])),c);return i.size+c.length},e.doBackslash=function(t,e){var n,r,i;return k.lastIndex=e,r=(n=k.exec(t))[0],(i=n[1])?this.strnum(this.string("'",i)):this.countLines(r),r.length},e.doLine=function(t,e){var n,r,i,s,o,a,c,l,u;if(r=(n=(v.lastIndex=e,v).exec(t))[0],i=n[1],s=this.countLines(r).length,(o=this.last).eol=!0,o.spaced=!0,e+s>=t.length)return s;if((a=i&&(this.emender||(this.emender=RegExp("[^"+i.charAt()+"]"))).exec(i))&&this.carp("contaminated indent "+escape(a)),0>(c=i.length-this.dent))this.dedent(-c),this.newline();else{if(l=o[0],u=o[1],"ASSIGN"===l&&"="!=(n=u+"")&&":="!==n&&"+="!==n||"CREMENT"===l&&"++"===u&&(n=this.tokens)[n.length-2].spaced||"+-"===l||"PIPE"===l||"BACKPIPE"===l||"COMPOSE"===l||"DOT"===l||"LOGIC"===l||"MATH"===l||"COMPARE"===l||"RELATION"===l||"SHIFT"===l||"IN"===l||"OF"===l||"TO"===l||"BY"===l||"FROM"===l||"EXTENDS"===l||"IMPLEMENTS"===l)return s;c?this.indent(c):this.newline()}return this.fset("for",!1),this.fset("by",!1),s},e.doSpace=function(t,e){var n;return y.lastIndex=e,(n=y.exec(t)[0])&&(this.last.spaced=!0),n.length},e.doCase=function(){var t,e;if(this.fset("for",!1),"ASSIGN"===(t=this.last[0])||"->"===t||":"===t||"INDENT"===this.last[0]&&("ASSIGN"===(t=(e=this.tokens)[e.length-2][0])||"->"===t||":"===t))return this.token("SWITCH","switch"),this.token("CASE","case")},e.doLiteral=function(t,e){var n,r,i,s,o;if(!(n=(m.lastIndex=e,m).exec(t)[0]))return 0;switch(r=i=n){case"|":if(r="CASE",this.doCase())return n.length;break;case"|>":r="PIPE";break;case"`":r="BACKTICK";break;case"<<":case">>":r="COMPOSE";break;case"<|":r="BACKPIPE";break;case"+":case"-":r="+-";break;case"&&":case"||":r="LOGIC";break;case".&.":case".|.":case".^.":r="BITWISE";break;case"^^":r="CLONE";break;case"**":case"^":r="POWER";break;case"?":"("===this.last[0]?(this.token("PARAM(","("),this.token(")PARAM",")"),this.token("->","->"),this.token("ID","it")):this.last.spaced&&(r="LOGIC");break;case"/":case"%":case"%%":r="MATH";break;case"++":case"--":r="CREMENT";break;case"<<<":case"<<<<":r="IMPORT";break;case";":r="NEWLINE",this.fset("by",!1);break;case"..":return this.token("LITERAL","..",!0),2;case".":"?"===this.last[1]&&(this.last[0]="?"),r="DOT";break;case",":switch(this.last[0]){case",":case"[":case"(":case"CALL(":this.token("LITERAL","void");break;case"FOR":case"OWN":this.token("ID","")}break;case"!=":case"~=":if(!U(this.tokens)&&"("!==(s=this.last[0])&&"CREMENT"!==s)return this.tokens.push("!="===i?["UNARY","!",this.line,this.column]:["UNARY","~",this.line,this.column],["ASSIGN","=",this.line,this.column]),2;case"!~=":case"==":i=function(){switch(i){case"~=":return"==";case"!~=":return"!=";case"==":return"===";case"!=":return"!=="}}(),r="COMPARE";break;case"===":case"!==":i+="=";case"<":case">":case"<=":case">=":case"<==":case">==":case">>=":case"<<=":r="COMPARE";break;case".<<.":case".>>.":case".>>>.":case"<?":case">?":r="SHIFT";break;case"(":if("FUNCTION"!==(s=this.last[0])&&"GENERATOR"!==s&&"LET"!==s&&!this.able(!0)&&".@"!==this.last[1])return this.token("(","("),this.closes.push(")"),this.parens.push(this.last),1;r="CALL(",this.closes.push(")CALL");break;case"[":case"{":this.adi(),this.closes.push("]}".charAt("{"===i));break;case"}":if(this.inter&&i!==(s=this.closes)[s.length-1])return this.rest=t.slice(e+1),9e9;case"]":case")":")"!==r||"+-"!==(s=this.last[0])&&"COMPARE"!==s&&"LOGIC"!==s&&"MATH"!==s&&"POWER"!==s&&"SHIFT"!==s&&"BITWISE"!==s&&"CONCAT"!==s&&"COMPOSE"!==s&&"RELATION"!==s&&"PIPE"!==s&&"BACKPIPE"!==s&&"IMPORT"!==s&&"CLONEPORT"!==s&&"ASSIGN"!==s||((s=this.tokens)[s.length-1][0]=function(){switch(this.last[0]){case"RELATION":return"BIOPR";case"PIPE":return this.parameters(!1,-1),"BIOPP";default:return"BIOP"}}.call(this)),")"===(r=i=this.pair(i))&&(this.lpar=this.parens.pop());break;case"=":case":":if(":"===i){switch(this.last[0]){case"ID":case"STRNUM":case")":break;case"...":this.last[0]="STRNUM";break;default:r="LABEL",i=""}return this.token(r,i),n.length}case":=":case"+=":case"-=":case"*=":case"/=":case"%=":case"%%=":case"<?=":case">?=":case"**=":case"^=":case".&.=":case".|.=":case".^.=":case".<<.=":case".>>.=":case".>>>.=":case"++=":case"|>=":if("."===this.last[1]||"?"===this.last[0]&&this.adi())return this.last[1]+=i,i.length;"LOGIC"===this.last[0]?(i=Object(i)).logic=this.tokens.pop()[1]:"+="!==i&&"-="!==i||U(this.tokens)||"+-"===(s=this.last[0])||"UNARY"===s||"LABEL"===s||(this.token("UNARY",i.charAt()),i="="),r="ASSIGN";break;case"::=":return this.token("DOT","."),this.token("ID","prototype"),this.token("IMPORT","<<"),n.length;case"*":if("FUNCTION"===this.last[0])return this.last[0]="GENERATOR",n.length;if(o=("NEWLINE"===(s=this.last[0])||"INDENT"===s||"THEN"===s||"=>"===s)&&(S.lastIndex=e+1,S).exec(t)[0].length)return this.tokens.push(["LITERAL","void",this.line,this.column],["ASSIGN","=",this.line,this.column]),this.indent(e+o-1-this.dent-t.lastIndexOf("\n",e-1)),o;r=U(this.tokens)||"CREMENT"===this.last[0]&&U(this.tokens,this.tokens.length-1)||"("===this.last[0]?"MATH":"STRNUM";break;case"@":return this.adi(),"DOT"===this.last[0]&&"."===this.last[1]&&"ID"===(s=this.tokens)[s.length-2][0]&&"constructor"===(s=this.tokens)[s.length-2][1]?(this.tokens.pop(),this.tokens.pop(),this.token("LITERAL","this",!0),this.adi(),this.token("ID","constructor",!0)):this.token("LITERAL","this",!0),1;case"@@":return this.adi(),this.token("ID","constructor",!0),2;case"&":return this.token("LITERAL","arguments"),1;case"!":switch(!1){default:if(!this.last.spaced){if("require"===this.last[1])this.last[0]="REQUIRE",this.last[1]="require!";else if(U(this.tokens,null,!0))this.token("CALL(","!"),this.token(")CALL",")");else if("typeof"===this.last[1])this.last[1]="classof";else{if("delete"!==this.last[1])break;this.last[1]="jsdelete"}return 1}}r="UNARY";break;case"|":r="BITWISE";break;case"~":if(this.dotcat(i))return 1;r="UNARY";break;case"::":this.adi(),i="prototype",r="ID";break;case"=>":this.unline(),this.fset("for",!1),r="THEN";break;default:if(/^!?(?:--?|~~?)>>?\*?$/.test(i))this.parameters(r="->");else if(/^\*?<(?:--?|~~?)!?$/.test(i))this.parameters(r="<-");else switch(i.charAt(0)){case"(":this.token("CALL(","("),r=")CALL",i=")";break;case"<":return i.length<4&&this.carp("unterminated words"),this.token("WORDS",i.slice(2,-2),this.adi()),this.countLines(i).length}}return"+-"!==r&&"COMPARE"!==r&&"LOGIC"!==r&&"MATH"!==r&&"POWER"!==r&&"SHIFT"!==r&&"BITWISE"!==r&&"CONCAT"!==r&&"RELATION"!==r&&"PIPE"!==r&&"BACKPIPE"!==r&&"COMPOSE"!==r&&"IMPORT"!==r||"("!==this.last[0]||(r="BACKPIPE"===r?"BIOPBP":"BIOP"),","!==r&&"CASE"!==r&&"PIPE"!==r&&"BACKPIPE"!==r&&"COMPOSE"!==r&&"DOT"!==r&&"LOGIC"!==r&&"COMPARE"!==r&&"MATH"!==r&&"POWER"!==r&&"IMPORT"!==r&&"SHIFT"!==r&&"BITWISE"!==r||this.unline(),this.token(r,i),n.length},e.token=function(t,e,n){return this.tokens.push(this.last=[t,e,this.line,this.column]),n&&(this.last.callable=!0),e},e.indent=function(t){this.dent+=t,this.dents.push(this.token("INDENT",t)),this.closes.push("DEDENT")},e.dedent=function(t){var e;for(this.dent-=t;t>0&&(e=this.dents.pop());)t<e&&!this.inter&&this.carp("unmatched dedent ("+t+" for "+e+")"),this.pair("DEDENT"),t-="number"==typeof e?this.token("DEDENT",e):e},e.newline=function(){var t;"NEWLINE"===this.last[0]&&"\n"===this.last[1]||this.tokens.push(this.last=((t=["NEWLINE","\n",this.line,this.column]).spaced=!0,t))},e.unline=function(){var t;if(this.tokens[1])switch(this.last[0]){case"INDENT":(t=this.dents)[t.length-1]+="";case"NEWLINE":this.tokens.length--}},e.parameters=function(t,e){var n,r,i,s,o;if(")"===this.last[0]&&")"===this.last[1])return this.lpar[0]="PARAM(",void(this.last[0]=")PARAM");if("->"===t)this.token("PARAM(","");else{for(n=(r=this.tokens).length-1;n>=0&&(i=n,"NEWLINE"!==(o=(s=r[n])[0])&&"INDENT"!==o&&"THEN"!==o&&"=>"!==o&&"("!==o);--n);this.tokens.splice(i+1,0,["PARAM(","",s[2],s[3]])}e?this.tokens.splice(this.tokens.length+e,0,[")PARAM","",s[2],s[3]]):this.token(")PARAM","")},e.interpolate=function(t,n,r){var i,s,o,a,l,u,h,p,f,d,m,y,v,b,w,k,L;for(i=[],s=r.charAt(0),o=0,a=-1,t=t.slice(n+r.length),u=(l=[this.line,this.column])[0],h=l[1],this.countLines(r);p=t.charAt(++a);){switch(p){case s:if(r!==t.slice(a,a+r.length))continue;return i.push(["S",this.countLines(t.slice(0,a)),u,h]),this.countLines(r),i.size=o+a+2*r.length,i;case"#":if(!(d="@"===(f=t.charAt(a+1))&&f||(g.lastIndex=a+1,g).exec(t)[1])&&"{"!==f)continue;break;case"\\":++a;default:continue}if((a||w&&!m)&&(m=i.push(["S",this.countLines(t.slice(0,a)),u,h]),u=(l=[this.line,this.column])[0],h=l[1]),d){if(y=d.length,"@"===d&&(d="this"),"this"===d)v="LITERAL";else{d=c(d);try{Function("'use strict'; var "+d)}catch(t){t,this.carp("invalid variable interpolation '"+d+"'")}v="ID"}t=t.slice(b=a+1+y),i.push(["TOKENS",w=[[v,d,this.line,this.column]]])}else{for((l=H(e)).inter=!0,l.emender=this.emender,w=(k=l).tokenize(t.slice(a+2),{line:this.line,column:this.column+2,raw:!0}),b=t.length-k.rest.length,this.countLines(t.slice(a,b)),t=k.rest;"NEWLINE"===(null!=(l=w[0])?l[0]:void 0);)w.shift();w.length&&(w.unshift(["(","(",u,h]),w.push([")",")",this.line,this.column-1]),i.push(["TOKENS",w])),u=(L=[this.line,this.column])[0],h=L[1]}o+=b,a=-1}this.carp("missing `"+r+"`")},e.addInterpolated=function(t,e){var n,r,i,s,o,a,c,l,u,h,p;if(!t[1])return this.strnum(e(this.string('"',t[0][1])));for(n=this.tokens,s=(i=(r=this.last).spaced||"%"!==r[1]?["(",")",["+-","+"]]:(--n.length,this.last=r=n[n.length-1],["[","]",[",",","]]))[0],o=i[1],a=i[2],c=this.adi(),n.push([s,'"',r[2],r[3]]),l=0,u=t.length;l<u;++l){if(h=l,"TOKENS"===(p=t[l])[0])n.push.apply(n,p[1]);else{if(h>1&&!p[1])continue;n.push(["STRNUM",e(this.string('"',p[1])),p[2],p[3]])}n.push(a.concat(n[n.length-1][2],n[n.length-1][3]))}--n.length,this.token(o,"",c)},e.strnum=function(t){this.token("STRNUM",t,this.adi()||"DOT"===this.last[0])},e.regex=function(t,e){var n;try{RegExp(t)}catch(t){n=t,this.carp(n.message)}return"$"===e?this.strnum(this.string("'",o(t))):this.token("LITERAL","/"+(t||"(?:)")+"/"+this.validate(e))},e.adi=function(){if(!this.last.spaced&&U(this.tokens))return this.token("DOT",".")},e.dotcat=function(t){if("."===this.last[1]||this.adi())return this.last[1]+=t},e.pair=function(t){var e,n;return t===(e=(n=this.closes)[n.length-1])||")CALL"===e&&")"===t?(this.unline(),this.fclear(),this.closes.pop()):("DEDENT"!==e&&this.carp("unmatched `"+t+"`"),this.dedent((n=this.dents)[n.length-1]),this.pair(t))},e.able=function(t){return!this.last.spaced&&U(this.tokens,null,t)},e.countLines=function(t){var e;for(this.isAtPrefix||(this.column+=t.length);e=1+t.indexOf("\n",e);)this.isAtPrefix||(this.column=0),this.column+=t.length-e,++this.line,this.isAtPrefix=!1;return this.charsCounted+=t.length,t},e.forange=function(){var t,e,n;return("FOR"===(null!=(t=(e=this.tokens)[e.length-2-("NEWLINE"===(n=this.last[0])||"INDENT"===n)])?t[0]:void 0)||"FOR"===this.last[0])&&(this.fset("for",!1),this.fset("from",!0),!0)},e.validate=function(t){var e;return(e=t&&/(.).*\1/.exec(t))&&this.carp("duplicate regex flag `"+e[1]+"`"),t},e.fget=function(t){var e;return null!=(e=this.flags[this.closes.length])?e[t]:void 0},e.fset=function(t,e){var n,r;((n=this.flags)[r=this.closes.length]||(n[r]={}))[t]=e},e.fclear=function(){this.flags.splice(this.closes.length)},e.carp=function(t){$(t,this.line)},e.string=function(t,e){return n(t,e,this.line)},n=function(t){return function(e,n,r){return n=n.replace(t,(function(t,n,i,s){return t===e||"\\"===t?"\\"+t:n?"\\x"+(256+parseInt(n,8)).toString(16).slice(1):(i&&$("malformed character escape sequence",r),s&&e!==s?s:t)})),e+n+e}}.call(this,/['"]|\\(?:([0-3]?[0-7]{2}|[1-7]|0(?=[89]))|x[\dA-Fa-f]{2}|u[\dA-Fa-f]{4}|([xu])|[\\0bfnrtv]|[^\n\S]|([\w\W]))?/g),r=/\n(?!$)[^\n\S]*/gm,i=function(t){return t.replace(/\n[^\n\S]*/g,"")},s=function(t){return t.replace(/\n/g,"\\n")},o=function(t){return t.replace(/\\/g,"\\\\")},a=function(t){return t.replace(/(\\.)|\//g,(function(){return arguments[1]||"\\/"}))},c=function(t){return t.replace(/-[a-z]/gi,(function(t){return t.charAt(1).toUpperCase()}))},l=function(t){return t.replace(/\s+(?:#.*)?|(\\[\s\S])/g,(function(t,e){return e||(e=""),"\n"===e.charAt(1)?"\\n":e}))},u="undefined"==typeof JSON||null===JSON?Y:function(t){switch(t){case 8232:case 8233:return Y(t);default:return JSON.stringify(String.fromCharCode(t))}},f=(h=["true","false","null","this","void","super","return","throw","break","continue","if","else","for","while","switch","case","default","try","catch","finally","function","class","extends","implements","new","do","delete","typeof","in","instanceof","let","with","var","const","import","export","debugger","yield"]).concat(p=["enum","interface","package","private","protected","public","static"]),d=["xor","match","where"],g=/((?!\s)[a-z_$\xAA-\uFFDC](?:(?!\s)[\w$\xAA-\uFFDC]|-[a-z])*)([^\n\S]*:(?![:=]))?|/gi,m=/[-\/^]=|[%+:*]{1,2}=|\|>=|\.(?:[&\|\^]|<<|>>>?)\.=?|\.{1,3}|\^\^|\*?<(?:--?|~~?)!?|!?(?:--?|~~?)>>?\*?|([-+&|:])\1|%%|&|\([^\n\S]*\)|[!=]==?|!?\~=|@@?|<\[(?:[\s\S]*?\]>)?|<<<<?|<\||[<>]==|<<=|>>=|<<|>>|[<>]\??=?|\|>|\||=>|\*\*|\^|`|[^\s#]?/g,y=/[^\n\S]*(?:#.*)?/g,v=/(?:\s*#.*)*(?:\n([^\n\S]*))*/g,b=/'[^\\']*(?:\\[\s\S][^\\']*)*'|/g,w=/``[^\\`]*(?:\\[\s\S][^\\`]*)*``|/g,k=RegExp("\\\\(?:(\\S[^\\s,;)}\\]]*)|(?:"+y.source+"\\n?)*)","g"),L=/0x[\dA-Fa-f][\dA-Fa-f_]*|(\d*)~([\dA-Za-z]\w*)|((\d[\d_]*)(\.\d[\d_]*)?(?:e[+-]?\d[\d_]*)?)[$\w]*|/g,A=/_+/g,E=/\/([^[\/\n\\]*(?:(?:\\.|\[[^\]\n\\]*(?:\\.[^\]\n\\]*)*\])[^[\/\n\\]*)*)\/([gimy]{1,4}|\$?)|/g,C=/\n[^\n\S]*$/,S=/[^\n\S]*[^#\s]?/g,R=/[\x80-\uFFFF]/,N=["(","[","{","CALL(","PARAM(","INDENT"],_=[")","]","}",")CALL",")PARAM","DEDENT"],T=function(t,e){var n={}.hasOwnProperty;for(var r in e)n.call(e,r)&&(t[r]=e[r]);return t}(function(){var t,e,n,r={};for(t=0,n=(e=N).length;t<n;++t)O=t,r[e[t]]=_[O];return r}(),function(){var t,e,n,r={};for(t=0,n=(e=_).length;t<n;++t)O=t,r[e[t]]=N[O];return r}()),x=(I=["(","{","[","ID","STRNUM","LITERAL","LET","WITH","WORDS"]).concat(["...","UNARY","YIELD","CREMENT","PARAM(","FUNCTION","GENERATOR","IF","SWITCH","TRY","CLASS","RANGE","LABEL","DECL","DO","BIOPBP"]),P=[",",":","->","ELSE","ASSIGN","IMPORT","UNARY","DEFAULT","TRY","FINALLY","HURL","DECL","DO","LET","FUNCTION","GENERATOR","..."]},function(t,e,n){(function(t,r){var i=function(){var t=function(t,e,n,r){for(n=n||{},r=t.length;r--;n[t[r]]=e);return n},e=[2,60],n=[1,31],r=[1,34],i=[1,35],s=[1,36],o=[1,37],a=[1,38],c=[1,8],l=[1,15],u=[1,14],h=[1,39],p=[1,41],f=[1,29],d=[1,6],g=[1,10],m=[1,9],y=[1,11],v=[1,16],b=[1,17],w=[1,18],k=[1,19],L=[1,20],A=[1,21],E=[1,22],C=[1,23],S=[1,44],R=[1,24],N=[1,25],_=[1,26],T=[1,27],O=[1,28],I=[1,30],x=[1,43],P=[1,45],M=[1,20,25,47],B=[20,47],$=[2,64],U=[1,49],D=[1,50],j=[1,51],F=[1,52],W=[1,53],Y=[1,54],z=[1,55],G=[1,56],H=[1,57],J=[1,58],K=[1,59],q=[1,60],V=[1,61],X=[1,62],Z=[1,63],Q=[30,46,47,48],tt=[2,50],et=[1,68],nt=[1,67],rt=[1,12,19,20,22,24,25,26,30,33,34,35,46,47,48,58,59,62,63,64,65,66,67,68,69,70,71,72,79,81,82,102,105],it=[2,75],st=[1,77],ot=[1,78],at=[1,73],ct=[1,79],lt=[1,71],ut=[1,72],ht=[1,74],pt=[1,75],ft=[1,83],dt=[1,87],gt=[1,86],mt=[1,84],yt=[1,95],vt=[1,109],bt=[48,105],wt=[2,201],kt=[1,113],Lt=[2,1],At=[1,9,12,13,19,20,22,24,25,26,30,32,33,34,35,37,46,47,48,56,57,58,59,62,63,64,65,66,67,68,69,70,71,72,73,79,81,82,96,102,103,104,105],Et=[2,2],Ct=[19,46,47,48],St=[1,120],Rt=[1,119],Nt=[22,46,47],_t=[2,156],Tt=[1,130],Ot=[1,125],It=[1,128],xt=[1,129],Pt=[25,47],Mt=[1,9,12,13,19,20,22,24,25,26,30,32,33,34,35,37,46,47,48,56,57,58,59,62,63,64,65,66,67,68,69,70,71,72,73,79,81,82,96,99,102,103,104,105],Bt=[30,47,48],$t=[2,58],Ut=[1,169],Dt=[12,19,20,30,46,47,48],jt=[2,55],Ft=[2,71],Wt=[12,46,47,48],Yt=[1,12,19,20,22,24,25,26,30,34,35,46,47,48,58,59,62,63,64,66,67,68,70,71,72,79,81,82,102,105],zt=[20,46,47,48],Gt=[1,12,19,20,22,24,25,26,30,34,35,46,47,48,79,81,82,102,105],Ht=[1,206],Jt=[1,12,19,20,22,24,25,26,30,33,34,35,46,47,48,58,59,62,63,64,65,66,67,68,69,70,71,72,79,81,102,105],Kt=[1,209],qt=[46,48,82],Vt=[2,203],Xt=[1,215],Zt=[1,12,19,20,22,24,25,26,30,34,35,46,47,48,71,72,79,81,82,102,105],Qt=[19,47,48],te=[1,227],ee=[20,22,46,47],ne=[9,13,20,22,32,33,37,46,47,56,57,58,59,62,63,64,65,66,67,68,69,70,71,72,73,79,96],re=[2,165],ie=[1,251],se=[19,20,22,47,48,81,102],oe=[1,12,19,20,22,24,25,26,30,34,35,46,47,48,58,62,63,66,67,68,70,71,72,79,81,82,102,105],ae=[1,12,19,20,22,24,25,26,30,34,35,46,47,48,63,67,71,72,79,81,82,102,105],ce=[1,12,19,20,22,24,25,26,30,34,35,46,47,48,62,63,67,70,71,72,79,81,82,102,105],le=[1,264],ue=[1,265],he=[2,59],pe=[12,47,48],fe=[20,47,48],de=[1,302],ge=[1,303],me=[1,311],ye=[4,7,14,16,21,23,29,31,32,38,41,44,48,49,59,60,61,75,76,77,78,80,81,83,84,85,90,93,97,102],ve=[1,336],be=[1,337],we=[1,12,19,20,22,24,25,26,30,33,34,35,46,47,48,58,59,62,63,64,65,66,67,68,69,70,71,72,79,81,82,88,89,102,105],ke=[2,46],Le=[1,369],Ae={trace:function(){},yy:{},symbols_:{error:2,Chain:3,ID:4,KeyLike:5,List:6,LITERAL:7,Index:8,"CALL(":9,ArgList:10,OptComma:11,")CALL":12,"?":13,LET:14,Block:15,"[":16,Expression:17,LoopHeads:18,"]":19,DEDENT:20,"{":21,"}":22,"(":23,BIOP:24,")":25,BIOPR:26,BIOPBP:27,BIOPP:28,"PARAM(":29,")PARAM":30,UNARY:31,CREMENT:32,BACKTICK:33,TO:34,BY:35,FROM:36,DOT:37,WITH:38,LoopHead:39,Else:40,STRNUM:41,Parenthetical:42,Properties:43,LABEL:44,Arg:45,",":46,NEWLINE:47,INDENT:48,"...":49,Lines:50,Line:51,"<-":52,COMMENT:53,REQUIRE:54,SplatChain:55,CLONEPORT:56,ASSIGN:57,IMPORT:58,"+-":59,CLONE:60,YIELD:61,COMPARE:62,LOGIC:63,MATH:64,POWER:65,SHIFT:66,BITWISE:67,CONCAT:68,COMPOSE:69,RELATION:70,PIPE:71,BACKPIPE:72,"!?":73,"->":74,FUNCTION:75,GENERATOR:76,ASYNC:77,IF:78,POST_IF:79,DO:80,WHILE:81,CASE:82,HURL:83,JUMP:84,SWITCH:85,Exprs:86,Cases:87,DEFAULT:88,ELSE:89,TRY:90,CATCH:91,FINALLY:92,CLASS:93,OptExtends:94,OptImplements:95,EXTENDS:96,DECL:97,KeyColon:98,":":99,Property:100,Body:101,FOR:102,IN:103,OF:104,IMPLEMENTS:105,Root:106,$accept:0,$end:1},terminals_:{2:"error",4:"ID",7:"LITERAL",9:"CALL(",12:")CALL",13:"?",14:"LET",16:"[",19:"]",20:"DEDENT",21:"{",22:"}",23:"(",24:"BIOP",25:")",26:"BIOPR",27:"BIOPBP",28:"BIOPP",29:"PARAM(",30:")PARAM",31:"UNARY",32:"CREMENT",33:"BACKTICK",34:"TO",35:"BY",36:"FROM",37:"DOT",38:"WITH",41:"STRNUM",44:"LABEL",46:",",47:"NEWLINE",48:"INDENT",49:"...",52:"<-",53:"COMMENT",54:"REQUIRE",56:"CLONEPORT",57:"ASSIGN",58:"IMPORT",59:"+-",60:"CLONE",61:"YIELD",62:"COMPARE",63:"LOGIC",64:"MATH",65:"POWER",66:"SHIFT",67:"BITWISE",68:"CONCAT",69:"COMPOSE",70:"RELATION",71:"PIPE",72:"BACKPIPE",73:"!?",74:"->",75:"FUNCTION",76:"GENERATOR",77:"ASYNC",78:"IF",79:"POST_IF",80:"DO",81:"WHILE",82:"CASE",83:"HURL",84:"JUMP",85:"SWITCH",88:"DEFAULT",89:"ELSE",90:"TRY",91:"CATCH",92:"FINALLY",93:"CLASS",96:"EXTENDS",97:"DECL",99:":",102:"FOR",103:"IN",104:"OF",105:"IMPLEMENTS"},productions_:[0,[3,1],[3,1],[3,1],[3,1],[3,2],[3,5],[3,2],[3,6],[3,4],[3,5],[3,7],[3,3],[3,4],[3,4],[3,3],[3,4],[3,4],[3,3],[3,7],[3,3],[3,7],[3,3],[3,3],[3,5],[3,6],[3,6],[3,5],[3,7],[3,6],[3,8],[3,4],[3,6],[3,9],[3,8],[3,7],[3,6],[3,6],[3,5],[3,3],[3,3],[5,1],[5,1],[8,2],[8,2],[8,2],[6,4],[6,4],[6,5],[6,5],[10,0],[10,1],[10,3],[10,4],[10,6],[45,1],[45,2],[45,1],[11,0],[11,1],[50,0],[50,1],[50,3],[50,2],[51,1],[51,2],[51,6],[51,1],[51,1],[51,2],[15,3],[55,2],[17,3],[17,3],[17,5],[17,1],[17,3],[17,3],[17,6],[17,3],[17,6],[17,2],[17,2],[17,3],[17,2],[17,3],[17,3],[17,3],[17,4],[17,4],[17,4],[17,2],[17,2],[17,2],[17,3],[17,3],[17,3],[17,6],[17,5],[17,1],[17,2],[17,3],[17,3],[17,3],[17,3],[17,3],[17,3],[17,3],[17,3],[17,3],[17,3],[17,3],[17,3],[17,2],[17,6],[17,6],[17,6],[17,7],[17,7],[17,4],[17,3],[17,4],[17,6],[17,2],[17,5],[17,1],[17,1],[17,2],[17,3],[17,5],[17,5],[17,2],[17,4],[17,4],[17,2],[17,2],[17,4],[17,6],[17,5],[17,7],[17,4],[17,5],[17,4],[17,3],[17,2],[17,2],[17,5],[86,1],[86,3],[98,2],[98,2],[100,2],[100,5],[100,1],[100,2],[100,1],[43,0],[43,1],[43,3],[43,4],[43,4],[42,3],[101,1],[101,1],[101,3],[40,0],[40,2],[40,5],[39,4],[39,6],[39,6],[39,8],[39,2],[39,4],[39,4],[39,6],[39,4],[39,6],[39,6],[39,8],[39,6],[39,5],[39,8],[39,7],[39,8],[39,7],[39,10],[39,9],[39,10],[39,9],[39,2],[39,4],[39,4],[39,6],[18,1],[18,2],[18,3],[18,3],[87,3],[87,4],[94,2],[94,0],[95,2],[95,0],[106,1]],performAction:function(t,e,n,r,i,s,o){var a=s.length-1;switch(i){case 1:this.$=r.L(o[a],o[a],r.Chain(r.L(o[a],o[a],r.Var(s[a]))));break;case 2:case 3:this.$=r.L(o[a],o[a],r.Chain(s[a]));break;case 4:this.$=r.L(o[a],o[a],r.Chain(r.L(o[a],o[a],r.Literal(s[a]))));break;case 5:this.$=r.L(o[a-1],o[a],s[a-1].add(s[a]));break;case 6:this.$=r.L(o[a-4],o[a],s[a-4].add(r.L(o[a-3],o[a],r.Call(s[a-2]))));break;case 7:this.$=r.L(o[a-1],o[a],r.Chain(r.L(o[a-1],o[a],r.Existence(s[a-1].unwrap()))));break;case 8:this.$=r.L(o[a-5],o[a],r.Chain(r.L(o[a-5],o[a-1],r.Call.let(s[a-3],s[a]))));break;case 9:this.$=r.L(o[a-3],o[a],r.Chain(r.L(o[a-3],o[a],s[a-1][0].makeComprehension(s[a-2],s[a-1].slice(1)))));break;case 10:this.$=r.L(o[a-4],o[a],r.Chain(r.L(o[a-4],o[a],s[a-2][0].makeComprehension(s[a-3],s[a-2].slice(1)))));break;case 11:this.$=r.L(o[a-6],o[a],r.Chain(r.L(o[a-6],o[a],s[a-1][0].addObjComp().makeComprehension(r.L(o[a-4],o[a-4],r.Arr(s[a-4])),s[a-1].slice(1)))));break;case 12:case 18:case 20:this.$=r.L(o[a-2],o[a],r.Chain(r.L(o[a-1],o[a-1],r.Binary(s[a-1]))));break;case 13:this.$=r.L(o[a-3],o[a],r.Chain(r.L(o[a-2],o[a-2],r.Binary(s[a-2],void 0,s[a-1]))));break;case 14:this.$=r.L(o[a-3],o[a],r.Chain(r.L(o[a-1],o[a-1],r.Binary(s[a-1],s[a-2]))));break;case 15:this.$=r.L(o[a-2],o[a],r.Chain(r.L(o[a-1],o[a-1],"!"===s[a-1].charAt(0)?r.Binary(s[a-1].slice(1)).invertIt():r.Binary(s[a-1]))));break;case 16:this.$=r.L(o[a-3],o[a],r.Chain(r.L(o[a-2],o[a-2],"!"===s[a-2].charAt(0)?r.Binary(s[a-2].slice(1),void 0,s[a-1]).invertIt():r.Binary(s[a-2],void 0,s[a-1]))));break;case 17:this.$=r.L(o[a-3],o[a],r.Chain(r.L(o[a-1],o[a-1],"!"===s[a-1].charAt(0)?r.Binary(s[a-1].slice(1),s[a-2]).invertIt():r.Binary(s[a-1],s[a-2]))));break;case 19:this.$=r.L(o[a-6],o[a],r.Chain(r.L(o[a-5],o[a-5],r.Binary(s[a-5],void 0,s[a-3]))));break;case 21:this.$=r.L(o[a-6],o[a],r.Chain(r.L(o[a-1],o[a-1],r.Binary(s[a-1],s[a-4]))));break;case 22:case 23:this.$=r.L(o[a-2],o[a],r.Chain(r.L(o[a-1],o[a-1],r.Unary(s[a-1]))));break;case 24:this.$=r.L(o[a-4],o[a],r.Chain(s[a-2]));break;case 25:this.$=r.L(o[a-5],o[a],r.Chain(r.L(o[a-4],o[a-1],s[a-2].add(r.L(o[a-4],o[a-4],r.Call([s[a-4]]))))));break;case 26:this.$=r.L(o[a-5],o[a],r.Chain(r.L(o[a-3],o[a-3],r.Chain(r.Var("flip$"))).add(r.L(o[a-3],o[a-3],r.Call([s[a-3]])))).flipIt().add(r.L(o[a-1],o[a-1],r.Call([s[a-1]]))));break;case 27:this.$=r.L(o[a-4],o[a],r.Chain(r.L(o[a-3],o[a-1],new r.For({from:s[a-3],op:s[a-2],to:s[a-1],inComprehension:!0}))));break;case 28:this.$=r.L(o[a-6],o[a],r.Chain(r.L(o[a-5],o[a-1],new r.For({from:s[a-5],op:s[a-4],to:s[a-3],step:s[a-1],inComprehension:!0}))));break;case 29:this.$=r.L(o[a-5],o[a],r.Chain(r.L(o[a-4],o[a-1],new r.For({from:s[a-3],op:s[a-2],to:s[a-1],inComprehension:!0}))));break;case 30:this.$=r.L(o[a-7],o[a],r.Chain(r.L(o[a-6],o[a-1],new r.For({from:s[a-5],op:s[a-4],to:s[a-3],step:s[a-1],inComprehension:!0}))));break;case 31:this.$=r.L(o[a-3],o[a],r.Chain(r.L(o[a-2],o[a-1],new r.For({from:r.Chain(r.Literal(0)),op:s[a-2],to:s[a-1],inComprehension:!0}))));break;case 32:this.$=r.L(o[a-5],o[a],r.Chain(r.L(o[a-4],o[a-1],new r.For({from:r.Chain(r.Literal(0)),op:s[a-4],to:s[a-3],step:s[a-1],inComprehension:!0}))));break;case 33:this.$=r.L(o[a-8],o[a],r.Chain(r.L(o[a-8],o[a],new r.StepSlice({op:s[a-4],target:s[a-8],from:s[a-5],to:s[a-3],step:s[a-1]}))));break;case 34:this.$=r.L(o[a-7],o[a],r.Chain(r.L(o[a-7],o[a],new r.StepSlice({op:s[a-4],target:s[a-7],from:r.Literal(0),to:s[a-3],step:s[a-1]}))));break;case 35:this.$=r.L(o[a-6],o[a],r.Chain(r.L(o[a-6],o[a],r.Slice({type:s[a-2],target:s[a-6],from:s[a-3],to:s[a-1]}))));break;case 36:this.$=r.L(o[a-5],o[a],r.Chain(r.L(o[a-5],o[a],r.Slice({type:s[a-1],target:s[a-5],from:s[a-2]}))));break;case 37:this.$=r.L(o[a-5],o[a],r.Chain(r.L(o[a-5],o[a],r.Slice({type:s[a-2],target:s[a-5],to:s[a-1]}))));break;case 38:this.$=r.L(o[a-4],o[a],r.Chain(r.L(o[a-4],o[a],r.Slice({type:s[a-1],target:s[a-4]}))));break;case 39:this.$=r.L(o[a-2],o[a],r.Chain(r.L(o[a-2],o[a-1],r.Cascade(s[a-1],s[a],"with"))));break;case 40:this.$=r.L(o[a-2],o[a],r.Chain(s[a-2].addBody(s[a-1]).addElse(s[a])));break;case 41:this.$=r.L(o[a],o[a],r.Literal(s[a]));break;case 42:case 55:case 58:case 59:case 63:case 64:case 162:case 163:break;case 43:this.$=r.L(o[a-1],o[a],r.Index(r.L(o[a],o[a],r.Key(s[a])),s[a-1],!0));break;case 44:case 45:this.$=r.L(o[a-1],o[a],r.Index(s[a],s[a-1],!0));break;case 46:this.$=r.L(o[a-3],o[a],r.Arr(s[a-2]));break;case 47:this.$=r.L(o[a-3],o[a],r.Obj(s[a-2]));break;case 48:this.$=r.L(o[a-4],o[a],r.Arr(s[a-3]).named(s[a]));break;case 49:this.$=r.L(o[a-4],o[a],r.Obj(s[a-3]).named(s[a]));break;case 50:case 156:this.$=r.L(o[a],o[a],[]);break;case 51:case 147:case 157:case 194:this.$=r.L(o[a],o[a],[s[a]]);break;case 52:case 148:case 158:case 196:case 197:this.$=r.L(o[a-2],o[a],s[a-2].concat(s[a]));break;case 53:case 159:this.$=r.L(o[a-3],o[a],s[a-3].concat(s[a]));break;case 54:this.$=r.L(o[a-5],o[a-2],s[a-5].concat(s[a-2]));break;case 56:this.$=r.L(o[a-1],o[a],r.Splat(s[a]));break;case 57:this.$=r.L(o[a],o[a],r.Splat(r.L(o[a],o[a],r.Arr()),!0));break;case 60:this.$=r.L(o[a],o[a],r.Block());break;case 61:this.$=r.L(o[a],o[a],r.Block(s[a]));break;case 62:case 164:this.$=r.L(o[a-2],o[a],s[a-2].add(s[a]));break;case 65:this.$=r.L(o[a-1],o[a],r.Cascade(s[a-1],s[a],"cascade"));break;case 66:this.$=r.L(o[a-5],o[a],r.Call.back(s[a-4],s[a],/~/.test(s[a-1]),/--|~~/.test(s[a-1]),/!/.test(s[a-1]),/\*/.test(s[a-1])));break;case 67:case 155:this.$=r.L(o[a],o[a],r.JS(s[a],!0,!0));break;case 68:this.$=r.L(o[a],o[a],r.Throw(r.L(o[a],o[a],r.JS("Error('unimplemented')"))));break;case 69:this.$=r.L(o[a-1],o[a],r.Require(s[a].unwrap()));break;case 70:this.$=r.L(o[a-2],o[a],s[a-1]);break;case 71:this.$=r.L(o[a-1],o[a],r.Splat(s[a].unwrap()));break;case 72:this.$=r.L(o[a-2],o[a],r.Import(r.L(o[a-2],o[a-1],r.Unary("^^",s[a-2],{prec:"yy.UNARY"})),s[a],!1));break;case 73:this.$=r.L(o[a-2],o[a],r.Import(r.L(o[a-2],o[a-1],r.Unary("^^",s[a-2],{prec:"yy.UNARY"})),s[a].unwrap(),!1));break;case 74:this.$=r.L(o[a-4],o[a],s[a-2].add(r.L(o[a-4],o[a],r.Call([s[a-4],s[a]]))));break;case 75:this.$=r.L(o[a],o[a],s[a].unwrap());break;case 76:this.$=r.L(o[a-2],o[a],r.Assign(s[a-2].unwrap(),s[a],r.L(o[a-1],o[a-1],r.Box(s[a-1]))));break;case 77:this.$=r.L(o[a-2],o[a],r.Assign(s[a-2],s[a],r.L(o[a-1],o[a-1],r.Box(s[a-1]))));break;case 78:this.$=r.L(o[a-5],o[a],r.Assign(s[a-5].unwrap(),r.Arr.maybe(s[a-2]),r.L(o[a-4],o[a-4],r.Box(s[a-4]))));break;case 79:this.$=r.L(o[a-2],o[a],r.Import(s[a-2],s[a],"<<<<"===s[a-1]));break;case 80:this.$=r.L(o[a-5],o[a],r.Import(s[a-5],r.Arr.maybe(s[a-2]),"<<<<"===s[a-4]));break;case 81:this.$=r.L(o[a-1],o[a],r.Unary(s[a-1],s[a].unwrap()));break;case 82:this.$=r.L(o[a-1],o[a],r.Unary(s[a],s[a-1].unwrap(),!0));break;case 83:this.$=r.L(o[a-2],o[a],r.Unary(s[a-2],r.Splat(s[a].unwrap())));break;case 84:this.$=r.L(o[a-1],o[a],r.Unary(s[a],s[a-1],!0));break;case 85:case 86:case 87:this.$=r.L(o[a-2],o[a],r.Assign(s[a].unwrap(),[s[a-2]],r.L(o[a-1],o[a-1],r.Box(s[a-1]))));break;case 88:case 89:case 90:this.$=r.L(o[a-3],o[a],r.Assign(r.Splat(s[a].unwrap()),[s[a-3]],r.L(o[a-2],o[a-2],r.Box(s[a-2]))));break;case 91:case 92:case 93:this.$=r.L(o[a-1],o[a],r.Unary(s[a-1],s[a]));break;case 94:case 95:case 96:this.$=r.L(o[a-2],o[a],r.Unary(s[a-2],r.Splat(s[a])));break;case 97:this.$=r.L(o[a-5],o[a],r.Unary(s[a-5],r.Splat(r.Arr(s[a-2]))));break;case 98:this.$=r.L(o[a-4],o[a],r.Unary(s[a-4],r.Arr.maybe(s[a-2])));break;case 99:this.$=r.L(o[a],o[a],r.Yield(s[a]));break;case 100:this.$=r.L(o[a-1],o[a],r.Yield(s[a-1],s[a]));break;case 101:case 102:case 103:case 104:case 105:case 106:case 107:case 108:case 109:this.$=r.L(o[a-1],o[a-1],r.Binary(s[a-1],s[a-2],s[a]));break;case 110:this.$=r.L(o[a-2],o[a],"!"===s[a-1].charAt(0)?r.Binary(s[a-1].slice(1),s[a-2],s[a]).invert():r.Binary(s[a-1],s[a-2],s[a]));break;case 111:this.$=r.L(o[a-2],o[a],r.Block(s[a-2]).pipe(s[a],s[a-1]));break;case 112:this.$=r.L(o[a-2],o[a],r.Block(s[a-2]).pipe([s[a]],s[a-1]));break;case 113:this.$=r.L(o[a-1],o[a],r.Existence(s[a-1].unwrap(),!0));break;case 114:this.$=r.L(o[a-5],o[a],r.Fun(s[a-4],s[a],/~/.test(s[a-1]),/--|~~/.test(s[a-1]),/!/.test(s[a-1]),/\*/.test(s[a-1]),/>>/.test(s[a-1])));break;case 115:this.$=r.L(o[a-5],o[a],r.Fun(s[a-3],s[a]).named(s[a-5]));break;case 116:this.$=r.L(o[a-5],o[a],r.Fun(s[a-3],s[a],!1,!1,!1,!0,!1).named(s[a-5]));break;case 117:this.$=r.L(o[a-6],o[a],r.Fun(s[a-3],s[a],!1,!1,!1,!1,!0).named(s[a-5]));break;case 118:this.$=r.L(o[a-6],o[a],r.Fun(s[a-3],s[a],!1,!1,!1,!0,!0).named(s[a-5]));break;case 119:this.$=r.L(o[a-3],o[a-2],r.If(s[a-2],s[a-1],"unless"===s[a-3])).addElse(s[a]);break;case 120:this.$=r.L(o[a-1],o[a],r.If(s[a],s[a-2],"unless"===s[a-1]));break;case 121:this.$=r.L(o[a-3],o[a],new r.While(s[a],"until"===s[a-1],!0).addBody(s[a-2]));break;case 122:this.$=r.L(o[a-5],o[a],new r.While(s[a-2],"until"===s[a-3],!0).addGuard(s[a]).addBody(s[a-4]));break;case 123:this.$=r.L(o[a-1],o[a],r.Jump[s[a-1]](s[a]));break;case 124:this.$=r.L(o[a-4],o[a],r.Jump[s[a-4]](r.Arr.maybe(s[a-2])));break;case 125:this.$=r.L(o[a],o[a],r.Jump[s[a]]());break;case 126:this.$=r.L(o[a],o[a],new r.Jump(s[a]));break;case 127:this.$=r.L(o[a-1],o[a],new r.Jump(s[a-1],s[a]));break;case 128:this.$=r.L(o[a-2],o[a],new r.Switch(s[a-2],s[a-1],s[a]));break;case 129:case 130:this.$=r.L(o[a-4],o[a],new r.Switch(s[a-4],s[a-3],s[a-2],s[a]));break;case 131:this.$=r.L(o[a-1],o[a],new r.Switch(s[a-1],null,s[a]));break;case 132:case 133:this.$=r.L(o[a-3],o[a],new r.Switch(s[a-3],null,s[a-2],s[a]));break;case 134:this.$=r.L(o[a-1],o[a],new r.Switch(s[a-1],null,[],s[a]));break;case 135:this.$=r.L(o[a-1],o[a],new r.Try(s[a]));break;case 136:this.$=r.L(o[a-3],o[a],new r.Try(s[a-2],void 0,r.L(o[a-1],o[a-1],s[a])));break;case 137:this.$=r.L(o[a-5],o[a],new r.Try(s[a-4],void 0,r.L(o[a-3],o[a-3],s[a-2]),r.L(o[a-1],o[a-1],s[a])));break;case 138:this.$=r.L(o[a-4],o[a],new r.Try(s[a-3],s[a-1],r.L(o[a-2],o[a-1],s[a])));break;case 139:this.$=r.L(o[a-6],o[a],new r.Try(s[a-5],s[a-3],r.L(o[a-4],o[a-3],s[a-2]),r.L(o[a-1],o[a-1],s[a])));break;case 140:this.$=r.L(o[a-3],o[a],new r.Try(s[a-2],void 0,void 0,r.L(o[a-1],o[a-1],s[a])));break;case 141:this.$=r.L(o[a-4],o[a],new r.Class({title:s[a-3].unwrap(),sup:s[a-2],mixins:s[a-1],body:s[a]}));break;case 142:this.$=r.L(o[a-3],o[a],new r.Class({sup:s[a-2],mixins:s[a-1],body:s[a]}));break;case 143:this.$=r.L(o[a-2],o[a],r.Util.Extends(s[a-2].unwrap(),s[a]));break;case 144:case 145:this.$=r.L(o[a-1],o[a],new r.Label(s[a-1],s[a]));break;case 146:this.$=r.L(o[a-4],o[a],r.Decl(s[a-4],s[a-2],n+1));break;case 149:this.$=r.L(o[a-1],o[a],r.Key(s[a-1]));break;case 150:this.$=r.L(o[a-1],o[a],s[a-1]);break;case 151:this.$=r.L(o[a-1],o[a],r.Prop(s[a-1],s[a]));break;case 152:this.$=r.L(o[a-4],o[a],r.Prop(s[a-4],r.Arr.maybe(s[a-2])));break;case 153:this.$=r.L(o[a],o[a],r.Prop(null,s[a]));break;case 154:this.$=r.L(o[a-1],o[a],r.Prop(r.Splat(),s[a]));break;case 160:this.$=r.L(o[a-3],o[a],s[a-2]);break;case 161:this.$=r.L(o[a-2],o[a],r.Parens(s[a-1].chomp().unwrap(),!1,'"'===s[a-2],r.L(o[a-2],o[a-2],{}),r.L(o[a],o[a],{})));break;case 165:case 201:case 203:this.$=r.L(o[a],o[a],null);break;case 166:case 200:case 202:this.$=r.L(o[a-1],o[a],s[a]);break;case 167:this.$=r.L(o[a-4],o[a],r.If(s[a-2],s[a-1],"unless"===s[a-3]).addElse(s[a]));break;case 168:this.$=r.L(o[a-3],o[a],new r.For({kind:s[a-3],item:s[a-2].unwrap(),index:s[a-1],source:s[a]}));break;case 169:this.$=r.L(o[a-5],o[a],new r.For({kind:s[a-5],item:s[a-4].unwrap(),index:s[a-3],source:s[a-2],guard:s[a]}));break;case 170:this.$=r.L(o[a-5],o[a],new r.For({kind:s[a-5],item:s[a-4].unwrap(),index:s[a-3],source:s[a-2],step:s[a]}));break;case 171:this.$=r.L(o[a-7],o[a],new r.For({kind:s[a-7],item:s[a-6].unwrap(),index:s[a-5],source:s[a-4],step:s[a-2],guard:s[a]}));break;case 172:this.$=r.L(o[a-1],o[a],new r.For({kind:s[a-1],source:s[a],ref:!0}));break;case 173:this.$=r.L(o[a-3],o[a],new r.For({kind:s[a-3],source:s[a-2],ref:!0,guard:s[a]}));break;case 174:this.$=r.L(o[a-3],o[a],new r.For({kind:s[a-3],source:s[a-2],ref:!0,step:s[a]}));break;case 175:this.$=r.L(o[a-5],o[a],new r.For({kind:s[a-5],source:s[a-4],ref:!0,step:s[a-2],guard:s[a]}));break;case 176:this.$=r.L(o[a-3],o[a],new r.For({object:!0,kind:s[a-3],index:s[a-2],source:s[a]}));break;case 177:this.$=r.L(o[a-5],o[a],new r.For({object:!0,kind:s[a-5],index:s[a-4],source:s[a-2],guard:s[a]}));break;case 178:this.$=r.L(o[a-5],o[a],new r.For({object:!0,kind:s[a-5],index:s[a-4],item:s[a-2].unwrap(),source:s[a]}));break;case 179:this.$=r.L(o[a-7],o[a],new r.For({object:!0,kind:s[a-7],index:s[a-6],item:s[a-4].unwrap(),source:s[a-2],guard:s[a]}));break;case 180:this.$=r.L(o[a-5],o[a],new r.For({kind:s[a-5],index:s[a-4],from:s[a-2],op:s[a-1],to:s[a]}));break;case 181:this.$=r.L(o[a-4],o[a],new r.For({kind:s[a-4],from:s[a-2],op:s[a-1],to:s[a],ref:!0}));break;case 182:this.$=r.L(o[a-7],o[a],new r.For({kind:s[a-7],index:s[a-6],from:s[a-4],op:s[a-3],to:s[a-2],guard:s[a]}));break;case 183:this.$=r.L(o[a-6],o[a],new r.For({kind:s[a-6],from:s[a-4],op:s[a-3],to:s[a-2],guard:s[a],ref:!0}));break;case 184:this.$=r.L(o[a-7],o[a],new r.For({kind:s[a-7],index:s[a-6],from:s[a-4],op:s[a-3],to:s[a-2],step:s[a]}));break;case 185:this.$=r.L(o[a-6],o[a],new r.For({kind:s[a-6],from:s[a-4],op:s[a-3],to:s[a-2],step:s[a],ref:!0}));break;case 186:this.$=r.L(o[a-9],o[a],new r.For({kind:s[a-9],index:s[a-8],from:s[a-6],op:s[a-5],to:s[a-4],step:s[a-2],guard:s[a]}));break;case 187:this.$=r.L(o[a-8],o[a],new r.For({kind:s[a-8],from:s[a-6],op:s[a-5],to:s[a-4],step:s[a-2],guard:s[a],ref:!0}));break;case 188:this.$=r.L(o[a-9],o[a],new r.For({kind:s[a-9],index:s[a-8],from:s[a-6],op:s[a-5],to:s[a-4],guard:s[a-2],step:s[a]}));break;case 189:this.$=r.L(o[a-8],o[a],new r.For({kind:s[a-8],from:s[a-6],op:s[a-5],to:s[a-4],guard:s[a-2],step:s[a],ref:!0}));break;case 190:this.$=r.L(o[a-1],o[a],new r.While(s[a],"until"===s[a-1]));break;case 191:this.$=r.L(o[a-3],o[a],new r.While(s[a-2],"until"===s[a-3]).addGuard(s[a]));break;case 192:this.$=r.L(o[a-3],o[a],new r.While(s[a-2],"until"===s[a-3],s[a]));break;case 193:this.$=r.L(o[a-5],o[a],new r.While(s[a-4],"until"===s[a-5],s[a-2]).addGuard(s[a]));break;case 195:this.$=r.L(o[a-1],o[a],s[a-1].concat(s[a]));break;case 198:this.$=r.L(o[a-2],o[a],[r.L(o[a-2],o[a-1],new r.Case(s[a-1],s[a]))]);break;case 199:this.$=r.L(o[a-3],o[a],s[a-3].concat(r.L(o[a-2],o[a-1],new r.Case(s[a-1],s[a]))));break;case 204:return this.$}},table:[t([1,47],e,{106:1,101:2,50:3,15:4,51:5,17:7,3:12,55:13,5:32,6:33,39:40,42:42,4:n,7:r,14:i,16:s,21:o,23:a,29:c,31:l,32:u,38:h,41:p,44:f,48:d,49:g,53:m,54:y,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x}),{1:[3]},{1:[2,204]},t(N,[2,162],{47:P}),t(N,[2,163],{47:[1,46]}),t(M,[2,61]),t(B,e,{51:5,17:7,3:12,55:13,5:32,6:33,39:40,42:42,50:47,4:n,7:r,14:i,16:s,21:o,23:a,29:c,31:l,32:u,38:h,41:p,44:f,49:g,53:m,54:y,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x}),t(M,$,{15:48,33:U,48:d,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z}),t(Q,tt,{3:12,55:13,5:32,6:33,39:40,42:42,10:64,45:65,17:66,4:n,7:r,14:i,16:s,21:o,23:a,29:et,31:l,32:u,38:h,41:p,44:f,49:nt,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x}),t(M,[2,67]),t(M,[2,68],{5:32,6:33,39:40,42:42,3:69,4:n,7:r,14:i,16:s,21:o,23:a,38:h,41:p,81:S,102:x}),{3:70,4:n,5:32,6:33,7:r,14:i,16:s,21:o,23:a,38:h,39:40,41:p,42:42,81:S,102:x},t(rt,it,{8:76,9:st,13:ot,32:at,37:ct,56:lt,57:ut,73:ht,96:pt}),{32:[1,81],57:[1,80]},{3:82,4:n,5:32,6:33,7:r,14:i,16:s,21:o,23:a,38:h,39:40,41:p,42:42,49:ft,81:S,102:x},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:85,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,48:dt,49:gt,55:13,57:mt,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:89,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:[1,90],55:13,57:[1,88],59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:92,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:[1,93],55:13,57:[1,91],59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},t([1,12,19,20,22,24,25,26,30,33,34,35,46,47,48,58,62,63,64,65,66,67,68,69,70,71,72,79,82,105],[2,99],{3:12,55:13,5:32,6:33,39:40,42:42,17:94,4:n,7:r,14:i,16:s,21:o,23:a,29:et,31:l,32:u,38:h,41:p,44:f,49:yt,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x}),{9:[1,96]},{9:[1,97]},{75:[1,98],76:[1,99]},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:100,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},{15:101,48:d},t([1,12,19,20,22,24,25,26,30,33,34,35,46,47,58,62,63,64,65,66,67,68,69,70,71,72,79,82,105],[2,125],{3:12,55:13,5:32,6:33,39:40,42:42,17:102,4:n,7:r,14:i,16:s,21:o,23:a,29:et,31:l,32:u,38:h,41:p,44:f,48:[1,103],49:yt,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x}),t(rt,[2,126],{4:[1,104]}),{3:12,4:n,5:32,6:33,7:r,14:i,15:107,16:s,17:108,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,48:d,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,82:vt,83:R,84:N,85:_,86:105,87:106,90:T,93:O,97:I,102:x},{15:110,48:d},t(bt,wt,{5:32,6:33,39:40,42:42,3:111,94:112,4:n,7:r,14:i,16:s,21:o,23:a,38:h,41:p,81:S,96:kt,102:x}),{3:12,4:n,5:32,6:33,7:r,14:i,15:115,16:s,17:114,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,48:d,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},{48:[1,116]},t([1,9,12,13,19,20,22,24,25,26,30,32,33,34,35,37,46,47,48,56,57,58,59,62,63,64,65,66,67,68,69,70,71,72,73,79,81,82,96,102,104,105],Lt),t(At,Et),t(At,[2,3]),t(At,[2,4]),{9:[1,117]},t(Ct,tt,{3:12,55:13,5:32,6:33,39:40,42:42,45:65,17:118,10:121,4:n,7:r,14:i,16:s,21:o,23:a,29:et,31:l,32:u,34:St,36:Rt,38:h,41:p,44:f,49:nt,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x}),t(Nt,_t,{3:12,55:13,6:33,39:40,42:42,43:123,100:124,98:126,17:127,5:131,4:Tt,7:r,14:i,16:[1,122],21:o,23:a,29:et,31:l,32:u,38:h,41:p,44:f,48:Ot,49:It,53:xt,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x}),t(Pt,e,{50:3,15:4,51:5,3:12,55:13,5:32,6:33,39:40,42:42,17:133,101:141,4:n,7:r,14:i,16:s,21:o,23:a,24:[1,132],26:[1,134],27:[1,135],28:[1,136],29:[1,137],31:[1,138],32:[1,139],33:[1,140],38:h,41:p,44:f,48:d,49:g,53:m,54:y,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x}),{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:142,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},{15:143,48:d},t(Mt,[2,41]),t(Mt,[2,42]),{3:144,4:[1,146],5:32,6:33,7:r,14:i,16:s,17:145,21:o,23:a,29:et,31:l,32:u,36:[1,147],38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:148,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},t(M,[2,63],{17:7,3:12,55:13,5:32,6:33,39:40,42:42,51:149,4:n,7:r,14:i,16:s,21:o,23:a,29:c,31:l,32:u,38:h,41:p,44:f,49:g,53:m,54:y,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x}),t([1,25,47],e,{51:5,17:7,3:12,55:13,5:32,6:33,39:40,42:42,50:150,4:n,7:r,14:i,16:s,21:o,23:a,29:c,31:l,32:u,38:h,41:p,44:f,49:g,53:m,54:y,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x}),{20:[1,151],47:P},t(M,[2,65]),{3:152,4:n,5:32,6:33,7:r,14:i,16:s,21:o,23:a,38:h,39:40,41:p,42:42,81:S,102:x},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:153,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,48:[1,154],49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:155,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:156,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:157,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:158,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:159,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:160,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:161,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:162,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:163,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:164,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:165,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:166,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:167,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},t(Bt,$t,{11:168,46:Ut}),t(Dt,[2,51]),t(Dt,jt,{33:U,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z}),t(Dt,[2,57],{55:13,5:32,6:33,39:40,42:42,17:170,3:171,4:n,7:r,14:i,16:s,21:o,23:a,29:et,31:l,32:u,38:h,41:p,44:f,49:yt,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x}),t(Q,tt,{3:12,55:13,5:32,6:33,39:40,42:42,45:65,17:66,10:172,4:n,7:r,14:i,16:s,21:o,23:a,29:et,31:l,32:u,38:h,41:p,44:f,49:nt,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x}),t([32,57],Ft,{8:76,9:st,13:ot,37:ct}),t(M,[2,69],{8:76,9:st,13:ot,37:ct}),{3:12,4:n,5:32,6:33,7:r,14:i,15:174,16:s,17:173,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,48:d,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:175,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,48:[1,176],49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},t(rt,[2,82]),t(rt,[2,113]),{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:177,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},t(At,[2,5]),t(Wt,tt,{3:12,55:13,5:32,6:33,39:40,42:42,45:65,17:66,10:178,4:n,7:r,14:i,16:s,21:o,23:a,29:et,31:l,32:u,38:h,41:p,44:f,49:nt,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x}),t(At,[2,7]),{4:[1,180],5:181,6:182,16:[1,179],21:[1,183],23:[1,184],41:p,42:42},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:185,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},t(rt,[2,84]),t(rt,[2,81],{8:76,9:st,13:ot,37:ct}),{3:186,4:n,5:32,6:33,7:r,14:i,16:s,21:o,23:a,38:h,39:40,41:p,42:42,81:S,102:x},{3:187,4:n,5:32,6:33,7:r,14:i,16:s,21:o,23:a,38:h,39:40,41:p,42:42,49:[1,188],81:S,102:x},t(Yt,[2,91],{33:U,65:z,69:K}),{3:171,4:n,5:32,6:33,7:r,14:i,16:s,17:189,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,48:[1,190],49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},t(zt,tt,{3:12,55:13,5:32,6:33,39:40,42:42,45:65,17:66,10:191,4:n,7:r,14:i,16:s,21:o,23:a,29:et,31:l,32:u,38:h,41:p,44:f,49:nt,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x}),{3:192,4:n,5:32,6:33,7:r,14:i,16:s,21:o,23:a,38:h,39:40,41:p,42:42,49:[1,193],81:S,102:x},t(Yt,[2,92],{33:U,65:z,69:K}),{3:171,4:n,5:32,6:33,7:r,14:i,16:s,17:194,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},{3:195,4:n,5:32,6:33,7:r,14:i,16:s,21:o,23:a,38:h,39:40,41:p,42:42,49:[1,196],81:S,102:x},t(Yt,[2,93],{33:U,65:z,69:K}),{3:171,4:n,5:32,6:33,7:r,14:i,16:s,17:197,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},t(Gt,[2,100],{33:U,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X}),{3:69,4:n,5:32,6:33,7:r,14:i,16:s,21:o,23:a,38:h,39:40,41:p,42:42,81:S,102:x},t(Wt,tt,{3:12,55:13,5:32,6:33,39:40,42:42,45:65,17:66,10:198,4:n,7:r,14:i,16:s,21:o,23:a,29:et,31:l,32:u,38:h,41:p,44:f,49:nt,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x}),t(Wt,tt,{3:12,55:13,5:32,6:33,39:40,42:42,45:65,17:66,10:199,4:n,7:r,14:i,16:s,21:o,23:a,29:et,31:l,32:u,38:h,41:p,44:f,49:nt,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x}),{9:[1,200]},{9:[1,201]},{15:202,33:U,48:d,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z},{81:[1,203]},t(Gt,[2,123],{33:U,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X}),t(zt,tt,{3:12,55:13,5:32,6:33,39:40,42:42,45:65,17:66,10:204,4:n,7:r,14:i,16:s,21:o,23:a,29:et,31:l,32:u,38:h,41:p,44:f,49:nt,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x}),t(rt,[2,127]),{46:Ht,82:vt,87:205},t(Jt,[2,131],{82:Kt,88:[1,207],89:[1,208]}),t(rt,[2,134]),t(qt,[2,147],{33:U,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z}),{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:108,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,86:210,90:T,93:O,97:I,102:x},t(rt,[2,135],{91:[1,211],92:[1,212]}),t(bt,wt,{8:76,94:213,9:st,13:ot,37:ct,96:kt}),{48:Vt,95:214,105:Xt},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:216,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},t(Zt,[2,144],{33:U,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q}),t(rt,[2,145]),t(zt,tt,{3:12,55:13,5:32,6:33,39:40,42:42,45:65,17:66,10:217,4:n,7:r,14:i,16:s,21:o,23:a,29:et,31:l,32:u,38:h,41:p,44:f,49:nt,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x}),t(Wt,tt,{3:12,55:13,5:32,6:33,39:40,42:42,45:65,17:66,10:218,4:n,7:r,14:i,16:s,21:o,23:a,29:et,31:l,32:u,38:h,41:p,44:f,49:nt,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x}),t(Ct,jt,{18:219,39:221,33:U,34:[1,220],58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z,81:S,102:x}),{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:222,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:223,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},t(Qt,$t,{11:224,46:Ut}),t(Ct,tt,{3:12,55:13,5:32,6:33,39:40,42:42,45:65,17:118,10:225,4:n,7:r,14:i,16:s,21:o,23:a,29:et,31:l,32:u,34:St,36:Rt,38:h,41:p,44:f,49:nt,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x}),t([22,47],$t,{11:226,46:te}),t(ee,[2,157]),t([20,46,47],_t,{3:12,55:13,6:33,39:40,42:42,100:124,98:126,17:127,5:131,43:228,4:Tt,7:r,14:i,16:s,21:o,23:a,29:et,31:l,32:u,38:h,41:p,44:f,48:Ot,49:It,53:xt,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x}),{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:229,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,48:[1,230],49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},t(ee,[2,153],{33:U,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z}),{3:171,4:n,5:32,6:33,7:r,14:i,16:s,17:231,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},t(ee,[2,155]),t(ne,Lt,{99:[1,232]}),t(ne,Et,{99:[1,233]}),{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:235,21:o,23:a,25:[1,234],29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},t(Pt,$,{15:48,24:[1,236],26:[1,237],33:[1,238],48:d,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z}),{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:240,21:o,23:a,25:[1,239],29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},{9:[1,242],25:[1,241]},{25:[1,243]},t(Q,tt,{3:12,55:13,5:32,6:33,39:40,42:42,45:65,17:66,10:244,4:n,7:r,14:i,16:s,21:o,23:a,29:et,31:l,32:u,38:h,41:p,44:f,49:nt,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x}),{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:85,21:o,23:a,25:[1,245],29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,48:dt,49:gt,55:13,57:mt,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},{3:82,4:n,5:32,6:33,7:r,14:i,16:s,21:o,23:a,25:[1,246],38:h,39:40,41:p,42:42,49:ft,81:S,102:x},{3:247,4:n,5:32,6:33,7:r,14:i,16:s,21:o,23:a,38:h,39:40,41:p,42:42,81:S,102:x},{25:[1,248]},{15:249,33:U,48:d,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z},t(At,re,{40:250,89:ie}),t([19,20,22,33,35,47,48,58,59,62,63,64,65,66,67,68,69,70,71,72,79,81,82,102],it,{8:76,9:st,13:ot,32:at,37:ct,56:lt,57:ut,73:ht,96:pt,103:[1,252]}),t(se,[2,172],{33:U,35:[1,254],58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z,82:[1,253]}),t([9,13,19,20,22,32,33,35,37,47,48,56,57,58,59,62,63,64,65,66,67,68,69,70,71,72,73,79,81,82,96,102,103],Lt,{36:[1,257],46:[1,256],104:[1,255]}),{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:258,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},t(se,[2,190],{33:U,46:[1,260],58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z,82:[1,259]}),t(M,[2,62]),t(N,[2,164],{47:P}),t([1,9,12,13,19,20,22,24,25,26,30,32,33,34,35,37,46,47,48,56,57,58,59,62,63,64,65,66,67,68,69,70,71,72,73,79,81,82,88,89,91,92,96,102,103,104,105],[2,70]),{8:76,9:st,13:ot,33:[1,261],37:ct},t(oe,[2,79],{33:U,59:j,64:Y,65:z,69:K}),t(zt,tt,{3:12,55:13,5:32,6:33,39:40,42:42,45:65,17:66,10:262,4:n,7:r,14:i,16:s,21:o,23:a,29:et,31:l,32:u,38:h,41:p,44:f,49:nt,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x}),t([1,12,19,20,22,24,25,26,30,34,35,46,47,48,58,59,62,63,66,67,68,70,71,72,79,81,82,102,105],[2,101],{33:U,64:Y,65:z,69:K}),t(ae,[2,102],{33:U,58:D,59:j,62:F,64:Y,65:z,66:G,68:J,69:K,70:q}),t(Zt,[2,103],{33:U,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q}),t(Yt,[2,104],{33:U,65:z,69:K}),t(Yt,[2,105],{33:U,65:z,69:K}),t(oe,[2,106],{33:U,59:j,64:Y,65:z,69:K}),t(ae,[2,107],{33:U,58:D,59:j,62:F,64:Y,65:z,66:G,68:J,69:K,70:q}),t(ce,[2,108],{33:U,58:D,59:j,64:Y,65:z,66:G,68:J,69:K}),t([1,12,19,20,22,24,25,26,30,34,35,46,47,48,58,59,62,63,64,65,66,67,68,70,71,72,79,81,82,102,105],[2,109],{33:U,69:K}),t(ce,[2,110],{33:U,58:D,59:j,64:Y,65:z,66:G,68:J,69:K}),t(Zt,[2,111],{33:U,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q}),t(Gt,[2,112],{33:U,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X}),t(Gt,[2,120],{33:U,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X}),{30:[1,263],47:le,48:ue},t([12,19,20,30,47,48],he,{3:12,55:13,5:32,6:33,39:40,42:42,17:66,45:266,4:n,7:r,14:i,16:s,21:o,23:a,29:et,31:l,32:u,38:h,41:p,44:f,49:nt,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x}),t(Dt,[2,56],{33:U,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z}),t(rt,it,{8:76,9:st,13:ot,32:Ft,57:Ft,37:ct,56:lt,73:ht,96:pt}),t(Bt,$t,{11:267,46:Ut}),t(oe,[2,72],{33:U,59:j,64:Y,65:z,69:K}),t(rt,[2,73]),t(Gt,[2,76],{33:U,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X}),t(zt,tt,{3:12,55:13,5:32,6:33,39:40,42:42,45:65,17:66,10:268,4:n,7:r,14:i,16:s,21:o,23:a,29:et,31:l,32:u,38:h,41:p,44:f,49:nt,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x}),t(Zt,[2,143],{33:U,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q}),t(pe,$t,{11:269,46:Ut}),t(Ct,tt,{3:12,55:13,5:32,6:33,39:40,42:42,45:65,10:121,17:270,4:n,7:r,14:i,16:s,21:o,23:a,29:et,31:l,32:u,34:[1,271],38:h,41:p,44:f,49:nt,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x}),t(At,[2,43]),t(At,[2,44]),t(At,[2,45]),t(Nt,_t,{3:12,55:13,6:33,39:40,42:42,43:123,100:124,98:126,17:127,5:131,4:Tt,7:r,14:i,16:s,21:o,23:a,29:et,31:l,32:u,38:h,41:p,44:f,48:Ot,49:It,53:xt,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x}),t(Pt,e,{50:3,15:4,51:5,17:7,3:12,55:13,5:32,6:33,39:40,42:42,101:141,4:n,7:r,14:i,16:s,21:o,23:a,29:c,31:l,32:u,38:h,41:p,44:f,48:d,49:g,53:m,54:y,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x}),t(Gt,[2,77],{33:U,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X}),t(rt,[2,83],{8:76,9:st,13:ot,37:ct}),t(rt,[2,85],{8:76,9:st,13:ot,37:ct}),{3:272,4:n,5:32,6:33,7:r,14:i,16:s,21:o,23:a,38:h,39:40,41:p,42:42,81:S,102:x},t(Yt,[2,94],{33:U,65:z,69:K}),t(zt,tt,{3:12,55:13,5:32,6:33,39:40,42:42,45:65,17:66,10:273,4:n,7:r,14:i,16:s,21:o,23:a,29:et,31:l,32:u,38:h,41:p,44:f,49:nt,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x}),t(fe,$t,{11:274,46:Ut}),t(rt,[2,86],{8:76,9:st,13:ot,37:ct}),{3:275,4:n,5:32,6:33,7:r,14:i,16:s,21:o,23:a,38:h,39:40,41:p,42:42,81:S,102:x},t(Yt,[2,95],{33:U,65:z,69:K}),t(rt,[2,87],{8:76,9:st,13:ot,37:ct}),{3:276,4:n,5:32,6:33,7:r,14:i,16:s,21:o,23:a,38:h,39:40,41:p,42:42,81:S,102:x},t(Yt,[2,96],{33:U,65:z,69:K}),t(pe,$t,{11:277,46:Ut}),t(pe,$t,{11:278,46:Ut}),t(Wt,tt,{3:12,55:13,5:32,6:33,39:40,42:42,45:65,17:66,10:279,4:n,7:r,14:i,16:s,21:o,23:a,29:et,31:l,32:u,38:h,41:p,44:f,49:nt,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x}),t(Wt,tt,{3:12,55:13,5:32,6:33,39:40,42:42,45:65,17:66,10:280,4:n,7:r,14:i,16:s,21:o,23:a,29:et,31:l,32:u,38:h,41:p,44:f,49:nt,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x}),t(rt,re,{40:281,89:ie}),{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:282,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},t(fe,$t,{11:283,46:Ut}),t(Jt,[2,128],{82:Kt,88:[1,284],89:[1,285]}),{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:286,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},{15:287,48:d},{15:288,48:d},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:108,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,86:289,90:T,93:O,97:I,102:x},{15:290,46:Ht,48:d},{3:12,4:n,5:32,6:33,7:r,14:i,15:291,16:s,17:66,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,45:292,48:d,49:nt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},{15:293,48:d},{48:Vt,95:294,105:Xt},{15:295,48:d},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:108,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,86:296,90:T,93:O,97:I,102:x},t(bt,[2,200],{33:U,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z}),t(fe,$t,{11:297,46:Ut}),t(pe,$t,{11:298,46:Ut}),{19:[1,299],20:[1,300],39:301,47:de,48:ge,81:S,102:x},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:304,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},t(se,[2,194]),{33:U,34:[1,305],58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z},{19:[1,306],33:U,35:[1,307],58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z},{19:[1,308],47:le,48:ue},t(Qt,$t,{11:309,46:Ut}),{22:[1,310],47:me},t([20,22,47],he,{3:12,55:13,6:33,39:40,42:42,98:126,17:127,5:131,100:312,4:Tt,7:r,14:i,16:s,21:o,23:a,29:et,31:l,32:u,38:h,41:p,44:f,49:It,53:xt,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x}),t(B,$t,{11:313,46:te}),t(ee,[2,151],{33:U,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z}),t(zt,tt,{3:12,55:13,5:32,6:33,39:40,42:42,45:65,17:66,10:314,4:n,7:r,14:i,16:s,21:o,23:a,29:et,31:l,32:u,38:h,41:p,44:f,49:nt,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x}),t(ee,[2,154],{33:U,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z}),t(ye,[2,149]),t(ye,[2,150]),t(At,[2,12]),{25:[1,315],33:U,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z},{25:[1,316]},{25:[1,317]},{3:318,4:n,5:32,6:33,7:r,14:i,16:s,21:o,23:a,38:h,39:40,41:p,42:42,81:S,102:x},t(At,[2,15]),{25:[1,319],33:U,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z},t(At,[2,18]),t(Wt,tt,{3:12,55:13,5:32,6:33,39:40,42:42,45:65,17:66,10:320,4:n,7:r,14:i,16:s,21:o,23:a,29:et,31:l,32:u,38:h,41:p,44:f,49:nt,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x}),t(At,[2,20]),t(Bt,$t,{11:321,46:Ut}),t(At,[2,22]),t(At,[2,23]),{8:76,9:st,13:ot,33:[1,322],37:ct},t(Mt,[2,161]),t(At,[2,39]),t(At,[2,40]),{15:323,48:d,78:[1,324]},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:325,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:326,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:327,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:328,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},{3:329,4:n,5:32,6:33,7:r,14:i,16:s,21:o,23:a,38:h,39:40,41:p,42:42,81:S,102:x},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:330,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},{33:U,34:[1,331],58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:332,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:333,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:334,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},t(fe,$t,{11:335,46:Ut}),{52:ve,74:be},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:66,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,45:338,49:nt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},t(zt,tt,{3:12,55:13,5:32,6:33,39:40,42:42,45:65,17:66,10:339,4:n,7:r,14:i,16:s,21:o,23:a,29:et,31:l,32:u,38:h,41:p,44:f,49:nt,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x}),t(Dt,[2,52]),{30:[1,340],47:le,48:ue},t(fe,$t,{11:341,46:Ut}),{12:[1,342],47:le,48:ue},t(Ct,jt,{33:U,34:[1,343],58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z}),{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:344,19:[1,345],21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},t(rt,[2,88],{8:76,9:st,13:ot,37:ct}),t(fe,$t,{11:346,46:Ut}),{20:[1,347],47:le,48:ue},t(rt,[2,89],{8:76,9:st,13:ot,37:ct}),t(rt,[2,90],{8:76,9:st,13:ot,37:ct}),{12:[1,348],47:le,48:ue},{12:[1,349],47:le,48:ue},t(pe,$t,{11:350,46:Ut}),t(pe,$t,{11:351,46:Ut}),t(rt,[2,119]),t([1,12,19,20,22,24,25,26,30,34,35,46,47,48,71,72,79,81,102,105],[2,121],{33:U,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,82:[1,352]}),{20:[1,353],47:le,48:ue},{15:354,48:d},{15:355,48:d},t(qt,[2,148],{33:U,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z}),t(rt,[2,132]),t(rt,[2,133]),{15:356,46:Ht,48:d},t(we,[2,198]),t(rt,[2,136],{92:[1,357]}),{15:358,48:d},t(rt,[2,140]),{15:359,48:d},t(rt,[2,142]),{46:Ht,48:[2,202]},{20:[1,360],47:le,48:ue},{12:[1,361],47:le,48:ue},t(At,[2,9]),{19:[1,362]},t(se,[2,195]),{39:363,81:S,102:x},{39:364,81:S,102:x},{19:[1,365],33:U,35:[1,366],58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:367,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},t(At,[2,31]),{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:368,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},t(At,ke,{44:Le}),{19:[1,370],47:le,48:ue},t(At,[2,47],{44:[1,371]}),{3:12,4:Tt,5:131,6:33,7:r,14:i,16:s,17:127,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:It,53:xt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,98:126,100:372,102:x},t(ee,[2,158]),{20:[1,373],47:me},t(fe,$t,{11:374,46:Ut}),t(At,[2,13]),t(At,[2,14]),t(At,[2,17]),{8:76,9:st,13:ot,33:[1,375],37:ct},t(At,[2,16]),t(pe,$t,{11:376,46:Ut}),{30:[1,377],47:le,48:ue},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:379,21:o,23:a,25:[1,378],29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},t(At,[2,166]),{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:380,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},t(se,[2,168],{33:U,35:[1,382],58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z,82:[1,381]}),t(se,[2,173],{33:U,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z}),t(se,[2,174],{33:U,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z,82:[1,383]}),t(se,[2,176],{33:U,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z,82:[1,384]}),{8:76,9:st,13:ot,37:ct,104:[1,385]},{33:U,34:[1,386],58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:387,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},t(se,[2,191],{33:U,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z}),t(se,[2,192],{33:U,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z,82:[1,388]}),t(rt,[2,74]),{20:[1,389],47:le,48:ue},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:390,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},{15:391,48:d},t(Dt,[2,53]),t(fe,$t,{11:392,46:Ut}),{74:be},{20:[1,393],47:le,48:ue},t(At,[2,6]),{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:394,19:[1,395],21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},{19:[1,397],33:U,35:[1,396],58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z},t(At,[2,38]),{20:[1,398],47:le,48:ue},t(rt,[2,98]),{15:399,48:d},{15:400,48:d},{12:[1,401],47:le,48:ue},{12:[1,402],47:le,48:ue},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:403,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},t(rt,[2,124]),t(rt,[2,129]),t(rt,[2,130]),t(we,[2,199]),{15:404,48:d},t(rt,[2,138],{92:[1,405]}),t(rt,[2,141]),t(rt,[2,146]),{15:406,48:d},t(At,[2,10]),t(se,[2,196]),t(se,[2,197]),t(At,[2,27]),{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:407,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},{19:[1,408],33:U,35:[1,409],58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z},{19:[1,410],33:U,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z},t(At,[2,48]),t([9,13,22,32,33,37,46,47,56,57,58,59,62,63,64,65,66,67,68,69,70,71,72,73,79,96],ke,{39:221,18:411,44:Le,81:S,102:x}),t(At,[2,49]),t(ee,[2,159]),t(ee,[2,160]),{20:[1,412],47:le,48:ue},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:334,21:o,23:a,25:[1,413],29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},{12:[1,414],47:le,48:ue},{28:[1,415],52:ve,74:be},t(At,[2,24]),{25:[1,416],33:U,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z},{15:417,33:U,48:d,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:418,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:419,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:420,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:421,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:422,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:423,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},t(se,[2,181],{33:U,35:[1,425],58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z,82:[1,424]}),{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:426,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},t(rt,[2,80]),t(M,[2,66],{33:U,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z}),t(rt,[2,114]),{20:[1,427],47:le,48:ue},t(rt,[2,78]),{19:[1,429],33:U,35:[1,428],58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z},t(At,[2,36]),{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:430,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},t(At,[2,37]),t(rt,[2,97]),t(rt,[2,115]),t(rt,[2,116]),{15:431,48:d},{15:432,48:d},t(Zt,[2,122],{33:U,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q}),t(rt,[2,137]),{15:433,48:d},t(At,[2,8]),{19:[1,434],33:U,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z},t(At,[2,29]),{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:435,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},t(At,[2,32]),{22:[1,436],39:301,47:de,48:ge,81:S,102:x},t(ee,[2,152]),t(At,[2,25]),{25:[1,437]},{25:[1,438]},t(At,[2,26]),t(At,re,{40:439,89:ie}),t(se,[2,169],{33:U,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z}),t(se,[2,170],{33:U,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z,82:[1,440]}),t(se,[2,175],{33:U,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z}),t(se,[2,177],{33:U,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z}),t(se,[2,178],{33:U,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z,82:[1,441]}),t(se,[2,180],{33:U,35:[1,443],58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z,82:[1,442]}),{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:444,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:445,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},t(se,[2,193],{33:U,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z}),t(Dt,[2,54]),{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:446,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},t(At,[2,35]),{19:[1,447],33:U,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z},t(rt,[2,117]),t(rt,[2,118]),t(rt,[2,139]),t(At,[2,28]),{19:[1,448],33:U,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z},t(At,[2,11]),t(At,[2,19]),t(At,[2,21]),t(At,[2,167]),{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:449,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:450,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:451,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:452,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},t(se,[2,183],{33:U,35:[1,453],58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z}),t(se,[2,185],{33:U,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z,82:[1,454]}),{19:[1,455],33:U,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z},t(At,[2,34]),t(At,[2,30]),t(se,[2,171],{33:U,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z}),t(se,[2,179],{33:U,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z}),t(se,[2,182],{33:U,35:[1,456],58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z}),t(se,[2,184],{33:U,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z,82:[1,457]}),{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:458,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:459,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},t(At,[2,33]),{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:460,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},{3:12,4:n,5:32,6:33,7:r,14:i,16:s,17:461,21:o,23:a,29:et,31:l,32:u,38:h,39:40,41:p,42:42,44:f,49:yt,55:13,59:v,60:b,61:w,75:k,76:L,77:A,78:E,80:C,81:S,83:R,84:N,85:_,90:T,93:O,97:I,102:x},t(se,[2,189],{33:U,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z}),t(se,[2,187],{33:U,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z}),t(se,[2,188],{33:U,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z}),t(se,[2,186],{33:U,58:D,59:j,62:F,63:W,64:Y,65:z,66:G,67:H,68:J,69:K,70:q,71:V,72:X,79:Z})],defaultActions:{2:[2,204]},parseError:function(t,e){if(!e.recoverable){var n=new Error(t);throw n.hash=e,n}this.trace(t)},parse:function(t){var e=this,n=[0],r=[null],i=[],s=this.table,o="",a=0,c=0,l=0,u=2,h=1,p=i.slice.call(arguments,1),f=Object.create(this.lexer),d={yy:{}};for(var g in this.yy)Object.prototype.hasOwnProperty.call(this.yy,g)&&(d.yy[g]=this.yy[g]);f.setInput(t,d.yy),d.yy.lexer=f,d.yy.parser=this,void 0===f.yylloc&&(f.yylloc={});var m=f.yylloc;i.push(m);var y=f.options&&f.options.ranges;"function"==typeof d.yy.parseError?this.parseError=d.yy.parseError:this.parseError=Object.getPrototypeOf(this).parseError;for(var v,b,w,k,L,A,E,C,S,R=function(){var t;return"number"!=typeof(t=f.lex()||h)&&(t=e.symbols_[t]||t),t},N={};;){if(w=n[n.length-1],this.defaultActions[w]?k=this.defaultActions[w]:(null==v&&(v=R()),k=s[w]&&s[w][v]),void 0===k||!k.length||!k[0]){var _="";for(A in S=[],s[w])this.terminals_[A]&&A>u&&S.push("'"+this.terminals_[A]+"'");_=f.showPosition?"Parse error on line "+(a+1)+":\n"+f.showPosition()+"\nExpecting "+S.join(", ")+", got '"+(this.terminals_[v]||v)+"'":"Parse error on line "+(a+1)+": Unexpected "+(v==h?"end of input":"'"+(this.terminals_[v]||v)+"'"),this.parseError(_,{text:f.match,token:this.terminals_[v]||v,line:f.yylineno,loc:m,expected:S})}if(k[0]instanceof Array&&k.length>1)throw new Error("Parse Error: multiple actions possible at state: "+w+", token: "+v);switch(k[0]){case 1:n.push(v),r.push(f.yytext),i.push(f.yylloc),n.push(k[1]),v=null,b?(v=b,b=null):(c=f.yyleng,o=f.yytext,a=f.yylineno,m=f.yylloc,l>0&&l--);break;case 2:if(E=this.productions_[k[1]][1],N.$=r[r.length-E],N._$={first_line:i[i.length-(E||1)].first_line,last_line:i[i.length-1].last_line,first_column:i[i.length-(E||1)].first_column,last_column:i[i.length-1].last_column},y&&(N._$.range=[i[i.length-(E||1)].range[0],i[i.length-1].range[1]]),void 0!==(L=this.performAction.apply(N,[o,c,a,d.yy,k[1],r,i].concat(p))))return L;E&&(n=n.slice(0,-1*E*2),r=r.slice(0,-1*E),i=i.slice(0,-1*E)),n.push(this.productions_[k[1]][0]),r.push(N.$),i.push(N._$),C=s[n[n.length-2]][n[n.length-1]],n.push(C);break;case 3:return!0}}return!0}};function Ee(){this.yy={}}return Ee.prototype=Ae,Ae.Parser=Ee,new Ee}();e.parser=i,e.Parser=i.Parser,e.parse=function(){return i.parse.apply(i,arguments)},e.main=function(r){r[1]||(console.log("Usage: "+r[0]+" FILE"),t.exit(1));var i=n(4).readFileSync(n(1).normalize(r[1]),"utf8");return e.parser.parse(i)},n.c[n.s]===r&&e.main(t.argv.slice(1))}).call(this,n(3),n(17)(t))},function(t,e){t.exports=function(t){return t.webpackPolyfill||(t.deprecate=function(){},t.paths=[],t.children||(t.children=[]),Object.defineProperty(t,"loaded",{enumerable:!0,get:function(){return t.l}}),Object.defineProperty(t,"id",{enumerable:!0,get:function(){return t.i}}),t.webpackPolyfill=1),t}},function(t,e,n){var r,i,s,o,a,c,l,u,h,p,f,d,g,m,y,v,b,w,k,L,A,E,C,S,R,N,_,T,O,I,x,P,M,B,$,U,D,j,F,W,Y,z,G,H,J,K,q,V,X,Z,Q,tt,et,nt,rt,it,st,ot,at,ct=[].slice,lt=Array.from||function(t){return ct.call(t)},ut={}.toString;function ht(t,e){this.parent=t,this.shared=e,this.variables={}}function pt(){return!0}function ft(){return!1}function dt(){return this}function gt(){}function mt(t){return ht.root.assign(t+"$",X[t])}function yt(t,e){return t.replace(/\n/g,"\n"+e)}function vt(t,e){var n={}.hasOwnProperty;for(var r in e)n.call(e,r)&&(t[r]=e[r]);return t}function bt(t){function e(){}return e.prototype=t,new e}function wt(t,e){function n(){}return n.prototype=(t.superclass=e).prototype,(t.prototype=new n).constructor=t,"function"==typeof e.extended&&e.extended(t),t}function kt(t,e){for(var n=-1,r=e.length>>>0;++n<r;)if(t===e[n])return!0;return!1}function Lt(t,e){for(var n="";e>0;(e>>=1)&&(t+=t))1&e&&(n+=t);return n}function At(t,e){for(var n in e)t[n]=e[n];return t}r=n(19).fold,i=n(25),s=i.nameFromPath,o=i.stripString,i=n(5),a=i.SourceNode,c=i.SourceMapGenerator,l=function(t){var e,n,r,i,s,o;for(null==t&&(t={}),n=[],r=1,i=arguments.length;r<i;++r)n.push(arguments[r]);e=n;try{return(s=new a(t.line,t.column,null,e)).displayName=t.constructor.displayName,s}catch(t){throw o=t,console.dir(e),o}},u=function(t){var e,n,r,i;if(t instanceof a){for(e=0,r=(n=t.children).length;e<r;++e)if(i=n[e],!u(i))return!1;return!0}return!t},h=function(t){return t instanceof a?t:t.toString()},p=function(t,e){var n,r,i,s;for(n=0,r=t.children.length;n<r;++n)if(i=n,(s=t.children[i])instanceof a?e=p(s,e):(s=s.toString(),t.children[i]=s.slice(e),e-=s.length),e<=0)return 0;return e},a.prototype.replace=function(){var t,e,n,r;for(e=[],n=0,r=arguments.length;n<r;++n)e.push(arguments[n]);return t=e,new a(this.line,this.column,this.source,function(){var e,n,r,i,s=[];for(e=0,i=(r=this.children).length;e<i;++e)n=r[e],s.push(n.replace.apply(n,t));return s}.call(this),this.name)},a.prototype.setFile=function(t){var e,n,r,i,s=[];for(this.source=t,e=0,r=(n=this.children).length;e<r;++e)(i=n[e])instanceof a&&s.push(i.setFile(t));return s},a.prototype.toStringWithSourceMap=function(){var t,e,n,r,i,s,o,l,u,h,p,f;for(t=[],e=0,n=arguments.length;e<n;++e)t.push(arguments[e]);return r=function(t,e,n){n.prototype=t.prototype;var r,i=new n,s=t.apply(i,e);return("object"==(r=typeof s)||"function"==r)&&s||i}(c,t,(function(){})),i=1,s=0,o=[],l="",u="",h="",p="  ",(f=function(t){var e,n,c,d,g,m,y,v,b=[];if(!(t instanceof a)){for(u+=h+""+JSON.stringify(t)+"\n",l+=t,(m=o[o.length-1])&&r.addMapping({source:m.source,original:{line:m.line,column:m.column},generated:{line:i,column:s},name:m.name}),n=0,y=t.length;n<y;++n)v=n,"\n"===t.charAt(v)?(s=0,++i,m&&b.push(r.addMapping({source:m.source,original:{line:m.line,column:m.column},generated:{line:i,column:s},name:m.name}))):b.push(++s);return b}u+=h+t.displayName,(e=t.line&&"column"in t)&&(o.push(t),u+="!"),u+=" "+t.line+":"+t.column+" "+i+":"+s+"\n",h+=p;for(n=0,d=(c=t.children).length;n<d;++n)g=c[n],f(g);if(h=h.slice(0,h.length-p.length),e)return o.pop()})(this),{code:l,map:r,debug:u}},(f=function(){throw Error("unimplemented")}).prototype={compile:function(t,e){var n,r,i,s,o,a,c;if(n=vt({},t),null!=e&&(n.level=e),r=this.unfoldSoak(n)||this,n.level&&r.isStatement())return r.compileClosure(n);if(i=(r.tab=n.indent,r).compileNode(n),s=r.temps)for(o=0,a=s.length;o<a;++o)c=s[o],n.scope.free(c);return i},compileClosure:function(t){var e,n,r,i,s,o;return(e=this.getJump())&&e.carp("inconvertible statement"),n=M([],g(this)),r=A(),t.inAsync&&(n.async=!0),t.inGenerator&&(n.generator=!0),this.traverseChildren((function(t){switch(t.value){case"this":s=!0;break;case"arguments":i=t.value="args$"}})),s&&(r.args.push(y("this")),r.method=".call"),i&&(r.args.push(y("arguments")),n.params.push(v("args$"))),o=U(L((n.wrapper=!0,n.void=this.void,n),[r]),!0),t.inGenerator?o=new N("yieldfrom",o):t.inAsync&&(o=new N("await",o)),o.compile(t)},compileBlock:function(t,e){var n;return u(n=null!=e?e.compile(t,Z):void 0)?l(e,"{}"):l(null,"{\n",n,"\n"+this.tab+"}")},compileSpreadOver:function(t,e,n){var r,i,s,o,a,c,l,u,h;for(r=e instanceof C,s=0,o=(i=e.items).length;s<o;++s)a=s,(l=(c=i[s])instanceof D)&&(c=c.it),r&&!l&&(c=c.val),c=n(c),l&&(c=u=D(c)),r&&!l?i[a].val=c:i[a]=c;return u||!this.void&&t.level||((h=g(r?function(){var t,e,n,r,s=[];for(t=0,r=(n=i).length;t<r;++t)e=n[t],s.push(e.val);return s}():i)).front=this.front,h.void=!0,e=h),e.compile(t,Q)},cache:function(t,e,n,r){var i,s,o,a;return this.isComplex()?((s=this.getRef())?o=this:(o=O(s=v(t.scope.temporary(r)),this),e?s.temp=!0:a=[s.value]),null!=n?(o=o.compile(t,n),e&&a&&t.scope.free(s.value),[o,s.value]):[o,s,a]):[i=null!=n?this.compile(t,n):this,i]},compileLoopReference:function(t,e,n,r){var i,s,o,a;return this instanceof v&&t.scope.check(this.value)||this instanceof _&&("+"===(i=this.op)||"-"===i)&&-1/0<(i=+this.it.value)&&i<1/0||this instanceof y&&!this.isComplex()?(s=this.compile(t,Q),!r||this instanceof v||(s="("+s+")"),[s,s]):(o=O(v(a=t.scope.temporary(e)),this),n||(o.void=!0),[a,o.compile(t,n?rt:Q)])},eachChild:function(t){var e,n,r,i,s,o,a,c,l;for(e=0,r=(n=this.children).length;e<r;++e)if(s=this[i=n[e]])if("length"in s){for(o=0,a=s.length;o<a;++o)if(c=o,l=t(s[o],i,c))return l}else if(null!=(l=t(s,i)))return l},traverseChildren:function(t,e){var n=this;return this.eachChild((function(r,i,s){var o;return null!=(o=t(r,n,i,s))?o:r.traverseChildren(t,e)}))},rewriteShorthand:function(t,e){var n,r,i,s,o,a,c,l,u;for(n=0,i=(r=this.children).length;n<i;++n)if(o=this[s=r[n]])if("length"in o)for(a=0,c=o.length;a<c;++a)l=a,(u=o[a].rewriteShorthand(t,e))&&(o[l]=u);else(u=o.rewriteShorthand(t,e))&&(this[s]=u)},anaphorize:function(){var t,e;return this.children=this.aTargets,this.eachChild((function t(e){var n;return"that"===e.value||((n=e.aSource)?(n=e[n])?t(n):void 0:e.eachChild(t))}))&&(this[t=this.aSource]instanceof P?this[t].doAnaphorize=!0:"that"!==this[t].value&&(this[t]=O(v("that"),this[t]))),delete this.children,(e=this[this.aSource]).cond=!0,e},carp:function(t,e){throw null==e&&(e=SyntaxError),e(t+" "+this.lineMsg())},warn:function(t){"undefined"!=typeof console&&null!==console&&console.warn("WARNING: "+t+" "+this.lineMsg())},lineMsg:function(){return"on line "+(this.line||this.traverseChildren((function(t){return t.line})))},delegate:function(t,e){var n,r;for(n=0,r=t.length;n<r;++n)i.call(this,t[n]);function i(t){this[t]=function(n){return e.call(this,t,n)}}},children:[],terminator:";",isComplex:pt,isStatement:ft,isAssignable:ft,isCallable:ft,isEmpty:ft,isArray:ft,isString:ft,isRegex:ft,isMatcher:function(){return this.isString()||this.isRegex()},assigns:ft,ripName:gt,getRef:gt,unfoldSoak:gt,unfoldAssign:gt,unparen:dt,unwrap:dt,maybeKey:gt,varName:String,getAccessors:gt,getCall:gt,getDefault:gt,getJump:gt,isNextUnreachable:ft,extractKeyRef:function(t,e){return this.maybeKey()||this.carp(e?"invalid assign":"invalid property shorthand")},invert:function(){return _("!",this,!0)},invertCheck:function(t){return t.inverted?this.invert():this},addElse:function(t){return this.else=t,this},makeReturn:function(t,e){var n,r,i,s;return e?(n=this instanceof R?(null==this.items[0]||null==this.items[1]&&this.carp("must specify both key and value for object comprehension"),this.items):(r="keyValue$",function(){var t,e,n,o=[];for(t=0,n=(e=[O(v(r),this),v(r)]).length;t<n;++t)i=t,s=e[t],o.push(L(s).add(w(y(i))));return o}.call(this)),O(L(v(t)).add(w(n[0],".",!0)),n[1])):t?A.make(H(t+".push"),[this]):F(this)},show:String,toString:function(t){var e,n;return t||(t=""),e="\n"+t+this.constructor.displayName,(n=this.show())&&(e+=" "+n),this.eachChild((function(n){e+=n.toString(t+st)})),e},stringify:function(t){return JSON.stringify(this,null,t)},toJSON:function(){return vt({type:this.constructor.displayName},this)}},e.parse=function(t){return e.fromJSON(JSON.parse(t))},e.fromJSON=function t(n){var r,i,s,o,a,c,l,u=[];if(!n||"object"!=typeof n)return n;if(r=n.type){for(s in i=bt(e[r].prototype),n)o=n[s],i[s]=t(o);return i}if(null!=n.length){for(a=0,c=n.length;a<c;++a)l=n[a],u.push(t(l));return u}return n},d={show:function(){return this.negated&&"!"},invert:function(){return this.negated=!this.negated,this}},e.Block=g=function(t){var e=wt((vt(n,t).displayName="Block",n),t).prototype;function n(t){var e=this instanceof r?this:new r;return t||(t=[]),"length"in t?e.lines=t:(e.lines=[],e.add(t)),e}function r(){}return r.prototype=e,n.prototype.children=["lines"],n.prototype.toJSON=function(){return delete this.back,t.prototype.toJSON.call(this)},n.prototype.add=function(t){var e,n;switch(t=t.unparen(),!1){case!(e=this.back):e.add(t);break;case!(e=t.lines):(n=this.lines).push.apply(n,e);break;default:this.lines.push(t),n=t.back,delete t.back,(e=n)&&(this.back=e)}return this},n.prototype.prepend=function(){var t;return(t=this.lines).splice.apply(t,[this.neck(),0].concat(lt(arguments))),this},n.prototype.pipe=function(t,e){var n;switch(n="|>"===e?this.lines.pop():t,"Array"!==ut.call(n).slice(8,-1)&&(n=[n]),e){case"|>":this.lines.push(A.make(t,n,{pipe:!0}));break;case"<|":this.lines.push(A.make(this.lines.pop(),n))}return this},n.prototype.unwrap=function(){return 1===this.lines.length?this.lines[0]:this},n.prototype.chomp=function(){var t,e,n;for(e=(t=this.lines).length;(n=t[--e])&&n.comment;);return t.length=e+1,this},n.prototype.neck=function(){var t,e,n,r,i;for(t=0,e=0,r=(n=this.lines).length;e<r&&((i=n[e]).comment||i instanceof y);++e)++t;return t},n.prototype.isComplex=function(){var t;return this.lines.length>1||(null!=(t=this.lines[0])?t.isComplex():void 0)},e.delegate(["isCallable","isArray","isString","isRegex"],(function(t){var e,n;return null!=(e=(n=this.lines)[n.length-1])?e[t]():void 0})),n.prototype.getJump=function(t){var e,n,r,i;for(e=0,r=(n=this.lines).length;e<r;++e)if(i=n[e].getJump(t))return i},n.prototype.isNextUnreachable=function(){var t,e,n;for(t=0,n=(e=this.lines).length;t<n;++t)if(e[t].isNextUnreachable())return!0;return!1},n.prototype.makeReturn=function(){var t,e,n;return this.chomp(),(t=null!=(e=this.lines)[n=e.length-1]?e[n]=(e=e[n]).makeReturn.apply(e,arguments):void 0)&&t instanceof F&&!t.it&&--this.lines.length,this},n.prototype.compile=function(t,e){var n,r,i,s,o,a,c,h;if(null==e&&(e=t.level),e)return this.compileExpressions(t,e);for(t.block=this,n=t.indent,r=[],i=0,o=(s=this.lines).length;i<o;++i)(c=(a=s[i]).rewriteShorthand(t))&&(a=c),a=a.unfoldSoak(t)||a,u(h=(a.front=!0,a).compile(t,e))||(r.push(n),r.push(h),a.isStatement()||r.push(a.terminator),r.push("\n"));return r.pop(),l.apply(null,[null].concat(lt(r)))},n.prototype.compileRoot=function(t){var e,n,r,i,s,o,a,c,u,h;return r=(e=vt({level:Z,scope:this.scope=ht.root=new ht},t)).saveScope,delete e.saveScope,(n=r)&&(this.scope=ht.root=e.scope=n.savedScope||(n.savedScope=e.scope)),delete e.filename,e.indent=(r=e.bare,delete e.bare,(i=r)?"":st),/^\s*(?:#!|javascript:)/.test(null!=(r=this.lines[0])?r.code:void 0)&&(s=this.lines.shift().code+"\n"),"/"===(null!=(o=this.lines[0])&&null!=(a=o.code)?a[0]:void 0)&&(c=this.lines.shift().code+"\n"),u=e.eval,delete e.eval,u&&this.chomp().lines.length&&(i?this.lines.push(U(this.lines.pop())):this.makeReturn()),h=[this.compileWithDeclarations(e)],i||(h=["(function(){\n"].concat(lt(h),["\n}).call(this);\n"])),l(null,s||[],t.header||[],c||[],h)},n.prototype.compileWithDeclarations=function(t){var e,n,r,i,s;return t.level=Z,e=[],(n=this.neck())&&(r=this.lines.splice(n,9e9),e=[this.compile(t),"\n"],this.lines=r),u(i=this.compile(t))?l(this,e[0]||[]):l.apply(null,[null].concat(lt(e),[(s=this.scope)?s.emit(i,t.indent):i]))},n.prototype.compileExpressions=function(t,e){var n,r,i,s,o,a,c,u,h;for(n=this.chomp().lines,r=-1;i=n[++r];)i.comment&&n.splice(r--,1);if(n.length||n.push(y("void")),n[0].front=this.front,n[n.length-1].void=this.void,!n[1])return(i=(s=n[0]).rewriteShorthand(t))&&(s=i),s.compile(t,e);for(o=[],a=n.pop(),c=0,u=n.length;c<u;++c)(i=(h=n[c]).rewriteShorthand(t))&&(h=i),o.push((h.void=!0,h).compile(t,Q),", ");return(i=a.rewriteShorthand(t))&&(a=i),o.push(a.compile(t,Q)),l.apply(null,e<tt?[null].concat(lt(o)):[null,"("].concat(lt(o),[")"]))},n.prototype.rewriteShorthand=gt,n}(f),m=function(t){wt((vt(e,t).displayName="Atom",e),t).prototype;function e(){e.superclass.apply(this,arguments)}return e.prototype.show=function(){return this.value},e.prototype.isComplex=ft,e}(f),e.Literal=y=function(t){var e=wt((vt(n,t).displayName="Literal",n),t).prototype;function n(t){var e=this instanceof r?this:new r;return e.value=t,t.js?H(t+"",!0):"super"===t?new $:e}function r(){}return r.prototype=e,n.prototype.isEmpty=function(){var t;return"void"===(t=this.value)||"null"===t},n.prototype.isCallable=function(){var t;return"this"===(t=this.value)||"eval"===t||".."===t},n.prototype.isString=function(){return 0<="'\"".indexOf((this.value+"").charAt())},n.prototype.isRegex=function(){return"/"===(this.value+"").charAt()},n.prototype.isComplex=function(){return this.isRegex()||"debugger"===this.value},n.prototype.isWhat=function(){switch(!1){case!this.isEmpty():return"empty";case!this.isCallable():return"callable";case!this.isString():return"string";case!this.isRegex():return"regex";case!this.isComplex():return"complex"}},n.prototype.varName=function(){return/^\w+$/.test(this.value)?"$"+this.value:""},n.prototype.makeReturn=function(e){return e||"debugger"!==this.value?t.prototype.makeReturn.apply(this,arguments):this},n.prototype.maybeKey=function(){var t;return ot.test(this.value)?b(this.value,"arguments"!==(t=this.value)&&"eval"!==t):this},n.prototype.compile=function(t,e){var n,r;switch(null==e&&(e=t.level),n=this.value+""){case"this":return l(this,(null!=(r=t.scope.fun)?r.bound:void 0)||n);case"void":if(!e)return l(this,"");n+=" 8";case"null":e===rt&&this.carp("invalid use of "+this.value);break;case"on":case"yes":n="true";break;case"off":case"no":n="false";break;case"*":this.carp("stray star");break;case"..":(n=t.ref)||this.carp("stray reference"),this.cascadee||(n.erred=!0);break;case"debugger":if(e)return l(this,"(function(){ debugger; }())")}return l(this,h(n))},n}(m),e.Var=v=function(t){var e=wt((vt(n,t).displayName="Var",n),t).prototype;function n(t){var e=this instanceof r?this:new r;return e.value=t,e}function r(){}return r.prototype=e,e.isAssignable=e.isCallable=pt,n.prototype.assigns=function(){return[this.value]},n.prototype.maybeKey=function(){var t;return(t=b(this.value)).line=this.line,t},n.prototype.varName=e.show,n.prototype.compile=function(t){return l(this,this.temp?t.scope.free(this.value):this.value)},n}(m),e.Key=b=function(t){var e=wt((vt(n,t).displayName="Key",n),t).prototype;function n(t,e){var n=this instanceof r?this:new r;return n.reserved=e||t.reserved,n.name=""+t,n}function r(){}return r.prototype=e,n.prototype.isComplex=ft,n.prototype.assigns=function(){return[this.name]},n.prototype.maybeKey=dt,n.prototype.varName=function(){var t;return t=this.name,this.reserved||"arguments"===t||"eval"===t?"$"+t:t},n.prototype.show=function(){return this.reserved?"'"+this.name+"'":this.name},n.prototype.compile=function(){return l(this,this.show())},n}(f),e.Index=w=function(t){var e=wt((vt(n,t).displayName="Index",n),t).prototype;function n(t,e,n){var i,s=this instanceof r?this:new r;if(e||(e="."),n&&t instanceof R)switch(t.items.length){case 1:(i=t.items[0])instanceof D||(t=U(i))}switch(e){case"[]":s.vivify=R;break;case"{}":s.vivify=C;break;default:"="===e.slice(-1)&&(s.assign=e.slice(1))}return s.key=t,s.symbol=e,s}function r(){}return r.prototype=e,n.prototype.children=["key"],n.prototype.show=function(){return[this.soak?"?":void 0]+this.symbol},n.prototype.isComplex=function(){return this.key.isComplex()||null!=this.vivify},n.prototype.varName=function(){var t;return((t=this.key)instanceof b||t instanceof y)&&this.key.varName()},n.prototype.compile=function(t){var e;return e=this.key.compile(t,Q),this.key instanceof b&&"'"!==e.toString().charAt(0)?l(this,".",e):l(this,"[",e,"]")},n}(f),e.Slice=k=function(t){var e=wt((vt(n,t).displayName="Slice",n),t).prototype;function n(t){var e=this instanceof r?this:new r;return e.type=t.type,e.target=t.target,e.from=t.from,e.to=t.to,null==e.from&&(e.from=y(0)),e.to&&"to"===e.type&&(e.to=T("+",e.to,y("1"))),e}function r(){}return r.prototype=e,n.prototype.children=["target","from","to"],n.prototype.show=function(){return this.type},n.prototype.compileNode=function(t){var e;return this.to&&"to"===this.type&&(this.to=T("||",this.to,y("9e9"))),e=[this.target,this.from],this.to&&e.push(this.to),L(v(mt("slice"))).add(w(b("call"),".",!0)).add(A(e)).compile(t)},n}(f),e.Chain=L=function(t){var e=wt((vt(n,t).displayName="Chain",n),t).prototype;function n(t,e){var i=this instanceof r?this:new r;return!e&&t instanceof n?t:(i.head=t,i.tails=e||[],i)}function r(){}return r.prototype=e,n.prototype.children=["head","tails"],n.prototype.add=function(t){var e,r,i,s,o,a,c,l;if(this.tails.length&&(e=(r=this.tails)[r.length-1])instanceof A&&1===(null!=(r=e.partialized)?r.length:void 0)&&1===t.args.length)return i=e.partialized[0].head.value,delete e.partialized,e.args[i]=t.args[0],this;if(this.head instanceof P&&(s=n(this.head.it),this.head=s.head,this.tails=s.tails,t.soak=!0),this.tails.push(t),o=this.head instanceof U&&this.head.it instanceof T&&!this.head.it.partial?this.head.it:this.head instanceof T&&!this.head.partial?this.head:void 0,this.head instanceof $)!this.head.called&&t instanceof A&&!t.method?(t.method=".call",t.args.unshift(y("this")),this.head.called=!0):this.tails[1]||"prototype"!==(null!=(s=t.key)?s.name:void 0)||(this.head.sproto=!0);else if(t instanceof A&&1===this.tails.length&&o&&kt(o.op,a=["&&","||","xor"]))return c=t,(l=function(t,e){var r;return(r=t[e])instanceof T&&kt(r.op,a)?(l(r,"first"),l(r,"second")):t[e]=n(r).autoCompare(c.args)})(o,"first"),l(o,"second"),o;return this},n.prototype.autoCompare=function(t){var e;switch(this.tails.length||(e=this.head),!1){case!(e instanceof y):case!(e instanceof _&&e.it instanceof y):return T("===",e,t[0]);case!(e instanceof R||e instanceof C):return T("====",e,t[0]);case!(e instanceof v&&"_"===e.value):return y("true");default:return this.add(A(t))||[]}},n.prototype.flipIt=function(){return this.flip=!0,this},n.prototype.unwrap=function(){return this.tails.length?this:this.head},e.delegate(["getJump","assigns","isStatement","isString"],(function(t,e){return!this.tails.length&&this.head[t](e)})),n.prototype.isComplex=function(){return this.tails.length||this.head.isComplex()},n.prototype.isCallable=function(){var t,e;return(t=(e=this.tails)[e.length-1])?!(null!=(e=t.key)&&e.items):this.head.isCallable()},n.prototype.isArray=function(){var t,e;return(t=(e=this.tails)[e.length-1])?t.key instanceof R:this.head.isArray()},n.prototype.isRegex=function(){return"RegExp"===this.head.value&&!this.tails[1]&&this.tails[0]instanceof A},n.prototype.isAssignable=function(){var t,e,n,r;if(!(t=(e=this.tails)[e.length-1]))return this.head.isAssignable();if(!(t instanceof w)||t.key instanceof E||".~"===t.symbol)return!1;for(n=0,r=(e=this.tails).length;n<r;++n)if((t=e[n]).assign)return!1;return!0},n.prototype.isSimpleAccess=function(){return 1===this.tails.length&&!this.head.isComplex()&&!this.tails[0].isComplex()},n.prototype.makeReturn=function(){var e;return this.tails.length?t.prototype.makeReturn.apply(this,arguments):(e=this.head).makeReturn.apply(e,arguments)},n.prototype.getCall=function(){var t,e;return(t=(e=this.tails)[e.length-1])instanceof A&&t},n.prototype.varName=function(){var t,e;return null!=(t=(e=this.tails)[e.length-1])?t.varName():void 0},n.prototype.cacheReference=function(t){var e,r,i,s,o,a;return e=(r=this.tails)[r.length-1],this.isAssignable()?!(this.tails.length<2)||this.head.isComplex()||null!=e&&e.isComplex()?((i=n(this.head,this.tails.slice(0,-1))).isComplex()&&(r=i.unwrap().cache(t,!0),i=r[0],s=r[1],i=n(i)),e?(o=e,"."!==e.symbol&&(o=e,e=w(e.key,".")),e.isComplex()&&(a=(r=e.key.unwrap().cache(t,!0,void 0,"key"))[0],o.key=r[1],e=w(a)),[i.add(e),n(s||i.head,[o])]):[i,s]):[this,this]:this.unwrap().cache(t,!0)},n.prototype.compileNode=function(t){var e,r,i,s,o,a,c,u,h,p,f,d,g,m,k,L,E,C;if(this.flip&&(mt("flip"),mt("curry")),e=this.head,r=this.tails,e.front=this.front,e.newed=this.newed,!r.length)return e.compile(t);if(i=this.unfoldAssign(t))return i.compile(t);for(s=0,o=r.length;s<o;++s)if((a=r[s]).partialized){c=!0;break}if(c){for(mt("slice"),u=[],h=[],s=0,o=r.length;s<o;++s)a=r[s],(p=p||null!=a.partialized)?h.push(a):u.push(a);return null!=h&&(f=h[0],d=ct.call(h,1)),this.tails=u,g=u.length?n(e,ct.call(u,0,-1)):y("this"),n(n(v(mt("partialize"))).add(w(b("apply"))).add(A([g,R([this,R(f.args),R(f.partialized)])])),d).compile(t)}if(r[0]instanceof A&&!e.isCallable()&&this.carp("invalid callee"),this.expandVivify(),this.expandBind(t),this.expandSplat(t),this.expandStar(t),this.splattedNewArgs)return m=t.indent+st,k=n(this.head,r.slice(0,-1)),l(null,"(function(func, args, ctor) {\n"+m+"ctor.prototype = func.prototype;\n"+m+"var child = new ctor, result = func.apply(child, args), t;\n"+m+'return (t = typeof result)  == "object" || t == "function" ? result || child : child;\n'+st+"})(",k.compile(t),", ",this.splattedNewArgs,", function(){})");if(!this.tails.length)return this.head.compile(t);for(L=[this.head.compile(t,rt)],E=[],h=[],s=0,o=(C=this.tails).length;s<o;++s)(a=C[s]).new&&E.push("new "),h.push(a.compile(t));return"."===h.join("").charAt(0)&&at.test(L[0].toString())&&L.push(" "),l.apply(null,[null].concat(lt(E),lt(L),lt(h)))},n.prototype.unfoldSoak=function(t){var e,r,i,s,o,a,c,l,u;if(e=this.head.unfoldSoak(t))return(r=e.then.tails).push.apply(r,this.tails),e;for(i=0,s=(r=this.tails).length;i<s;++i)if(o=i,c=(a=r[i]).soak,delete a.soak,c)return l=n(this.head,this.tails.splice(0,o)),a.assign&&!l.isAssignable()&&a.carp("invalid accessign"),o&&(a.assign||a instanceof A)?(u=(c=l.cacheReference(t))[0],(l=c[1])instanceof n&&((c=this.tails).unshift.apply(c,l.tails),l=l.head),this.head=l):(u=(c=l.unwrap().cache(t))[0],this.head=c[1]),u=a instanceof A?H("typeof "+u.compile(t,nt)+" == 'function'"):P(u),(c=z(u,this)).soak=!0,c.cond=this.cond,c.void=this.void,c},n.prototype.unfoldAssign=function(t){var e,r,i,s,o,a,c,l,u,h,p,f,d;if(e=this.head.unfoldAssign(t))return(r=e.right.tails).push.apply(r,this.tails),e;for(i=0,s=(r=this.tails).length;i<s;++i)if(o=i,c=(a=r[i]).assign){if(a.assign="",(l=n(this.head,this.tails.splice(0,o)).unwrap())instanceof R)for(u=l.items,h=(this.head=R()).items,p=0,f=u.length;p<f;++p)o=p,d=n(u[p]).cacheReference(t),h[o]=d[0],u[o]=d[1];else l=(d=n(l).cacheReference(t))[0],this.head=d[1];return"="===c&&(c=":="),(d=O(l,this,c)).access=!0,d}},n.prototype.expandSplat=function(t){var e,r,i,s,o,a;for(e=this.tails,r=-1;i=e[++r];)(s=i.args)&&(o=".call"===i.method&&(s=s.concat()).shift(),u(s=D.compileArray(t,s,!0))||(i.new?this.splattedNewArgs=s:(!o&&e[r-1]instanceof w&&(a=n(this.head,e.splice(0,r-1)).cache(t,!0),this.head=a[0],o=a[1],r=0),i.method=".apply",i.args=[o||y("null"),H(s)])))},n.prototype.expandVivify=function(){var t,e,r,i,s;for(t=this.tails,e=0;e<t.length;)s=(i=t[e++]).vivify,delete i.vivify,(r=s)&&(this.head=O(n(this.head,t.splice(0,e)),r(),"=","||"),e=0)},n.prototype.expandBind=function(t){var e,r,i,s,o,a;for(e=this.tails,r=-1;i=e[++r];)".~"===i.symbol&&(i.symbol="",s=n(this.head,e.splice(0,r)).unwrap(),o=e.shift().key,a=A.make(J("bind"),[s,(o.reserved=!0,o)]),this.head=this.newed?U(a,!0):a,r=-1)},n.prototype.expandStar=function(t){var e,r,i,s,o,a,c,l,u,h,p,f;for(e=this.tails,r=-1;i=e[++r];)if(!(i.args||i.stars||i.key instanceof b)&&(s=i.stars=[],i.eachChild(d),s.length)){for(a=(o=n(this.head,e.splice(0,r)).unwrap().cache(t))[0],c=o[1],l=o[2],u=n(c,[w(b("length"))]).compile(t),h=0,p=s.length;h<p;++h)(f=s[h]).value=u,f.isAssignable=pt;this.head=H(a.compile(t,rt)+e.shift().compile(t)),l&&t.scope.free(l[0]),r=-1}function d(t){"*"===t.value?s.push(t):t instanceof w||t.eachChild(d)}},n.prototype.rewriteShorthand=function(t,e){var n,r,i,s,o;for((n=this.head.rewriteShorthand(t))&&(this.head=n),r=0,s=(i=this.tails).length;r<s;++r)o=r,(n=i[r].rewriteShorthand(t,e))&&(this.tails[o]=n);return this.expandSlice(t,e),this.unwrap()},n.prototype.expandSlice=function(t,e){var r,i,s,o,a;for(r=this.tails,i=-1;s=r[++i];)null!=(o=s.key)&&o.items&&(r[i+1]instanceof A&&s.carp("calling a slice"),a=(a=r.splice(0,i+1)).pop().key.toSlice(t,n(this.head,a).unwrap(),s.symbol,e),this.head=(a.front=this.front,a),i=-1);return this},n.prototype.extractKeyRef=function(e,n){var r,i;return(null!=(r=(i=this.tails)[i.length-1])&&null!=(i=r.key)?i.extractKeyRef(e,n):void 0)||t.prototype.extractKeyRef.apply(this,arguments)},n}(f),e.Call=A=function(t){var e=wt((vt(n,t).displayName="Call",n),t).prototype;function n(t){var e,n,i,s,o,a=this instanceof r?this:new r;if(t||(t=[]),1===t.length&&(e=t[0])instanceof D)e.filler?(a.method=".call",t[0]=y("this"),t[1]=D(y("arguments"))):e.it instanceof R&&(t=e.it.items);else for(n=0,i=t.length;n<i;++n)s=n,"_"===t[n].value&&(t[s]=L(y("void")),t[s].placeholder=!0,(null!=(o=a.partialized)?o:a.partialized=[]).push(L(y(s))));return a.args=t,a}function r(){}return r.prototype=e,n.prototype.children=["args"],n.prototype.show=function(){return[this.new]+[this.method]+[this.soak?"?":void 0]},n.prototype.compile=function(t){var e,n,r,i,s,o;for(e=[l(this,this.method||"","(")+(this.pipe?"\n"+t.indent:"")],n=0,i=(r=this.args).length;n<i;++n)s=n,o=r[n],e.push(s?", ":"",o.compile(t,tt));return e.push(l(this,")")),l.apply(null,[null].concat(lt(e)))},n.make=function(t,e,r){var i;return i=n(e),r&&vt(i,r),L(t).add(i)},n.block=function(t,e,r){var i,s;return(i=U(L(t,[(s=n(e),s.method=r,s)]),!0)).calling=!0,i},n.back=function(t,e,r,i,s,o){var a,c,l,u,h,p;for(a=M(t,void 0,r,i,s,o),e instanceof G&&(a.name=e.label,a.labeled=!0,e=e.it),!a.hushed&&(a.hushed="!"===e.op)&&(e=e.it),null!=(c=e.getCall())&&(c.partialized=null),u=0,h=0,p=(l=(e.getCall()||(e=L(e).add(n())).getCall()).args).length;h<p&&!l[h].placeholder;++h)++u;return e.back=(l[u]=a).body,e},n.let=function(t,e){var n,r,i,s,o,a,c,l,u,h;for(n=!1,r=!1,e.traverseChildren((function(t){if(t instanceof N)switch(t.op){case"yield":case"yieldfrom":n=!0;break;case"await":r=!0}if(n&&r)return!0})),s=[],o=0,a=t.length;o<a;++o)if(c=o,u="="===(l=t[o]).op&&!l.logic&&l.right){if(t[c]=u,0===c&&(h="this"===l.left.value))continue;s.push(l.left)}else s.push(v(l.varName()||l.carp('invalid "let" argument')));return i=s,h||t.unshift(y("this")),e=this.block(M(i,e,null,null,null,n,r),t,".call"),n||r?g(N(n?"yieldfrom":"await",e)):e},n}(f),E=function(t){wt((vt(e,t).displayName="List",e),t).prototype;function e(){e.superclass.apply(this,arguments)}return e.prototype.children=["items"],e.prototype.show=function(){return this.name},e.prototype.named=function(t){return this.name=t,this},e.prototype.isEmpty=function(){return!this.items.length},e.prototype.assigns=function(){var t,e,n,r,i,s,o,a,c;for(e=[],n=0,i=(r=this.items).length;n<i;++n)if(s=r[n].assigns())for(o=0,a=s.length;o<a;++o)c=s[o],e.push(c);return t=e,(s=this.name)&&t.push(s),t},e.compile=function(t,e,n){var r,i,s,o,a,c;switch(e.length){case 0:return"";case 1:return e[0].compile(t,tt)}for(r=t.indent,i=t.level,t.indent=r+st,t.level=tt,s=[e[o=0].compile(t)];a=e[++o];)s.push(", "),c=a,n&&(c instanceof v&&"_"===c.value?c=C([S(b("__placeholder__"),y(!0))]):(c instanceof C||c instanceof R)&&(c.deepEq=!0)),s.push(c.compile(t));return~s.join("").indexOf("\n")&&(s=["\n"+t.indent].concat(lt(s),["\n"+r])),t.indent=r,t.level=i,l.apply(null,[this].concat(lt(s)))},e.prototype.toSlice=function(t,n,r,i){var s,o,a,c,l,u,h,p,f,d,g,m;for(s=this.items,o=this instanceof C,s.length>1?(a=n.cache(t),n=a[0],c=a[1],l=a[2]):c=n,u=0,h=s.length;u<h;++u)if(p=u,!(f=s[u]).comment){if(o)(d=f.val)instanceof e||(d=d.maybeKey())||this.carp("value in object slice is not a key");else if((g=(d=f)instanceof D)&&(d=d.it),d.isEmpty())continue;m=d instanceof e?d.toSlice(t,n,r,i):L(n,[w(d,r)]),o?f.val=m:s[p]=g?D(m):m,n=c}return m||this.carp("empty slice"),l&&(this.temps||(this.temps=[])).push(l[0]),this},e.prototype.extractKeyRef=function(){var e;return null!=(e=this.name)?b(e):t.prototype.extractKeyRef.apply(this,arguments)},e}(f),e.Obj=C=function(t){var e=wt((vt(n,t).displayName="Obj",n),t).prototype;function n(t){var e=this instanceof r?this:new r;return e.items=t||[],e}function r(){}return r.prototype=e,n.prototype.asObj=dt,n.prototype.compileNode=function(t){var e,r,i,s,o,a,c,u,h,p,f,d,g;if(null!=this.name&&this.carp("unexpected label"),!(e=this.items).length)return l(this,this.front?"({})":"{}");for(r=[],i="\n"+(t.indent+=st),s={},o=0,a=e.length;o<a;++o)if(c=o,(u=e[o]).comment)r.push(i,u.compile(t));else{if((h=u.key)instanceof D||h instanceof U){p=e.slice(c);break}u.logic&&(u.val=((h=u.logic).first=u.val,h)),this.deepEq&&(u.val instanceof v&&"_"===u.val.value?u.val=n([S(b("__placeholder__"),y(!0))]):((h=u.val)instanceof n||h instanceof R)&&(u.val.deepEq=!0)),f?r.push(","):f=!0,r.push(i),d=u.key,g=u.val,u.accessor?r.push(u.compileAccessor(t,d=d.compile(t))):(g.ripName(d),r.push(d=d.compile(t),": ",g.compile(t,tt))),ot.test(d)||(d=Function("return "+d)()),(s[d+"."]^=1)||u.carp('duplicate property "'+d+'"')}return r.join("")&&r.push("\n"+this.tab),r=l.apply(null,[null,l(this,"{")].concat(lt(r),[l(this,"}")])),p&&(r=I(H(r),n(p)).compile((t.indent=this.tab,t))),this.front&&"{"===r.toString().charAt()?l(null,"(",r,")"):r},n}(E),e.Prop=S=function(t){var e=wt((vt(n,t).displayName="Prop",n),t).prototype;function n(t,e){var n,i,s,o,a=this instanceof r?this:new r;if(a.key=t,a.val=e,"..."===(null!=t?t.value:void 0)&&(a.key=D()),n=e.getAccessors()){for(a.val=n,i=0,s=n.length;i<s;++i)(o=n[i]).x=(o.hushed=o.params.length)?"s":"g";a.accessor="accessor"}return a}function r(){}return r.prototype=e,n.prototype.children=["key","val","logic"],n.prototype.show=function(){return this.accessor},n.prototype.assigns=function(){var t;return"function"==typeof(t=this.val).assigns?t.assigns():void 0},n.prototype.compileAccessor=function(t,e){var n,r,i,s,o;for((n=this.val)[1]&&n[0].params.length+n[1].params.length!==1&&n[0].carp("invalid accessor parameter"),r=[],i=0,s=n.length;i<s;++i)(o=n[i]).accessor=!0,r.push(o.x,"et ",e,o.compile(t,tt).toString().slice(8),",\n"+t.indent);return r.pop(),l.apply(null,[null].concat(lt(r)))},n.prototype.compileDescriptor=function(t){var e,r,i,s,o;for(e=C(),r=0,s=(i=this.val).length;r<s;++r)o=i[r],e.items.push(n(b(o.x+"et"),o));return e.items.push(n(b("configurable"),y(!0))),e.items.push(n(b("enumerable"),y(!0))),e.compile(t)},n.prototype.rewriteShorthand=function(e,n){var r,i;t.prototype.rewriteShorthand.apply(this,arguments),null==this.key&&this.val instanceof O&&(this.val=this.val.maybeLogic()),null==this.key&&this.val instanceof _&&("+"===(r=this.val.op)||"-"===r)&&(this.key=this.val.it.maybeKey()||this.carp("invalid property flag shorthand"),this.val=y("+"===this.val.op)),(i=this.val instanceof T&&this.val.getDefault())&&(this.val=this.val.first,this.logic=(i.first=null,i)),null==this.key&&(this.key=this.val.extractKeyRef(e,n))},n}(f),e.Arr=R=function(t){var e=wt((vt(r,t).displayName="Arr",r),t).prototype,n=r;function r(t){var e=this instanceof i?this:new i;return e.items=t||[],e}function i(){}return i.prototype=e,r.prototype.isArray=pt,r.prototype.asObj=function(){var t,e;return C(function(){var n,r,i,s=[];for(n=0,i=(r=this.items).length;n<i;++n)t=n,e=r[n],s.push(S(y(t),e));return s}.call(this))},r.prototype.compile=function(t){var e,n;return null!=this.name&&this.carp("unexpected label"),(e=this.items).length?u(n=D.compileArray(t,e))?l(null,l(this,"["),E.compile(t,e,this.deepEq),l(this,"]")):this.newed?l(this,"(",n,")"):l(this,n):l(this,"[]")},r.maybe=function(t){return 1!==t.length||t[0]instanceof D?n(t):t[0]},r.wrap=function(t){return n([D((t.isArray=pt,t))])},r}(E),e.Yield=N=function(t){var e=wt((vt(n,t).displayName="Yield",n),t).prototype;function n(t,e){var n=this instanceof r?this:new r;return n.op=t,n.it=e,n}function r(){}return r.prototype=e,n.prototype.children=["it"],n.prototype.show=function(){switch(this.op){case"yield":return"";case"yieldfrom":return"from";case"await":return"await"}},e.delegate(["isCallable"],(function(){return!0})),n.prototype.compileNode=function(t){var e;return e=[function(){switch(this.op){case"yield":return"yield";case"yieldfrom":return"yield*";case"await":return"await"}}.call(this)],this.it&&e.push(" "+this.it.compile(t,nt+it.unary)),l.apply(null,[this,"("].concat(lt(e),[")"]))},n}(f),e.Unary=_=function(t){var e=wt((vt(r,t).displayName="Unary",r),t).prototype,n=r;function r(t,e,n){var r,s,o,a,c,l=this instanceof i?this:new i;if(null!=e){if(r=!n&&e.unaries)return r.push(t),e;switch(t){case"!":if(n)break;return e instanceof M&&!e.hushed?(e.hushed=!0,e):e.invert();case"++":case"--":n&&(l.post=!0);break;case"new":for(e instanceof P&&!e.negated&&(e=L(e).add(A())),e.newed=!0,s=0,a=(o=e.tails||"").length;s<a;++s)if((c=o[s])instanceof A&&!c.new)return".call"===c.method&&c.args.shift(),c.new="new",c.method="",e;break;case"~":if(e instanceof M&&e.statement&&!e.bound)return e.bound="this$",e}}return l.op=t,l.it=e,l}function i(){}function s(t){return{"++":"in","--":"de"}[t]+"crement"}return i.prototype=e,r.prototype.children=["it"],r.prototype.show=function(){return[this.post?"@":void 0]+this.op},r.prototype.isCallable=function(){var t;return"do"===(t=this.op)||"new"===t||"delete"===t||null==this.it},r.prototype.isArray=function(){return this.it instanceof R&&this.it.items.length||this.it instanceof L&&this.it.isArray()},r.prototype.isString=function(){var t;return"typeof"===(t=this.op)||"classof"===t},r.prototype.invert=function(){var t;return"!"!==this.op||"!"!==(t=this.it.op)&&"<"!==t&&">"!==t&&"<="!==t&&">="!==t&&"of"!==t&&"instanceof"!==t?n("!",this,!0):this.it},r.prototype.unfoldSoak=function(t){var e;return("++"===(e=this.op)||"--"===e||"delete"===e)&&null!=this.it&&z.unfoldSoak(t,this,"it")},r.prototype.getAccessors=function(){var t;if("~"===this.op)return this.it instanceof M?[this.it]:this.it instanceof R&&!(t=this.it.items)[2]&&t[0]instanceof M&&t[1]instanceof M?t:void 0},r.prototype.compileNode=function(t){var e,n,i,o,a;if(null==this.it)return this.compileAsFunc(t);if(e=this.compileSpread(t))return e;switch(n=this.op,i=this.it,n){case"!":i.cond=!0;break;case"new":i.isCallable()||i.carp("invalid constructor");break;case"do":return t.level===Z&&i instanceof M&&i.isStatement()?l(this,i.compile(t)," ",r("do",v(i.name)).compile(t)):(o=U(i instanceof P&&!i.negated?L(i).add(A()):A.make(i)),l(this,(o.front=this.front,o.newed=this.newed,o).compile(t)));case"delete":if((i instanceof v||!i.isAssignable())&&this.carp("invalid delete"),t.level&&!this.void)return this.compilePluck(t);break;case"++":case"--":i.isAssignable()||this.carp("invalid "+s(n)),(e=i instanceof v&&t.scope.checkReadOnly(i.value))&&this.carp(s(n)+" of "+e+' "'+i.value+'"',ReferenceError),this.post&&(i.front=this.front);break;case"^^":return l(this,mt("clone"),"(",i.compile(t,tt),")");case"jsdelete":return l(this,"delete ",i.compile(t,tt));case"classof":return l(this,mt("toString"),".call(",i.compile(t,tt),").slice(8, -1)")}return a=[i.compile(t,nt+it.unary)],this.post?a.push(n):("new"!==n&&"typeof"!==n&&"delete"!==n&&("+"!==n&&"-"!==n||n!==a.join("").charAt())||(n+=" "),a.unshift(n)),t.level<rt?l.apply(null,[this].concat(lt(a))):l.apply(null,[this,"("].concat(lt(a),[")"]))},r.prototype.compileSpread=function(t){var e,r;for(e=this.it,r=[this];e instanceof n;e=e.it)r.push(e);return e instanceof D&&(e=e.it)instanceof E?this.compileSpreadOver(t,e,(function(t){var e,i,s;for(e=(i=r).length-1;e>=0;--e)s=i[e],t=n(s.op,t,s.post);return t})):""},r.prototype.compilePluck=function(t){var e,n,r,i,s;return n=(e=L(this.it).cacheReference(t))[0],r=e[1],i=[s=t.scope.temporary()," = ",n.compile(t,tt),", delete ",r.compile(t,tt),", ",t.scope.free(s)],t.level<tt?l.apply(null,[this].concat(lt(i))):l.apply(null,[this,"("].concat(lt(i),[")"]))},r.prototype.compileAsFunc=function(t){return"!"===this.op?l(this,mt("not")):l(this,"(",M([],g(r(this.op,L(v("it"))))).compile(t),")")},r}(f),e.Binary=T=function(t){var e,n,r=wt((vt(i,t).displayName="Binary",i),t).prototype;function i(t,e,n){var r,i=this instanceof s?this:new s;if(i.partial=null==e||null==n,!i.partial){if("="===t.charAt(t.length-1)&&"="!==(r=t.charAt(t.length-2))&&"<"!==r&&">"!==r&&"!"!==r)return O(e.unwrap(),n,t);switch(t){case"in":return new x(e,n);case"with":return new I(_("^^",e),n,!1);case"<<<":case"<<<<":return I(e,n,"<<<<"===t);case"<|":return g(e).pipe(n,t);case"|>":return g(n).pipe(e,"<|");case".":case".~":return L(e).add(w(n,t))}}return i.op=t,i.first=e,i.second=n,i}function s(){}return s.prototype=r,i.prototype.children=["first","second"],i.prototype.show=function(){return this.op},i.prototype.isCallable=function(){var t;return this.partial||("&&"===(t=this.op)||"||"===t||"?"===t||"<<"===t||">>"===t)&&this.first.isCallable()&&this.second.isCallable()},i.prototype.isArray=function(){switch(this.op){case"*":return this.first.isArray();case"/":return this.second.isMatcher()}},i.prototype.isString=function(){switch(this.op){case"+":case"*":return this.first.isString()||this.second.isString();case"-":return this.second.isMatcher()}},e=/^(?:[!=]=|[<>])=?$/,n={"===":"!==","!==":"===","==":"!=","!=":"=="},i.prototype.invert=function(){var t;return(t=!e.test(this.second.op)&&n[this.op])?(this.op=t,this.wasInverted=!0,this):_("!",U(this),!0)},i.prototype.invertIt=function(){return this.inverted=!0,this},i.prototype.getDefault=function(){switch(this.op){case"?":case"||":case"&&":return this}},i.prototype.xorChildren=function(t){var e,n;return!(!(n=t(this.first))==!(e=t(this.second))||!n&&!e)&&(n?[this.first,this.second]:[this.second,this.first])},i.prototype.compileNode=function(t){var n,r,i,s,o,a,c;if(this.partial)return this.compilePartial(t);switch(this.op){case"?":return this.compileExistence(t);case"*":if(this.second.isString())return this.compileJoin(t);if(this.first.isString()||this.first.isArray())return this.compileRepeat(t);break;case"-":if(this.second.isMatcher())return this.compileRemove(t);break;case"/":if(this.second.isMatcher())return this.compileSplit(t);break;case"**":case"^":return this.compilePow(t);case"<?":case">?":return this.compileMinMax(t);case"<<":case">>":return this.compileCompose(t);case"++":return this.compileConcat(t);case"%%":return this.compileMod(t);case"xor":return this.compileXor(t);case"&&":case"||":(n=this.void||!t.level)&&(this.second.void=!0),(n||this.cond)&&(this.first.cond=!0,this.second.cond=!0);break;case"instanceof":if(i=(r=this.second).items,r instanceof R){if(i[1])return this.compileAnyInstanceOf(t,i);this.second=i[0]||r}this.second.isCallable()||this.second.carp("invalid instanceof operand");break;case"====":case"!===":this.op=this.op.slice(0,3);case"<==":case">==":case"<<=":case">>=":return this.compileDeepEq(t);default:if(e.test(this.op)){if(s=("==="===(o=this.op)||"!=="===o)&&this.xorChildren((function(t){return t.isRegex()})))return this.compileRegexEquals(t,s);"==="===this.op&&this.first instanceof y&&this.second instanceof y&&this.first.isWhat()!==this.second.isWhat()&&t.warn&&this.warn("strict comparison of two different types will always be false: "+this.first.value+" == "+this.second.value)}if(e.test(this.op)&&e.test(this.second.op))return this.compileChain(t)}return this.first.front=this.front,a=[this.first.compile(t,c=nt+it[this.op])," ",this.mapOp(this.op)," ",this.second.compile(t,c)],t.level<=c?l.apply(null,[this].concat(lt(a))):l.apply(null,[this,"("].concat(lt(a),[")"]))},i.prototype.mapOp=function(t){var e;switch(!1){case!(e=t.match(/\.([&\|\^]|<<|>>>?)\./)):return e[1];case"of"!==t:return"in";default:return t}},i.prototype.compileChain=function(t){var e,n,r,i;return e=[this.first.compile(t,n=nt+it[this.op])],i=(r=this.second.first.cache(t,!0))[0],this.second.first=r[1],e.push(" ",this.op," ",i.compile(t,n)," && ",this.second.compile(t,nt)),t.level<=nt?l.apply(null,[this].concat(lt(e))):l.apply(null,[this,"("].concat(lt(e),[")"]))},i.prototype.compileExistence=function(t){var e;return this.void||!t.level?((e=i("&&",P(this.first,!0),this.second)).void=!0,e).compileNode(t):(e=this.first.cache(t,!0),l(this,z(P(e[0]),e[1]).addElse(this.second).compileExpression(t)))},i.prototype.compileAnyInstanceOf=function(t,e){var n,r,s,o,a,c;for(r=(n=this.first.cache(t))[0],s=n[1],this.temps=n[2],o=i("instanceof",r,e.shift()),a=0,c=e.length;a<c;++a)o=i("||",o,i("instanceof",s,e[a]));return l(this,U(o).compile(t))},i.prototype.compileMinMax=function(t){var e,n,r;return e=this.first.cache(t,!0),n=this.second.cache(t,!0),r=i(this.op.charAt(),e[0],n[0]),l(this,z(r,e[1]).addElse(n[1]).compileExpression(t))},i.prototype.compileMethod=function(t,e,n,r){var i;return i=[this.second].concat(r||[]),this.first["is"+e]()?l(this,L(this.first,[w(b(n)),A(i)]).compile(t)):(i.unshift(this.first),l(this,A.make(H(mt(n)+".call"),i).compile(t)))},i.prototype.compileJoin=function(t){return this.compileMethod(t,"Array","join")},i.prototype.compileRemove=function(t){return this.compileMethod(t,"String","replace",H("''"))},i.prototype.compileSplit=function(t){return this.compileMethod(t,"String","split")},i.prototype.compileRepeat=function(t){var e,n,r,i,s,o,a,c,h,p,f;if(n=(e=this.first).items,r=this.second,i=e.isArray()&&"Array",n&&!u(s=D.compileArray(t,n))&&(e=H(s),n=null),i&&!n||!(r instanceof y&&r.value<32))return l(this,A.make(J("repeat"+(i||"String")),[e,r]).compile(t));if(1<=(r=+r.value)&&r<2)return l(this,e.compile(t));if(n){if(r<1)return l(this,g(n).add(H("[]")).compile(t));for(o=[],a=0,c=n.length;a<c;++a)h=a,p=n[a].cache(t,1),n[h]=p[0],o[o.length]=p[1];return n.push(((p=H()).compile=function(){return l.apply(null,[this].concat(lt(function(t,e){for(var n=[];e>0;(e>>=1)&&(t=t.concat(t)))1&e&&n.push.apply(n,t);return n}([", ",E.compile(t,o)],r-1).slice(1))))},p)),l(this,e.compile(t))}return e instanceof y?l(this,(f=(e=e.compile(t).toString()).charAt())+Lt(e.slice(1,-1)+"",r)+f):r<1?l(this,g(e.it).add(H("''")).compile(t)):(e=(o=e.cache(t,1,nt))[0]+Lt(" + "+o[1],r-1),t.level<nt+it["+"]?l(this,e):l(this,"(",e,")"))},i.prototype.compilePow=function(t){return l(null,A.make(q(this,H("Math.pow")),[this.first,this.second]).compile(t))},i.prototype.compileConcat=function(t){var e;return e=function(t){switch(!1){case!(t instanceof i&&"++"===t.op):return e(t.first).concat(e(t.second));default:return[t]}},l(null,L(this.first).add(q(this,w(b("concat"),".",!0))).add(A(e(this.second))).compile(t))},i.prototype.compileCompose=function(t){var e,n,r;for(e=this.op,n=[this.first],r=this.second;r instanceof i&&r.op===e&&!r.partial;)n.push(r.first),r=r.second;return n.push(r),"<<"===e&&n.reverse(),l(this,L(v(mt("compose"))).add(A(n)).compile(t))},i.prototype.compileMod=function(t){var e,n;return e=t.scope.temporary(),n=[l(this,"(("),this.first.compile(t),l(this,") % ("),l(this,e," = "),this.second.compile(t),l(this,") + ",e,") % ",e)],t.scope.free(e),t.level<nt+it["%"]?l.apply(null,[null].concat(lt(n))):l.apply(null,[null,"("].concat(lt(n),[")"]))},i.prototype.compilePartial=function(t){var e,n,r;switch(e=v("it"),!1){case!(null==this.first&&null==this.second):return n=v("x$"),r=v("y$"),l(this,M([n,r],g(i(this.op,n,r).invertCheck(this)),!1,!0).compile(t));case null==this.first:return l(this,"(",M([e],g(i(this.op,this.first,e).invertCheck(this)),!0).compile(t),")");default:return l(this,"(",M([e],g(i(this.op,e,this.second).invertCheck(this)),!0).compile(t),")")}},i.prototype.compileRegexEquals=function(t,e){var n,r,i;return n=e[0],r=e[1],"==="===this.op?(i=this.wasInverted?"test":"exec",l(this,L(n).add(w(b(i))).add(A([r])).compile(t))):l(this,_("!",L(n).add(w(b("test"))).add(A([r]))).compile(t))},i.prototype.compileDeepEq=function(t){var e,n,r,i,s,o;for(">=="!==(e=this.op)&&">>="!==e||(e=[this.second,this.first],this.first=e[0],this.second=e[1],this.op=">=="===this.op?"<==":"<<="),"!=="===this.op&&(this.op="===",n=!0),r=0,i=(e=[this.first,this.second]).length;r<i;++r)((s=e[r])instanceof C||s instanceof R)&&(s.deepEq=!0);return o=L(v(mt("deepEq"))).add(A([this.first,this.second,y("'"+this.op+"'")])),l(this,(n?_("!",o):o).compile(t))},i.prototype.compileXor=function(t){var e,n;return e=L(this.first).cacheReference(t),n=L(this.second).cacheReference(t),l(this,i("&&",i("!==",_("!",e[0]),_("!",n[0])),U(i("||",e[1],n[1]))).compile(t))},i}(f),e.Assign=O=function(t){var e=wt((vt(r,t).displayName="Assign",r),t).prototype,n=r;function r(t,e,n,r,s){var o=this instanceof i?this:new i;return o.left=t,o.op=n||"=",o.logic=r||o.op.logic,o.defParam=s,o.opLoc=o.op,o.op+="",o[e instanceof f?"right":"unaries"]=e,o}function i(){}return i.prototype=e,r.prototype.children=["left","right"],r.prototype.show=function(){return[void 0].concat(this.unaries).reverse().join(" ")+[this.logic]+this.op},r.prototype.assigns=function(){return this.left.assigns()},r.prototype.getRef=function(){if(!this.left.isComplex())return this.left},e.delegate(["isCallable","isRegex"],(function(t){var e;return("="===(e=this.op)||":="===e)&&this.right&&this.right[t]()})),r.prototype.isArray=function(){switch(this.op){case"=":case":=":return this.right&&this.right.isArray();case"/=":return this.right&&this.right.isMatcher()}},r.prototype.isString=function(){switch(this.op){case"=":case":=":case"+=":case"*=":return this.right&&this.right.isString();case"-=":return this.right&&this.right.isMatcher()}},r.prototype.unfoldSoak=function(t){var e,n,i,s,o;return this.left instanceof P?(i=(n=this.left=this.left.it).name,delete n.name,(e=i)?(s=this.right,s=r(this.right=v(e),s)):(s=(n=this.right.cache(t))[0],this.right=n[1],o=n[2]),(n=z(P(s),this)).temps=o,n.cond=this.cond,n.void=this.void,n):z.unfoldSoak(t,this,"left")},r.prototype.unfoldAssign=function(){return this.access&&this},r.prototype.compileNode=function(t){var e,n,i,s,o,a,c,u,h,p,f,d,m,y,b,w,A;if(this.left instanceof k&&"="===this.op)return this.compileSplice(t);if(e=this.left,(n=this.left instanceof D)&&(e=e.it),n)return e instanceof E||this.left.carp("invalid splat"),this.compileSpread(t,e);if(!this.right)for(e.isAssignable()||e.carp("invalid unary assign"),e=(i=L(e).cacheReference(t))[0],this.right=i[1],s=0,o=(i=this.unaries).length;s<o;++s)a=i[s],this.right=_(a,this.right);return e.isEmpty()?l(null,(i=U(this.right),i.front=this.front,i.newed=this.newed,i).compile(t)):(e.getDefault()&&(this.right=T(e.op,this.right,e.second),e=e.first),e.items?this.compileDestructuring(t,e):(e.isAssignable()||e.carp("invalid assign"),this.logic?this.compileConditional(t,e):(a=this.op,c=this.right,"<?="===a||">?="===a?this.compileMinMax(t,e,c):(("**="===a||"^="===a||"%%="===a||"++="===a||"|>="===a||"*="===a&&c.isString()||("-="===a||"/="===a)&&c.isMatcher())&&(e=(i=L(e).cacheReference(t))[0],u=i[1],c=T(a.slice(0,-1),u,c),a=":="),".&.="!==a&&".|.="!==a&&".^.="!==a&&".<<.="!==a&&".>>.="!==a&&".>>>.="!==a||(a=a.slice(1,-2)+"="),(c=c.unparen()).ripName(e=e.unwrap()),e instanceof L&&(e.expandVivify(),(e=e.unwrap())instanceof r)?(i=L(e.left).cacheReference(t),e.left=i[0],this.left=i[1],g([e,(i=bt(this),i.terminator="",i)]).compile(t)):(h=l(this.opLoc," ",a.replace(":","")," "),p=(e.front=!0,e).compile(t,tt),(f=e instanceof v)&&("="===a?t.scope.declare(p.toString(),e,this.const||!this.defParam&&t.const&&"$"!==p.toString().slice(-1)):(d=t.scope.checkReadOnly(p.toString()))&&e.carp("assignment to "+d+' "'+p+'"',ReferenceError)),e instanceof L&&c instanceof M&&(m=p.toString().split(".prototype."),y=p.toString().split("."),m.length>1?c.inClass=m[0]:y.length>1&&(c.inClassStatic=ct.call(y,0,-1).join(""))),b=!t.level&&c instanceof W&&!c.else&&(f||e instanceof L&&e.isSimpleAccess())?(w=c.objComp?"{}":"[]",[A=t.scope.temporary("res")," = "+w+";\n"+this.tab,c.makeReturn(A).compile(t),"\n"+this.tab,p,h,t.scope.free(A)]):[p,h,c.compile(t,tt)],t.level>tt&&(b=["("].concat(lt(b),[")"])),l.apply(null,[null].concat(lt(b))))))))},r.prototype.compileConditional=function(t,e){var n,r,i;return e instanceof v&&"?"===this.logic&&"="===this.op&&t.scope.declare(e.value,e),r=(n=L(e).cacheReference(t))[0],e=n[1],t.level+=nt<t.level,"?"===this.logic&&"="!==(n=this.op)&&":="!==n&&(this.logic="&&",r=P(r)),i=T(this.logic,r,(this.logic=!1,this.left=e,this)),l(this,(i.void=this.void,i).compileNode(t))},r.prototype.compileMinMax=function(t,e,n){var i,s,o,a,c;return i=L(e).cacheReference(t),s=n.cache(t,!0),o=T(this.op.replace("?",""),i[0],s[0]),a=r(i[1],s[1],":="),this.void||!t.level?U(T("||",o,a)).compile(t):(c=o.first.cache(t,!0),o.first=c[0],e=c[1],l(this,z(o,e).addElse(a).compileExpression(t)))},r.prototype.compileDestructuring=function(t,e){var n,r,i,s,o,a,c,u,h,p,f,d,g,m;for(r=(n=e.items).length,i=t.level&&!this.void,s=this.right.compile(t,1===r?rt:tt),(o=e.name)?(a=l(this,o," = ",s),t.scope.declare(s=o,e)):(i||r>1)&&(!ot.test(s.toString())||(o=e.assigns())&&kt(s.toString(),o))&&(a=l(this,c=t.scope.temporary()," = ",s),s=c),"arguments"!==s.toString()||i||(u=!0,e instanceof R||this.carp("arguments can only destructure to array")),h=this["rend"+e.constructor.displayName](t,n,s,u),c&&t.scope.free(c),a&&h.unshift(a),!i&&h.length||h.push(s),p=[],f=u?"; ":", ",d=0,g=h.length;d<g;++d)m=h[d],p.push(m,f);return p.pop(),h.length<2||t.level<tt?l.apply(null,[this].concat(lt(p))):l.apply(null,[this,"("].concat(lt(p),[")"]))},r.prototype.compileSplice=function(t){var e,n,r,i,s,o;return n=(e=L(this.left.from).cacheReference(t))[0],r=e[1],i=(e=L(this.right).cacheReference(t))[0],s=e[1],o=T("-",this.left.to,r),l(this,g([L(v(mt("splice"))).add(w(b("apply"),".",!0)).add(A([this.left.target,L(R([n,o])).add(w(b("concat"),".",!0)).add(A([i]))])),s]).compile(t,tt))},r.prototype.compileSpread=function(t,e){var r,i,s,o,a=this;return i=(r=this.unaries)?[r,r]:e.items.length<=1?[i=this.right,i]:this.right.cache(t,!0),s=i[0],o=i[1],this.compileSpreadOver(t,e,(function(t){var e;return e=n(t,s,a.op,a.logic),s=o,e}))},r.prototype.rendArr=function(t,e,n,r){var i,s,o,a,c,l,u,h,p,f,d,g,m,k,A;function E(t,e){return new Y({ref:!0,from:t,op:"til",to:e}).makeComprehension(L(v("arguments")).add(w(y(".."))),[])}for(i=[],s=0,o=e.length;s<o;++s)if(a=s,!(c=e[s]).isEmpty()){if(c instanceof D)if(u&&c.carp("multiple splat in an assignment"),l=(c=c.it).isEmpty(),a+1===(u=e.length)){if(l)break;h=r?E(y(a),L(v("arguments")).add(w(b("length")))):R.wrap(H(mt("slice")+".call("+n+(a?", "+a+")":")")))}else{if(h=p=n+".length - "+(u-a-1),l&&a+2===u)continue;f=a+1,(this.temps||(this.temps=[])).push(p=t.scope.temporary("i")),h=C()}else(d=p)&&f<a&&(d+=" + "+(a-f)),h=L(g||(g=y(n)),[w(H(d||a))]);r?!(c instanceof v)&&h instanceof Y?((this.temps||(this.temps=[])).push(m=t.scope.temporary("ref")),k=v(m),i.push((A=bt(this),A.left=k,A.right=h,A.void=!0,A).compile(t,Z)),i.push((A=bt(this),A.left=c,A.right=k,A.void=!0,A).compile(t,Z))):i.push((A=bt(this),A.left=c,A.right=h,A.void=!0,A).compile(t,Z)):i.push((A=bt(this),A.left=c,A.right=h,A.void=!0,A).compile(t,Q))}return i;function C(){switch(!1){case!l:return R.wrap(H(a+" < ("+p+" = "+h+") ? "+a+" : ("+p+" = "+a+")"));case!r:return E(H(a+" < ("+p+" = "+h+") ? "+a+" : ("+p+" = "+a+")"),v(p));default:return R.wrap(H(a+" < ("+p+" = "+h+") ? "+mt("slice")+".call("+n+", "+a+", "+p+") : ("+p+" = "+a+", [])"))}}},r.prototype.rendObj=function(t,e,n){var r,i,s,o,a,c,l,u,h,p,f,d,g,m=[];for(r=[],i=[],s=v(n),o=0,a=e.length;o<a;++o)l=(c=e[o]).key,u=c.val,h=c.logic,u=u.unparen(),l instanceof D?(null!=h&&this.carp("invalid assign"),p=C(b.call(this)),f=L(v(mt("copyWithout"))).add(A([s,p]))):(r.push(l),h&&(h.first=u,u=h),f=L(s,[w(l)])),i.push([u,f]);for(o=0,a=i.length;o<a;++o)d=(c=i[o])[0],g=c[1],m.push((c=bt(this),c.left=d,c.right=g,c.void=!0,c.temps=[],c).compile(t,Q));return m;function b(){var e,n,i,s,o=[];for(e=0,s=(i=r).length;e<s;++e)n=i[e],o.push(S(n.extractKeyRef(t,!0,this),y(0)));return o}},r.prototype.rewriteShorthand=function(t,e){var n,r,i,s;if(e)return this===(n=this.maybeLogic())&&this.carp("invalid assign"),null!=(r=n.rewriteShorthand(t,!0))?r:n;(i=null!=(r=this.left)?r.rewriteShorthand(t,!0):void 0)&&(this.left=i),(i=null!=(s=this.right)?s.rewriteShorthand(t):void 0)&&(this.right=i)},r.prototype.maybeLogic=function(){return"="===this.op?T(this.logic||"?",this.left,this.right):this},r}(f),e.Import=I=function(t){var e=wt((vt(n,t).displayName="Import",n),t).prototype;function n(t,e,n){var i=this instanceof r?this:new r;return i.left=t,i.right=e,i.all=n&&"All",!n&&t instanceof C&&e.items?C(t.items.concat(e.asObj().items)):i}function r(){}return r.prototype=e,n.prototype.children=["left","right"],n.prototype.show=function(){return this.all},e.delegate(["isCallable","isArray"],(function(t){return this.left[t]()})),n.prototype.unfoldSoak=function(t){var e,n,r,i;return(e=this.left)instanceof P&&!e.negated?((e=e.it)instanceof v?(n=(this.left=e).value,t.scope.check(n,!0)||(e=H("typeof "+n+" != 'undefined' && "+n))):(r=e.cache(t),e=r[0],this.left=r[1],i=r[2]),(r=z(e,this)).temps=i,r.soak=!0,r.cond=this.cond,r.void=this.void,r):z.unfoldSoak(t,this,"left")||(this.void||!t.level)&&z.unfoldSoak(t,this,"right")},n.prototype.compileNode=function(t){var e;return e=this.right,!this.all&&(e instanceof L&&(e=e.unfoldSoak(t)||e.unfoldAssign(t)||e),e instanceof E)?this.compileAssign(t,e.asObj().items):q(this,A.make(J("import"+(this.all||"")),[this.left,e])).compileNode(t)},n.prototype.compileAssign=function(t,e){var r,i,s,o,a,c,u,h,p,f,d,g,m,y,v;if(!e.length)return this.left.compile(t);for(r=!t.level,this.proto||e.length<2&&(r||this.void||e[0].key instanceof D)?(i=this.left).isComplex()&&(i=U(i)):(o=(s=this.left.cache(t))[0],i=s[1],this.temps=s[2]),a=(s=r?[";","\n"+this.tab]:[","," "])[0],a+=c=s[1],u=this.temps?[o.compile(t,Q),a]:[],h=0,p=e.length;h<p;++h)f=h,d=e[h],f&&u.push(g?c:a),(g=d.comment)?u.push(d.compile(t)):(m=d.key,y=d.val,v=d.logic,m instanceof D?u.push(q(this,n(i,y)).compile(t)):d.accessor?(m instanceof b&&(m=H("'"+m.name+"'")),u.push("Object.defineProperty(",i.compile(t,tt),", ",m.compile(t,tt),", ",d.compileDescriptor(t),")")):(v&&(v.first=y,y=v),u.push(O(L(i,[w(m)]),y).compile(t,Q))));return r?l.apply(null,[null].concat(lt(u))):(this.void||m instanceof D||u.push(g?" ":", ",i.compile(t,Q)),t.level<tt?l.apply(null,[null].concat(lt(u))):l.apply(null,[null,"("].concat(lt(u),[")"])))},n.prototype.rewriteShorthand=function(t,e){var n,r,i;(n=null!=(r=this.left)?r.rewriteShorthand(t,e):void 0)&&(this.left=n),(n=null!=(i=this.right)?i.rewriteShorthand(t):void 0)&&(this.right=n)},n}(f),e.In=x=function(t){var e=wt((vt(n,t).displayName="In",n),t).prototype;function n(t,e){this.item=t,this.array=e}return At(e,arguments[1]),n.prototype.children=["item","array"],n.prototype.compileNode=function(t){var e,r,i,s,o,a,c,u,h,p,f,d,g;if(r=(e=this.array).items,!(e instanceof R))return l(this,this.negated?"!":"",mt("in"),"(",this.item.compile(t,tt),", ",e.compile(t,tt),")");if(0===r.length)return t.warn&&this.warn("value can never be `in` an empty array"),i=!!this.negated+"",this.item.isComplex()?l(this,"(",this.item.compile(t,tt),", ",i,")"):l(this,i);for(s=[],a=(o=1===r.length?[o=this.item.compile(t,Q),o]:this.item.cache(t,!1,Q))[0],c=o[1],u=(o=this.negated?[" !== "," && "]:[" === "," || "])[0],h=o[1],p=0,f=r.length;p<f;++p)d=p,g=r[p],s.length>0&&s.push(h),g instanceof D?(s.push((o=new n(v(c),g.it),o.negated=this.negated,o).compile(t,Z)),d||a===c||(s=["("+a+", "].concat(lt(s),[")"]))):s.push(d||a===c?c:"("+a+")",u,g.compile(t,nt+it["=="]));return a===c||t.scope.free(c),t.level<nt+it[1===r.length?"===":"||"]?l.apply(null,[this].concat(lt(s))):l.apply(null,[this,"("].concat(lt(s),[")"]))},n}(f,d),e.Existence=P=function(t){var e=wt((vt(n,t).displayName="Existence",n),t).prototype;function n(t,e){var n=this instanceof r?this:new r;return n.it=t,n.negated=e,n}function r(){}return At(e,arguments[1]),r.prototype=e,n.prototype.children=["it"],n.prototype.compileNode=function(t){var e,n,r,i,s,o,a,c;return(n=this.it.unwrap()).front=this.front,r=[(e=n).compile(t,nt+it["=="])],this.doAnaphorize&&t.scope.declare("that",v("that")),e instanceof v&&!t.scope.check(r.join(""),!0)?(i=(n=this.negated?["||","="]:["&&","!"])[0],s=n[1],this.doAnaphorize&&(o=(n=this.negated?[["(that = undefined) || "],[]]:[[],[" && (that = "].concat(lt(r),[", true)"])])[0],a=n[1]),r=["typeof "].concat(lt(r),[" "+s+"= 'undefined' "+i+" "],lt(r),[" "+s+"== null"]),null!=(c=o)&&(r=c.concat(r)),null!=(c=a)&&(r=r.concat(c))):(this.doAnaphorize&&(r=["(that = "].concat(lt(r),[")"])),r.push(" "+(i=this.negated?"==":"!=")+" null")),t.level<nt+it[i]?l.apply(null,[this].concat(lt(r))):l(this,"(",r,")")},n}(f,d),e.Fun=M=function(t){var e=wt((vt(n,t).displayName="Fun",n),t).prototype;function n(t,e,n,r,s,o,a){var c=this instanceof i?this:new i;return c.params=t||[],c.body=e||g(),c.bound=n&&"this$",c.curried=r||!1,c.hushed=null!=s&&s,c.generator=null!=o&&o,c.async=null!=a&&a,c}function i(){}return i.prototype=e,n.prototype.children=["params","body"],n.prototype.show=function(){var t;return[this.name]+[(t=this.bound)?"~"+t:void 0]},n.prototype.named=function(t){return this.name=t,this.statement=!0,this},n.prototype.isCallable=pt,n.prototype.isStatement=function(){return!!this.statement},n.prototype.traverseChildren=function(e,n){if(n)return t.prototype.traverseChildren.apply(this,arguments)},n.prototype.rewriteShorthand=gt,n.prototype.makeReturn=function(){return this.statement?(this.returns=!0,this):t.prototype.makeReturn.apply(this,arguments)},n.prototype.ripName=function(t){this.name||(this.name=t.varName())},n.prototype.compileNode=function(t){var e,n,r,i,s,o,a,c,h,p,f,d,g=this;return n=(e=t.scope).shared||e,(r=t.scope=this.body.scope=new ht(this.wrapper?e:n,this.wrapper&&n)).fun=this,(i=this.proto)&&r.assign("prototype",i.compile(t)+".prototype"),(i=this.cname)&&r.assign("constructor",i),o=t.loop,delete t.loop,(s=o)&&(t.indent=this.tab=""),t.indent+=st,a=this.body,c=this.name,h=this.tab,p=["function"],this.async?(this.ctor&&this.carp("a constructor can't be async"),t.inAsync=!0,p.unshift("async ")):this.wrapper||(t.inAsync=!1),this.generator?(this.ctor&&this.carp("a constructor can't be a generator"),t.inGenerator=!0,p.push("*")):this.wrapper||(t.inGenerator=!1),"this$"===this.bound&&(this.ctor?(r.assign("this$","this instanceof ctor$ ? this : new ctor$"),a.lines.push(F(y("this$")))):(i=null!=(o=n.fun)?o.bound:void 0)?this.bound=i:this.usesThis()&&n.assign("this$","this")),this.statement&&(c||this.carp("nameless function declaration"),e===t.block.scope||this.carp("misplaced function declaration"),this.accessor&&this.carp("named accessor"),e.add(c,"function",this)),(this.statement||c&&this.labeled)&&p.push(" ",r.add(c,"function",this)),this.hushed||this.ctor||this.newed||a.makeReturn(),p.push("(",this.compileParams(t,r),")"),(p=[l.apply(null,[this].concat(lt(p)))]).push("{"),u(f=a.compileWithDeclarations(t))||p.push("\n",f,"\n"+h),p.push("}"),d=function(){return g.curried&&g.hasSplats&&g.carp("cannot curry a function with a variable number of arguments"),g.curried&&g.params.length>1&&!g.classBound?g.bound?[mt("curry"),"(("].concat(lt(p),["), true)"]):[mt("curry"),"("].concat(lt(p),[")"]):p},s?e.assign(e.temporary("fn"),l.apply(null,[null].concat(lt(d())))):(this.returns?p.push("\n"+h+"return ",c,";"):this.bound&&this.ctor&&p.push(" function ctor$(){} ctor$.prototype = prototype;"),p=d(),this.front&&!this.statement?l.apply(null,[null,"("].concat(lt(p),[")"])):l.apply(null,[null].concat(lt(p))))},n.prototype.compileParams=function(t,e){var n,i,s,o,a,c,u,h,p,f,d,g,m,b,w,k,L,A,E;for(i=(n=this.params).length,s=this.body,o=n.length-1;o>=0&&((a=n[o]).isEmpty()||a.filler);--o)--n.length;for(o=0,c=n.length;o<c;++o)u=o,(a=n[o]).left instanceof D&&a.carp("invalid splat"),a instanceof D?(this.hasSplats=!0,h=u):"="===a.op&&(n[u]=T(a.logic||"?",a.left,a.right));for(null!=h?p=n.splice(h,9e9):this.accessor?(f=n[1])&&f.carp("excess accessor parameter"):i||this.wrapper||s.traverseChildren((function(t){return"it"===t.value||null}))&&(n[0]=v("it")),d=[],g=[],o=0,c=n.length;o<c;++o){if(a=n[o],(b=(m=a).getDefault())&&(m=m.first),m.isEmpty())m=v(e.temporary("arg"));else if(".."===m.value)m=v(t.ref=e.temporary());else if(m instanceof v)b&&g.push(O(m,a.second,"=",a.op,!0));else{for(w=[];m instanceof _;)k=!0,w.push(m),m=m.it;L=v((E=(A=m.it||m).name,delete A.name,E||m.varName()||e.temporary("arg"))),g.push(O(m,C())),m=L}d.push(e.add(m.value,"arg",a),", ")}if(p){for(;h--;)p.unshift(R());g.push(O(R(p),y("arguments")))}return g.length&&(A=this.body).prepend.apply(A,g),d.pop(),l.apply(null,[null].concat(lt(d)));function C(){switch(!1){case!b:return T(a.op,L,a.second);case!k:return r((function(t,e){return e.it=t,e}),L,w.reverse());default:return L}}},n.prototype.usesThis=function(){return f.prototype.traverseChildren.call(this,(function(t){switch(!1){case!(t instanceof y&&"this"===t.value):case!(t instanceof n&&t.bound&&t.usesThis()):return!0}}))},n}(f),e.Class=B=function(t){wt((vt(e,t).displayName="Class",e),t).prototype;function e(t){var e;this.title=t.title,this.sup=t.sup,this.mixins=t.mixins,e=t.body,this.fun=M([],e)}return e.prototype.children=["title","sup","mixins","fun"],e.prototype.isCallable=pt,e.prototype.ripName=function(t){this.name=t.varName()},e.prototype.getRef=function(){var t,e;if(t=(null!=(e=this.title)?e.varName():void 0)||this.name)return v(t)},e.prototype.compile=function(t,e){var n,r,i,s,o,a,c,u,h,p,f,d,m,k,E,S,R,N,_,T,x,P,B,j,W;for(i=(r=(n=this.fun).body).lines,s=this.title,q(this,n),o=[],a=[],u=(c=null!=s?s.varName():void 0)||this.name,ot.test(u||"")?n.cname=u:u="constructor",h=v("prototype"),p=n.proto=v(n.bound=u),f="constructor$$",k=function(e,n){var r,i,s,c,l,u;for(r=0;r<e.items.length;r++)if(((s=(i=e.items[r]).key)instanceof b&&s.name===f||s instanceof y&&s.value==="'"+f+"'")&&(d&&e.carp("redundant constructor"),d=i.val,e.items.splice(r--,1),m=n),i.val instanceof M||i.accessor)for(s.isComplex()&&(s=v(t.scope.temporary("key")),i.key=O(s,i.key)),i.val.bound&&(i.val.curried?a.push(i.key):o.push(i.key),i.val.bound=!1,i.val.classBound=!0),c=0,u=(l=[].concat(i.val)).length;c<u;++c)l[c].meth=s;return e.items.length?((l=I(L(p).add(w(b("prototype"))),e)).proto=!0,l):y("void")},E=0,S=i.length;E<S;++E)R=E,(N=i[E])instanceof C?i[R]=k(N,R):N instanceof M&&!N.statement?(d&&N.carp("redundant constructor"),d=N):N instanceof O&&N.left instanceof L&&"this"===N.left.head.value&&N.right instanceof M?N.right.stat=N.left.tails[0].key:N.traverseChildren(Y);for(d||(d=i[i.length]=this.sup?M([],g(L(new $).add(A([D(y("arguments"))])))):M()),d instanceof M||(i.splice(m+1,0,O(v(f),d)),i.unshift(d=M([],g(F(L(v(f)).add(A([D("arguments",!0)]))))))),d.name=u,d.ctor=!0,d.statement=!0,E=0,S=o.length;E<S;++E)_=o[E],d.body.lines.unshift(O(L(y("this")).add(w(_)),L(v(mt("bind"))).add(A([y("this"),y("'"+_.name+"'"),v("prototype")]))));for(E=0,S=a.length;E<S;++E)_=a[E],d.body.lines.unshift(O(L(y("this")).add(w(b("_"+_.name))),L(v(mt("curry"))).add(A([L(v("prototype")).add(w(_)),v("true")]))),O(L(y("this")).add(w(_)),L(v(mt("bind"))).add(A([y("this"),y("'_"+_.name+"'")]))));if(i.push(p),T=[],(x=this.sup)&&(T.push(x),P=L(I(y("this"),v("superclass"))),n.proto=J.Extends(n.cname?g([O(P.add(w(b("displayName"))),y("'"+u+"'")),y(u)]):P,(B=n.params)[B.length]=v("superclass"))),x=this.mixins){for(j=[],E=0,S=x.length;E<S;++E)T[T.length]=x[E],j.push(I(h,H("arguments["+(T.length-1)+"]"),!0));P=j,r.prepend.apply(r,P)}return n.cname&&!this.sup&&r.prepend(y(u+".displayName = '"+u+"'")),W=U(A.make(n,T),!0),c&&s.isComplex()&&(W=O(p,W)),s&&(W=O(s,W)),l(null,W.compile(t,e));function Y(t){var e,n,r,i,s;if(t instanceof g)for(e=0,r=(n=t.lines).length;e<r;++e)i=e,(s=n[e])instanceof C&&(t.lines[i]=k(s,R))}},e}(f),e.Super=$=function(t){wt((vt(e,t).displayName="Super",e),t).prototype;function e(){}return e.prototype.isCallable=pt,e.prototype.compile=function(t){var e,n,r,i;if(e=t.scope,!this.sproto){for(;n=!e.get("superclass")&&e.fun;e=e.parent){if(n=(r=n).meth)return l(this,"superclass.prototype",w(n).compile(t));if(n=r.stat)return l(this,"superclass",w(n).compile(t));if(n=e.fun.inClass)return l(this,n,".superclass.prototype.",e.fun.name);if(n=e.fun.inClassStatic)return l(this,n,".superclass.",e.fun.name)}if(n=null!=(i=t.scope.fun)?i.name:void 0)return l(this,n,".superclass")}return l(this,"superclass")},e.prototype.maybeKey=function(){return b("super",!0)},e}(f),e.Parens=U=function(t){var e=wt((vt(n,t).displayName="Parens",n),t).prototype;function n(t,e,n,i,s){var o=this instanceof r?this:new r;return o.it=t,o.keep=e,o.string=n,o.lb=i,o.rb=s,o}function r(){}return r.prototype=e,n.prototype.children=["it"],n.prototype.show=function(){return this.string&&'""'},e.delegate(["isComplex","isCallable","isArray","isRegex","isNextUnreachable","getRef"],(function(t){return this.it[t]()})),n.prototype.isString=function(){return this.string||this.it.isString()},n.prototype.unparen=function(){return this.keep?this:this.it.unparen()},n.prototype.compile=function(t,e){var n;return null==e&&(e=t.level),(n=this.it).cond||(n.cond=this.cond),n.void||(n.void=this.void),!this.calling||e&&!this.void||(n.head.hushed=!0),this.keep||this.newed||e>=nt+it[n.op]?n.isStatement()?n.compileClosure(t):l(null,l(this.lb,"("),n.compile(t,Q),l(this.rb,")")):(n.front=this.front,n).compile(t,e||Q)},n.prototype.maybeKey=dt,n.prototype.extractKeyRef=function(t,e,r){var i,s,o,a;return null!=r&&(i=this.it)instanceof v&&(s=i.temp,delete i.temp,s)&&(r.temps||(r.temps=[])).push(i.value),this.it instanceof L&&e?(s=this.it.cacheReference(t),this.it=s[0],n(s[1])):(o=(s=this.it.cache(t,!0))[0],a=s[1],e&&(o=(s=[a,o])[0],a=s[1]),this.it=a.unparen(),n(o))},n.prototype.rewriteShorthand=function(t){var e;(e=this.it.rewriteShorthand(t))&&(this.it=e)},n}(f),e.Splat=D=function(t){var e,n=wt((vt(r,t).displayName="Splat",r),t).prototype;function r(t,e){var n=this instanceof i?this:new i;return n.it=t,n.filler=e,n}function i(){}function s(t){return t.isArray()?t:(mt("slice"),A.make(J("arrayFrom"),[t]))}return i.prototype=n,e=U.prototype,n.children=e.children,n.isComplex=e.isComplex,r.prototype.isAssignable=pt,r.prototype.assigns=function(){return this.it.assigns()},r.prototype.compile=function(){return this.carp("invalid splat")},r.compileArray=function(t,e,n){var i,o,a,c,u,h,p;for(function t(e){var n,i,s;n=-1;for(;i=e[++n];)i instanceof r&&((s=i.it).isEmpty()?e.splice(n--,1):s instanceof R&&(e.splice.apply(e,[n,1].concat(lt(t(s.items)))),n+=s.items.length-1));return e}(e),i=0,o=0,a=e.length;o<a&&!((c=e[o])instanceof r);++o)++i;if(i>=e.length)return l(this,"");if(!e[1])return l(this,(n?Object:s)(e[0].it).compile(t,tt));for(u=[],h=[],o=0,a=(p=e.splice(i,9e9)).length;o<a;++o)(c=p[o])instanceof r?(h.length&&u.push(R(h.splice(0,9e9))),u.push(s(c.it))):h.push(c);return h.length&&u.push(R(h)),l(null,(i?R(e):u.shift()).compile(t,rt),l(this,".concat("),E.compile(t,u),l(this,")"))},r}(f),e.Jump=j=function(t){wt((vt(e,t).displayName="Jump",e),t).prototype;function e(t,e){this.verb=t,this.label=e}return e.prototype.show=function(){var t;return(this.verb||"")+((t=this.label)?" "+t:"")},e.prototype.isStatement=pt,e.prototype.makeReturn=dt,e.prototype.isNextUnreachable=pt,e.prototype.getJump=function(t){var e,n;return t||(t={}),t[this.verb]?(e=this.label)?!kt(e,null!=(n=t.labels)?n:t.labels=[])&&this:void 0:this},e.prototype.compileNode=function(t){var e,n;return(e=this.label)?kt(e,null!=(n=t.labels)?n:t.labels=[])||this.carp('unknown label "'+e+'"'):t[this.verb]||this.carp("stray "+this.verb),l(this,this.show()+";")},e.extended=function(t){t.prototype.children=["it"],this[t.displayName.toLowerCase()]=t},e}(f),e.Throw=function(t){var e=wt((vt(n,t).displayName="Throw",n),t).prototype;function n(t){var e=this instanceof r?this:new r;return e.it=t,e}function r(){}return r.prototype=e,n.prototype.getJump=gt,n.prototype.compileNode=function(t){var e;return l(this,"throw ",(null!=(e=this.it)?e.compile(t,Q):void 0)||"null",";")},n}(j),e.Return=F=function(t){var e=wt((vt(n,t).displayName="Return",n),t).prototype;function n(t){var e=this instanceof r?this:new r;return t&&"void"!==t.value&&(e.it=t),e}function r(){}return r.prototype=e,n.prototype.getJump=dt,n.prototype.compileNode=function(t){var e;return l.apply(null,[this,"return"].concat((e=this.it)?[" ",e.compile(t,Q)]:[],[";"]))},n}(j),e.While=W=function(t){var e=wt((vt(n,t).displayName="While",n),t).prototype;function n(t,e,n){this.un=e,n&&(n instanceof f?this.update=n:this.post=!0),(this.post||t.value!==""+!e)&&(this.test=t)}return n.prototype.children=["test","body","update","else"],n.prototype.aSource="test",n.prototype.aTargets=["body","update"],n.prototype.show=function(){return[this.un?"!":void 0,this.post?"do":void 0].join("")},e.isStatement=e.isArray=pt,n.prototype.makeComprehension=function(t,e){for(this.isComprehension=!0;e.length;)(t=e.pop().addBody(g(t))).isComprehension||(t.inComprehension=!0);return this.addBody(g(t))},n.prototype.getJump=function(t){var e,n,r,i,s;for(t||(t={}),t.continue=!0,t.break=!0,e=0,i=(n=(null!=(r=this.body)?r.lines:void 0)||[]).length;e<i;++e)if((s=n[e]).getJump(t))return s},n.prototype.addBody=function(t){var e;return this.body=t,this.guard&&(this.body=g(z(this.guard,this.body))),"continue"!==(null!=(e=this.body.lines[0])?e.verb:void 0)||e.label||(this.body.lines.length=0),this},n.prototype.addGuard=function(t){return this.guard=t,this},n.prototype.addObjComp=function(t){return this.objComp=null==t||t,this},n.prototype.makeReturn=function(t){var e,n,r,i;return this.hasReturned||(t?this.objComp?this.body=g(this.body.makeReturn(t,!0)):(this.body||this.index||this.addBody(g(v(this.index="ridx$"))),e=null!=(n=this.body.lines)?n[n.length-1]:void 0,!this.isComprehension&&!this.inComprehension||null!=e&&e.isComprehension?(this.resVar=t,null!=(i=this.else)&&i.makeReturn.apply(i,arguments)):((r=this.body).makeReturn.apply(r,arguments),null!=(r=this.else)&&r.makeReturn.apply(r,arguments),this.hasReturned=!0)):this.getJump()||(this.returns=!0)),this},n.prototype.compileNode=function(t){var e,n,r,i;return t.loop=!0,this.test&&(this.un?this.test=this.test.invert():this.anaphorize()),this.post?l(null,l(this,"do {"),this.compileBody((t.indent+=st,t))):(e=(null!=(n=this.test)?n.compile(t,Q):void 0)||"",this.update||this.else?(r=[l(this,"for (")],this.else&&r.push(this.yet=t.scope.temporary("yet")," = true"),r.push(l(this,";"),e.toString()&&" ",e,l(this,";")),(i=this.update)&&r.push(" ",i.compile(t,Q))):r=u(e)?[l(this,"for (;;")]:[l(this,"while ("),e],l.apply(null,[null].concat(lt(r),[l(this,") {"),this.compileBody((t.indent+=st,t))])))},n.prototype.compileBody=function(t){var e,r,i,s,o,a,c,h,p,f,d,m,y,k,E,S,N=this;return t.break=t.continue=!0,e=this.body.lines,r=this.yet,i=this.tab,s=[],o=[],a=[],c=this.objComp?"{}":"[]",p=function(){return null!=h?h:h=t.scope.temporary(N.objComp?"resultObj":"results")},f=null!=e?e[e.length-1]:void 0,(!this.isComprehension&&!this.inComprehension||null!=f&&f.isComprehension)&&(d=!1,null!=f&&f.traverseChildren((function(t){var e;t instanceof g&&(e=t.lines)[e.length-1]instanceof n&&(d=!0)})),this.returns&&!this.resVar&&(this.resVar=m=t.scope.assign(p(),c)),this.resVar&&(f instanceof n||d)?(y=t.scope.temporary("lresult"),e.unshift(O(v(y),e[e.length-1].objComp?C():R(),"=")),null!=e[k=e.length-1]&&(e[k]=e[k].makeReturn(y)),a.push(st,L(v(this.resVar)).add(w(b("push"),".",!0)).add(A([L(v(y))])).compile(t),";\n"+this.tab)):(this.hasReturned=!0,this.resVar&&this.body.makeReturn(this.resVar))),this.returns&&((!f instanceof n&&!this.hasReturned||this.isComprehension||this.inComprehension)&&null!=e[k=e.length-1]&&(e[k]=e[k].makeReturn(m=t.scope.assign(p(),c),this.objComp)),o.push("\n"+this.tab+"return ",m||c,";"),null!=(E=this.else)&&E.makeReturn()),r&&e.unshift(H(r+" = false;")),u(S=this.body.compile(t,Z))||s.push("\n",S,"\n"+i),s.push.apply(s,a),s.push("}"),this.post&&s.push(l(this," while ("),this.test.compile((t.tab=i,t),Q),l(this,");")),r&&(s.push(l(this," if ("),r,l(this,") "),this.compileBlock(t,g(this.else))),t.scope.free(r)),l.apply(null,[null].concat(lt(s),lt(o)))},n}(f),e.For=Y=function(t){wt((vt(e,t).displayName="For",e),t).prototype;function e(t){var e,n,r;for(At(this,t),this.item instanceof v&&!this.item.value&&(this.item=null),e=0,r=(n=this.kind||[]).length;e<r;++e)this[n[e]]=!0;this.own&&!this.object&&this.carp("`for own` requires `of`")}return e.prototype.children=["item","source","from","to","step","body"],e.prototype.aSource=null,e.prototype.show=function(){return(this.kind||[]).concat(this.index).join(" ")},e.prototype.addBody=function(e){var n,r,i,s,o,a,c;return this.let&&(n=this.ref,delete this.ref,n&&(this.item=y("..")),(r=null!=(n=this.item)?n.rewriteShorthand():void 0)&&(this.item=r),s=[],(r=this.index)&&s.push(O(v(r),y("index$$"))),(r=this.item)&&s.push(O(r,y("item$$"))),i=s,e=g(this.guard?(o=function(){var t,e,n,s,o,c,l,u=[];for(t=0,s=(n=i).length;t<s;++t)if(e=n[t],r=e.assigns())for(o=0,l=(c=r).length;o<l;++o)a=c[o],u.push(v(a));return u}(),i.concat([z((c=this.guard,delete this.guard,c),A.let(o,e))])):A.let(i,e))),t.prototype.addBody.call(this,e),this.let&&(delete this.index,delete this.item),this},e.prototype.isNextUnreachable=ft,e.prototype.compileNode=function(t){var e,n,r,i,s,o,a,c,u,h,p,f,d,m,b,w,k;return t.loop=!0,e=this.temps=[],this.object&&this.index?t.scope.declare(n=this.index):e.push(n=t.scope.temporary("i")),this.body||this.addBody(g(v(n))),this.object||(i=(r=(this.step||y(1)).compileLoopReference(t,"step"))[0])===(s=r[1])||e.push(i),this.from?(this.ref&&(this.item=v(n)),o=(r=this.to.compileLoopReference(t,"to"))[0],a=r[1],c=this.from.compile(t,tt),u=n+" = "+c,a!==o&&(u+=", "+a,e.push(o)),!this.step&&+c>+o&&(i=s=-1),h="til"===this.op?"":"=",p=+i?n+" "+"<>".charAt(i<0)+h+" "+o:i+" < 0 ? "+n+" >"+h+" "+o+" : "+n+" <"+h+" "+o):(this.ref&&(this.item=v(t.scope.temporary("x"))),this.item||this.object&&this.own||this.let?(r=this.source.compileLoopReference(t,"ref",!this.object,!0),f=r[0],d=r[1],f===d||e.push(f)):f=d=this.source.compile(t,Q),this.object||(0>i&&~~i==+i?(u=n+" = "+d+".length - 1",p=n+" >= 0"):(e.push(m=t.scope.temporary("len")),u=n+" = 0, "+m+" = "+d+".length",p=n+" < "+m))),this.else&&(this.yet=t.scope.temporary("yet")),b=[l(this,"for (")],this.object&&b.push(n," in "),(w=this.yet)&&b.push(w," = true, "),this.object?b.push(d):(s===i||(u+=", "+s),b.push(u,"; ",p,"; "+(1==Math.abs(i)?(i<0?"--":"++")+n:n+(i<0?" -= "+i.toString().slice(1):" += "+i)))),this.own&&b.push(l(this,") if ("),t.scope.assign("own$","{}.hasOwnProperty"),".call(",f,", ",n,")"),b.push(l(this,") {")),this.let&&this.body.traverseChildren((function(t){switch(t.value){case"index$$":t.value=n;break;case"item$$":t.value=f+"["+n+"]"}})),t.indent+=st,this.index&&!this.object&&b.push("\n"+t.indent,O(v(this.index),H(n)).compile(t,Z),";"),!this.item||this.item.isEmpty()||this.from||b.push("\n"+t.indent,O(this.item,H(f+"["+n+"]")).compile(t,Z),";"),this.ref&&(t.ref=this.item.value),k=this.compileBody(t),(this.item||this.index&&!this.object)&&"}"===k.toString().charAt(0)&&b.push("\n"+this.tab),l.apply(null,[null].concat(lt(b),[k]))},e}(W),e.StepSlice=function(t){wt((vt(e,t).displayName="StepSlice",e),t).prototype;function e(){e.superclass.apply(this,arguments)}return e.prototype.makeReturn=function(e){return this.makeReturnArg=e,t.prototype.makeReturn.apply(this,arguments)},e.prototype.compileNode=function(e){var n,r,i,s,o;return this.index=e.scope.temporary("x"),r=(n=this.target.unwrap().cache(e))[0],i=n[1],s=n[2],this.guard=T("<",y(this.index),L(i).add(w(b("length")))),this.makeComprehension(L(i).add(w(y(this.index))),this),null!=this.makeReturnArg&&this.makeReturn(this.makeReturnArg),o=[],s&&o.push(r.compile(e),";\n"+e.indent),o.push(t.prototype.compileNode.apply(this,arguments)),l.apply(null,[this].concat(lt(o)))},e}(Y),e.Try=function(t){wt((vt(e,t).displayName="Try",e),t).prototype;function e(t,e,n,r){var i;this.attempt=t,this.thrown=e,this.recovery=n,this.ensure=r,null!=(i=this.recovery)&&i.lines.unshift(O(this.thrown||v("e"),v("e$")))}return e.prototype.children=["attempt","recovery","ensure"],e.prototype.show=function(){return this.thrown},e.prototype.isStatement=pt,e.prototype.isCallable=function(){var t;return(null!=(t=this.recovery)?t.isCallable():void 0)&&this.attempt.isCallable()},e.prototype.getJump=function(t){var e;return this.attempt.getJump(t)||(null!=(e=this.recovery)?e.getJump(t):void 0)},e.prototype.isNextUnreachable=function(){var t,e;return(null!=(t=this.ensure)?t.isNextUnreachable():void 0)||this.attempt.isNextUnreachable()&&(null==(e=this.recovery)||e.isNextUnreachable())},e.prototype.makeReturn=function(){var t;return this.attempt=(t=this.attempt).makeReturn.apply(t,arguments),null!=this.recovery&&(this.recovery=(t=this.recovery).makeReturn.apply(t,arguments)),this},e.prototype.compileNode=function(t){var e,n;return t.indent+=st,e=[l(this,"try "),this.compileBlock(t,this.attempt)],(n=this.recovery||!this.ensure&&H(""))&&e.push(l(n," catch (e$) "),this.compileBlock(t,n)),(n=this.ensure)&&e.push(l(n," finally "),this.compileBlock(t,n)),l.apply(null,[null].concat(lt(e)))},e}(f),e.Switch=function(t){wt((vt(e,t).displayName="Switch",e),t).prototype;function e(t,e,n,r){var i,s;if(this.type=t,this.topic=e,this.cases=n,this.default=r,"match"===t)e&&(this.topic=R(e));else if(e){if(e.length>1)throw"can't have more than one topic in switch statement";this.topic=this.topic[0]}this.cases.length&&1===(i=(s=this.cases)[s.length-1]).tests.length&&i.tests[0]instanceof v&&"_"===i.tests[0].value&&(this.cases.pop(),this.default=i.body)}return e.prototype.children=["topic","cases","default"],e.prototype.aSource="topic",e.prototype.aTargets=["cases","default"],e.prototype.show=function(){return this.type},e.prototype.isStatement=pt,e.prototype.isCallable=function(){var t,e,n;for(t=0,n=(e=this.cases).length;t<n;++t)if(!e[t].isCallable())return!1;return!this.default||this.default.isCallable()},e.prototype.getJump=function(t){var e,n,r,i;for(t||(t={}),t.break=!0,e=0,r=(n=this.cases).length;e<r;++e)if(i=n[e].body.getJump(t))return i;return null!=(n=this.default)?n.getJump(t):void 0},e.prototype.isNextUnreachable=function(){var t,e,n;for(t=0,n=(e=this.cases).length;t<n;++t)if(!e[t].body.isNextUnreachable())return!1;return null!=(e=this.default)?e.isNextUnreachable():void 0},e.prototype.makeReturn=function(){var t,e,n,r;for(t=0,n=(e=this.cases).length;t<n;++t)(r=e[t]).makeReturn.apply(r,arguments);return null!=(e=this.default)&&e.makeReturn.apply(e,arguments),this},e.prototype.compileNode=function(t){var e,n,r,i,s,o,a,c,u,p,f,d;for(e=this.tab,n="match"===this.type?(this.topic&&(i=(r=L(this.topic).cacheReference(t))[0],s=r[1]),g((s?[i]:[]).concat([y("false")])).compile(t,Q)):!!this.topic&&this.anaphorize().compile(t,Q),o=[l(this,"switch (",h(n),") {\n")],a=this.default||this.cases.length-1,t.break=!0,c=0,u=(r=this.cases).length;c<u;++c)p=c,f=r[c],o.push(f.compileCase(t,e,p===a,"match"===this.type||!n,this.type,s));return this.default&&(t.indent=e+st,(d=this.default.compile(t,Z))&&o.push(e+"default:\n",d,"\n")),l.apply(null,[null].concat(lt(o),[e+"}"]))},e}(f),e.Case=function(t){wt((vt(e,t).displayName="Case",e),t).prototype;function e(t,e){this.tests=t,this.body=e}return e.prototype.children=["tests","body"],e.prototype.isCallable=function(){return this.body.isCallable()},e.prototype.makeReturn=function(){var t,e;return"fallthrough"!==(null!=(t=(e=this.body.lines)[e.length-1])?t.value:void 0)&&(e=this.body).makeReturn.apply(e,arguments),this},e.prototype.compileCase=function(t,e,n,r,i,s){var o,a,c,h,p,f,d,g,m,v,b,k,A,E,C,S,N,_;for(o=[],a=0,h=(c=this.tests).length;a<h;++a)if((p=c[a])instanceof R&&"match"!==i)for(f=0,g=(d=p.items).length;f<g;++f)m=d[f],o.push(m);else o.push(p);if(o.length||o.push(y("void")),"match"===i)for(a=0,h=o.length;a<h;++a)v=a,p=o[a],b=L(s).add(w(y(v),".",!0)),o[v]=U(L(p).autoCompare(s?[b]:null));if(r){for(k="match"===i?"&&":"||",m=o[0],v=0;A=o[++v];)m=T(k,m,A);o=[(this.t=m,this.aSource="t",this.aTargets=["body"],this).anaphorize().invert()]}for(E=[],a=0,h=o.length;a<h;++a)m=o[a],E.push(e,l(m,"case ",m.compile(t,Q),":\n"));return(N="fallthrough"===(null!=(S=(C=this.body.lines)[C.length-1])?S.value:void 0))&&(C[C.length-1]=H("// fallthrough")),t.indent=e+=st,u(_=this.body.compile(t,Z))||E.push(_,"\n"),n||N||null!=S&&S.isNextUnreachable()||E.push(e+"break;\n"),l.apply(null,[null].concat(lt(E)))},e}(f),e.If=z=function(t){var e=wt((vt(r,t).displayName="If",r),t).prototype,n=r;function r(t,e,n){var r=this instanceof i?this:new i;return r.if=t,r.then=e,r.un=n,r}function i(){}return i.prototype=e,r.prototype.children=["if","then","else"],r.prototype.aSource="if",r.prototype.aTargets=["then"],r.prototype.show=function(){return this.un&&"!"},r.prototype.terminator="",e.delegate(["isCallable","isArray","isString","isRegex","isNextUnreachable"],(function(t){var e;return(null!=(e=this.else)?e[t]():void 0)&&this.then[t]()})),r.prototype.getJump=function(t){var e;return this.then.getJump(t)||(null!=(e=this.else)?e.getJump(t):void 0)},r.prototype.makeReturn=function(){var t;return this.then=(t=this.then).makeReturn.apply(t,arguments),null!=this.else&&(this.else=(t=this.else).makeReturn.apply(t,arguments)),this},r.prototype.compileNode=function(t){return this.un?this.if=this.if.invert():this.soak||this.anaphorize(),t.level?this.compileExpression(t):this.compileStatement(t)},r.prototype.compileStatement=function(t){var e,r;return e=[l(this,"if (",this.if.compile(t,Q),") ")],t.indent+=st,e.push(this.compileBlock(t,g(this.then))),(r=this.else)?l.apply(null,[null].concat(lt(e),[l(r," else "),r instanceof n?r.compile((t.indent=this.tab,t),Z):this.compileBlock(t,r)])):l.apply(null,[null].concat(lt(e)))},r.prototype.compileExpression=function(t){var e,n,r,i;return e=this.then,n=this.else||y("void"),this.void&&(e.void=n.void=!0),this.else||!this.cond&&!this.void?(r=[l(this,this.if.compile(t,et))],i=n.isComplex()?"\n"+(t.indent+=st):" ",r.push(i+"",l(e,"? "),e.compile(t,tt),i+"",l(n,": "),n.compile(t,tt)),t.level<et?l.apply(null,[null].concat(lt(r))):l(null,"(",r,")")):U(T("&&",this.if,e)).compile(t)},r.unfoldSoak=function(t,e,n){var r;if(r=e[n].unfoldSoak(t))return e[n]=r.then,r.cond=e.cond,r.void=e.void,r.then=L(e),r},r}(f),e.Label=G=function(t){var e,n=wt((vt(r,t).displayName="Label",r),t).prototype;function r(t,e){var n;if(this.label=t||"_",this.it=e,this.it.curried&&this.carp("can't use label with a curried function (attempted label '"+this.label+"')"),n=(e instanceof M||e instanceof B)&&e||e.calling&&e.it.head)return n.name||(n.name=this.label,n.labeled=!0),e}return e=U.prototype,n.children=e.children,n.isCallable=e.isCallable,n.isArray=e.isArray,r.prototype.show=function(){return this.label},r.prototype.isStatement=pt,r.prototype.getJump=function(t){var e;return t||(t={}),(null!=(e=t.labels)?e:t.labels=[]).push(this.label),this.it.getJump((t.break=!0,t))},r.prototype.makeReturn=function(){var t;return this.it=(t=this.it).makeReturn.apply(t,arguments),this},r.prototype.compileNode=function(t){var e,n,r;return e=this.label,n=this.it,kt(e,r=t.labels=lt(t.labels||[]))&&this.carp('duplicate label "'+e+'"'),r.push(e),n.isStatement()||(n=g(n)),l(null,l(this,e,": "),n instanceof g?(t.indent+=st,this.compileBlock(t,n)):n.compile(t))},r}(f),e.Cascade=function(t){var e=wt((vt(n,t).displayName="Cascade",n),t).prototype;function n(t,e,n){var i=this instanceof r?this:new r;return i.input=t,i.output=e,i.prog1=n,i}function r(){}return r.prototype=e,n.prototype.show=function(){return this.prog1},n.prototype.children=["input","output"],n.prototype.terminator="",e.delegate(["isCallable","isArray","isString","isRegex"],(function(t){return this[this.prog1?"input":"output"][t]()})),n.prototype.getJump=function(t){return this.output.getJump(t)},n.prototype.makeReturn=function(t){return this.ret=t,this},n.prototype.compileNode=function(t){var e,r,i,s,o,a,c,u;return e=t.level,r=this.input,i=this.output,s=this.prog1,o=this.ref,s&&("ret"in this||e&&!this.void)&&i.add(((a=y("..")).cascadee=!0,a)),"ret"in this&&(i=i.makeReturn(this.ret)),o?s||(i=O(v(o),i)):o=t.scope.temporary("x"),r instanceof n?r.ref=o:r&&(r=O(v(o),r)),t.level&&(t.level=Q),c=[r.compile(t)],u=g(i).compile((t.ref=new String(o),t)),"cascade"!==s||t.ref.erred||this.carp("unreferred cascadee"),e?(c.push(", ",u),l.apply(null,e>Q?[null,"("].concat(lt(c),[")"]):[null].concat(lt(c)))):l.apply(null,[null].concat(lt(c),[r.terminator,"\n",u]))},n}(f),e.JS=H=function(t){var e=wt((vt(n,t).displayName="JS",n),t).prototype;function n(t,e,n){var i=this instanceof r?this:new r;return i.code=t,i.literal=e,i.comment=n,i}function r(){}return r.prototype=e,n.prototype.show=function(){return this.comment?this.code:"`"+this.code+"`"},n.prototype.terminator="",e.isAssignable=e.isCallable=function(){return!this.comment},n.prototype.compile=function(t){return l(this,h(this.literal?yt(this.code,t.indent):this.code))},n}(f),e.Require=function(t){var e=wt((vt(n,t).displayName="Require",n),t).prototype;function n(t){var e=this instanceof r?this:new r;return e.body=t,e}function r(){}return r.prototype=e,n.prototype.children=["body"],n.prototype.compile=function(t){var e,n,r,i,a,c,u,h=this;if(e=function(t,e){switch(!1){case!(t instanceof b):return t.name;case!(t instanceof v):case!(t instanceof y):return t.value;default:return e?h.carp("invalid require! argument"):t}},n=function(n){var r,i,a,c,u,h;return i=(r=function(){var t;switch(!1){case!(n instanceof S):return[n.val,null!=(t=n.key)?t:n.val];default:return[n,n]}}())[0],a=r[1],c=e(i),u="String"===ut.call(c).slice(8,-1)?q(i,v(s(c))):i,a=o(e(a,!0)),h=L(q(this,v("require"))).add(A([y("'"+a+"'")])),l(n,O(u,h).compile(t))},null!=this.body.items){for(r=[],i=0,c=(a=this.body.items).length;i<c;++i)u=a[i],r.push(n(u),";\n"+t.indent);return r.pop(),l.apply(null,[null].concat(lt(r)))}return l(null,n(this.body))},n}(f),e.Util=J=function(t){var e=wt((vt(n,t).displayName="Util",n),t).prototype;function n(t){var e=this instanceof r?this:new r;return e.verb=t,e}function r(){}return r.prototype=e,n.prototype.show=j.prototype.show,n.prototype.isCallable=pt,n.prototype.compile=function(){return l(this,mt(this.verb))},n.Extends=function(){return A.make(n("extend"),[arguments[0],arguments[1]])},n}(f),e.Vars=K=function(t){var e=wt((vt(n,t).displayName="Vars",n),t).prototype;function n(t){var e=this instanceof r?this:new r;return e.vars=t,e}function r(){}return r.prototype=e,n.prototype.children=["vars"],n.prototype.makeReturn=dt,n.prototype.compile=function(t,e){var n,r,i,s,o;for(n=0,i=(r=this.vars).length;n<i;++n)o=(s=r[n]).value,s instanceof v||s.carp("invalid variable declaration"),t.scope.check(o)&&s.carp('redeclaration of "'+o+'"'),t.scope.declare(o,s);return l(this,y("void").compile(t,e))},n}(f),e.L=function(t,e,n){return n&&"object"==typeof n&&(n.first_line=t.first_line+1,n.first_column=t.first_column,n.last_line=e.last_line+1,n.last_column=e.last_column,n.line=t.first_line+1,n.column=t.first_column),n},e.CopyL=q=function(t,e){return e&&"object"==typeof e&&(e.first_line=t.first_line,e.first_column=t.first_column,e.last_line=t.last_line,e.last_column=t.last_column,e.line=t.line,e.column=t.column),e},e.Box=function(t){return"object"==typeof t?t:new t.constructor(t)},e.Decl=function(t,e,n){if(!e[0])throw SyntaxError("empty "+t+" on line "+n);return V[t](e)},V={export:function(t){var e,n,r,i,s;for(e=-1,n=J("out");r=t[++e];)r instanceof g?t.splice.apply(t,[e--,1].concat(lt(r.lines))):(i=r instanceof M&&r.name)?t.splice(e++,0,O(L(n,[w(b(i))]),v(i))):t[e]=(i=r.varName()||r instanceof O&&r.left.varName()||r instanceof B&&(null!=(s=r.title)?s.varName():void 0))?O(L(n,[w(b(i))]),r):I(n,r);return g(t)},import:function(t,e){var n,r,i,s;for(n=0,r=t.length;n<r;++n)i=n,s=t[n],t[i]=I(y("this"),s,e);return g(t)},importAll:function(t){return this.import(t,!0)},const:function(t){var e,n,r;for(e=0,n=t.length;e<n;++e)"="===(r=t[e]).op||r.carp("invalid constant variable declaration"),r.const=!0;return g(t)},var:K},(i=ht.prototype).READ_ONLY={const:"constant",function:"function",undefined:"undeclared"},i.add=function(t,e,n){var r,i;return n&&(r=this.variables[t+"."])&&((i=this.READ_ONLY[r]||this.READ_ONLY[e])?n.carp("redeclaration of "+i+' "'+t+'"'):r===e&&"arg"===e?n.carp('duplicate parameter "'+t+'"'):"upvar"===r&&n.carp('accidental shadow of "'+t+'"'),"arg"===r||"function"===r)||(this.variables[t+"."]=e),t},i.get=function(t){return this.variables[t+"."]},i.declare=function(t,e,n){var r,i;if(r=this.shared){if(this.check(t))return;i=r}else i=this;return i.add(t,n?"const":"var",e)},i.assign=function(t,e){return this.add(t,{value:e})},i.temporary=function(t){var e;for(t||(t="ref");"reuse"!==(e=this.variables[t+"$."])&&void 0!==e;)t=t.length<2&&t<"z"?String.fromCharCode(t.charCodeAt()+1):t.replace(/\d*$/,n);return this.add(t+"$","var");function n(t){return++t}},i.free=function(t){return this.add(t,"reuse")},i.check=function(t,e){var n,r;return(n=this.variables[t+"."])||!e?n:null!=(r=this.parent)?r.check(t,e):void 0},i.checkReadOnly=function(t){var e,n,r;return(e=this.READ_ONLY[this.check(t,!0)])?e:((n=this.variables)[r=t+"."]||(n[r]="upvar"),"")},i.emit=function(t,e){var n,r,i,s,o,c,u,h,f;for(s in n=[],r=[],i=[],o=this.variables)c=o[s],s=s.slice(0,-1),"var"===c||"const"===c||"reuse"===c?n.push(s,", "):(u=c.value)&&(~(h=yt(u,e)).toString().lastIndexOf("function(",0)?(h instanceof a?p(h,8):h=h.slice(8),i.push("function ",s,h,"\n"+e)):r.push(s," = ",h,", "));return(f=n.concat(r)).pop(),i.pop(),f.length>0&&(t=l.apply(null,[this,e+"var "].concat(lt(f),[";\n",t]))),i.length>0?l.apply(null,[this,t,"\n"+e].concat(lt(i))):l(this,t)},X={clone:"function(it){\n  function fun(){} fun.prototype = it;\n  return new fun;\n}",extend:"function(sub, sup){\n  function fun(){} fun.prototype = (sub.superclass = sup).prototype;\n  (sub.prototype = new fun).constructor = sub;\n  if (typeof sup.extended == 'function') sup.extended(sub);\n  return sub;\n}",bind:"function(obj, key, target){\n  return function(){ return (target || obj)[key].apply(obj, arguments) };\n}",import:"function(obj, src){\n  var own = {}.hasOwnProperty;\n  for (var key in src) if (own.call(src, key)) obj[key] = src[key];\n  return obj;\n}",importAll:"function(obj, src){\n  for (var key in src) obj[key] = src[key];\n  return obj;\n}",copyWithout:"function(src, ex){\n  var obj = {}, own = {}.hasOwnProperty;\n  for (var key in src) if (own.call(src, key) && !own.call(ex, key)) obj[key] = src[key];\n  return obj;\n}",repeatString:"function(str, n){\n  for (var r = ''; n > 0; (n >>= 1) && (str += str)) if (n & 1) r += str;\n  return r;\n}",repeatArray:"function(arr, n){\n  for (var r = []; n > 0; (n >>= 1) && (arr = arr.concat(arr)))\n    if (n & 1) r.push.apply(r, arr);\n  return r;\n}",in:"function(x, xs){\n  var i = -1, l = xs.length >>> 0;\n  while (++i < l) if (x === xs[i]) return true;\n  return false;\n}",out:"typeof exports != 'undefined' && exports || this",curry:"function(f, bound){\n  var context,\n  _curry = function(args) {\n    return f.length > 1 ? function(){\n      var params = args ? args.concat() : [];\n      context = bound ? context || this : this;\n      return params.push.apply(params, arguments) <\n          f.length && arguments.length ?\n        _curry.call(context, params) : f.apply(context, params);\n    } : f;\n  };\n  return _curry();\n}",flip:"function(f){\n  return curry$(function (x, y) { return f(y, x); });\n}",partialize:"function(f, args, where){\n  var context = this;\n  return function(){\n    var params = slice$.call(arguments), i,\n        len = params.length, wlen = where.length,\n        ta = args ? args.concat() : [], tw = where ? where.concat() : [];\n    for(i = 0; i < len; ++i) { ta[tw[0]] = params[i]; tw.shift(); }\n    return len < wlen && len ?\n      partialize$.apply(context, [f, ta, tw]) : f.apply(context, ta);\n  };\n}",not:"function(x){ return !x; }",compose:"function() {\n  var functions = arguments;\n  return function() {\n    var i, result;\n    result = functions[0].apply(this, arguments);\n    for (i = 1; i < functions.length; ++i) {\n      result = functions[i](result);\n    }\n    return result;\n  };\n}",deepEq:"function(x, y, type){\n  var toString = {}.toString, hasOwnProperty = {}.hasOwnProperty,\n      has = function (obj, key) { return hasOwnProperty.call(obj, key); };\n  var first = true;\n  return eq(x, y, []);\n  function eq(a, b, stack) {\n    var className, length, size, result, alength, blength, r, key, ref, sizeB;\n    if (a == null || b == null) { return a === b; }\n    if (a.__placeholder__ || b.__placeholder__) { return true; }\n    if (a === b) { return a !== 0 || 1 / a == 1 / b; }\n    className = toString.call(a);\n    if (toString.call(b) != className) { return false; }\n    switch (className) {\n      case '[object String]': return a == String(b);\n      case '[object Number]':\n        return a != +a ? b != +b : (a == 0 ? 1 / a == 1 / b : a == +b);\n      case '[object Date]':\n      case '[object Boolean]':\n        return +a == +b;\n      case '[object RegExp]':\n        return a.source == b.source &&\n               a.global == b.global &&\n               a.multiline == b.multiline &&\n               a.ignoreCase == b.ignoreCase;\n    }\n    if (typeof a != 'object' || typeof b != 'object') { return false; }\n    length = stack.length;\n    while (length--) { if (stack[length] == a) { return true; } }\n    stack.push(a);\n    size = 0;\n    result = true;\n    if (className == '[object Array]') {\n      alength = a.length;\n      blength = b.length;\n      if (first) {\n        switch (type) {\n        case '===': result = alength === blength; break;\n        case '<==': result = alength <= blength; break;\n        case '<<=': result = alength < blength; break;\n        }\n        size = alength;\n        first = false;\n      } else {\n        result = alength === blength;\n        size = alength;\n      }\n      if (result) {\n        while (size--) {\n          if (!(result = size in a == size in b && eq(a[size], b[size], stack))){ break; }\n        }\n      }\n    } else {\n      if ('constructor' in a != 'constructor' in b || a.constructor != b.constructor) {\n        return false;\n      }\n      for (key in a) {\n        if (has(a, key)) {\n          size++;\n          if (!(result = has(b, key) && eq(a[key], b[key], stack))) { break; }\n        }\n      }\n      if (result) {\n        sizeB = 0;\n        for (key in b) {\n          if (has(b, key)) { ++sizeB; }\n        }\n        if (first) {\n          if (type === '<<=') {\n            result = size < sizeB;\n          } else if (type === '<==') {\n            result = size <= sizeB\n          } else {\n            result = size === sizeB;\n          }\n        } else {\n          first = false;\n          result = size === sizeB;\n        }\n      }\n    }\n    stack.pop();\n    return result;\n  }\n}",arrayFrom:"Array.from || function(x){return slice$.call(x);}",split:"''.split",replace:"''.replace",toString:"{}.toString",join:"[].join",slice:"[].slice",splice:"[].splice"},Z=0,Q=1,tt=2,et=3,nt=4,rt=5,function(){this["&&"]=this["||"]=this.xor=.2,this[".&."]=this[".^."]=this[".|."]=.3,this["=="]=this["!="]=this["~="]=this["!~="]=this["==="]=this["!=="]=.4,this["<"]=this[">"]=this["<="]=this[">="]=this.of=this.instanceof=.5,this["<<="]=this[">>="]=this["<=="]=this[">=="]=this["++"]=.5,this[".<<."]=this[".>>."]=this[".>>>."]=.6,this["+"]=this["-"]=.7,this["*"]=this["/"]=this["%"]=.8}.call(it={unary:.9}),st="  ",ot=/^(?!\d)[\w$\xAA-\uFFDC]+$/,at=/^\d+$/},function(t,e,n){var r,i,s,o,a,c,l,u,h,p={}.toString;function f(t,e){var n,r=function(i){return t.length>1?function(){var s=i?i.concat():[];return n=e&&n||this,s.push.apply(s,arguments)<t.length&&arguments.length?r.call(n,s):t.apply(n,s)}:t};return r()}r=n(20),i=n(21),s=n(22),o=n(23),a=n(24),c=function(t){return t},l=f((function(t,e){return p.call(e).slice(8,-1)===t})),u=f((function(t,e){var n,r=[];for(n=0;n<t;++n)r.push(e);return r})),o.empty=i.empty,o.slice=i.slice,o.take=i.take,o.drop=i.drop,o.splitAt=i.splitAt,o.takeWhile=i.takeWhile,o.dropWhile=i.dropWhile,o.span=i.span,o.breakStr=i.breakList,(h={Func:r,List:i,Obj:s,Str:o,Num:a,id:c,isType:l,replicate:u}).each=i.each,h.map=i.map,h.filter=i.filter,h.compact=i.compact,h.reject=i.reject,h.partition=i.partition,h.find=i.find,h.head=i.head,h.first=i.first,h.tail=i.tail,h.last=i.last,h.initial=i.initial,h.empty=i.empty,h.reverse=i.reverse,h.difference=i.difference,h.intersection=i.intersection,h.union=i.union,h.countBy=i.countBy,h.groupBy=i.groupBy,h.fold=i.fold,h.foldl=i.foldl,h.fold1=i.fold1,h.foldl1=i.foldl1,h.foldr=i.foldr,h.foldr1=i.foldr1,h.unfoldr=i.unfoldr,h.andList=i.andList,h.orList=i.orList,h.any=i.any,h.all=i.all,h.unique=i.unique,h.uniqueBy=i.uniqueBy,h.sort=i.sort,h.sortWith=i.sortWith,h.sortBy=i.sortBy,h.sum=i.sum,h.product=i.product,h.mean=i.mean,h.average=i.average,h.concat=i.concat,h.concatMap=i.concatMap,h.flatten=i.flatten,h.maximum=i.maximum,h.minimum=i.minimum,h.maximumBy=i.maximumBy,h.minimumBy=i.minimumBy,h.scan=i.scan,h.scanl=i.scanl,h.scan1=i.scan1,h.scanl1=i.scanl1,h.scanr=i.scanr,h.scanr1=i.scanr1,h.slice=i.slice,h.take=i.take,h.drop=i.drop,h.splitAt=i.splitAt,h.takeWhile=i.takeWhile,h.dropWhile=i.dropWhile,h.span=i.span,h.breakList=i.breakList,h.zip=i.zip,h.zipWith=i.zipWith,h.zipAll=i.zipAll,h.zipAllWith=i.zipAllWith,h.at=i.at,h.elemIndex=i.elemIndex,h.elemIndices=i.elemIndices,h.findIndex=i.findIndex,h.findIndices=i.findIndices,h.apply=r.apply,h.curry=r.curry,h.flip=r.flip,h.fix=r.fix,h.over=r.over,h.split=o.split,h.join=o.join,h.lines=o.lines,h.unlines=o.unlines,h.words=o.words,h.unwords=o.unwords,h.chars=o.chars,h.unchars=o.unchars,h.repeat=o.repeat,h.capitalize=o.capitalize,h.camelize=o.camelize,h.dasherize=o.dasherize,h.values=s.values,h.keys=s.keys,h.pairsToObj=s.pairsToObj,h.objToPairs=s.objToPairs,h.listsToObj=s.listsToObj,h.objToLists=s.objToLists,h.max=a.max,h.min=a.min,h.negate=a.negate,h.abs=a.abs,h.signum=a.signum,h.quot=a.quot,h.rem=a.rem,h.div=a.div,h.mod=a.mod,h.recip=a.recip,h.pi=a.pi,h.tau=a.tau,h.exp=a.exp,h.sqrt=a.sqrt,h.ln=a.ln,h.pow=a.pow,h.sin=a.sin,h.tan=a.tan,h.cos=a.cos,h.acos=a.acos,h.asin=a.asin,h.atan=a.atan,h.atan2=a.atan2,h.truncate=a.truncate,h.round=a.round,h.ceiling=a.ceiling,h.floor=a.floor,h.isItNaN=a.isItNaN,h.even=a.even,h.odd=a.odd,h.gcd=a.gcd,h.lcm=a.lcm,h.VERSION="1.1.2",t.exports=h},function(t,e){var n,r,i,s,o,a,c=[].slice,l={}.toString;function u(t,e){var n,r=function(i){return t.length>1?function(){var s=i?i.concat():[];return n=e&&n||this,s.push.apply(s,arguments)<t.length&&arguments.length?r.call(n,s):t.apply(n,s)}:t};return r()}n=u((function(t,e){return t.apply(null,e)})),r=function(t){return u(t)},i=u((function(t,e,n){return t(n,e)})),s=function(t){return function(e){return function(){return t(e(e)).apply(null,arguments)}}((function(e){return function(){return t(e(e)).apply(null,arguments)}}))},o=u((function(t,e,n,r){return t(e(n),e(r))})),a=function(t){var e;return e={},function(){var n,r,i;return n=c.call(arguments),r=function(){var t,e,r,s=[];for(t=0,r=(e=n).length;t<r;++t)i=e[t],s.push(i+l.call(i).slice(8,-1));return s}().join(""),e[r]=r in e?e[r]:t.apply(null,n)}},t.exports={curry:r,flip:i,fix:s,apply:n,over:o,memoize:a}},function(t,e){var n,r,i,s,o,a,c,l,u,h,p,f,d,g,m,y,v,b,w,k,L,A,E,C,S,R,N,_,T,O,I,x,P,M,B,$,U,D,j,F,W,Y,z,G,H,J,K,q,V,X,Z,Q,tt,et,nt,rt,it,st,ot,at,ct,lt,ut,ht,pt,ft,dt,gt,mt,yt={}.toString,vt=[].slice;function bt(t,e){var n,r=function(i){return t.length>1?function(){var s=i?i.concat():[];return n=e&&n||this,s.push.apply(s,arguments)<t.length&&arguments.length?r.call(n,s):t.apply(n,s)}:t};return r()}function wt(t,e){for(var n=-1,r=e.length>>>0;++n<r;)if(t===e[n])return!0;return!1}function kt(t){return!t}n=bt((function(t,e){var n,r;for(n=0,r=e.length;n<r;++n)t(e[n]);return e})),r=bt((function(t,e){var n,r,i,s=[];for(n=0,r=e.length;n<r;++n)i=e[n],s.push(t(i));return s})),i=function(t){var e,n,r,i=[];for(e=0,n=t.length;e<n;++e)(r=t[e])&&i.push(r);return i},s=bt((function(t,e){var n,r,i,s=[];for(n=0,r=e.length;n<r;++n)t(i=e[n])&&s.push(i);return s})),o=bt((function(t,e){var n,r,i,s=[];for(n=0,r=e.length;n<r;++n)t(i=e[n])||s.push(i);return s})),a=bt((function(t,e){var n,r,i,s,o;for(n=[],r=[],i=0,s=e.length;i<s;++i)(t(o=e[i])?n:r).push(o);return[n,r]})),c=bt((function(t,e){var n,r,i;for(n=0,r=e.length;n<r;++n)if(t(i=e[n]))return i})),l=u=function(t){return t[0]},h=function(t){if(t.length)return t.slice(1)},p=function(t){return t[t.length-1]},f=function(t){if(t.length)return t.slice(0,-1)},d=function(t){return!t.length},g=function(t){return t.concat().reverse()},m=function(t){var e,n,r,i;for(e=[],n=0,r=t.length;n<r;++n)wt(i=t[n],e)||e.push(i);return e},y=bt((function(t,e){var n,r,i,s,o,a=[];for(n=[],r=0,i=e.length;r<i;++r)wt(o=t(s=e[r]),n)||(n.push(o),a.push(s));return a})),v=b=bt((function(t,e,n){var r,i;for(r=0,i=n.length;r<i;++r)e=t(e,n[r]);return e})),w=k=bt((function(t,e){return v(t,e[0],e.slice(1))})),L=bt((function(t,e,n){var r;for(r=n.length-1;r>=0;--r)e=t(n[r],e);return e})),A=bt((function(t,e){return L(t,e[e.length-1],e.slice(0,-1))})),E=bt((function(t,e){var n,r,i;for(n=[],r=e;null!=(i=t(r));)n.push(i[0]),r=i[1];return n})),C=function(t){return[].concat.apply([],t)},S=bt((function(t,e){var n;return[].concat.apply([],function(){var r,i,s,o=[];for(r=0,s=(i=e).length;r<s;++r)n=i[r],o.push(t(n));return o}())})),R=function(t){var e;return[].concat.apply([],function(){var n,r,i,s=[];for(n=0,i=(r=t).length;n<i;++n)e=r[n],"Array"===yt.call(e).slice(8,-1)?s.push(R(e)):s.push(e);return s}())},N=function(t){var e,n,r,i,s,o,a;e=vt.call(arguments,1),n=[];t:for(r=0,i=t.length;r<i;++r){for(s=t[r],o=0,a=e.length;o<a;++o)if(wt(s,e[o]))continue t;n.push(s)}return n},_=function(t){var e,n,r,i,s,o,a;e=vt.call(arguments,1),n=[];t:for(r=0,i=t.length;r<i;++r){for(s=t[r],o=0,a=e.length;o<a;++o)if(!wt(s,e[o]))continue t;n.push(s)}return n},T=function(){var t,e,n,r,i,s,o,a;for(e=[],n=0,r=(t=vt.call(arguments)).length;n<r;++n)for(s=0,o=(i=t[n]).length;s<o;++s)wt(a=i[s],e)||e.push(a);return e},O=bt((function(t,e){var n,r,i,s;for(n={},r=0,i=e.length;r<i;++r)(s=t(e[r]))in n?n[s]+=1:n[s]=1;return n})),I=bt((function(t,e){var n,r,i,s,o;for(n={},r=0,i=e.length;r<i;++r)(o=t(s=e[r]))in n?n[o].push(s):n[o]=[s];return n})),x=function(t){var e,n;for(e=0,n=t.length;e<n;++e)if(!t[e])return!1;return!0},P=function(t){var e,n;for(e=0,n=t.length;e<n;++e)if(t[e])return!0;return!1},M=bt((function(t,e){var n,r;for(n=0,r=e.length;n<r;++n)if(t(e[n]))return!0;return!1})),B=bt((function(t,e){var n,r;for(n=0,r=e.length;n<r;++n)if(!t(e[n]))return!1;return!0})),$=function(t){return t.concat().sort((function(t,e){return t>e?1:t<e?-1:0}))},U=bt((function(t,e){return e.concat().sort(t)})),D=bt((function(t,e){return e.concat().sort((function(e,n){return t(e)>t(n)?1:t(e)<t(n)?-1:0}))})),j=function(t){var e,n,r;for(e=0,n=0,r=t.length;n<r;++n)e+=t[n];return e},F=function(t){var e,n,r;for(e=1,n=0,r=t.length;n<r;++n)e*=t[n];return e},W=Y=function(t){var e,n,r;for(e=0,n=0,r=t.length;n<r;++n)e+=t[n];return e/t.length},z=function(t){var e,n,r,i,s;for(e=t[0],n=0,i=(r=t.slice(1)).length;n<i;++n)(s=r[n])>e&&(e=s);return e},G=function(t){var e,n,r,i,s;for(e=t[0],n=0,i=(r=t.slice(1)).length;n<i;++n)(s=r[n])<e&&(e=s);return e},H=bt((function(t,e){var n,r,i,s,o;for(n=e[0],r=0,s=(i=e.slice(1)).length;r<s;++r)t(o=i[r])>t(n)&&(n=o);return n})),J=bt((function(t,e){var n,r,i,s,o;for(n=e[0],r=0,s=(i=e.slice(1)).length;r<s;++r)t(o=i[r])<t(n)&&(n=o);return n})),K=q=bt((function(t,e,n){var r,i;return r=e,[e].concat(function(){var e,s,o,a=[];for(e=0,o=(s=n).length;e<o;++e)i=s[e],a.push(r=t(r,i));return a}())})),V=X=bt((function(t,e){if(e.length)return K(t,e[0],e.slice(1))})),Z=bt((function(t,e,n){return n=n.concat().reverse(),K(t,e,n).reverse()})),Q=bt((function(t,e){if(e.length)return e=e.concat().reverse(),K(t,e[0],e.slice(1)).reverse()})),tt=bt((function(t,e,n){return n.slice(t,e)})),et=bt((function(t,e){return t<=0?e.slice(0,0):e.slice(0,t)})),nt=bt((function(t,e){return t<=0?e:e.slice(t)})),rt=bt((function(t,e){return[et(t,e),nt(t,e)]})),it=bt((function(t,e){var n,r;if(!(n=e.length))return e;for(r=0;r<n&&t(e[r]);)r+=1;return e.slice(0,r)})),st=bt((function(t,e){var n,r;if(!(n=e.length))return e;for(r=0;r<n&&t(e[r]);)r+=1;return e.slice(r)})),ot=bt((function(t,e){return[it(t,e),st(t,e)]})),at=bt((function(t,e){return ot(function(){var t=arguments;return function(){var e,n;for(n=t[0].apply(this,arguments),e=1;e<t.length;++e)n=t[e](n);return n}}(t,kt),e)})),ct=bt((function(t,e){var n,r,i,s,o,a;for(n=[],r=e.length,i=0,s=t.length;i<s&&(o=i,a=t[i],o!==r);++i)n.push([a,e[o]]);return n})),lt=bt((function(t,e,n){var r,i,s,o,a,c;for(r=[],i=n.length,s=0,o=e.length;s<o&&(a=s,c=e[s],a!==i);++s)r.push(t(c,n[a]));return r})),ut=function(){var t,e,n,r,i,s,o,a,c,l=[];for(e=void 0,n=0,r=(t=vt.call(arguments)).length;n<r;++n)e<=(s=(i=t[n]).length)||(e=s);for(n=0;n<e;++n){for(o=n,a=[],c=0,r=t.length;c<r;++c)i=t[c],a.push(i[o]);l.push(a)}return l},ht=function(t){var e,n,r,i,s,o,a,c=[];for(n=void 0,r=0,i=(e=vt.call(arguments,1)).length;r<i;++r)n<=(o=(s=e[r]).length)||(n=o);for(r=0;r<n;++r)a=r,c.push(t.apply(null,l()));return c;function l(){var t,n,r,i=[];for(t=0,r=(n=e).length;t<r;++t)s=n[t],i.push(s[a]);return i}},pt=bt((function(t,e){return t<0?e[e.length+t]:e[t]})),ft=bt((function(t,e){var n,r,i;for(n=0,r=e.length;n<r;++n)if(i=n,e[n]===t)return i})),dt=bt((function(t,e){var n,r,i,s=[];for(n=0,r=e.length;n<r;++n)i=n,e[n]===t&&s.push(i);return s})),gt=bt((function(t,e){var n,r,i;for(n=0,r=e.length;n<r;++n)if(i=n,t(e[n]))return i})),mt=bt((function(t,e){var n,r,i,s=[];for(n=0,r=e.length;n<r;++n)i=n,t(e[n])&&s.push(i);return s})),t.exports={each:n,map:r,filter:s,compact:i,reject:o,partition:a,find:c,head:l,first:u,tail:h,last:p,initial:f,empty:d,reverse:g,difference:N,intersection:_,union:T,countBy:O,groupBy:I,fold:v,fold1:w,foldl:b,foldl1:k,foldr:L,foldr1:A,unfoldr:E,andList:x,orList:P,any:M,all:B,unique:m,uniqueBy:y,sort:$,sortWith:U,sortBy:D,sum:j,product:F,mean:W,average:Y,concat:C,concatMap:S,flatten:R,maximum:z,minimum:G,maximumBy:H,minimumBy:J,scan:K,scan1:V,scanl:q,scanl1:X,scanr:Z,scanr1:Q,slice:tt,take:et,drop:nt,splitAt:rt,takeWhile:it,dropWhile:st,span:ot,breakList:at,zip:ct,zipWith:lt,zipAll:ut,zipAllWith:ht,at:pt,elemIndex:ft,elemIndices:dt,findIndex:gt,findIndices:mt}},function(t,e){var n,r,i,s,o,a,c,l,u,h,p,f,d,g;function m(t,e){var n,r=function(i){return t.length>1?function(){var s=i?i.concat():[];return n=e&&n||this,s.push.apply(s,arguments)<t.length&&arguments.length?r.call(n,s):t.apply(n,s)}:t};return r()}n=function(t){var e,n,r=[];for(e in t)n=t[e],r.push(n);return r},r=function(t){var e,n=[];for(e in t)n.push(e);return n},i=function(t){var e,n,r,i={};for(e=0,n=t.length;e<n;++e)i[(r=t[e])[0]]=r[1];return i},s=function(t){var e,n,r=[];for(e in t)n=t[e],r.push([e,n]);return r},o=m((function(t,e){var n,r,i,s={};for(n=0,r=t.length;n<r;++n)i=n,s[t[n]]=e[i];return s})),a=function(t){var e,n,r,i;for(r in e=[],n=[],t)i=t[r],e.push(r),n.push(i);return[e,n]},c=function(t){var e;for(e in t)return!1;return!0},l=m((function(t,e){var n;for(n in e)t(e[n]);return e})),u=m((function(t,e){var n,r,i={};for(n in e)r=e[n],i[n]=t(r);return i})),h=function(t){var e,n,r={};for(e in t)(n=t[e])&&(r[e]=n);return r},p=m((function(t,e){var n,r,i={};for(n in e)t(r=e[n])&&(i[n]=r);return i})),f=m((function(t,e){var n,r,i={};for(n in e)t(r=e[n])||(i[n]=r);return i})),d=m((function(t,e){var n,r,i,s;for(i in n={},r={},e)(t(s=e[i])?n:r)[i]=s;return[n,r]})),g=m((function(t,e){var n,r;for(n in e)if(t(r=e[n]))return r})),t.exports={values:n,keys:r,pairsToObj:i,objToPairs:s,listsToObj:o,objToLists:a,empty:c,each:l,map:u,filter:p,compact:h,reject:f,partition:d,find:g}},function(t,e){var n,r,i,s,o,a,c,l,u,h,p,f,d;function g(t,e){var n,r=function(i){return t.length>1?function(){var s=i?i.concat():[];return n=e&&n||this,s.push.apply(s,arguments)<t.length&&arguments.length?r.call(n,s):t.apply(n,s)}:t};return r()}n=g((function(t,e){return e.split(t)})),r=g((function(t,e){return e.join(t)})),i=function(t){return t.length?t.split("\n"):[]},s=function(t){return t.join("\n")},o=function(t){return t.length?t.split(/[ ]+/):[]},a=function(t){return t.join(" ")},c=function(t){return t.split("")},l=function(t){return t.join("")},u=function(t){return t.split("").reverse().join("")},h=g((function(t,e){var n,r;for(n="",r=0;r<t;++r)n+=e;return n})),p=function(t){return t.charAt(0).toUpperCase()+t.slice(1)},f=function(t){return t.replace(/[-_]+(.)?/g,(function(t,e){return(null!=e?e:"").toUpperCase()}))},d=function(t){return t.replace(/([^-A-Z])([A-Z]+)/g,(function(t,e,n){return e+"-"+(n.length>1?n:n.toLowerCase())})).replace(/^([A-Z]+)/,(function(t,e){return e.length>1?e+"-":e.toLowerCase()}))},t.exports={split:n,join:r,lines:i,unlines:s,words:o,unwords:a,chars:c,unchars:l,reverse:u,repeat:h,capitalize:p,camelize:f,dasherize:d}},function(t,e){var n,r,i,s,o,a,c,l,u,h,p,f,d,g,m,y,v,b,w,k,L,A,E,C,S,R,N,_,T,O,I,x;function P(t,e){var n,r=function(i){return t.length>1?function(){var s=i?i.concat():[];return n=e&&n||this,s.push.apply(s,arguments)<t.length&&arguments.length?r.call(n,s):t.apply(n,s)}:t};return r()}n=P((function(t,e){return t>e?t:e})),r=P((function(t,e){return t<e?t:e})),i=function(t){return-t},s=Math.abs,o=function(t){return t<0?-1:t>0?1:0},a=P((function(t,e){return~~(t/e)})),c=P((function(t,e){return t%e})),l=P((function(t,e){return Math.floor(t/e)})),u=P((function(t,e){var n;return(t%(n=e)+n)%n})),h=function(t){return 1/t},f=2*(p=Math.PI),d=Math.exp,g=Math.sqrt,m=Math.log,y=P((function(t,e){return Math.pow(t,e)})),v=Math.sin,b=Math.tan,w=Math.cos,k=Math.asin,L=Math.acos,A=Math.atan,E=P((function(t,e){return Math.atan2(t,e)})),C=function(t){return~~t},S=Math.round,R=Math.ceil,N=Math.floor,_=function(t){return t!=t},T=function(t){return t%2==0},O=function(t){return t%2!=0},I=P((function(t,e){var n;for(t=Math.abs(t),e=Math.abs(e);0!==e;)n=t%e,t=e,e=n;return t})),x=P((function(t,e){return Math.abs(Math.floor(t/I(t,e)*e))})),t.exports={max:n,min:r,negate:i,abs:s,signum:o,quot:a,rem:c,div:l,mod:u,recip:h,pi:p,tau:f,exp:d,sqrt:g,ln:m,pow:y,sin:v,tan:b,cos:w,acos:L,asin:k,atan:A,atan2:E,truncate:C,round:S,ceiling:R,floor:N,isItNaN:_,even:T,odd:O,gcd:I,lcm:x}},function(t,e,n){var r,i,s;r=n(1),i=function(t){var e;return(e=/^['"](.*)['"]$/.exec(t.trim()))?e[1]:t},s=function(t){return r.basename(i(t)).split(".")[0].replace(/-[a-z]/gi,(function(t){return t.charAt(1).toUpperCase()}))},t.exports={nameFromPath:s,stripString:i}},function(t,e){var n="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".split("");e.encode=function(t){if(0<=t&&t<n.length)return n[t];throw new TypeError("Must be between 0 and 63: "+t)},e.decode=function(t){return 65<=t&&t<=90?t-65:97<=t&&t<=122?t-97+26:48<=t&&t<=57?t-48+52:43==t?62:47==t?63:-1}},function(t,e,n){var r=n(0);function i(){this._array=[],this._sorted=!0,this._last={generatedLine:-1,generatedColumn:0}}i.prototype.unsortedForEach=function(t,e){this._array.forEach(t,e)},i.prototype.add=function(t){var e,n,i,s,o,a;e=this._last,n=t,i=e.generatedLine,s=n.generatedLine,o=e.generatedColumn,a=n.generatedColumn,s>i||s==i&&a>=o||r.compareByGeneratedPositionsInflated(e,n)<=0?(this._last=t,this._array.push(t)):(this._sorted=!1,this._array.push(t))},i.prototype.toArray=function(){return this._sorted||(this._array.sort(r.compareByGeneratedPositionsInflated),this._sorted=!0),this._array},e.MappingList=i},function(t,e,n){var r=n(0),i=n(29),s=n(8).ArraySet,o=n(7),a=n(30).quickSort;function c(t,e){var n=t;return"string"==typeof t&&(n=r.parseSourceMapInput(t)),null!=n.sections?new h(n,e):new l(n,e)}function l(t,e){var n=t;"string"==typeof t&&(n=r.parseSourceMapInput(t));var i=r.getArg(n,"version"),o=r.getArg(n,"sources"),a=r.getArg(n,"names",[]),c=r.getArg(n,"sourceRoot",null),l=r.getArg(n,"sourcesContent",null),u=r.getArg(n,"mappings"),h=r.getArg(n,"file",null);if(i!=this._version)throw new Error("Unsupported version: "+i);c&&(c=r.normalize(c)),o=o.map(String).map(r.normalize).map((function(t){return c&&r.isAbsolute(c)&&r.isAbsolute(t)?r.relative(c,t):t})),this._names=s.fromArray(a.map(String),!0),this._sources=s.fromArray(o,!0),this._absoluteSources=this._sources.toArray().map((function(t){return r.computeSourceURL(c,t,e)})),this.sourceRoot=c,this.sourcesContent=l,this._mappings=u,this._sourceMapURL=e,this.file=h}function u(){this.generatedLine=0,this.generatedColumn=0,this.source=null,this.originalLine=null,this.originalColumn=null,this.name=null}function h(t,e){var n=t;"string"==typeof t&&(n=r.parseSourceMapInput(t));var i=r.getArg(n,"version"),o=r.getArg(n,"sections");if(i!=this._version)throw new Error("Unsupported version: "+i);this._sources=new s,this._names=new s;var a={line:-1,column:0};this._sections=o.map((function(t){if(t.url)throw new Error("Support for url field in sections not implemented.");var n=r.getArg(t,"offset"),i=r.getArg(n,"line"),s=r.getArg(n,"column");if(i<a.line||i===a.line&&s<a.column)throw new Error("Section offsets must be ordered and non-overlapping.");return a=n,{generatedOffset:{generatedLine:i+1,generatedColumn:s+1},consumer:new c(r.getArg(t,"map"),e)}}))}c.fromSourceMap=function(t,e){return l.fromSourceMap(t,e)},c.prototype._version=3,c.prototype.__generatedMappings=null,Object.defineProperty(c.prototype,"_generatedMappings",{configurable:!0,enumerable:!0,get:function(){return this.__generatedMappings||this._parseMappings(this._mappings,this.sourceRoot),this.__generatedMappings}}),c.prototype.__originalMappings=null,Object.defineProperty(c.prototype,"_originalMappings",{configurable:!0,enumerable:!0,get:function(){return this.__originalMappings||this._parseMappings(this._mappings,this.sourceRoot),this.__originalMappings}}),c.prototype._charIsMappingSeparator=function(t,e){var n=t.charAt(e);return";"===n||","===n},c.prototype._parseMappings=function(t,e){throw new Error("Subclasses must implement _parseMappings")},c.GENERATED_ORDER=1,c.ORIGINAL_ORDER=2,c.GREATEST_LOWER_BOUND=1,c.LEAST_UPPER_BOUND=2,c.prototype.eachMapping=function(t,e,n){var i,s=e||null;switch(n||c.GENERATED_ORDER){case c.GENERATED_ORDER:i=this._generatedMappings;break;case c.ORIGINAL_ORDER:i=this._originalMappings;break;default:throw new Error("Unknown order of iteration.")}var o=this.sourceRoot;i.map((function(t){var e=null===t.source?null:this._sources.at(t.source);return{source:e=r.computeSourceURL(o,e,this._sourceMapURL),generatedLine:t.generatedLine,generatedColumn:t.generatedColumn,originalLine:t.originalLine,originalColumn:t.originalColumn,name:null===t.name?null:this._names.at(t.name)}}),this).forEach(t,s)},c.prototype.allGeneratedPositionsFor=function(t){var e=r.getArg(t,"line"),n={source:r.getArg(t,"source"),originalLine:e,originalColumn:r.getArg(t,"column",0)};if(n.source=this._findSourceIndex(n.source),n.source<0)return[];var s=[],o=this._findMapping(n,this._originalMappings,"originalLine","originalColumn",r.compareByOriginalPositions,i.LEAST_UPPER_BOUND);if(o>=0){var a=this._originalMappings[o];if(void 0===t.column)for(var c=a.originalLine;a&&a.originalLine===c;)s.push({line:r.getArg(a,"generatedLine",null),column:r.getArg(a,"generatedColumn",null),lastColumn:r.getArg(a,"lastGeneratedColumn",null)}),a=this._originalMappings[++o];else for(var l=a.originalColumn;a&&a.originalLine===e&&a.originalColumn==l;)s.push({line:r.getArg(a,"generatedLine",null),column:r.getArg(a,"generatedColumn",null),lastColumn:r.getArg(a,"lastGeneratedColumn",null)}),a=this._originalMappings[++o]}return s},e.SourceMapConsumer=c,l.prototype=Object.create(c.prototype),l.prototype.consumer=c,l.prototype._findSourceIndex=function(t){var e,n=t;if(null!=this.sourceRoot&&(n=r.relative(this.sourceRoot,n)),this._sources.has(n))return this._sources.indexOf(n);for(e=0;e<this._absoluteSources.length;++e)if(this._absoluteSources[e]==t)return e;return-1},l.fromSourceMap=function(t,e){var n=Object.create(l.prototype),i=n._names=s.fromArray(t._names.toArray(),!0),o=n._sources=s.fromArray(t._sources.toArray(),!0);n.sourceRoot=t._sourceRoot,n.sourcesContent=t._generateSourcesContent(n._sources.toArray(),n.sourceRoot),n.file=t._file,n._sourceMapURL=e,n._absoluteSources=n._sources.toArray().map((function(t){return r.computeSourceURL(n.sourceRoot,t,e)}));for(var c=t._mappings.toArray().slice(),h=n.__generatedMappings=[],p=n.__originalMappings=[],f=0,d=c.length;f<d;f++){var g=c[f],m=new u;m.generatedLine=g.generatedLine,m.generatedColumn=g.generatedColumn,g.source&&(m.source=o.indexOf(g.source),m.originalLine=g.originalLine,m.originalColumn=g.originalColumn,g.name&&(m.name=i.indexOf(g.name)),p.push(m)),h.push(m)}return a(n.__originalMappings,r.compareByOriginalPositions),n},l.prototype._version=3,Object.defineProperty(l.prototype,"sources",{get:function(){return this._absoluteSources.slice()}}),l.prototype._parseMappings=function(t,e){for(var n,i,s,c,l,h=1,p=0,f=0,d=0,g=0,m=0,y=t.length,v=0,b={},w={},k=[],L=[];v<y;)if(";"===t.charAt(v))h++,v++,p=0;else if(","===t.charAt(v))v++;else{for((n=new u).generatedLine=h,c=v;c<y&&!this._charIsMappingSeparator(t,c);c++);if(s=b[i=t.slice(v,c)])v+=i.length;else{for(s=[];v<c;)o.decode(t,v,w),l=w.value,v=w.rest,s.push(l);if(2===s.length)throw new Error("Found a source, but no line and column");if(3===s.length)throw new Error("Found a source and line, but no column");b[i]=s}n.generatedColumn=p+s[0],p=n.generatedColumn,s.length>1&&(n.source=g+s[1],g+=s[1],n.originalLine=f+s[2],f=n.originalLine,n.originalLine+=1,n.originalColumn=d+s[3],d=n.originalColumn,s.length>4&&(n.name=m+s[4],m+=s[4])),L.push(n),"number"==typeof n.originalLine&&k.push(n)}a(L,r.compareByGeneratedPositionsDeflated),this.__generatedMappings=L,a(k,r.compareByOriginalPositions),this.__originalMappings=k},l.prototype._findMapping=function(t,e,n,r,s,o){if(t[n]<=0)throw new TypeError("Line must be greater than or equal to 1, got "+t[n]);if(t[r]<0)throw new TypeError("Column must be greater than or equal to 0, got "+t[r]);return i.search(t,e,s,o)},l.prototype.computeColumnSpans=function(){for(var t=0;t<this._generatedMappings.length;++t){var e=this._generatedMappings[t];if(t+1<this._generatedMappings.length){var n=this._generatedMappings[t+1];if(e.generatedLine===n.generatedLine){e.lastGeneratedColumn=n.generatedColumn-1;continue}}e.lastGeneratedColumn=1/0}},l.prototype.originalPositionFor=function(t){var e={generatedLine:r.getArg(t,"line"),generatedColumn:r.getArg(t,"column")},n=this._findMapping(e,this._generatedMappings,"generatedLine","generatedColumn",r.compareByGeneratedPositionsDeflated,r.getArg(t,"bias",c.GREATEST_LOWER_BOUND));if(n>=0){var i=this._generatedMappings[n];if(i.generatedLine===e.generatedLine){var s=r.getArg(i,"source",null);null!==s&&(s=this._sources.at(s),s=r.computeSourceURL(this.sourceRoot,s,this._sourceMapURL));var o=r.getArg(i,"name",null);return null!==o&&(o=this._names.at(o)),{source:s,line:r.getArg(i,"originalLine",null),column:r.getArg(i,"originalColumn",null),name:o}}}return{source:null,line:null,column:null,name:null}},l.prototype.hasContentsOfAllSources=function(){return!!this.sourcesContent&&(this.sourcesContent.length>=this._sources.size()&&!this.sourcesContent.some((function(t){return null==t})))},l.prototype.sourceContentFor=function(t,e){if(!this.sourcesContent)return null;var n=this._findSourceIndex(t);if(n>=0)return this.sourcesContent[n];var i,s=t;if(null!=this.sourceRoot&&(s=r.relative(this.sourceRoot,s)),null!=this.sourceRoot&&(i=r.urlParse(this.sourceRoot))){var o=s.replace(/^file:\/\//,"");if("file"==i.scheme&&this._sources.has(o))return this.sourcesContent[this._sources.indexOf(o)];if((!i.path||"/"==i.path)&&this._sources.has("/"+s))return this.sourcesContent[this._sources.indexOf("/"+s)]}if(e)return null;throw new Error('"'+s+'" is not in the SourceMap.')},l.prototype.generatedPositionFor=function(t){var e=r.getArg(t,"source");if((e=this._findSourceIndex(e))<0)return{line:null,column:null,lastColumn:null};var n={source:e,originalLine:r.getArg(t,"line"),originalColumn:r.getArg(t,"column")},i=this._findMapping(n,this._originalMappings,"originalLine","originalColumn",r.compareByOriginalPositions,r.getArg(t,"bias",c.GREATEST_LOWER_BOUND));if(i>=0){var s=this._originalMappings[i];if(s.source===n.source)return{line:r.getArg(s,"generatedLine",null),column:r.getArg(s,"generatedColumn",null),lastColumn:r.getArg(s,"lastGeneratedColumn",null)}}return{line:null,column:null,lastColumn:null}},e.BasicSourceMapConsumer=l,h.prototype=Object.create(c.prototype),h.prototype.constructor=c,h.prototype._version=3,Object.defineProperty(h.prototype,"sources",{get:function(){for(var t=[],e=0;e<this._sections.length;e++)for(var n=0;n<this._sections[e].consumer.sources.length;n++)t.push(this._sections[e].consumer.sources[n]);return t}}),h.prototype.originalPositionFor=function(t){var e={generatedLine:r.getArg(t,"line"),generatedColumn:r.getArg(t,"column")},n=i.search(e,this._sections,(function(t,e){var n=t.generatedLine-e.generatedOffset.generatedLine;return n||t.generatedColumn-e.generatedOffset.generatedColumn})),s=this._sections[n];return s?s.consumer.originalPositionFor({line:e.generatedLine-(s.generatedOffset.generatedLine-1),column:e.generatedColumn-(s.generatedOffset.generatedLine===e.generatedLine?s.generatedOffset.generatedColumn-1:0),bias:t.bias}):{source:null,line:null,column:null,name:null}},h.prototype.hasContentsOfAllSources=function(){return this._sections.every((function(t){return t.consumer.hasContentsOfAllSources()}))},h.prototype.sourceContentFor=function(t,e){for(var n=0;n<this._sections.length;n++){var r=this._sections[n].consumer.sourceContentFor(t,!0);if(r)return r}if(e)return null;throw new Error('"'+t+'" is not in the SourceMap.')},h.prototype.generatedPositionFor=function(t){for(var e=0;e<this._sections.length;e++){var n=this._sections[e];if(-1!==n.consumer._findSourceIndex(r.getArg(t,"source"))){var i=n.consumer.generatedPositionFor(t);if(i)return{line:i.line+(n.generatedOffset.generatedLine-1),column:i.column+(n.generatedOffset.generatedLine===i.line?n.generatedOffset.generatedColumn-1:0)}}}return{line:null,column:null}},h.prototype._parseMappings=function(t,e){this.__generatedMappings=[],this.__originalMappings=[];for(var n=0;n<this._sections.length;n++)for(var i=this._sections[n],s=i.consumer._generatedMappings,o=0;o<s.length;o++){var c=s[o],l=i.consumer._sources.at(c.source);l=r.computeSourceURL(i.consumer.sourceRoot,l,this._sourceMapURL),this._sources.add(l),l=this._sources.indexOf(l);var u=null;c.name&&(u=i.consumer._names.at(c.name),this._names.add(u),u=this._names.indexOf(u));var h={source:l,generatedLine:c.generatedLine+(i.generatedOffset.generatedLine-1),generatedColumn:c.generatedColumn+(i.generatedOffset.generatedLine===c.generatedLine?i.generatedOffset.generatedColumn-1:0),originalLine:c.originalLine,originalColumn:c.originalColumn,name:u};this.__generatedMappings.push(h),"number"==typeof h.originalLine&&this.__originalMappings.push(h)}a(this.__generatedMappings,r.compareByGeneratedPositionsDeflated),a(this.__originalMappings,r.compareByOriginalPositions)},e.IndexedSourceMapConsumer=h},function(t,e){e.GREATEST_LOWER_BOUND=1,e.LEAST_UPPER_BOUND=2,e.search=function(t,n,r,i){if(0===n.length)return-1;var s=function t(n,r,i,s,o,a){var c=Math.floor((r-n)/2)+n,l=o(i,s[c],!0);return 0===l?c:l>0?r-c>1?t(c,r,i,s,o,a):a==e.LEAST_UPPER_BOUND?r<s.length?r:-1:c:c-n>1?t(n,c,i,s,o,a):a==e.LEAST_UPPER_BOUND?c:n<0?-1:n}(-1,n.length,t,n,r,i||e.GREATEST_LOWER_BOUND);if(s<0)return-1;for(;s-1>=0&&0===r(n[s],n[s-1],!0);)--s;return s}},function(t,e){function n(t,e,n){var r=t[e];t[e]=t[n],t[n]=r}function r(t,e,i,s){if(i<s){var o=i-1;n(t,(u=i,h=s,Math.round(u+Math.random()*(h-u))),s);for(var a=t[s],c=i;c<s;c++)e(t[c],a)<=0&&n(t,o+=1,c);n(t,o+1,c);var l=o+1;r(t,e,i,l-1),r(t,e,l+1,s)}var u,h}e.quickSort=function(t,e){r(t,e,0,t.length-1)}},function(t,e,n){var r=n(6).SourceMapGenerator,i=n(0),s=/(\r?\n)/,o="$$$isSourceNode$$$";function a(t,e,n,r,i){this.children=[],this.sourceContents={},this.line=null==t?null:t,this.column=null==e?null:e,this.source=null==n?null:n,this.name=null==i?null:i,this[o]=!0,null!=r&&this.add(r)}a.fromStringWithSourceMap=function(t,e,n){var r=new a,o=t.split(s),c=0,l=function(){return t()+(t()||"");function t(){return c<o.length?o[c++]:void 0}},u=1,h=0,p=null;return e.eachMapping((function(t){if(null!==p){if(!(u<t.generatedLine)){var e=(n=o[c]||"").substr(0,t.generatedColumn-h);return o[c]=n.substr(t.generatedColumn-h),h=t.generatedColumn,f(p,e),void(p=t)}f(p,l()),u++,h=0}for(;u<t.generatedLine;)r.add(l()),u++;if(h<t.generatedColumn){var n=o[c]||"";r.add(n.substr(0,t.generatedColumn)),o[c]=n.substr(t.generatedColumn),h=t.generatedColumn}p=t}),this),c<o.length&&(p&&f(p,l()),r.add(o.splice(c).join(""))),e.sources.forEach((function(t){var s=e.sourceContentFor(t);null!=s&&(null!=n&&(t=i.join(n,t)),r.setSourceContent(t,s))})),r;function f(t,e){if(null===t||void 0===t.source)r.add(e);else{var s=n?i.join(n,t.source):t.source;r.add(new a(t.originalLine,t.originalColumn,s,e,t.name))}}},a.prototype.add=function(t){if(Array.isArray(t))t.forEach((function(t){this.add(t)}),this);else{if(!t[o]&&"string"!=typeof t)throw new TypeError("Expected a SourceNode, string, or an array of SourceNodes and strings. Got "+t);t&&this.children.push(t)}return this},a.prototype.prepend=function(t){if(Array.isArray(t))for(var e=t.length-1;e>=0;e--)this.prepend(t[e]);else{if(!t[o]&&"string"!=typeof t)throw new TypeError("Expected a SourceNode, string, or an array of SourceNodes and strings. Got "+t);this.children.unshift(t)}return this},a.prototype.walk=function(t){for(var e,n=0,r=this.children.length;n<r;n++)(e=this.children[n])[o]?e.walk(t):""!==e&&t(e,{source:this.source,line:this.line,column:this.column,name:this.name})},a.prototype.join=function(t){var e,n,r=this.children.length;if(r>0){for(e=[],n=0;n<r-1;n++)e.push(this.children[n]),e.push(t);e.push(this.children[n]),this.children=e}return this},a.prototype.replaceRight=function(t,e){var n=this.children[this.children.length-1];return n[o]?n.replaceRight(t,e):"string"==typeof n?this.children[this.children.length-1]=n.replace(t,e):this.children.push("".replace(t,e)),this},a.prototype.setSourceContent=function(t,e){this.sourceContents[i.toSetString(t)]=e},a.prototype.walkSourceContents=function(t){for(var e=0,n=this.children.length;e<n;e++)this.children[e][o]&&this.children[e].walkSourceContents(t);var r=Object.keys(this.sourceContents);for(e=0,n=r.length;e<n;e++)t(i.fromSetString(r[e]),this.sourceContents[r[e]])},a.prototype.toString=function(){var t="";return this.walk((function(e){t+=e})),t},a.prototype.toStringWithSourceMap=function(t){var e={code:"",line:1,column:0},n=new r(t),i=!1,s=null,o=null,a=null,c=null;return this.walk((function(t,r){e.code+=t,null!==r.source&&null!==r.line&&null!==r.column?(s===r.source&&o===r.line&&a===r.column&&c===r.name||n.addMapping({source:r.source,original:{line:r.line,column:r.column},generated:{line:e.line,column:e.column},name:r.name}),s=r.source,o=r.line,a=r.column,c=r.name,i=!0):i&&(n.addMapping({generated:{line:e.line,column:e.column}}),s=null,i=!1);for(var l=0,u=t.length;l<u;l++)10===t.charCodeAt(l)?(e.line++,e.column=0,l+1===u?(s=null,i=!1):i&&n.addMapping({source:r.source,original:{line:r.line,column:r.column},generated:{line:e.line,column:e.column},name:r.name})):e.column++})),this.walkSourceContents((function(t,e){n.setSourceContent(t,e)})),{code:e.code,map:n}},e.SourceNode=a},function(t,e,n){(function(e){function r(t,e,n){var r,i,s,o,a,c,l,u,h,p,f,d,g,m;if(null!=t&&(r=t.stack),!r)return t;if(!((i=r.split("\n")).length>1))return t;for(s=0,o=i.length;s<o;++s)if(a=s,!(0>(l=(c=i[s]).indexOf("("+n+":")))&&(u=+(u=(/:(\d+):/.exec(c.slice(l+n.length))||"")[1])))for(p=(""+(h=u+4)).length,f||(f=e.split("\n")),d=1>(g=u-4)?1:g;d<=h;++d)m=d,i[a]+="\n"+("    "+m).slice(-p)+"|+".charAt(m===u)+" "+[f[m-1]];return t.stack=i.join("\n"),t}t.exports=function(t){var i,s,o;i=n(4),s=n(1),o=n(33),t.run=function(o,a,c){var l,u,h,p,f,d,g;null!=a&&(l=a.filename),h=(u=null!=c?c:{}).js,p=u.context,f=n.c[n.s],d=l?s.dirname(i.realpathSync(l=s.resolve(l))):l=".",f.paths=f.constructor._nodeModulePaths(d),f.filename=l,h||(g=(o=t.compile(o,(function(t,e){var n={}.hasOwnProperty;for(var r in e)n.call(e,r)&&(t[r]=e[r])}(u={},a),u.bare=!0,u))).code)&&(o=g),p&&(e.__runContext=p,o="return (function() {\n"+o+"\n}).call(global.__runContext);"),l+="(js)";try{return f._compile(o,l)}catch(t){throw r(t,o,l)}},function(t,e){for(var n in e)t[n]=e[n]}(t,o.EventEmitter.prototype),(void 0)[".ls"]=function(e,n){var s,o;s=i.readFileSync(n,"utf8"),o=".json.ls"===n.substr(-8)?"module.exports = "+t.compile(s,{filename:n,json:!0}):t.compile(s,{filename:n,bare:!0,map:"embedded"}).code;try{return e._compile(o,n)}catch(t){throw r(t,o,n)}}}}).call(this,n(2))},function(t,e,n){"use strict";var r,i="object"==typeof Reflect?Reflect:null,s=i&&"function"==typeof i.apply?i.apply:function(t,e,n){return Function.prototype.apply.call(t,e,n)};r=i&&"function"==typeof i.ownKeys?i.ownKeys:Object.getOwnPropertySymbols?function(t){return Object.getOwnPropertyNames(t).concat(Object.getOwnPropertySymbols(t))}:function(t){return Object.getOwnPropertyNames(t)};var o=Number.isNaN||function(t){return t!=t};function a(){a.init.call(this)}t.exports=a,t.exports.once=function(t,e){return new Promise((function(n,r){function i(n){t.removeListener(e,s),r(n)}function s(){"function"==typeof t.removeListener&&t.removeListener("error",i),n([].slice.call(arguments))}y(t,e,s,{once:!0}),"error"!==e&&function(t,e,n){"function"==typeof t.on&&y(t,"error",e,n)}(t,i,{once:!0})}))},a.EventEmitter=a,a.prototype._events=void 0,a.prototype._eventsCount=0,a.prototype._maxListeners=void 0;var c=10;function l(t){if("function"!=typeof t)throw new TypeError('The "listener" argument must be of type Function. Received type '+typeof t)}function u(t){return void 0===t._maxListeners?a.defaultMaxListeners:t._maxListeners}function h(t,e,n,r){var i,s,o,a;if(l(n),void 0===(s=t._events)?(s=t._events=Object.create(null),t._eventsCount=0):(void 0!==s.newListener&&(t.emit("newListener",e,n.listener?n.listener:n),s=t._events),o=s[e]),void 0===o)o=s[e]=n,++t._eventsCount;else if("function"==typeof o?o=s[e]=r?[n,o]:[o,n]:r?o.unshift(n):o.push(n),(i=u(t))>0&&o.length>i&&!o.warned){o.warned=!0;var c=new Error("Possible EventEmitter memory leak detected. "+o.length+" "+String(e)+" listeners added. Use emitter.setMaxListeners() to increase limit");c.name="MaxListenersExceededWarning",c.emitter=t,c.type=e,c.count=o.length,a=c,console&&console.warn&&console.warn(a)}return t}function p(){if(!this.fired)return this.target.removeListener(this.type,this.wrapFn),this.fired=!0,0===arguments.length?this.listener.call(this.target):this.listener.apply(this.target,arguments)}function f(t,e,n){var r={fired:!1,wrapFn:void 0,target:t,type:e,listener:n},i=p.bind(r);return i.listener=n,r.wrapFn=i,i}function d(t,e,n){var r=t._events;if(void 0===r)return[];var i=r[e];return void 0===i?[]:"function"==typeof i?n?[i.listener||i]:[i]:n?function(t){for(var e=new Array(t.length),n=0;n<e.length;++n)e[n]=t[n].listener||t[n];return e}(i):m(i,i.length)}function g(t){var e=this._events;if(void 0!==e){var n=e[t];if("function"==typeof n)return 1;if(void 0!==n)return n.length}return 0}function m(t,e){for(var n=new Array(e),r=0;r<e;++r)n[r]=t[r];return n}function y(t,e,n,r){if("function"==typeof t.on)r.once?t.once(e,n):t.on(e,n);else{if("function"!=typeof t.addEventListener)throw new TypeError('The "emitter" argument must be of type EventEmitter. Received type '+typeof t);t.addEventListener(e,(function i(s){r.once&&t.removeEventListener(e,i),n(s)}))}}Object.defineProperty(a,"defaultMaxListeners",{enumerable:!0,get:function(){return c},set:function(t){if("number"!=typeof t||t<0||o(t))throw new RangeError('The value of "defaultMaxListeners" is out of range. It must be a non-negative number. Received '+t+".");c=t}}),a.init=function(){void 0!==this._events&&this._events!==Object.getPrototypeOf(this)._events||(this._events=Object.create(null),this._eventsCount=0),this._maxListeners=this._maxListeners||void 0},a.prototype.setMaxListeners=function(t){if("number"!=typeof t||t<0||o(t))throw new RangeError('The value of "n" is out of range. It must be a non-negative number. Received '+t+".");return this._maxListeners=t,this},a.prototype.getMaxListeners=function(){return u(this)},a.prototype.emit=function(t){for(var e=[],n=1;n<arguments.length;n++)e.push(arguments[n]);var r="error"===t,i=this._events;if(void 0!==i)r=r&&void 0===i.error;else if(!r)return!1;if(r){var o;if(e.length>0&&(o=e[0]),o instanceof Error)throw o;var a=new Error("Unhandled error."+(o?" ("+o.message+")":""));throw a.context=o,a}var c=i[t];if(void 0===c)return!1;if("function"==typeof c)s(c,this,e);else{var l=c.length,u=m(c,l);for(n=0;n<l;++n)s(u[n],this,e)}return!0},a.prototype.addListener=function(t,e){return h(this,t,e,!1)},a.prototype.on=a.prototype.addListener,a.prototype.prependListener=function(t,e){return h(this,t,e,!0)},a.prototype.once=function(t,e){return l(e),this.on(t,f(this,t,e)),this},a.prototype.prependOnceListener=function(t,e){return l(e),this.prependListener(t,f(this,t,e)),this},a.prototype.removeListener=function(t,e){var n,r,i,s,o;if(l(e),void 0===(r=this._events))return this;if(void 0===(n=r[t]))return this;if(n===e||n.listener===e)0==--this._eventsCount?this._events=Object.create(null):(delete r[t],r.removeListener&&this.emit("removeListener",t,n.listener||e));else if("function"!=typeof n){for(i=-1,s=n.length-1;s>=0;s--)if(n[s]===e||n[s].listener===e){o=n[s].listener,i=s;break}if(i<0)return this;0===i?n.shift():function(t,e){for(;e+1<t.length;e++)t[e]=t[e+1];t.pop()}(n,i),1===n.length&&(r[t]=n[0]),void 0!==r.removeListener&&this.emit("removeListener",t,o||e)}return this},a.prototype.off=a.prototype.removeListener,a.prototype.removeAllListeners=function(t){var e,n,r;if(void 0===(n=this._events))return this;if(void 0===n.removeListener)return 0===arguments.length?(this._events=Object.create(null),this._eventsCount=0):void 0!==n[t]&&(0==--this._eventsCount?this._events=Object.create(null):delete n[t]),this;if(0===arguments.length){var i,s=Object.keys(n);for(r=0;r<s.length;++r)"removeListener"!==(i=s[r])&&this.removeAllListeners(i);return this.removeAllListeners("removeListener"),this._events=Object.create(null),this._eventsCount=0,this}if("function"==typeof(e=n[t]))this.removeListener(t,e);else if(void 0!==e)for(r=e.length-1;r>=0;r--)this.removeListener(t,e[r]);return this},a.prototype.listeners=function(t){return d(this,t,!0)},a.prototype.rawListeners=function(t){return d(this,t,!1)},a.listenerCount=function(t,e){return"function"==typeof t.listenerCount?t.listenerCount(e):g.call(t,e)},a.prototype.listenerCount=g,a.prototype.eventNames=function(){return this._eventsCount>0?r(this._events):[]}},function(t,e){function n(t){var e=new Error("Cannot find module '"+t+"'");throw e.code="MODULE_NOT_FOUND",e}n.keys=function(){return[]},n.resolve=n,t.exports=n,n.id=34}]);
+// Generated by LiveScript 1.6.1
+
+// LiveScript 1.6.1
+// Copyright (c) Jeremy Ashkenas, Satoshi Murakami, George Zahariev
+// Released under the MIT License
+// https://raw.githubusercontent.com/gkz/LiveScript/master/LICENSE
+require=(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+    // Generated by LiveScript 1.6.1
+    var fold, ref$, nameFromPath, stripString, SourceNode, SourceMapGenerator, sn, snEmpty, snSafe, snRemoveLeft, Node, Negatable, Block, Atom, Literal, Var, Key, Index, Slice, Chain, Call, List, Obj, Prop, Arr, Yield, Unary, Binary, Assign, Import, In, Existence, Fun, Class, Super, Parens, Splat, Jump, Throw, Return, While, For, StepSlice, Try, Switch, Case, If, Label, Cascade, JS, Require, Util, Vars, CopyL, DECLS, UTILS, LEVEL_TOP, LEVEL_PAREN, LEVEL_LIST, LEVEL_COND, LEVEL_OP, LEVEL_CALL, PREC, TAB, ID, SIMPLENUM, slice$ = [].slice, arrayFrom$ = Array.from || function(x){return slice$.call(x);}, toString$ = {}.toString;
+    fold = require('prelude-ls').fold;
+    ref$ = require('./util'), nameFromPath = ref$.nameFromPath, stripString = ref$.stripString;
+    ref$ = require('source-map'), SourceNode = ref$.SourceNode, SourceMapGenerator = ref$.SourceMapGenerator;
+    sn = function(node){
+      var parts, res$, i$, to$, result, e;
+      node == null && (node = {});
+      res$ = [];
+      for (i$ = 1, to$ = arguments.length; i$ < to$; ++i$) {
+        res$.push(arguments[i$]);
+      }
+      parts = res$;
+      try {
+        result = new SourceNode(node.line, node.column, null, parts);
+        result.displayName = node.constructor.displayName;
+        return result;
+      } catch (e$) {
+        e = e$;
+        console.dir(parts);
+        throw e;
+      }
+    };
+    snEmpty = function(node){
+      var i$, ref$, len$, child;
+      if (node instanceof SourceNode) {
+        for (i$ = 0, len$ = (ref$ = node.children).length; i$ < len$; ++i$) {
+          child = ref$[i$];
+          if (!snEmpty(child)) {
+            return false;
+          }
+        }
+        return true;
+      } else {
+        return !node;
+      }
+    };
+    snSafe = function(code){
+      if (code instanceof SourceNode) {
+        return code;
+      } else {
+        return code.toString();
+      }
+    };
+    snRemoveLeft = function(node, count){
+      var i$, to$, i, child;
+      for (i$ = 0, to$ = node.children.length; i$ < to$; ++i$) {
+        i = i$;
+        child = node.children[i];
+        if (child instanceof SourceNode) {
+          count = snRemoveLeft(child, count);
+        } else {
+          child = child.toString();
+          node.children[i] = child.slice(count);
+          count -= child.length;
+        }
+        if (count <= 0) {
+          return 0;
+        }
+      }
+      return count;
+    };
+    SourceNode.prototype.replace = function(){
+      var args, res$, i$, to$;
+      res$ = [];
+      for (i$ = 0, to$ = arguments.length; i$ < to$; ++i$) {
+        res$.push(arguments[i$]);
+      }
+      args = res$;
+      return new SourceNode(this.line, this.column, this.source, (function(){
+        var i$, x$, ref$, len$, results$ = [];
+        for (i$ = 0, len$ = (ref$ = this.children).length; i$ < len$; ++i$) {
+          x$ = ref$[i$];
+          results$.push(x$.replace.apply(x$, args));
+        }
+        return results$;
+      }.call(this)), this.name);
+    };
+    SourceNode.prototype.setFile = function(filename){
+      var i$, ref$, len$, child, results$ = [];
+      this.source = filename;
+      for (i$ = 0, len$ = (ref$ = this.children).length; i$ < len$; ++i$) {
+        child = ref$[i$];
+        if (child instanceof SourceNode) {
+          results$.push(child.setFile(filename));
+        }
+      }
+      return results$;
+    };
+    SourceNode.prototype.toStringWithSourceMap = function(){
+      var args, res$, i$, to$, gen, genLine, genColumn, stack, code, debugOutput, debugIndent, debugIndentStr, genForNode;
+      res$ = [];
+      for (i$ = 0, to$ = arguments.length; i$ < to$; ++i$) {
+        res$.push(arguments[i$]);
+      }
+      args = res$;
+      gen = (function(func, args, ctor) {
+        ctor.prototype = func.prototype;
+        var child = new ctor, result = func.apply(child, args), t;
+        return (t = typeof result)  == "object" || t == "function" ? result || child : child;
+      })(SourceMapGenerator, args, function(){});
+      genLine = 1;
+      genColumn = 0;
+      stack = [];
+      code = '';
+      debugOutput = '';
+      debugIndent = '';
+      debugIndentStr = '  ';
+      genForNode = function(node){
+        var valid, i$, ref$, len$, child, cur, to$, i, c, results$ = [];
+        if (node instanceof SourceNode) {
+          debugOutput += debugIndent + node.displayName;
+          valid = node.line && 'column' in node;
+          if (valid) {
+            stack.push(node);
+            debugOutput += '!';
+          }
+          debugOutput += " " + node.line + ":" + node.column + " " + genLine + ":" + genColumn + "\n";
+          debugIndent += debugIndentStr;
+          for (i$ = 0, len$ = (ref$ = node.children).length; i$ < len$; ++i$) {
+            child = ref$[i$];
+            genForNode(child);
+          }
+          debugIndent = debugIndent.slice(0, debugIndent.length - debugIndentStr.length);
+          if (valid) {
+            return stack.pop();
+          }
+        } else {
+          debugOutput += debugIndent + "" + JSON.stringify(node) + "\n";
+          code += node;
+          cur = stack[stack.length - 1];
+          if (cur) {
+            gen.addMapping({
+              source: cur.source,
+              original: {
+                line: cur.line,
+                column: cur.column
+              },
+              generated: {
+                line: genLine,
+                column: genColumn
+              },
+              name: cur.name
+            });
+          }
+          for (i$ = 0, to$ = node.length; i$ < to$; ++i$) {
+            i = i$;
+            c = node.charAt(i);
+            if (c === "\n") {
+              genColumn = 0;
+              ++genLine;
+              if (cur) {
+                results$.push(gen.addMapping({
+                  source: cur.source,
+                  original: {
+                    line: cur.line,
+                    column: cur.column
+                  },
+                  generated: {
+                    line: genLine,
+                    column: genColumn
+                  },
+                  name: cur.name
+                }));
+              }
+            } else {
+              results$.push(++genColumn);
+            }
+          }
+          return results$;
+        }
+      };
+      genForNode(this);
+      return {
+        code: code,
+        map: gen,
+        debug: debugOutput
+      };
+    };
+    /* # Use this to track down places where a SourceNode is being converted into a string and causing the location to be lost
+    tmp-to-string = SourceNode::to-string
+    SourceNode::to-string = (...args) ->
+        console.log("toString(): ", new Error().stack)
+        tmp-to-string.apply this, args
+    */
+    (Node = function(){
+      throw Error('unimplemented');
+    }).prototype = {
+      compile: function(options, level){
+        var o, code, that, i$, len$, tmp;
+        o = import$({}, options);
+        if (level != null) {
+          o.level = level;
+        }
+        if (o.level && this.isStatement()) {
+          return this.compileClosure(o);
+        }
+        code = (this.tab = o.indent, this).compileNode(o);
+        if (that = this.temps) {
+          for (i$ = 0, len$ = that.length; i$ < len$; ++i$) {
+            tmp = that[i$];
+            o.scope.free(tmp);
+          }
+        }
+        return code;
+      },
+      compileClosure: function(o){
+        var that, fun, call, hasArgs, hasThis, out;
+        if (that = this.getJump()) {
+          that.carp('inconvertible statement');
+        }
+        fun = Fun([], Block(this));
+        call = Call();
+        if (o.inAsync) {
+          fun.async = true;
+        }
+        if (o.inGenerator) {
+          fun.generator = true;
+        }
+        this.traverseChildren(function(it){
+          switch (it.value) {
+          case 'this':
+            hasThis = true;
+            break;
+          case 'arguments':
+            hasArgs = it.value = 'args$';
+          }
+        });
+        if (hasThis) {
+          call.args.push(Literal('this'));
+          call.method = '.call';
+        }
+        if (hasArgs) {
+          call.args.push(Literal('arguments'));
+          fun.params.push(Var('args$'));
+        }
+        out = Parens(Chain((fun.wrapper = true, fun['void'] = this['void'], fun), [call]), true);
+        if (o.inGenerator) {
+          out = new Yield('yieldfrom', out);
+        } else if (o.inAsync) {
+          out = new Yield('await', out);
+        }
+        return out.compile(o);
+      },
+      compileBlock: function(o, node){
+        var code;
+        if (!snEmpty(code = node != null ? node.compile(o, LEVEL_TOP) : void 8)) {
+          return sn(null, "{\n", code, "\n" + this.tab + "}");
+        } else {
+          return sn(node, '{}');
+        }
+      },
+      compileSpreadOver: function(o, list, transform){
+        var ob, them, i$, len$, i, node, sp, lat, ref$;
+        ob = list instanceof Obj;
+        them = list.items;
+        for (i$ = 0, len$ = them.length; i$ < len$; ++i$) {
+          i = i$;
+          node = them[i$];
+          if (sp = node instanceof Splat) {
+            node = node.it;
+          }
+          if (ob && !sp) {
+            node = node.val;
+          }
+          node = transform(node);
+          if (sp) {
+            node = lat = Splat(node);
+          }
+          if (ob && !sp) {
+            them[i].val = node;
+          } else {
+            them[i] = node;
+          }
+        }
+        if (!lat && (this['void'] || !o.level)) {
+          list = (ref$ = Block(ob ? (function(){
+            var i$, x$, ref$, len$, results$ = [];
+            for (i$ = 0, len$ = (ref$ = them).length; i$ < len$; ++i$) {
+              x$ = ref$[i$];
+              results$.push(x$.val);
+            }
+            return results$;
+          }()) : them), ref$.front = this.front, ref$['void'] = true, ref$);
+        }
+        return list.compile(o, LEVEL_PAREN);
+      },
+      cache: function(o, once, level, tempName){
+        var ref$, ref, sub, tempvars;
+        if (!this.isComplex()) {
+          return [ref$ = level != null ? this.compile(o, level) : this, ref$];
+        }
+        if (ref = this.getRef()) {
+          sub = this;
+        } else {
+          sub = Assign(ref = Var(o.scope.temporary(tempName)), this);
+          if (once) {
+            ref.temp = true;
+          } else {
+            tempvars = [ref.value];
+          }
+        }
+        if (level != null) {
+          sub = sub.compile(o, level);
+          if (once && tempvars) {
+            o.scope.free(ref.value);
+          }
+          return [sub, ref.value];
+        }
+        return [sub, ref, tempvars];
+      },
+      compileLoopReference: function(o, name, ret, safeAccess){
+        var ref$, code, asn, tmp;
+        if (this instanceof Var && o.scope.check(this.value) || this instanceof Unary && ((ref$ = this.op) === '+' || ref$ === '-') && (-1 / 0 < (ref$ = +this.it.value) && ref$ < 1 / 0) || this instanceof Literal && !this.isComplex()) {
+          code = this.compile(o, LEVEL_PAREN);
+          if (safeAccess && !(this instanceof Var)) {
+            code = "(" + code + ")";
+          }
+          return [code, code];
+        }
+        asn = Assign(Var(tmp = o.scope.temporary(name)), this);
+        ret || (asn['void'] = true);
+        return [tmp, asn.compile(o, ret ? LEVEL_CALL : LEVEL_PAREN)];
+      },
+      eachChild: function(fn){
+        var i$, ref$, len$, name, child, j$, len1$, i, node, that;
+        for (i$ = 0, len$ = (ref$ = this.children).length; i$ < len$; ++i$) {
+          name = ref$[i$];
+          if (child = this[name]) {
+            if ('length' in child) {
+              for (j$ = 0, len1$ = child.length; j$ < len1$; ++j$) {
+                i = j$;
+                node = child[j$];
+                if (that = fn(node, name, i)) {
+                  return that;
+                }
+              }
+            } else {
+              if ((that = fn(child, name)) != null) {
+                return that;
+              }
+            }
+          }
+        }
+      },
+      traverseChildren: function(fn, xscope){
+        var this$ = this;
+        return this.eachChild(function(node, name, index){
+          var ref$;
+          return (ref$ = fn(node, this$, name, index)) != null
+            ? ref$
+            : node.traverseChildren(fn, xscope);
+        });
+      },
+      rewriteShorthand: function(o, assign){
+        var i$, ref$, len$, name, child, j$, len1$, i, node, that;
+        for (i$ = 0, len$ = (ref$ = this.children).length; i$ < len$; ++i$) {
+          name = ref$[i$];
+          if (child = this[name]) {
+            if ('length' in child) {
+              for (j$ = 0, len1$ = child.length; j$ < len1$; ++j$) {
+                i = j$;
+                node = child[j$];
+                if (that = node.rewriteShorthand(o, assign)) {
+                  child[i] = that;
+                }
+              }
+            } else if (that = child.rewriteShorthand(o, assign)) {
+              this[name] = that;
+            }
+          }
+        }
+      },
+      anaphorize: function(){
+        var base, name, ref$;
+        this.children = this.aTargets;
+        if (this.eachChild(hasThat)) {
+          if ((base = this)[name = this.aSource] instanceof Existence) {
+            base[name].doAnaphorize = true;
+          } else if (base[name].value !== 'that') {
+            base[name] = Assign(Var('that'), base[name]);
+          }
+        }
+        function hasThat(it){
+          var that;
+          return it.value === 'that' || ((that = it.aSource)
+            ? (that = it[that]) ? hasThat(that) : void 8
+            : it.eachChild(hasThat));
+        }
+        delete this.children;
+        return ref$ = this[this.aSource], ref$.cond = true, ref$;
+      },
+      carp: function(msg, type){
+        type == null && (type = SyntaxError);
+        throw type(msg + " " + this.lineMsg());
+      },
+      warn: function(msg){
+        if (typeof console != 'undefined' && console !== null) {
+          console.warn("WARNING: " + msg + " " + this.lineMsg());
+        }
+      },
+      lineMsg: function(){
+        return "on line " + (this.line || this.traverseChildren(function(it){
+          return it.line;
+        }));
+      },
+      delegate: function(names, fn){
+        var i$, len$;
+        for (i$ = 0, len$ = names.length; i$ < len$; ++i$) {
+          (fn$.call(this, names[i$]));
+        }
+        function fn$(name){
+          this[name] = function(it){
+            return fn.call(this, name, it);
+          };
+        }
+      },
+      children: [],
+      terminator: ';',
+      isComplex: YES,
+      isStatement: NO,
+      isAssignable: NO,
+      isCallable: NO,
+      isEmpty: NO,
+      isArray: NO,
+      isString: NO,
+      isRegex: NO,
+      isMatcher: function(){
+        return this.isString() || this.isRegex();
+      },
+      assigns: NO,
+      ripName: VOID,
+      getRef: VOID,
+      unfoldSoak: VOID,
+      unfoldAssign: VOID,
+      unparen: THIS,
+      unwrap: THIS,
+      maybeKey: VOID,
+      varName: String,
+      getAccessors: VOID,
+      getCall: VOID,
+      getDefault: VOID,
+      getJump: VOID,
+      isNextUnreachable: NO,
+      extractKeyRef: function(o, assign){
+        return this.maybeKey() || this.carp(assign ? "invalid assign" : "invalid property shorthand");
+      },
+      invert: function(){
+        return Unary('!', this, true);
+      },
+      invertCheck: function(it){
+        if (it.inverted) {
+          return this.invert();
+        } else {
+          return this;
+        }
+      },
+      addElse: function($else){
+        this['else'] = $else;
+        return this;
+      },
+      makeReturn: function(ref, obj){
+        var items, kv, i, v;
+        if (obj) {
+          items = this instanceof Arr
+            ? (this.items[0] == null || this.items[1] == null && this.carp('must specify both key and value for object comprehension'), this.items)
+            : (kv = 'keyValue$', (function(){
+              var i$, ref$, len$, results$ = [];
+              for (i$ = 0, len$ = (ref$ = [Assign(Var(kv), this), Var(kv)]).length; i$ < len$; ++i$) {
+                i = i$;
+                v = ref$[i$];
+                results$.push(Chain(v).add(Index(Literal(i))));
+              }
+              return results$;
+            }.call(this)));
+          return Assign(Chain(Var(ref)).add(Index(items[0], '.', true)), items[1]);
+        } else if (ref) {
+          return Call.make(JS(ref + '.push'), [this]);
+        } else {
+          return Return(this);
+        }
+      },
+      show: String,
+      toString: function(idt){
+        var tree, that;
+        idt || (idt = '');
+        tree = '\n' + idt + this.constructor.displayName;
+        if (that = this.show()) {
+          tree += ' ' + that;
+        }
+        this.eachChild(function(it){
+          tree += it.toString(idt + TAB);
+        });
+        return tree;
+      },
+      stringify: function(space){
+        return JSON.stringify(this, null, space);
+      },
+      toJSON: function(){
+        return import$({
+          type: this.constructor.displayName
+        }, this);
+      }
+    };
+    exports.parse = function(json){
+      return exports.fromJSON(JSON.parse(json));
+    };
+    exports.fromJSON = (function(){
+      function fromJSON(it){
+        var that, node, key, val, i$, len$, v, results$ = [];
+        if (!(it && typeof it === 'object')) {
+          return it;
+        }
+        if (that = it.type) {
+          node = clone$(exports[that].prototype);
+          for (key in it) {
+            val = it[key];
+            node[key] = fromJSON(val);
+          }
+          return node;
+        }
+        if (it.length != null) {
+          for (i$ = 0, len$ = it.length; i$ < len$; ++i$) {
+            v = it[i$];
+            results$.push(fromJSON(v));
+          }
+          return results$;
+        } else {
+          return it;
+        }
+      }
+      return fromJSON;
+    }());
+    Negatable = {
+      show: function(){
+        return this.negated && '!';
+      },
+      invert: function(){
+        this.negated = !this.negated;
+        return this;
+      }
+    };
+    exports.Block = Block = (function(superclass){
+      var prototype = extend$((import$(Block, superclass).displayName = 'Block', Block), superclass).prototype, constructor = Block;
+      function Block(body){
+        var this$ = this instanceof ctor$ ? this : new ctor$;
+        body || (body = []);
+        if ('length' in body) {
+          this$.lines = body;
+        } else {
+          this$.lines = [];
+          this$.add(body);
+        }
+        return this$;
+      } function ctor$(){} ctor$.prototype = prototype;
+      Block.prototype.children = ['lines'];
+      Block.prototype.toJSON = function(){
+        delete this.back;
+        return superclass.prototype.toJSON.call(this);
+      };
+      Block.prototype.add = function(it){
+        var that, ref$;
+        it = it.unparen();
+        switch (false) {
+        case !(that = this.back):
+          that.add(it);
+          break;
+        case !(that = it.lines):
+          (ref$ = this.lines).push.apply(ref$, that);
+          break;
+        default:
+          this.lines.push(it);
+          if (that = (ref$ = it.back, delete it.back, ref$)) {
+            this.back = that;
+          }
+        }
+        return this;
+      };
+      Block.prototype.prepend = function(){
+        var ref$;
+        (ref$ = this.lines).splice.apply(ref$, [this.neck(), 0].concat(arrayFrom$(arguments)));
+        return this;
+      };
+      Block.prototype.pipe = function(target, type){
+        var args;
+        args = type === '|>' ? this.lines.pop() : target;
+        if (toString$.call(args).slice(8, -1) !== 'Array') {
+          args = [args];
+        }
+        switch (type) {
+        case '|>':
+          this.lines.push(Call.make(target, args, {
+            pipe: true
+          }));
+          break;
+        case '<|':
+          this.lines.push(Call.make(this.lines.pop(), args));
+        }
+        return this;
+      };
+      Block.prototype.unwrap = function(){
+        if (this.lines.length === 1) {
+          return this.lines[0];
+        } else {
+          return this;
+        }
+      };
+      Block.prototype.chomp = function(){
+        var lines, i, that;
+        lines = this.lines;
+        i = lines.length;
+        while (that = lines[--i]) {
+          if (!that.comment) {
+            break;
+          }
+        }
+        lines.length = i + 1;
+        return this;
+      };
+      Block.prototype.neck = function(){
+        var pos, i$, ref$, len$, x;
+        pos = 0;
+        for (i$ = 0, len$ = (ref$ = this.lines).length; i$ < len$; ++i$) {
+          x = ref$[i$];
+          if (!(x.comment || x instanceof Literal)) {
+            break;
+          }
+          ++pos;
+        }
+        return pos;
+      };
+      Block.prototype.isComplex = function(){
+        var ref$;
+        return this.lines.length > 1 || ((ref$ = this.lines[0]) != null ? ref$.isComplex() : void 8);
+      };
+      prototype.delegate(['isCallable', 'isArray', 'isString', 'isRegex'], function(it){
+        var ref$, ref1$;
+        return (ref$ = (ref1$ = this.lines)[ref1$.length - 1]) != null ? ref$[it]() : void 8;
+      });
+      Block.prototype.getJump = function(it){
+        var i$, ref$, len$, node, that;
+        for (i$ = 0, len$ = (ref$ = this.lines).length; i$ < len$; ++i$) {
+          node = ref$[i$];
+          if (that = node.getJump(it)) {
+            return that;
+          }
+        }
+      };
+      Block.prototype.isNextUnreachable = function(){
+        var i$, ref$, len$, node;
+        for (i$ = 0, len$ = (ref$ = this.lines).length; i$ < len$; ++i$) {
+          node = ref$[i$];
+          if (node.isNextUnreachable()) {
+            return true;
+          }
+        }
+        return false;
+      };
+      Block.prototype.makeReturn = function(){
+        var ref$, key$, that;
+        this.chomp();
+        if (that = (ref$ = this.lines)[key$ = ref$.length - 1] != null ? ref$[key$] = (ref$ = ref$[key$]).makeReturn.apply(ref$, arguments) : void 8) {
+          if (that instanceof Return && !that.it) {
+            --this.lines.length;
+          }
+        }
+        return this;
+      };
+      Block.prototype.compile = function(o, level){
+        var tab, codes, i$, ref$, len$, node, that, code;
+        level == null && (level = o.level);
+        if (level) {
+          return this.compileExpressions(o, level);
+        }
+        o.block = this;
+        tab = o.indent;
+        codes = [];
+        for (i$ = 0, len$ = (ref$ = this.lines).length; i$ < len$; ++i$) {
+          node = ref$[i$];
+          if (!node.evalResult) {
+            node['void'] = true;
+          }
+          if (that = node.rewriteShorthand(o)) {
+            node = that;
+          }
+          if (snEmpty(code = (node.front = true, node).compile(o, level))) {
+            continue;
+          }
+          codes.push(tab);
+          codes.push(code);
+          node.isStatement() || codes.push(node.terminator);
+          codes.push('\n');
+        }
+        codes.pop();
+        return sn.apply(null, [null].concat(arrayFrom$(codes)));
+      };
+      Block.prototype.compileRoot = function(options){
+        var o, that, ref$, bare, prefix, ref1$, ref2$, comment, ref3$, code;
+        o = (import$({
+          level: LEVEL_TOP,
+          scope: this.scope = Scope.root = new Scope
+        }, options));
+        if (that = (ref$ = o.saveScope, delete o.saveScope, ref$)) {
+          this.scope = Scope.root = o.scope = that.savedScope || (that.savedScope = o.scope);
+        }
+        delete o.filename;
+        o.indent = (bare = (ref$ = o.bare, delete o.bare, ref$)) ? '' : TAB;
+        if (/^\s*(?:#!|javascript:)/.test((ref$ = this.lines[0]) != null ? ref$.code : void 8)) {
+          prefix = this.lines.shift().code + '\n';
+        }
+        if (((ref1$ = this.lines[0]) != null ? (ref2$ = ref1$.code) != null ? ref2$[0] : void 8 : void 8) === '/') {
+          comment = this.lines.shift().code + '\n';
+        }
+        if ((ref3$ = o.eval, delete o.eval, ref3$) && this.chomp().lines.length) {
+          if (bare) {
+            this.lines.push((ref3$ = Parens(this.lines.pop()), ref3$.evalResult = true, ref3$));
+          } else {
+            this.makeReturn();
+          }
+        }
+        code = [this.compileWithDeclarations(o)];
+        bare || (code = ["(function(){\n"].concat(arrayFrom$(code), ["\n}).call(this);\n"]));
+        return sn(null, prefix || [], options.header || [], comment || [], code);
+      };
+      Block.prototype.compileWithDeclarations = function(o){
+        var pre, i, rest, post, that;
+        o.level = LEVEL_TOP;
+        pre = [];
+        if (i = this.neck()) {
+          rest = this.lines.splice(i, 9e9);
+          pre = [this.compile(o), "\n"];
+          this.lines = rest;
+        }
+        if (snEmpty(post = this.compile(o))) {
+          return sn(this, pre[0] || []);
+        }
+        return sn.apply(null, [null].concat(arrayFrom$(pre), [(that = this.scope) ? that.emit(post, o.indent) : post]));
+      };
+      Block.prototype.compileExpressions = function(o, level){
+        var lines, i, that, line, code, last, i$, len$, node;
+        lines = this.chomp().lines;
+        i = -1;
+        while (that = lines[++i]) {
+          if (that.comment) {
+            lines.splice(i--, 1);
+          }
+        }
+        if (!lines.length) {
+          lines.push(Literal('void'));
+        }
+        lines[0].front = this.front;
+        lines[lines.length - 1]['void'] = this['void'];
+        if (!lines[1]) {
+          line = lines[0];
+          if (that = line.rewriteShorthand(o)) {
+            line = that;
+          }
+          return line.compile(o, level);
+        }
+        code = [];
+        last = lines.pop();
+        for (i$ = 0, len$ = lines.length; i$ < len$; ++i$) {
+          node = lines[i$];
+          if (that = node.rewriteShorthand(o)) {
+            node = that;
+          }
+          code.push((node['void'] = true, node).compile(o, LEVEL_PAREN), ', ');
+        }
+        if (that = last.rewriteShorthand(o)) {
+          last = that;
+        }
+        code.push(last.compile(o, LEVEL_PAREN));
+        if (level < LEVEL_LIST) {
+          return sn.apply(null, [null].concat(arrayFrom$(code)));
+        } else {
+          return sn.apply(null, [null, "("].concat(arrayFrom$(code), [")"]));
+        }
+      };
+      Block.prototype.rewriteShorthand = VOID;
+      return Block;
+    }(Node));
+    Atom = (function(superclass){
+      var prototype = extend$((import$(Atom, superclass).displayName = 'Atom', Atom), superclass).prototype, constructor = Atom;
+      Atom.prototype.show = function(){
+        return this.value;
+      };
+      Atom.prototype.isComplex = NO;
+      function Atom(){
+        Atom.superclass.apply(this, arguments);
+      }
+      return Atom;
+    }(Node));
+    exports.Literal = Literal = (function(superclass){
+      var prototype = extend$((import$(Literal, superclass).displayName = 'Literal', Literal), superclass).prototype, constructor = Literal;
+      function Literal(value){
+        var this$ = this instanceof ctor$ ? this : new ctor$;
+        this$.value = value;
+        if (value.js) {
+          return JS(value + "", true);
+        }
+        if (value === 'super') {
+          return new Super;
+        }
+        return this$;
+      } function ctor$(){} ctor$.prototype = prototype;
+      Literal.prototype.isEmpty = function(){
+        var ref$;
+        return (ref$ = this.value) === 'void' || ref$ === 'null';
+      };
+      Literal.prototype.isCallable = function(){
+        var ref$;
+        return (ref$ = this.value) === 'this' || ref$ === 'eval' || ref$ === '..';
+      };
+      Literal.prototype.isString = function(){
+        return 0 <= '\'"'.indexOf((this.value + "").charAt());
+      };
+      Literal.prototype.isRegex = function(){
+        return (this.value + "").charAt() === '/';
+      };
+      Literal.prototype.isComplex = function(){
+        return this.isRegex() || this.value === 'debugger';
+      };
+      Literal.prototype.isWhat = function(){
+        switch (false) {
+        case !this.isEmpty():
+          return 'empty';
+        case !this.isCallable():
+          return 'callable';
+        case !this.isString():
+          return 'string';
+        case !this.isRegex():
+          return 'regex';
+        case !this.isComplex():
+          return 'complex';
+        default:
+    
+        }
+      };
+      Literal.prototype.varName = function(){
+        if (/^\w+$/.test(this.value)) {
+          return '$' + this.value;
+        } else {
+          return '';
+        }
+      };
+      Literal.prototype.makeReturn = function(it){
+        if (!it && this.value === 'debugger') {
+          return this;
+        } else {
+          return superclass.prototype.makeReturn.apply(this, arguments);
+        }
+      };
+      Literal.prototype.maybeKey = function(){
+        var ref$;
+        if (ID.test(this.value)) {
+          return Key(this.value, (ref$ = this.value) !== 'arguments' && ref$ !== 'eval');
+        } else {
+          return this;
+        }
+      };
+      Literal.prototype.compile = function(o, level){
+        var val, ref$;
+        level == null && (level = o.level);
+        switch (val = this.value + "") {
+        case 'this':
+          return sn(this, ((ref$ = o.scope.fun) != null ? ref$.bound : void 8) || val);
+        case 'void':
+          if (!level) {
+            return sn(this, '');
+          }
+          val += ' 8';
+          // fallthrough
+        case 'null':
+          if (level === LEVEL_CALL) {
+            this.carp('invalid use of ' + this.value);
+          }
+          break;
+        case 'on':
+        case 'yes':
+          val = 'true';
+          break;
+        case 'off':
+        case 'no':
+          val = 'false';
+          break;
+        case '*':
+          this.carp('stray star');
+          break;
+        case '..':
+          if (!(val = o.ref)) {
+            this.carp('stray reference');
+          }
+          this.cascadee || (val.erred = true);
+          break;
+        case 'debugger':
+          if (level) {
+            return sn(this, "(function(){ debugger; }())");
+          }
+        }
+        return sn(this, snSafe(val));
+      };
+      return Literal;
+    }(Atom));
+    exports.Var = Var = (function(superclass){
+      var prototype = extend$((import$(Var, superclass).displayName = 'Var', Var), superclass).prototype, constructor = Var;
+      function Var(value){
+        var this$ = this instanceof ctor$ ? this : new ctor$;
+        this$.value = value;
+        return this$;
+      } function ctor$(){} ctor$.prototype = prototype;
+      prototype.isAssignable = prototype.isCallable = YES;
+      Var.prototype.assigns = function(){
+        return [this.value];
+      };
+      Var.prototype.maybeKey = function(){
+        var ref$;
+        return ref$ = Key(this.value), ref$.line = this.line, ref$;
+      };
+      Var.prototype.varName = prototype.show;
+      Var.prototype.compile = function(o){
+        return sn(this, this.temp
+          ? o.scope.free(this.value)
+          : this.value);
+      };
+      return Var;
+    }(Atom));
+    exports.Key = Key = (function(superclass){
+      var prototype = extend$((import$(Key, superclass).displayName = 'Key', Key), superclass).prototype, constructor = Key;
+      function Key(name, reserved){
+        var this$ = this instanceof ctor$ ? this : new ctor$;
+        this$.reserved = reserved || name.reserved;
+        this$.name = '' + name;
+        return this$;
+      } function ctor$(){} ctor$.prototype = prototype;
+      Key.prototype.isComplex = NO;
+      Key.prototype.assigns = function(){
+        return [this.name];
+      };
+      Key.prototype.maybeKey = THIS;
+      Key.prototype.varName = function(){
+        var name;
+        name = this.name;
+        if (this.reserved || (name === 'arguments' || name === 'eval')) {
+          return "$" + name;
+        } else {
+          return name;
+        }
+      };
+      Key.prototype.show = function(){
+        if (this.reserved) {
+          return "'" + this.name + "'";
+        } else {
+          return this.name;
+        }
+      };
+      Key.prototype.compile = function(){
+        return sn(this, this.show());
+      };
+      return Key;
+    }(Node));
+    exports.Index = Index = (function(superclass){
+      var prototype = extend$((import$(Index, superclass).displayName = 'Index', Index), superclass).prototype, constructor = Index;
+      function Index(key, symbol, init){
+        var k, this$ = this instanceof ctor$ ? this : new ctor$;
+        symbol || (symbol = '.');
+        if (init && key instanceof Arr) {
+          switch (key.items.length) {
+          case 1:
+            if (!((k = key.items[0]) instanceof Splat)) {
+              key = Parens(k);
+            }
+          }
+        }
+        switch (symbol) {
+        case '[]':
+          this$.vivify = Arr;
+          break;
+        case '{}':
+          this$.vivify = Obj;
+          break;
+        default:
+          if ('=' === symbol.slice(-1)) {
+            this$.assign = symbol.slice(1);
+          }
+        }
+        this$.key = key;
+        this$.symbol = symbol;
+        return this$;
+      } function ctor$(){} ctor$.prototype = prototype;
+      Index.prototype.children = ['key'];
+      Index.prototype.show = function(){
+        return [this.soak ? '?' : void 8] + this.symbol;
+      };
+      Index.prototype.isComplex = function(){
+        return this.key.isComplex() || this.vivify != null;
+      };
+      Index.prototype.varName = function(){
+        var ref$;
+        return ((ref$ = this.key) instanceof Key || ref$ instanceof Literal) && this.key.varName();
+      };
+      Index.prototype.compile = function(o){
+        var code;
+        code = this.key.compile(o, LEVEL_PAREN);
+        if (this.key instanceof Key && '\'' !== code.toString().charAt(0)) {
+          return sn(this, ".", code);
+        } else {
+          return sn(this, "[", code, "]");
+        }
+      };
+      return Index;
+    }(Node));
+    exports.Slice = Slice = (function(superclass){
+      var prototype = extend$((import$(Slice, superclass).displayName = 'Slice', Slice), superclass).prototype, constructor = Slice;
+      function Slice(arg$){
+        var this$ = this instanceof ctor$ ? this : new ctor$;
+        this$.type = arg$.type, this$.target = arg$.target, this$.from = arg$.from, this$.to = arg$.to;
+        this$.from == null && (this$.from = Literal(0));
+        if (this$.to && this$.type === 'to') {
+          this$.to = Binary('+', this$.to, Literal('1'));
+        }
+        return this$;
+      } function ctor$(){} ctor$.prototype = prototype;
+      Slice.prototype.children = ['target', 'from', 'to'];
+      Slice.prototype.show = function(){
+        return this.type;
+      };
+      Slice.prototype.compileNode = function(o){
+        var args;
+        if (this.to && this.type === 'to') {
+          this.to = Binary('||', this.to, Literal('9e9'));
+        }
+        args = [this.target, this.from];
+        if (this.to) {
+          args.push(this.to);
+        }
+        return Chain(Var(util('slice'))).add(Index(Key('call'), '.', true)).add(Call(args)).compile(o);
+      };
+      return Slice;
+    }(Node));
+    exports.Chain = Chain = (function(superclass){
+      var prototype = extend$((import$(Chain, superclass).displayName = 'Chain', Chain), superclass).prototype, constructor = Chain;
+      function Chain(head, tails){
+        var this$ = this instanceof ctor$ ? this : new ctor$;
+        if (!tails && head instanceof Chain) {
+          return head;
+        }
+        this$.head = head;
+        this$.tails = tails || [];
+        return this$;
+      } function ctor$(){} ctor$.prototype = prototype;
+      Chain.prototype.children = ['head', 'tails'];
+      Chain.prototype.add = function(it){
+        var last, ref$, index, ref1$, bi, logics, call, f;
+        if (this.tails.length) {
+          last = (ref$ = this.tails)[ref$.length - 1];
+          if (last instanceof Call && ((ref$ = last.partialized) != null ? ref$.length : void 8) === 1 && it.args.length === 1) {
+            index = last.partialized[0].head.value;
+            delete last.partialized;
+            last.args[index] = it.args[0];
+            return this;
+          }
+        }
+        if (this.head instanceof Existence) {
+          ref1$ = Chain(this.head.it), this.head = ref1$.head, this.tails = ref1$.tails;
+          it.soak = true;
+        }
+        this.tails.push(it);
+        bi = this.head instanceof Parens && this.head.it instanceof Binary && !this.head.it.partial
+          ? this.head.it
+          : this.head instanceof Binary && !this.head.partial ? this.head : void 8;
+        if (this.head instanceof Super) {
+          if (!this.head.called && it instanceof Call && !it.method) {
+            it.method = '.call';
+            it.args.unshift(Literal('this'));
+            this.head.called = true;
+          } else if (!this.tails[1] && ((ref1$ = it.key) != null ? ref1$.name : void 8) === 'prototype') {
+            this.head.sproto = true;
+          }
+        } else if (it instanceof Call && this.tails.length === 1 && bi && in$(bi.op, logics = ['&&', '||', 'xor'])) {
+          call = it;
+          f = function(x, key){
+            var y;
+            y = x[key];
+            if (y instanceof Binary && in$(y.op, logics)) {
+              f(y, 'first');
+              return f(y, 'second');
+            } else {
+              return x[key] = Chain(y).autoCompare(call.args);
+            }
+          };
+          f(bi, 'first');
+          f(bi, 'second');
+          return bi;
+        }
+        return this;
+      };
+      Chain.prototype.autoCompare = function(target){
+        var test;
+        if (!this.tails.length) {
+          test = this.head;
+        }
+        switch (false) {
+        case !(test instanceof Literal):
+          return Binary('===', test, target[0]);
+        case !(test instanceof Unary && test.it instanceof Literal):
+          return Binary('===', test, target[0]);
+        case !(test instanceof Arr || test instanceof Obj):
+          return Binary('====', test, target[0]);
+        case !(test instanceof Var && test.value === '_'):
+          return Literal('true');
+        default:
+          return this.add(Call(target)) || [];
+        }
+      };
+      Chain.prototype.flipIt = function(){
+        this.flip = true;
+        return this;
+      };
+      Chain.prototype.unwrap = function(){
+        if (this.tails.length) {
+          return this;
+        } else {
+          return this.head;
+        }
+      };
+      prototype.delegate(['getJump', 'assigns', 'isStatement', 'isString'], function(it, arg){
+        return !this.tails.length && this.head[it](arg);
+      });
+      Chain.prototype.isComplex = function(){
+        return this.tails.length || this.head.isComplex();
+      };
+      Chain.prototype.isCallable = function(){
+        var that, ref$;
+        if (that = (ref$ = this.tails)[ref$.length - 1]) {
+          return !((ref$ = that.key) != null && ref$.items);
+        } else {
+          return this.head.isCallable();
+        }
+      };
+      Chain.prototype.isArray = function(){
+        var that, ref$;
+        if (that = (ref$ = this.tails)[ref$.length - 1]) {
+          return that.key instanceof Arr;
+        } else {
+          return this.head.isArray();
+        }
+      };
+      Chain.prototype.isRegex = function(){
+        return this.head.value === 'RegExp' && !this.tails[1] && this.tails[0] instanceof Call;
+      };
+      Chain.prototype.isAssignable = function(){
+        var tail, ref$, i$, len$;
+        if (!(tail = (ref$ = this.tails)[ref$.length - 1])) {
+          return this.head.isAssignable();
+        }
+        if (!(tail instanceof Index) || tail.key instanceof List || tail.symbol === '.~') {
+          return false;
+        }
+        for (i$ = 0, len$ = (ref$ = this.tails).length; i$ < len$; ++i$) {
+          tail = ref$[i$];
+          if (tail.assign) {
+            return false;
+          }
+        }
+        return true;
+      };
+      Chain.prototype.isSimpleAccess = function(){
+        return this.tails.length === 1 && !this.head.isComplex() && !this.tails[0].isComplex();
+      };
+      Chain.prototype.makeReturn = function(){
+        var ref$;
+        if (this.tails.length) {
+          return superclass.prototype.makeReturn.apply(this, arguments);
+        } else {
+          return (ref$ = this.head).makeReturn.apply(ref$, arguments);
+        }
+      };
+      Chain.prototype.getCall = function(){
+        var tail, ref$;
+        return (tail = (ref$ = this.tails)[ref$.length - 1]) instanceof Call && tail;
+      };
+      Chain.prototype.varName = function(){
+        var ref$, ref1$;
+        return (ref$ = (ref1$ = this.tails)[ref1$.length - 1]) != null ? ref$.varName() : void 8;
+      };
+      Chain.prototype.cacheReference = function(o){
+        var name, ref$, base, bref, nref, key;
+        name = (ref$ = this.tails)[ref$.length - 1];
+        if (!this.isAssignable()) {
+          return this.unwrap().cache(o, true);
+        }
+        if (this.tails.length < 2 && !this.head.isComplex() && !(name != null && name.isComplex())) {
+          return [this, this];
+        }
+        base = Chain(this.head, this.tails.slice(0, -1));
+        if (base.isComplex()) {
+          ref$ = base.unwrap().cache(o, true), base = ref$[0], bref = ref$[1];
+          base = Chain(base);
+        }
+        if (!name) {
+          return [base, bref];
+        }
+        nref = name;
+        if (name.symbol !== '.') {
+          nref = name;
+          name = Index(name.key, '.');
+        }
+        if (name.isComplex()) {
+          ref$ = name.key.unwrap().cache(o, true, void 8, 'key'), key = ref$[0], nref.key = ref$[1];
+          name = Index(key);
+        }
+        return [base.add(name), Chain(bref || base.head, [nref])];
+      };
+      Chain.prototype.compileNode = function(o){
+        var head, tails, that, i$, len$, t, hasPartial, pre, rest, broken, partial, post, context, idt, func, base, news, ref$;
+        if (this.flip) {
+          util('flip');
+          util('curry');
+        }
+        head = this.head, tails = this.tails;
+        head.front = this.front;
+        head.newed = this.newed;
+        if (!tails.length) {
+          return head.compile(o);
+        }
+        if (that = this.unfoldAssign(o)) {
+          return that.compile(o);
+        }
+        for (i$ = 0, len$ = tails.length; i$ < len$; ++i$) {
+          t = tails[i$];
+          if (t.partialized) {
+            hasPartial = true;
+            break;
+          }
+        }
+        if (hasPartial) {
+          util('slice');
+          pre = [];
+          rest = [];
+          for (i$ = 0, len$ = tails.length; i$ < len$; ++i$) {
+            t = tails[i$];
+            broken = broken || t.partialized != null;
+            if (broken) {
+              rest.push(t);
+            } else {
+              pre.push(t);
+            }
+          }
+          if (rest != null) {
+            partial = rest[0], post = slice$.call(rest, 1);
+          }
+          this.tails = pre;
+          context = pre.length
+            ? Chain(head, slice$.call(pre, 0, -1))
+            : Literal('this');
+          return Chain(Chain(Var(util('partialize'))).add(Index(Key('apply'))).add(Call([context, Arr([this, Arr(partial.args), Arr(partial.partialized)])])), post).compile(o);
+        }
+        if (tails[0] instanceof Call && !head.isCallable()) {
+          this.carp('invalid callee');
+        }
+        this.expandVivify();
+        this.expandBind(o);
+        this.expandSplat(o);
+        this.expandStar(o);
+        if (this.splattedNewArgs) {
+          idt = o.indent + TAB;
+          func = Chain(this.head, tails.slice(0, -1));
+          return sn(null, "(function(func, args, ctor) {\n" + idt + "ctor.prototype = func.prototype;\n" + idt + "var child = new ctor, result = func.apply(child, args), t;\n" + idt + "return (t = typeof result)  == \"object\" || t == \"function\" ? result || child : child;\n" + TAB + "})(", func.compile(o), ", ", this.splattedNewArgs, ", function(){})");
+        }
+        if (!this.tails.length) {
+          return this.head.compile(o);
+        }
+        base = [this.head.compile(o, LEVEL_CALL)];
+        news = [];
+        rest = [];
+        for (i$ = 0, len$ = (ref$ = this.tails).length; i$ < len$; ++i$) {
+          t = ref$[i$];
+          if (t['new']) {
+            news.push('new ');
+          }
+          rest.push(t.compile(o));
+        }
+        if ('.' === rest.join("").charAt(0) && SIMPLENUM.test(base[0].toString())) {
+          base.push(' ');
+        }
+        return sn.apply(null, [null].concat(arrayFrom$(news), arrayFrom$(base), arrayFrom$(rest)));
+      };
+      Chain.prototype.unfoldSoak = function(o){
+        var that, ref$, i$, len$, i, node, ref1$, bust, test;
+        if (that = this.head.unfoldSoak(o)) {
+          (ref$ = that.then.tails).push.apply(ref$, this.tails);
+          return that;
+        }
+        for (i$ = 0, len$ = (ref$ = this.tails).length; i$ < len$; ++i$) {
+          i = i$;
+          node = ref$[i$];
+          if (ref1$ = node.soak, delete node.soak, ref1$) {
+            bust = Chain(this.head, this.tails.splice(0, i));
+            if (node.assign && !bust.isAssignable()) {
+              node.carp('invalid accessign');
+            }
+            if (i && (node.assign || node instanceof Call)) {
+              ref1$ = bust.cacheReference(o), test = ref1$[0], bust = ref1$[1];
+              if (bust instanceof Chain) {
+                (ref1$ = this.tails).unshift.apply(ref1$, bust.tails);
+                bust = bust.head;
+              }
+              this.head = bust;
+            } else {
+              ref1$ = bust.unwrap().cache(o), test = ref1$[0], this.head = ref1$[1];
+            }
+            test = node instanceof Call
+              ? JS("typeof " + test.compile(o, LEVEL_OP) + " == 'function'")
+              : Existence(test);
+            return ref1$ = If(test, this), ref1$.soak = true, ref1$.cond = this.cond, ref1$['void'] = this['void'], ref1$;
+          }
+        }
+      };
+      Chain.prototype.unfoldAssign = function(o){
+        var that, ref$, i$, len$, i, index, op, left, lefts, rites, j$, len1$, node, ref1$;
+        if (that = this.head.unfoldAssign(o)) {
+          (ref$ = that.right.tails).push.apply(ref$, this.tails);
+          return that;
+        }
+        for (i$ = 0, len$ = (ref$ = this.tails).length; i$ < len$; ++i$) {
+          i = i$;
+          index = ref$[i$];
+          if (op = index.assign) {
+            index.assign = '';
+            left = Chain(this.head, this.tails.splice(0, i)).unwrap();
+            if (left instanceof Arr) {
+              lefts = left.items;
+              rites = (this.head = Arr()).items;
+              for (j$ = 0, len1$ = lefts.length; j$ < len1$; ++j$) {
+                i = j$;
+                node = lefts[j$];
+                ref1$ = Chain(node).cacheReference(o), rites[i] = ref1$[0], lefts[i] = ref1$[1];
+              }
+            } else {
+              ref1$ = Chain(left).cacheReference(o), left = ref1$[0], this.head = ref1$[1];
+            }
+            if (op === '=') {
+              op = ':=';
+            }
+            return ref1$ = Assign(left, this, op), ref1$.access = true, ref1$;
+          }
+        }
+      };
+      Chain.prototype.expandSplat = function(o){
+        var tails, i, call, args, ctx, ref$;
+        tails = this.tails;
+        i = -1;
+        while (call = tails[++i]) {
+          if (!(args = call.args)) {
+            continue;
+          }
+          ctx = call.method === '.call' && (args = args.concat()).shift();
+          if (snEmpty(args = Splat.compileArray(o, args, true))) {
+            continue;
+          }
+          if (call['new']) {
+            this.splattedNewArgs = args;
+          } else {
+            if (!ctx && tails[i - 1] instanceof Index) {
+              ref$ = Chain(this.head, tails.splice(0, i - 1)).cache(o, true), this.head = ref$[0], ctx = ref$[1];
+              i = 0;
+            }
+            call.method = '.apply';
+            call.args = [ctx || Literal('null'), JS(args)];
+          }
+        }
+      };
+      Chain.prototype.expandVivify = function(){
+        var tails, i, that, ref$, ref1$;
+        tails = this.tails;
+        i = 0;
+        while (i < tails.length) {
+          if (that = (ref1$ = (ref$ = tails[i++]).vivify, delete ref$.vivify, ref1$)) {
+            this.head = Assign(Chain(this.head, tails.splice(0, i)), that(), '=', '||');
+            i = 0;
+          }
+        }
+      };
+      Chain.prototype.expandBind = function(o){
+        var tails, i, that, obj, key, call;
+        tails = this.tails;
+        i = -1;
+        while (that = tails[++i]) {
+          if (that.symbol !== '.~') {
+            continue;
+          }
+          that.symbol = '';
+          obj = Chain(this.head, tails.splice(0, i)).unwrap();
+          key = tails.shift().key;
+          call = Call.make(Util('bind'), [obj, (key.reserved = true, key)]);
+          this.head = this.newed ? Parens(call, true) : call;
+          i = -1;
+        }
+      };
+      Chain.prototype.expandStar = function(o){
+        var tails, i, that, stars, ref$, sub, ref, temps, value, i$, len$, star;
+        tails = this.tails;
+        i = -1;
+        while (that = tails[++i]) {
+          if (that.args || that.stars || that.key instanceof Key) {
+            continue;
+          }
+          stars = that.stars = [];
+          that.eachChild(seek);
+          if (!stars.length) {
+            continue;
+          }
+          ref$ = Chain(this.head, tails.splice(0, i)).unwrap().cache(o), sub = ref$[0], ref = ref$[1], temps = ref$[2];
+          value = Chain(ref, [Index(Key('length'))]).compile(o);
+          for (i$ = 0, len$ = stars.length; i$ < len$; ++i$) {
+            star = stars[i$];
+            star.value = value;
+            star.isAssignable = YES;
+          }
+          this.head = JS(sub.compile(o, LEVEL_CALL) + tails.shift().compile(o));
+          if (temps) {
+            o.scope.free(temps[0]);
+          }
+          i = -1;
+        }
+        function seek(it){
+          if (it.value === '*') {
+            stars.push(it);
+          } else if (!(it instanceof Index)) {
+            it.eachChild(seek);
+          }
+        }
+      };
+      Chain.prototype.rewriteShorthand = function(o, assign){
+        var that, lastI, i$, ref$, len$, i, item;
+        if (that = this.unfoldSoak(o)) {
+          return that.rewriteShorthand(o, assign) || that;
+        }
+        if (that = this.head.rewriteShorthand(o)) {
+          this.head = that;
+        }
+        lastI = this.tails.length - 1;
+        for (i$ = 0, len$ = (ref$ = this.tails).length; i$ < len$; ++i$) {
+          i = i$;
+          item = ref$[i$];
+          if (that = item.rewriteShorthand(o, assign && i === lastI)) {
+            this.tails[i] = that;
+          }
+        }
+        this.expandSlice(o, assign);
+        return this.unwrap();
+      };
+      Chain.prototype.expandSlice = function(o, assign){
+        var tails, i, tail, ref$, x;
+        tails = this.tails;
+        i = -1;
+        while (tail = tails[++i]) {
+          if ((ref$ = tail.key) != null && ref$.items) {
+            if (tails[i + 1] instanceof Call) {
+              tail.carp('calling a slice');
+            }
+            x = tails.splice(0, i + 1);
+            x = x.pop().key.toSlice(o, Chain(this.head, x).unwrap(), tail.symbol, assign);
+            this.head = (x.front = this.front, x);
+            i = -1;
+          }
+        }
+        return this;
+      };
+      Chain.prototype.extractKeyRef = function(o, assign){
+        var ref$, ref1$, ref2$;
+        return ((ref$ = (ref2$ = this.tails)[ref2$.length - 1]) != null ? (ref1$ = ref$.key) != null ? ref1$.extractKeyRef(o, assign) : void 8 : void 8) || superclass.prototype.extractKeyRef.apply(this, arguments);
+      };
+      return Chain;
+    }(Node));
+    exports.Call = Call = (function(superclass){
+      var prototype = extend$((import$(Call, superclass).displayName = 'Call', Call), superclass).prototype, constructor = Call;
+      function Call(args){
+        var splat, i$, len$, i, a, ref$, this$ = this instanceof ctor$ ? this : new ctor$;
+        args || (args = []);
+        if (args.length === 1 && (splat = args[0]) instanceof Splat) {
+          if (splat.filler) {
+            this$.method = '.call';
+            args[0] = Literal('this');
+            args[1] = Splat(Literal('arguments'));
+          } else if (splat.it instanceof Arr) {
+            args = splat.it.items;
+          }
+        } else {
+          for (i$ = 0, len$ = args.length; i$ < len$; ++i$) {
+            i = i$;
+            a = args[i$];
+            if (a.value === '_') {
+              args[i] = Chain(Literal('void'));
+              args[i].placeholder = true;
+              ((ref$ = this$.partialized) != null
+                ? ref$
+                : this$.partialized = []).push(Chain(Literal(i)));
+            }
+          }
+        }
+        this$.args = args;
+        return this$;
+      } function ctor$(){} ctor$.prototype = prototype;
+      Call.prototype.children = ['args'];
+      Call.prototype.show = function(){
+        return [this['new']] + [this.method] + [this.soak ? '?' : void 8];
+      };
+      Call.prototype.compile = function(o){
+        var code, i$, ref$, len$, i, a;
+        code = [sn(this, this.method || '', '(') + (this.pipe ? "\n" + o.indent : '')];
+        for (i$ = 0, len$ = (ref$ = this.args).length; i$ < len$; ++i$) {
+          i = i$;
+          a = ref$[i$];
+          code.push(i ? ', ' : '', a.compile(o, LEVEL_LIST));
+        }
+        code.push(sn(this, ')'));
+        return sn.apply(null, [null].concat(arrayFrom$(code)));
+      };
+      Call.make = function(callee, args, opts){
+        var call;
+        call = Call(args);
+        if (opts) {
+          import$(call, opts);
+        }
+        return Chain(callee).add(call);
+      };
+      Call.block = function(fun, args, method){
+        var ref$, ref1$;
+        return ref$ = Parens(Chain(fun, [(ref1$ = Call(args), ref1$.method = method, ref1$)]), true), ref$.calling = true, ref$;
+      };
+      Call.back = function(params, node, bound, curried, hushed, generator){
+        var fun, ref$, args, index, i$, len$, a;
+        fun = Fun(params, void 8, bound, curried, hushed, generator);
+        if (node instanceof Label) {
+          fun.name = node.label;
+          fun.labeled = true;
+          node = node.it;
+        }
+        if (!fun.hushed && (fun.hushed = node.op === '!')) {
+          node = node.it;
+        }
+        if ((ref$ = node.getCall()) != null) {
+          ref$.partialized = null;
+        }
+        args = (node.getCall() || (node = Chain(node).add(Call())).getCall()).args;
+        index = 0;
+        for (i$ = 0, len$ = args.length; i$ < len$; ++i$) {
+          a = args[i$];
+          if (a.placeholder) {
+            break;
+          }
+          ++index;
+        }
+        return node.back = (args[index] = fun).body, node;
+      };
+      Call['let'] = function(args, body){
+        var hasYield, hasAwait, params, res$, i$, len$, i, a, that, gotThis;
+        hasYield = false;
+        hasAwait = false;
+        body.traverseChildren(function(child){
+          if (child instanceof Yield) {
+            switch (child.op) {
+            case 'yield':
+            case 'yieldfrom':
+              hasYield = true;
+              break;
+            case 'await':
+              hasAwait = true;
+            }
+          }
+          if (hasYield && hasAwait) {
+            return true;
+          }
+        });
+        res$ = [];
+        for (i$ = 0, len$ = args.length; i$ < len$; ++i$) {
+          i = i$;
+          a = args[i$];
+          if (that = a.op === '=' && !a.logic && a.right) {
+            args[i] = that;
+            if (i === 0 && (gotThis = a.left.value === 'this')) {
+              continue;
+            }
+            res$.push(a.left);
+          } else {
+            res$.push(Var(a.varName() || a.carp('invalid "let" argument')));
+          }
+        }
+        params = res$;
+        gotThis || args.unshift(Literal('this'));
+        body = this.block(Fun(params, body, null, null, null, hasYield, hasAwait), args, '.call');
+        if (hasYield || hasAwait) {
+          return Block(Yield(hasYield ? 'yieldfrom' : 'await', body));
+        } else {
+          return body;
+        }
+      };
+      return Call;
+    }(Node));
+    List = (function(superclass){
+      var prototype = extend$((import$(List, superclass).displayName = 'List', List), superclass).prototype, constructor = List;
+      List.prototype.children = ['items'];
+      List.prototype.show = function(){
+        return this.name;
+      };
+      List.prototype.named = function(name){
+        this.name = name;
+        return this;
+      };
+      List.prototype.isEmpty = function(){
+        return !this.items.length;
+      };
+      List.prototype.assigns = function(){
+        var x$, res$, i$, ref$, len$, node, that, j$, len1$, x;
+        res$ = [];
+        for (i$ = 0, len$ = (ref$ = this.items).length; i$ < len$; ++i$) {
+          node = ref$[i$];
+          if (that = node.assigns()) {
+            for (j$ = 0, len1$ = that.length; j$ < len1$; ++j$) {
+              x = that[j$];
+              res$.push(x);
+            }
+          }
+        }
+        x$ = res$;
+        if (that = this.name) {
+          x$.push(that);
+        }
+        return x$;
+      };
+      List.compile = function(o, items, deepEq){
+        var indent, level, code, i, that, target;
+        switch (items.length) {
+        case 0:
+          return '';
+        case 1:
+          return items[0].compile(o, LEVEL_LIST);
+        }
+        indent = o.indent, level = o.level;
+        o.indent = indent + TAB;
+        o.level = LEVEL_LIST;
+        code = [items[i = 0].compile(o)];
+        while (that = items[++i]) {
+          code.push(', ');
+          target = that;
+          if (deepEq) {
+            if (target instanceof Var && target.value === '_') {
+              target = Obj([Prop(Key('__placeholder__'), Literal(true))]);
+            } else if (target instanceof Obj || target instanceof Arr) {
+              target.deepEq = true;
+            }
+          }
+          code.push(target.compile(o));
+        }
+        if (~code.join("").indexOf('\n')) {
+          code = ["\n" + o.indent].concat(arrayFrom$(code), ["\n" + indent]);
+        }
+        o.indent = indent;
+        o.level = level;
+        return sn.apply(null, [this].concat(arrayFrom$(code)));
+      };
+      List.prototype.toSlice = function(o, base, symbol, assign){
+        var items, isObj, ref$, ref, temps, i$, len$, i, item, val, splat, chain;
+        items = this.items;
+        isObj = this instanceof Obj;
+        if (items.length > 1) {
+          ref$ = base.cache(o), base = ref$[0], ref = ref$[1], temps = ref$[2];
+        } else {
+          ref = base;
+        }
+        for (i$ = 0, len$ = items.length; i$ < len$; ++i$) {
+          i = i$;
+          item = items[i$];
+          if (!item.comment) {
+            if (isObj) {
+              val = item.val;
+              if (!(val instanceof List)) {
+                (val = val.maybeKey()) || this.carp("value in object slice is not a key");
+              }
+            } else {
+              val = item;
+              if (splat = val instanceof Splat) {
+                val = val.it;
+              }
+              if (val.isEmpty()) {
+                continue;
+              }
+            }
+            chain = val instanceof List
+              ? val.toSlice(o, base, symbol, assign)
+              : Chain(base, [Index(val, symbol)]);
+            if (isObj) {
+              item.val = chain;
+            } else {
+              items[i] = splat ? Splat(chain) : chain;
+            }
+            base = ref;
+          }
+        }
+        chain || this.carp('empty slice');
+        if (temps) {
+          (this.temps || (this.temps = [])).push(temps[0]);
+        }
+        return this;
+      };
+      List.prototype.extractKeyRef = function(){
+        var that;
+        if ((that = this.name) != null) {
+          return Key(that);
+        } else {
+          return superclass.prototype.extractKeyRef.apply(this, arguments);
+        }
+      };
+      function List(){
+        List.superclass.apply(this, arguments);
+      }
+      return List;
+    }(Node));
+    exports.Obj = Obj = (function(superclass){
+      var prototype = extend$((import$(Obj, superclass).displayName = 'Obj', Obj), superclass).prototype, constructor = Obj;
+      function Obj(items){
+        var this$ = this instanceof ctor$ ? this : new ctor$;
+        this$.items = items || [];
+        return this$;
+      } function ctor$(){} ctor$.prototype = prototype;
+      Obj.prototype.asObj = THIS;
+      Obj.prototype.compileNode = function(o){
+        var items, code, idt, dic, i$, len$, i, node, ref$, rest, multi, key, val;
+        if (this.name != null) {
+          this.carp("unexpected label");
+        }
+        items = this.items;
+        if (!items.length) {
+          return sn(this, this.front ? '({})' : '{}');
+        }
+        code = [];
+        idt = '\n' + (o.indent += TAB);
+        dic = {};
+        for (i$ = 0, len$ = items.length; i$ < len$; ++i$) {
+          i = i$;
+          node = items[i$];
+          if (node.comment) {
+            code.push(idt, node.compile(o));
+            continue;
+          }
+          if ((ref$ = node.key) instanceof Splat || ref$ instanceof Parens) {
+            rest = items.slice(i);
+            break;
+          }
+          if (node.logic) {
+            node.val = (ref$ = node.logic, ref$.first = node.val, ref$);
+          }
+          if (this.deepEq) {
+            if (node.val instanceof Var && node.val.value === '_') {
+              node.val = Obj([Prop(Key('__placeholder__'), Literal(true))]);
+            } else if ((ref$ = node.val) instanceof Obj || ref$ instanceof Arr) {
+              node.val.deepEq = true;
+            }
+          }
+          if (multi) {
+            code.push(',');
+          } else {
+            multi = true;
+          }
+          code.push(idt);
+          key = node.key, val = node.val;
+          if (node.accessor) {
+            code.push(node.compileAccessor(o, key = key.compile(o)));
+          } else {
+            val.ripName(key);
+            code.push(key = key.compile(o), ": ", val.compile(o, LEVEL_LIST));
+          }
+          ID.test(key) || (key = Function("return " + key)());
+          if (!(dic[key + "."] ^= 1)) {
+            node.carp("duplicate property \"" + key + "\"");
+          }
+        }
+        if (code.join("")) {
+          code.push('\n' + this.tab);
+        }
+        code = sn.apply(null, [null, sn(this, "{")].concat(arrayFrom$(code), [sn(this, "}")]));
+        rest && (code = Import(JS(code), Obj(rest)).compile((o.indent = this.tab, o)));
+        if (this.front && '{' === code.toString().charAt()) {
+          return sn(null, "(", code, ")");
+        } else {
+          return code;
+        }
+      };
+      return Obj;
+    }(List));
+    exports.Prop = Prop = (function(superclass){
+      var prototype = extend$((import$(Prop, superclass).displayName = 'Prop', Prop), superclass).prototype, constructor = Prop;
+      function Prop(key, val){
+        var that, i$, len$, fun, this$ = this instanceof ctor$ ? this : new ctor$;
+        this$.key = key;
+        this$.val = val;
+        if ((key != null ? key.value : void 8) === '...') {
+          this$.key = Splat();
+        }
+        if (that = val.getAccessors()) {
+          this$.val = that;
+          for (i$ = 0, len$ = that.length; i$ < len$; ++i$) {
+            fun = that[i$];
+            fun.x = (fun.hushed = fun.params.length) ? 's' : 'g';
+          }
+          this$['accessor'] = 'accessor';
+        }
+        return this$;
+      } function ctor$(){} ctor$.prototype = prototype;
+      Prop.prototype.children = ['key', 'val', 'logic'];
+      Prop.prototype.show = function(){
+        return this.accessor;
+      };
+      Prop.prototype.assigns = function(){
+        var ref$;
+        return typeof (ref$ = this.val).assigns == 'function' ? ref$.assigns() : void 8;
+      };
+      Prop.prototype.compileAccessor = function(o, key){
+        var funs, code, i$, len$, fun;
+        funs = this.val;
+        if (funs[1] && funs[0].params.length + funs[1].params.length !== 1) {
+          funs[0].carp('invalid accessor parameter');
+        }
+        code = [];
+        for (i$ = 0, len$ = funs.length; i$ < len$; ++i$) {
+          fun = funs[i$];
+          fun.accessor = true;
+          code.push(fun.x, "et ", key, fun.compile(o, LEVEL_LIST).toString().slice(8), ',\n' + o.indent);
+        }
+        code.pop();
+        return sn.apply(null, [null].concat(arrayFrom$(code)));
+      };
+      Prop.prototype.compileDescriptor = function(o){
+        var obj, i$, ref$, len$, fun;
+        obj = Obj();
+        for (i$ = 0, len$ = (ref$ = this.val).length; i$ < len$; ++i$) {
+          fun = ref$[i$];
+          obj.items.push(Prop(Key(fun.x + 'et'), fun));
+        }
+        obj.items.push(Prop(Key('configurable'), Literal(true)));
+        obj.items.push(Prop(Key('enumerable'), Literal(true)));
+        return obj.compile(o);
+      };
+      Prop.prototype.rewriteShorthand = function(o, assign){
+        var ref$, that;
+        superclass.prototype.rewriteShorthand.apply(this, arguments);
+        if (this.key == null && this.val instanceof Assign) {
+          this.val = this.val.maybeLogic();
+        }
+        if (this.key == null && this.val instanceof Unary && ((ref$ = this.val.op) === '+' || ref$ === '-')) {
+          this.key = this.val.it.maybeKey() || this.carp("invalid property flag shorthand");
+          this.val = Literal(this.val.op === '+');
+        }
+        if (that = this.val instanceof Binary && this.val.getDefault()) {
+          this.val = this.val.first;
+          this.logic = (that.first = null, that);
+        }
+        this.key == null && (this.key = this.val.extractKeyRef(o, assign));
+      };
+      return Prop;
+    }(Node));
+    exports.Arr = Arr = (function(superclass){
+      var prototype = extend$((import$(Arr, superclass).displayName = 'Arr', Arr), superclass).prototype, constructor = Arr;
+      function Arr(items){
+        var this$ = this instanceof ctor$ ? this : new ctor$;
+        this$.items = items || [];
+        return this$;
+      } function ctor$(){} ctor$.prototype = prototype;
+      Arr.prototype.isArray = YES;
+      Arr.prototype.asObj = function(){
+        var i, item;
+        return Obj((function(){
+          var i$, ref$, len$, results$ = [];
+          for (i$ = 0, len$ = (ref$ = this.items).length; i$ < len$; ++i$) {
+            i = i$;
+            item = ref$[i$];
+            results$.push(Prop(Literal(i), item));
+          }
+          return results$;
+        }.call(this)));
+      };
+      Arr.prototype.compile = function(o){
+        var items, code;
+        if (this.name != null) {
+          this.carp("unexpected label");
+        }
+        items = this.items;
+        if (!items.length) {
+          return sn(this, '[]');
+        }
+        if (!snEmpty(code = Splat.compileArray(o, items))) {
+          return this.newed
+            ? sn(this, "(", code, ")")
+            : sn(this, code);
+        }
+        return sn(null, sn(this, "["), List.compile(o, items, this.deepEq), sn(this, "]"));
+      };
+      Arr.maybe = function(nodes){
+        if (nodes.length === 1 && !(nodes[0] instanceof Splat)) {
+          return nodes[0];
+        }
+        return constructor(nodes);
+      };
+      Arr.wrap = function(it){
+        return constructor([Splat((it.isArray = YES, it))]);
+      };
+      return Arr;
+    }(List));
+    exports.Yield = Yield = (function(superclass){
+      var prototype = extend$((import$(Yield, superclass).displayName = 'Yield', Yield), superclass).prototype, constructor = Yield;
+      function Yield(op, it){
+        var this$ = this instanceof ctor$ ? this : new ctor$;
+        this$.op = op;
+        this$.it = it;
+        return this$;
+      } function ctor$(){} ctor$.prototype = prototype;
+      Yield.prototype.children = ['it'];
+      Yield.prototype.show = function(){
+        switch (this.op) {
+        case 'yield':
+          return '';
+        case 'yieldfrom':
+          return 'from';
+        case 'await':
+          return 'await';
+        }
+      };
+      prototype.delegate(['isCallable'], function(){
+        return true;
+      });
+      Yield.prototype.compileNode = function(o){
+        var code;
+        code = [(function(){
+          switch (this.op) {
+          case 'yield':
+            return 'yield';
+          case 'yieldfrom':
+            return 'yield*';
+          case 'await':
+            return 'await';
+          }
+        }.call(this))];
+        if (this.it) {
+          code.push(" " + this.it.compile(o, LEVEL_OP + PREC.unary));
+        }
+        return sn.apply(null, [this, "("].concat(arrayFrom$(code), [")"]));
+      };
+      return Yield;
+    }(Node));
+    exports.Unary = Unary = (function(superclass){
+      var prototype = extend$((import$(Unary, superclass).displayName = 'Unary', Unary), superclass).prototype, constructor = Unary;
+      function Unary(op, it, flag){
+        var that, i$, ref$, len$, node, this$ = this instanceof ctor$ ? this : new ctor$;
+        if (it != null) {
+          if (that = !flag && it.unaries) {
+            that.push(op);
+            return it;
+          }
+          switch (op) {
+          case '!':
+            if (flag) {
+              break;
+            }
+            if (it instanceof Fun && !it.hushed) {
+              return it.hushed = true, it;
+            }
+            return it.invert();
+          case '++':
+          case '--':
+            if (flag) {
+              this$.post = true;
+            }
+            break;
+          case 'new':
+            if (it instanceof Existence && !it.negated) {
+              it = Chain(it).add(Call());
+            }
+            it.newed = true;
+            for (i$ = 0, len$ = (ref$ = it.tails || '').length; i$ < len$; ++i$) {
+              node = ref$[i$];
+              if (node instanceof Call && !node['new']) {
+                if (node.method === '.call') {
+                  node.args.shift();
+                }
+                node['new'] = 'new';
+                node.method = '';
+                return it;
+              }
+            }
+            break;
+          case '~':
+            if (it instanceof Fun && it.statement && !it.bound) {
+              return it.bound = 'this$', it;
+            }
+            break;
+          case 'do':
+            if (it instanceof Existence && !it.negated) {
+              return Chain(it).add(Call());
+            }
+          }
+        }
+        this$.op = op;
+        this$.it = it;
+        return this$;
+      } function ctor$(){} ctor$.prototype = prototype;
+      Unary.prototype.children = ['it'];
+      Unary.prototype.show = function(){
+        return [this.post ? '@' : void 8] + this.op;
+      };
+      Unary.prototype.isCallable = function(){
+        var ref$;
+        return ((ref$ = this.op) === 'do' || ref$ === 'new' || ref$ === 'delete') || this.it == null;
+      };
+      Unary.prototype.isArray = function(){
+        return this.it instanceof Arr && this.it.items.length || this.it instanceof Chain && this.it.isArray();
+      };
+      Unary.prototype.isString = function(){
+        var ref$;
+        return (ref$ = this.op) === 'typeof' || ref$ === 'classof';
+      };
+      Unary.prototype.invert = function(){
+        var ref$;
+        if (this.op === '!' && ((ref$ = this.it.op) === '!' || ref$ === '<' || ref$ === '>' || ref$ === '<=' || ref$ === '>=' || ref$ === 'of' || ref$ === 'instanceof')) {
+          return this.it;
+        }
+        return constructor('!', this, true);
+      };
+      Unary.prototype.unfoldSoak = function(o){
+        var ref$;
+        return ((ref$ = this.op) === '++' || ref$ === '--' || ref$ === 'delete' || ref$ === 'jsdelete') && this.it != null && If.unfoldSoak(o, this, 'it');
+      };
+      Unary.prototype.getAccessors = function(){
+        var items;
+        if (this.op !== '~') {
+          return;
+        }
+        if (this.it instanceof Fun) {
+          return [this.it];
+        }
+        if (this.it instanceof Arr) {
+          items = this.it.items;
+          if (!items[2] && items[0] instanceof Fun && items[1] instanceof Fun) {
+            return items;
+          }
+        }
+      };
+      function crement(it){
+        return {
+          '++': 'in',
+          '--': 'de'
+        }[it] + 'crement';
+      }
+      Unary.prototype.compileNode = function(o){
+        var that, op, it, x, code;
+        if (this.it == null) {
+          return this.compileAsFunc(o);
+        }
+        if (that = this.compileSpread(o)) {
+          return that;
+        }
+        op = this.op, it = this.it;
+        switch (op) {
+        case '!':
+          it.cond = true;
+          break;
+        case 'new':
+          it.isCallable() || it.carp('invalid constructor');
+          break;
+        case 'do':
+          if (o.level === LEVEL_TOP && it instanceof Fun && it.isStatement()) {
+            return sn(this, it.compile(o), " ", Unary('do', Var(it.name)).compile(o));
+          }
+          x = Parens(Call.make(it));
+          return sn(this, (x.front = this.front, x.newed = this.newed, x).compile(o));
+        case 'delete':
+          if (it instanceof Var || !it.isAssignable()) {
+            this.carp('invalid delete');
+          }
+          if (o.level && !this['void']) {
+            return this.compilePluck(o);
+          }
+          break;
+        case '++':
+        case '--':
+          it.isAssignable() || this.carp('invalid ' + crement(op));
+          if (that = it instanceof Var && o.scope.checkReadOnly(it.value)) {
+            this.carp(crement(op) + " of " + that + " \"" + it.value + "\"", ReferenceError);
+          }
+          if (this.post) {
+            it.front = this.front;
+          }
+          break;
+        case '^^':
+          return sn(this, util('clone'), "(", it.compile(o, LEVEL_LIST), ")");
+        case 'jsdelete':
+          return sn(this, "delete ", it.compile(o, LEVEL_LIST));
+        case 'classof':
+          return sn(this, util('toString'), ".call(", it.compile(o, LEVEL_LIST), ").slice(8, -1)");
+        }
+        code = [it.compile(o, LEVEL_OP + PREC.unary)];
+        if (this.post) {
+          code.push(op);
+        } else {
+          if ((op === 'new' || op === 'typeof' || op === 'delete') || (op === '+' || op === '-') && op === code.join("").charAt()) {
+            op += ' ';
+          }
+          code.unshift(op);
+        }
+        if (o.level < LEVEL_CALL) {
+          return sn.apply(null, [this].concat(arrayFrom$(code)));
+        } else {
+          return sn.apply(null, [this, "("].concat(arrayFrom$(code), [")"]));
+        }
+      };
+      Unary.prototype.compileSpread = function(o){
+        var it, ops;
+        it = this.it;
+        ops = [this];
+        for (; it instanceof constructor; it = it.it) {
+          ops.push(it);
+        }
+        if (!(it instanceof Splat && (it = it.it) instanceof List)) {
+          return '';
+        }
+        return this.compileSpreadOver(o, it, function(node){
+          var i$, ref$, op;
+          for (i$ = (ref$ = ops).length - 1; i$ >= 0; --i$) {
+            op = ref$[i$];
+            node = constructor(op.op, node, op.post);
+          }
+          return node.unfoldSoak(o) || node;
+        });
+      };
+      Unary.prototype.compilePluck = function(o){
+        var ref$, get, del, code, ref;
+        ref$ = Chain(this.it).cacheReference(o), get = ref$[0], del = ref$[1];
+        code = [ref = o.scope.temporary(), " = ", get.compile(o, LEVEL_LIST), ", delete ", del.compile(o, LEVEL_LIST), ", ", o.scope.free(ref)];
+        if (o.level < LEVEL_LIST) {
+          return sn.apply(null, [this].concat(arrayFrom$(code)));
+        } else {
+          return sn.apply(null, [this, "("].concat(arrayFrom$(code), [")"]));
+        }
+      };
+      Unary.prototype.compileAsFunc = function(o){
+        if (this.op === '!') {
+          return sn(this, util('not'));
+        } else {
+          return sn(this, "(", Fun([], Block(Unary(this.op, Chain(Var('it'))))).compile(o), ")");
+        }
+      };
+      Unary.prototype.rewriteShorthand = function(o, assign){
+        var that, ref$;
+        if (that = this.unfoldSoak(o)) {
+          return that.rewriteShorthand(o, assign) || that;
+        }
+        return superclass.prototype.rewriteShorthand.call(this, o, assign || ((ref$ = this.op) === '++' || ref$ === '--' || ref$ === 'delete' || ref$ === 'jsdelete'));
+      };
+      return Unary;
+    }(Node));
+    exports.Binary = Binary = (function(superclass){
+      var COMPARER, INVERSIONS, prototype = extend$((import$(Binary, superclass).displayName = 'Binary', Binary), superclass).prototype, constructor = Binary;
+      function Binary(op, first, second){
+        var ref$, this$ = this instanceof ctor$ ? this : new ctor$;
+        this$.partial = first == null || second == null;
+        if (!this$.partial) {
+          if ('=' === op.charAt(op.length - 1) && ((ref$ = op.charAt(op.length - 2)) !== '=' && ref$ !== '<' && ref$ !== '>' && ref$ !== '!')) {
+            return Assign(first.unwrap(), second, op);
+          }
+          switch (op) {
+          case 'in':
+            return new In(first, second);
+          case 'with':
+            return new Import(Unary('^^', first), second, false);
+          case '<<<':
+          case '<<<<':
+            return Import(first, second, op === '<<<<');
+          case '<|':
+            return Block(first).pipe(second, op);
+          case '|>':
+            return Block(second).pipe(first, '<|');
+          case '.':
+          case '.~':
+            return Chain(first).add(Index(second, op));
+          }
+        }
+        this$.op = op;
+        this$.first = first;
+        this$.second = second;
+        return this$;
+      } function ctor$(){} ctor$.prototype = prototype;
+      Binary.prototype.children = ['first', 'second'];
+      Binary.prototype.show = function(){
+        return this.op;
+      };
+      Binary.prototype.isCallable = function(){
+        var ref$;
+        return this.partial || ((ref$ = this.op) === '&&' || ref$ === '||' || ref$ === '?' || ref$ === '<<' || ref$ === '>>') && this.first.isCallable() && this.second.isCallable();
+      };
+      Binary.prototype.isArray = function(){
+        switch (this.op) {
+        case '*':
+          return this.first.isArray();
+        case '/':
+          return this.second.isMatcher();
+        }
+      };
+      Binary.prototype.isString = function(){
+        switch (this.op) {
+        case '+':
+        case '*':
+          return this.first.isString() || this.second.isString();
+        case '-':
+          return this.second.isMatcher();
+        }
+      };
+      COMPARER = /^(?:[!=]=|[<>])=?$/;
+      INVERSIONS = {
+        '===': '!==',
+        '!==': '===',
+        '==': '!=',
+        '!=': '=='
+      };
+      Binary.prototype.invert = function(){
+        var that;
+        if (that = !COMPARER.test(this.second.op) && INVERSIONS[this.op]) {
+          this.op = that;
+          this.wasInverted = true;
+          return this;
+        }
+        return Unary('!', Parens(this), true);
+      };
+      Binary.prototype.invertIt = function(){
+        this.inverted = true;
+        return this;
+      };
+      Binary.prototype.getDefault = function(){
+        switch (this.op) {
+        case '?':
+        case '||':
+        case '&&':
+          return this;
+        }
+      };
+      Binary.prototype.assigns = function(){
+        var ref$;
+        return (ref$ = this.getDefault()) != null ? ref$.first.assigns() : void 8;
+      };
+      Binary.prototype.xorChildren = function(test){
+        var ref$, first;
+        if (!(!(first = test(this.first)) !== !(ref$ = test(this.second)) && (first || ref$))) {
+          return false;
+        }
+        return first
+          ? [this.first, this.second]
+          : [this.second, this.first];
+      };
+      Binary.prototype.compileNode = function(o){
+        var top, rite, items, that, ref$, code, level;
+        if (this.partial) {
+          return this.compilePartial(o);
+        }
+        switch (this.op) {
+        case '?':
+          return this.compileExistence(o);
+        case '*':
+          if (this.second.isString()) {
+            return this.compileJoin(o);
+          }
+          if (this.first.isString() || this.first.isArray()) {
+            return this.compileRepeat(o);
+          }
+          break;
+        case '-':
+          if (this.second.isMatcher()) {
+            return this.compileRemove(o);
+          }
+          break;
+        case '/':
+          if (this.second.isMatcher()) {
+            return this.compileSplit(o);
+          }
+          break;
+        case '**':
+        case '^':
+          return this.compilePow(o);
+        case '<?':
+        case '>?':
+          return this.compileMinMax(o);
+        case '<<':
+        case '>>':
+          return this.compileCompose(o);
+        case '++':
+          return this.compileConcat(o);
+        case '%%':
+          return this.compileMod(o);
+        case 'xor':
+          return this.compileXor(o);
+        case '&&':
+        case '||':
+          if (top = this['void'] || !o.level) {
+            this.second['void'] = true;
+          }
+          if (top || this.cond) {
+            this.first.cond = true;
+            this.second.cond = true;
+          }
+          break;
+        case 'instanceof':
+          rite = this.second, items = rite.items;
+          if (rite instanceof Arr) {
+            if (items[1]) {
+              return this.compileAnyInstanceOf(o, items);
+            }
+            this.second = items[0] || rite;
+          }
+          this.second.isCallable() || this.second.carp('invalid instanceof operand');
+          break;
+        case '====':
+        case '!===':
+          this.op = this.op.slice(0, 3);
+          // fallthrough
+        case '<==':
+        case '>==':
+        case '<<=':
+        case '>>=':
+          return this.compileDeepEq(o);
+        default:
+          if (COMPARER.test(this.op)) {
+            if (that = ((ref$ = this.op) === '===' || ref$ === '!==') && this.xorChildren(function(it){
+              return it.isRegex();
+            })) {
+              return this.compileRegexEquals(o, that);
+            }
+            if (this.op === '===' && (this.first instanceof Literal && this.second instanceof Literal) && this.first.isWhat() !== this.second.isWhat()) {
+              if (o.warn) {
+                this.warn("strict comparison of two different types will always be false: " + this.first.value + " == " + this.second.value);
+              }
+            }
+          }
+          if (COMPARER.test(this.op) && COMPARER.test(this.second.op)) {
+            return this.compileChain(o);
+          }
+        }
+        this.first.front = this.front;
+        code = [this.first.compile(o, level = LEVEL_OP + PREC[this.op]), " ", this.mapOp(this.op), " ", this.second.compile(o, level)];
+        if (o.level <= level) {
+          return sn.apply(null, [this].concat(arrayFrom$(code)));
+        } else {
+          return sn.apply(null, [this, "("].concat(arrayFrom$(code), [")"]));
+        }
+      };
+      Binary.prototype.mapOp = function(op){
+        var that;
+        switch (false) {
+        case !(that = op.match(/\.([&\|\^]|<<|>>>?)\./)):
+          return that[1];
+        case op !== 'of':
+          return 'in';
+        default:
+          return op;
+        }
+      };
+      Binary.prototype.compileChain = function(o){
+        var code, level, ref$, sub;
+        code = [this.first.compile(o, level = LEVEL_OP + PREC[this.op])];
+        ref$ = this.second.first.cache(o, true), sub = ref$[0], this.second.first = ref$[1];
+        code.push(" ", this.op, " ", sub.compile(o, level), " && ", this.second.compile(o, LEVEL_OP));
+        if (o.level <= LEVEL_OP) {
+          return sn.apply(null, [this].concat(arrayFrom$(code)));
+        } else {
+          return sn.apply(null, [this, "("].concat(arrayFrom$(code), [")"]));
+        }
+      };
+      Binary.prototype.compileExistence = function(o){
+        var x;
+        if (this['void'] || !o.level) {
+          x = Binary('&&', Existence(this.first, true), Parens(this.second.unwrap()));
+          return (x['void'] = true, x).compileNode(o);
+        }
+        x = this.first.cache(o, true);
+        return sn(this, If(Existence(x[0]), x[1]).addElse(this.second).compileExpression(o));
+      };
+      Binary.prototype.compileAnyInstanceOf = function(o, items){
+        var ref$, sub, ref, test, i$, len$, item;
+        ref$ = this.first.cache(o), sub = ref$[0], ref = ref$[1], this.temps = ref$[2];
+        test = Binary('instanceof', sub, items.shift());
+        for (i$ = 0, len$ = items.length; i$ < len$; ++i$) {
+          item = items[i$];
+          test = Binary('||', test, Binary('instanceof', ref, item));
+        }
+        return sn(this, Parens(test).compile(o));
+      };
+      Binary.prototype.compileMinMax = function(o){
+        var lefts, rites, x;
+        lefts = this.first.cache(o, true);
+        rites = this.second.cache(o, true);
+        x = Binary(this.op.charAt(), lefts[0], rites[0]);
+        return sn(this, If(x, lefts[1]).addElse(rites[1]).compileExpression(o));
+      };
+      Binary.prototype.compileMethod = function(o, klass, method, arg){
+        var args;
+        args = [this.second].concat(arg || []);
+        if (this.first["is" + klass]()) {
+          return sn(this, Chain(this.first, [Index(Key(method)), Call(args)]).compile(o));
+        } else {
+          args.unshift(this.first);
+          return sn(this, Call.make(JS(util(method) + '.call'), args).compile(o));
+        }
+      };
+      Binary.prototype.compileJoin = function(it){
+        return this.compileMethod(it, 'Array', 'join');
+      };
+      Binary.prototype.compileRemove = function(it){
+        return this.compileMethod(it, 'String', 'replace', JS("''"));
+      };
+      Binary.prototype.compileSplit = function(it){
+        return this.compileMethod(it, 'String', 'split');
+      };
+      Binary.prototype.compileRepeat = function(o){
+        var x, items, n, arr, arrCode, refs, i$, len$, i, item, ref$, q;
+        x = this.first, items = x.items, n = this.second;
+        arr = x.isArray() && 'Array';
+        if (items && !snEmpty(arrCode = Splat.compileArray(o, items))) {
+          x = JS(arrCode);
+          items = null;
+        }
+        if (arr && !items || !(n instanceof Literal && n.value < 0x20)) {
+          return sn(this, Call.make(Util('repeat' + (arr || 'String')), [x, n]).compile(o));
+        }
+        n = +n.value;
+        if (1 <= n && n < 2) {
+          return sn(this, x.compile(o));
+        }
+        if (items) {
+          if (n < 1) {
+            return sn(this, Block(items).add(JS('[]')).compile(o));
+          }
+          refs = [];
+          for (i$ = 0, len$ = items.length; i$ < len$; ++i$) {
+            i = i$;
+            item = items[i$];
+            ref$ = item.cache(o, 1), items[i] = ref$[0], refs[refs.length] = ref$[1];
+          }
+          items.push((ref$ = JS(), ref$.compile = function(){
+            return sn.apply(null, [this].concat(arrayFrom$((repeatArray$([", ", List.compile(o, refs)], n - 1)).slice(1))));
+          }, ref$));
+          return sn(this, x.compile(o));
+        } else if (x instanceof Literal) {
+          return sn(this, (q = (x = x.compile(o).toString()).charAt()) + repeatString$(x.slice(1, -1) + "", n) + q);
+        } else {
+          if (n < 1) {
+            return sn(this, Block(x.it).add(JS("''")).compile(o));
+          }
+          x = (refs = x.cache(o, 1, LEVEL_OP))[0] + repeatString$(" + " + refs[1], n - 1);
+          if (o.level < LEVEL_OP + PREC['+']) {
+            return sn(this, x);
+          } else {
+            return sn(this, "(", x, ")");
+          }
+        }
+      };
+      Binary.prototype.compilePow = function(o){
+        return sn(null, Call.make(CopyL(this, JS('Math.pow')), [this.first, this.second]).compile(o));
+      };
+      Binary.prototype.compileConcat = function(o){
+        var f;
+        f = function(x){
+          switch (false) {
+          case !(x instanceof Binary && x.op === '++'):
+            return f(x.first).concat(f(x.second));
+          default:
+            return [x];
+          }
+        };
+        return sn(null, Chain(this.first).add(CopyL(this, Index(Key('concat'), '.', true))).add(Call(f(this.second))).compile(o));
+      };
+      Binary.prototype.compileCompose = function(o){
+        var op, functions, x;
+        op = this.op;
+        functions = [this.first];
+        x = this.second;
+        while (x instanceof Binary && x.op === op && !x.partial) {
+          functions.push(x.first);
+          x = x.second;
+        }
+        functions.push(x);
+        if (op === '<<') {
+          functions.reverse();
+        }
+        return sn(this, Chain(Var(util('compose'))).add(Call(functions)).compile(o));
+      };
+      Binary.prototype.compileMod = function(o){
+        var ref, code;
+        ref = o.scope.temporary();
+        code = [sn(this, "(("), this.first.compile(o), sn(this, ") % ("), sn(this, ref, " = "), this.second.compile(o), sn(this, ") + ", ref, ") % ", ref)];
+        o.scope.free(ref);
+        if (o.level < LEVEL_OP + PREC['%']) {
+          return sn.apply(null, [null].concat(arrayFrom$(code)));
+        } else {
+          return sn.apply(null, [null, "("].concat(arrayFrom$(code), [")"]));
+        }
+      };
+      Binary.prototype.compilePartial = function(o){
+        var vit, x, y;
+        vit = Var('it');
+        switch (false) {
+        case !(this.first == null && this.second == null):
+          x = Var('x$');
+          y = Var('y$');
+          return sn(this, Fun([x, y], Block(Binary(this.op, x, y).invertCheck(this)), false, true).compile(o));
+        case this.first == null:
+          return sn(this, "(", Fun([vit], Block(Binary(this.op, this.first, vit).invertCheck(this)), true).compile(o), ")");
+        default:
+          return sn(this, "(", Fun([vit], Block(Binary(this.op, vit, this.second).invertCheck(this)), true).compile(o), ")");
+        }
+      };
+      Binary.prototype.compileRegexEquals = function(o, arg$){
+        var regex, target, method;
+        regex = arg$[0], target = arg$[1];
+        if (this.op === '===') {
+          method = this.wasInverted ? 'test' : 'exec';
+          return sn(this, Chain(regex).add(Index(Key(method))).add(Call([target])).compile(o));
+        } else {
+          return sn(this, Unary('!', Chain(regex).add(Index(Key('test'))).add(Call([target]))).compile(o));
+        }
+      };
+      Binary.prototype.compileDeepEq = function(o){
+        var ref$, negate, i$, len$, x, r;
+        if ((ref$ = this.op) === '>==' || ref$ === '>>=') {
+          ref$ = [this.second, this.first], this.first = ref$[0], this.second = ref$[1];
+          this.op = this.op === '>==' ? '<==' : '<<=';
+        }
+        if (this.op === '!==') {
+          this.op = '===';
+          negate = true;
+        }
+        for (i$ = 0, len$ = (ref$ = [this.first, this.second]).length; i$ < len$; ++i$) {
+          x = ref$[i$];
+          if (x instanceof Obj || x instanceof Arr) {
+            x.deepEq = true;
+          }
+        }
+        r = Chain(Var(util('deepEq'))).add(Call([this.first, this.second, Literal("'" + this.op + "'")]));
+        return sn(this, (negate ? Unary('!', r) : r).compile(o));
+      };
+      Binary.prototype.compileXor = function(o){
+        var left, right;
+        left = Chain(this.first).cacheReference(o);
+        right = Chain(this.second).cacheReference(o);
+        return sn(this, Binary('&&', Binary('!==', Unary('!', left[0]), Unary('!', right[0])), Parens(Binary('||', left[1], right[1]))).compile(o));
+      };
+      Binary.prototype.rewriteShorthand = function(o, assign){
+        var that;
+        if (this.partial) {
+          return superclass.prototype.rewriteShorthand.apply(this, arguments);
+        }
+        if (that = this.first.rewriteShorthand(o, assign)) {
+          this.first = that;
+        }
+        if (that = this.second.rewriteShorthand(o)) {
+          this.second = that;
+        }
+      };
+      return Binary;
+    }(Node));
+    exports.Assign = Assign = (function(superclass){
+      var prototype = extend$((import$(Assign, superclass).displayName = 'Assign', Assign), superclass).prototype, constructor = Assign;
+      function Assign(left, rite, op, logic, defParam){
+        var this$ = this instanceof ctor$ ? this : new ctor$;
+        this$.left = left;
+        this$.op = op || '=';
+        this$.logic = logic || this$.op.logic;
+        this$.defParam = defParam;
+        this$.opLoc = this$.op;
+        this$.op += '';
+        this$[rite instanceof Node ? 'right' : 'unaries'] = rite;
+        return this$;
+      } function ctor$(){} ctor$.prototype = prototype;
+      Assign.prototype.children = ['left', 'right'];
+      Assign.prototype.show = function(){
+        return [void 8].concat(this.unaries).reverse().join(' ') + [this.logic] + this.op;
+      };
+      Assign.prototype.assigns = function(){
+        return this.left.assigns();
+      };
+      Assign.prototype.getRef = function(){
+        if (!this.left.isComplex()) {
+          return this.left;
+        }
+      };
+      prototype.delegate(['isCallable', 'isRegex'], function(it){
+        var ref$;
+        return ((ref$ = this.op) === '=' || ref$ === ':=') && this.right && this.right[it]();
+      });
+      Assign.prototype.isArray = function(){
+        switch (this.op) {
+        case '=':
+        case ':=':
+          return this.right && this.right.isArray();
+        case '/=':
+          return this.right && this.right.isMatcher();
+        }
+      };
+      Assign.prototype.isString = function(){
+        switch (this.op) {
+        case '=':
+        case ':=':
+        case '+=':
+        case '*=':
+          return this.right && this.right.isString();
+        case '-=':
+          return this.right && this.right.isMatcher();
+        }
+      };
+      Assign.prototype.unfoldSoak = function(o){
+        var that, ref$, ref1$, rite, temps;
+        if (this.left instanceof Existence) {
+          if (that = (ref1$ = (ref$ = this.left = this.left.it).name, delete ref$.name, ref1$)) {
+            rite = this.right;
+            rite = Assign(this.right = Var(that), rite);
+          } else {
+            ref$ = this.right.cache(o), rite = ref$[0], this.right = ref$[1], temps = ref$[2];
+          }
+          return ref$ = If(Existence(rite), this), ref$.soak = true, ref$.temps = temps, ref$.cond = this.cond, ref$['void'] = this['void'], ref$;
+        }
+        return If.unfoldSoak(o, this, 'left');
+      };
+      Assign.prototype.unfoldAssign = function(){
+        return this.access && this;
+      };
+      Assign.prototype.compileNode = function(o){
+        var that, left, sp, ref$, i$, len$, op, right, reft, sign, name, lvar, protoSplit, dotSplit, code, empty, res;
+        if (that = this.unfoldSoak(o)) {
+          return that.compile(o);
+        }
+        if (this.left instanceof Slice && this.op === '=') {
+          return this.compileSplice(o);
+        }
+        left = this.left;
+        if (sp = this.left instanceof Splat) {
+          left = left.it;
+        }
+        if (sp) {
+          left instanceof List || this.left.carp('invalid splat');
+          return this.compileSpread(o, left);
+        }
+        if (!this.right) {
+          left.isAssignable() || left.carp('invalid unary assign');
+          ref$ = Chain(left).cacheReference(o), left = ref$[0], this.right = ref$[1];
+          for (i$ = 0, len$ = (ref$ = this.unaries).length; i$ < len$; ++i$) {
+            op = ref$[i$];
+            this.right = Unary(op, this.right);
+          }
+        }
+        if (left.isEmpty()) {
+          return sn(null, (ref$ = Parens(this.right), ref$.front = this.front, ref$.newed = this.newed, ref$).compile(o));
+        }
+        if (left.getDefault()) {
+          this.right = Binary(left.op, this.right, left.second);
+          left = left.first;
+        }
+        if (left.soak) {
+          this.left = left.then;
+          left.then = this;
+          return left.compile(o);
+        }
+        if (left.items) {
+          return this.compileDestructuring(o, left);
+        }
+        left.isAssignable() || left.carp('invalid assign');
+        if (this.logic) {
+          return this.compileConditional(o, left);
+        }
+        op = this.op, right = this.right;
+        if (op === '<?=' || op === '>?=') {
+          return this.compileMinMax(o, left, right);
+        }
+        if ((op === '**=' || op === '^=' || op === '%%=' || op === '++=' || op === '|>=') || op === '*=' && right.isString() || (op === '-=' || op === '/=') && right.isMatcher()) {
+          ref$ = Chain(left).cacheReference(o), left = ref$[0], reft = ref$[1];
+          right = Binary(op.slice(0, -1), reft, right);
+          op = ':=';
+        }
+        if (op === '.&.=' || op === '.|.=' || op === '.^.=' || op === '.<<.=' || op === '.>>.=' || op === '.>>>.=') {
+          op = op.slice(1, -2) + '=';
+        }
+        (right = right.unparen()).ripName(left = left.unwrap());
+        if (left instanceof Chain) {
+          left.expandVivify();
+          if ((left = left.unwrap()) instanceof Assign) {
+            ref$ = Chain(left.left).cacheReference(o), left.left = ref$[0], this.left = ref$[1];
+            return Block([left, (ref$ = clone$(this), ref$.terminator = '', ref$)]).compile(o);
+          }
+        }
+        sign = sn(this.opLoc, " ", op.replace(':', ''), " ");
+        name = (left.front = true, left).compile(o, LEVEL_LIST);
+        if (lvar = left instanceof Var) {
+          if (op === '=') {
+            o.scope.declare(name.toString(), left, this['const'] || !this.defParam && o['const'] && '$' !== name.toString().slice(-1));
+          } else if (that = o.scope.checkReadOnly(name.toString())) {
+            left.carp("assignment to " + that + " \"" + name + "\"", ReferenceError);
+          }
+        }
+        if (left instanceof Chain && right instanceof Fun) {
+          protoSplit = name.toString().split('.prototype.');
+          dotSplit = name.toString().split('.');
+          if (protoSplit.length > 1) {
+            right.inClass = protoSplit[0];
+          } else if (dotSplit.length > 1) {
+            right.inClassStatic = slice$.call(dotSplit, 0, -1).join('');
+          }
+        }
+        code = !o.level && right instanceof While && !right['else'] && (lvar || left instanceof Chain && left.isSimpleAccess())
+          ? (empty = right.objComp ? '{}' : '[]', [res = o.scope.temporary('res'), " = " + empty + ";\n" + this.tab, right.makeReturn(res).compile(o), "\n" + this.tab, name, sign, o.scope.free(res)])
+          : [name, sign, right.compile(o, LEVEL_LIST)];
+        if (o.level > LEVEL_LIST) {
+          code = ["("].concat(arrayFrom$(code), [")"]);
+        }
+        return sn.apply(null, [null].concat(arrayFrom$(code)));
+      };
+      Assign.prototype.compileConditional = function(o, left){
+        var ref$, lcache, morph;
+        if (left instanceof Var && this.logic === '?' && this.op === '=') {
+          o.scope.declare(left.value, left);
+        }
+        ref$ = Chain(left).cacheReference(o), lcache = ref$[0], left = ref$[1];
+        o.level += LEVEL_OP < o.level;
+        if (this.logic === '?' && ((ref$ = this.op) !== '=' && ref$ !== ':=')) {
+          this.logic = '&&';
+          lcache = Existence(lcache);
+        }
+        morph = Binary(this.logic, lcache, (this.logic = false, this.left = left, this));
+        return sn(this, (morph['void'] = this['void'], morph).compileNode(o));
+      };
+      Assign.prototype.compileMinMax = function(o, left, right){
+        var lefts, rites, test, put, ref$;
+        lefts = Chain(left).cacheReference(o);
+        rites = right.cache(o, true);
+        test = Binary(this.op.replace('?', ''), lefts[0], rites[0]);
+        put = Assign(lefts[1], rites[1], ':=');
+        if (this['void'] || !o.level) {
+          return Parens(Binary('||', test, put)).compile(o);
+        }
+        ref$ = test.first.cache(o, true), test.first = ref$[0], left = ref$[1];
+        return sn(this, If(test, left).addElse(put).compileExpression(o));
+      };
+      Assign.prototype.compileDestructuring = function(o, left){
+        var items, len, ret, rite, that, cache, rref, destructureArgs, list, code, sep, i$, len$, item;
+        items = left.items, len = items.length;
+        ret = o.level && !this['void'];
+        rite = this.right.compile(o, len === 1 ? LEVEL_CALL : LEVEL_LIST);
+        if (that = left.name) {
+          cache = sn(this, that, " = ", rite);
+          o.scope.declare(rite = that, left);
+        } else if ((ret || len > 1) && (!ID.test(rite.toString()) || ((that = left.assigns()) && in$(rite.toString(), that)))) {
+          cache = sn(this, rref = o.scope.temporary(), " = ", rite);
+          rite = rref;
+        }
+        if (rite.toString() === 'arguments' && !ret) {
+          destructureArgs = true;
+          if (!(left instanceof Arr)) {
+            this.carp('arguments can only destructure to array');
+          }
+        }
+        list = this["rend" + left.constructor.displayName](o, items, rite, destructureArgs);
+        if (rref) {
+          o.scope.free(rref);
+        }
+        if (cache) {
+          list.unshift(cache);
+        }
+        if (ret || !list.length) {
+          list.push(rite);
+        }
+        code = [];
+        sep = destructureArgs ? '; ' : ', ';
+        for (i$ = 0, len$ = list.length; i$ < len$; ++i$) {
+          item = list[i$];
+          code.push(item, sep);
+        }
+        code.pop();
+        if ((o.level < LEVEL_OP && list.length < 2) || o.level < LEVEL_LIST) {
+          return sn.apply(null, [this].concat(arrayFrom$(code)));
+        } else {
+          return sn.apply(null, [this, "("].concat(arrayFrom$(code), [")"]));
+        }
+      };
+      Assign.prototype.compileSplice = function(o){
+        var ref$, fromExpNode, fromExp, rightNode, right, toExp;
+        ref$ = Chain(this.left.from).cacheReference(o), fromExpNode = ref$[0], fromExp = ref$[1];
+        ref$ = Chain(this.right).cacheReference(o), rightNode = ref$[0], right = ref$[1];
+        toExp = Binary('-', this.left.to, fromExp);
+        return sn(this, Block([Chain(Var(util('splice'))).add(Index(Key('apply'), '.', true)).add(Call([this.left.target, Chain(Arr([fromExpNode, toExp])).add(Index(Key('concat'), '.', true)).add(Call([rightNode]))])), right]).compile(o, LEVEL_LIST));
+      };
+      Assign.prototype.compileSpread = function(o, left){
+        var that, ref$, rite, rref, this$ = this;
+        ref$ = (that = this.unaries)
+          ? [that, that]
+          : left.items.length <= 1
+            ? [ref$ = this.right, ref$]
+            : this.right.cache(o, true), rite = ref$[0], rref = ref$[1];
+        return this.compileSpreadOver(o, left, function(it){
+          var result;
+          result = constructor(it, rite, this$.op, this$.logic);
+          rite = rref;
+          return result;
+        });
+      };
+      Assign.prototype.rendArr = function(o, nodes, rite, destructureArgs){
+        var ret, i$, len$, i, node, skip, len, val, ivar, start, inc, rcache, tmp, vtmp, ref$;
+        function argsSlice(begin, end){
+          return new For({
+            ref: true,
+            from: begin,
+            op: 'til',
+            to: end
+          }).makeComprehension(Chain(Var('arguments')).add(Index(Literal('..'))), []);
+        }
+        ret = [];
+        for (i$ = 0, len$ = nodes.length; i$ < len$; ++i$) {
+          i = i$;
+          node = nodes[i$];
+          if (node.isEmpty()) {
+            continue;
+          }
+          if (node instanceof Splat) {
+            len && node.carp('multiple splat in an assignment');
+            skip = (node = node.it).isEmpty();
+            if (i + 1 === (len = nodes.length)) {
+              if (skip) {
+                break;
+              }
+              if (destructureArgs) {
+                val = argsSlice(Literal(i), Chain(Var('arguments')).add(Index(Key('length'))));
+              } else {
+                val = Arr.wrap(JS(util('slice') + '.call(' + rite + (i ? ", " + i + ")" : ')')));
+              }
+            } else {
+              val = ivar = rite + ".length - " + (len - i - 1);
+              if (skip && i + 2 === len) {
+                continue;
+              }
+              start = i + 1;
+              (this.temps || (this.temps = [])).push(ivar = o.scope.temporary('i'));
+              val = (fn$());
+            }
+          } else {
+            (inc = ivar) && start < i && (inc += " + " + (i - start));
+            val = Chain(rcache || (rcache = Literal(rite)), [Index(JS(inc || i))]);
+          }
+          if (destructureArgs) {
+            if (!(node instanceof Var) && val instanceof For) {
+              (this.temps || (this.temps = [])).push(tmp = o.scope.temporary('ref'));
+              vtmp = Var(tmp);
+              ret.push((ref$ = clone$(this), ref$.left = vtmp, ref$.right = val, ref$['void'] = true, ref$).compile(o, LEVEL_TOP));
+              ret.push((ref$ = clone$(this), ref$.left = node, ref$.right = vtmp, ref$['void'] = true, ref$).compile(o, LEVEL_TOP));
+            } else {
+              ret.push((ref$ = clone$(this), ref$.left = node, ref$.right = val, ref$['void'] = true, ref$).compile(o, LEVEL_TOP));
+            }
+          } else {
+            ret.push((ref$ = clone$(this), ref$.left = node, ref$.right = val, ref$['void'] = true, ref$).compile(o, LEVEL_PAREN));
+          }
+        }
+        return ret;
+        function fn$(){
+          switch (false) {
+          case !skip:
+            return Arr.wrap(JS(i + " < (" + ivar + " = " + val + ") ? " + i + " : (" + ivar + " = " + i + ")"));
+          case !destructureArgs:
+            return argsSlice(JS(i + " < (" + ivar + " = " + val + ") ? " + i + " : (" + ivar + " = " + i + ")"), Var(ivar));
+          default:
+            return Arr.wrap(JS(i + " < (" + ivar + " = " + val + ")\ ? " + util('slice') + ".call(" + rite + ", " + i + ", " + ivar + ")\ : (" + ivar + " = " + i + ", [])"));
+          }
+        }
+      };
+      Assign.prototype.rendObj = function(o, nodes, rite){
+        var keys, pairs, rvar, i$, len$, ref$, key, lval, logic, excludes, val, left, right, results$ = [];
+        keys = [];
+        pairs = [];
+        rvar = Var(rite);
+        for (i$ = 0, len$ = nodes.length; i$ < len$; ++i$) {
+          ref$ = nodes[i$], key = ref$.key, lval = ref$.val, logic = ref$.logic;
+          lval = lval.unparen();
+          if (key instanceof Splat) {
+            logic != null && this.carp("invalid assign");
+            excludes = Obj((fn$.call(this)));
+            val = Chain(Var(util('copyWithout'))).add(Call([rvar, excludes]));
+          } else {
+            keys.push(key);
+            if (logic) {
+              lval = (logic.first = lval, logic);
+            }
+            val = Chain(rvar, [Index(key)]);
+          }
+          pairs.push([lval, val]);
+        }
+        for (i$ = 0, len$ = pairs.length; i$ < len$; ++i$) {
+          ref$ = pairs[i$], left = ref$[0], right = ref$[1];
+          results$.push((ref$ = clone$(this), ref$.left = left, ref$.right = right, ref$['void'] = true, ref$.temps = [], ref$).compile(o, LEVEL_PAREN));
+        }
+        return results$;
+        function fn$(){
+          var i$, x$, ref$, len$, results$ = [];
+          for (i$ = 0, len$ = (ref$ = keys).length; i$ < len$; ++i$) {
+            x$ = ref$[i$];
+            results$.push(Prop(x$.extractKeyRef(o, true, this), Literal(0)));
+          }
+          return results$;
+        }
+      };
+      Assign.prototype.rewriteShorthand = function(o, assign){
+        var bin, ref$, that, ref1$;
+        if (assign) {
+          if (this === (bin = this.maybeLogic())) {
+            this.carp("invalid assign");
+          }
+          return (ref$ = bin.rewriteShorthand(o, true)) != null ? ref$ : bin;
+        }
+        if (that = this.unfoldSoak(o)) {
+          return that.rewriteShorthand(o, assign) || that;
+        }
+        if (that = (ref$ = this.left) != null ? ref$.rewriteShorthand(o, true) : void 8) {
+          this.left = that;
+        }
+        if (that = (ref1$ = this.right) != null ? ref1$.rewriteShorthand(o) : void 8) {
+          this.right = that;
+        }
+      };
+      Assign.prototype.maybeLogic = function(){
+        if (this.op === '=') {
+          return Binary(this.logic || '?', this.left, this.right);
+        } else {
+          return this;
+        }
+      };
+      return Assign;
+    }(Node));
+    exports.Import = Import = (function(superclass){
+      var prototype = extend$((import$(Import, superclass).displayName = 'Import', Import), superclass).prototype, constructor = Import;
+      function Import(left, right, all){
+        var this$ = this instanceof ctor$ ? this : new ctor$;
+        this$.left = left;
+        this$.right = right;
+        this$.all = all && 'All';
+        if (!all && left instanceof Obj && right.items) {
+          return Obj(left.items.concat(right.asObj().items));
+        }
+        return this$;
+      } function ctor$(){} ctor$.prototype = prototype;
+      Import.prototype.children = ['left', 'right'];
+      Import.prototype.show = function(){
+        return this.all;
+      };
+      prototype.delegate(['isCallable', 'isArray'], function(it){
+        return this.left[it]();
+      });
+      Import.prototype.unfoldSoak = function(o){
+        var left, value, ref$, temps;
+        left = this.left;
+        if (left instanceof Existence && !left.negated) {
+          if ((left = left.it) instanceof Var) {
+            value = (this.left = left).value;
+            if (!o.scope.check(value, true)) {
+              left = JS("typeof " + value + " != 'undefined' && " + value);
+            }
+          } else {
+            ref$ = left.cache(o), left = ref$[0], this.left = ref$[1], temps = ref$[2];
+          }
+          return ref$ = If(left, this), ref$.temps = temps, ref$.soak = true, ref$.cond = this.cond, ref$['void'] = this['void'], ref$;
+        }
+        return If.unfoldSoak(o, this, 'left') || this['void'] && If.unfoldSoak(o, this, 'right');
+      };
+      Import.prototype.compileNode = function(o){
+        var right;
+        right = this.right;
+        if (!this.all) {
+          if (right instanceof Chain) {
+            right = right.unfoldSoak(o) || right.unfoldAssign(o) || right;
+          }
+          if (right instanceof List) {
+            return this.compileAssign(o, right.asObj().items);
+          }
+        }
+        return CopyL(this, Call.make(Util("import" + (this.all || '')), [this.left, right])).compileNode(o);
+      };
+      Import.prototype.compileAssign = function(o, items){
+        var top, reft, ref$, left, delim, space, code, i$, len$, i, node, com, key, val, logic;
+        if (!items.length) {
+          return this.left.compile(o);
+        }
+        top = !o.level;
+        if (this.proto || (items.length < 2 && (top || this['void'] || items[0].key instanceof Splat))) {
+          reft = this.left;
+          if (reft.isComplex()) {
+            reft = Parens(reft);
+          }
+        } else {
+          ref$ = this.left.cache(o), left = ref$[0], reft = ref$[1], this.temps = ref$[2];
+        }
+        ref$ = top
+          ? [';', '\n' + this.tab]
+          : [',', ' '], delim = ref$[0], space = ref$[1];
+        delim += space;
+        code = this.temps
+          ? [left.compile(o, LEVEL_PAREN), delim]
+          : [];
+        for (i$ = 0, len$ = items.length; i$ < len$; ++i$) {
+          i = i$;
+          node = items[i$];
+          i && code.push(com ? space : delim);
+          if (com = node.comment) {
+            code.push(node.compile(o));
+            continue;
+          }
+          key = node.key, val = node.val, logic = node.logic;
+          if (key instanceof Splat) {
+            code.push(CopyL(this, Import(reft, val)).compile(o));
+            continue;
+          }
+          if (node.accessor) {
+            if (key instanceof Key) {
+              key = JS("'" + key.name + "'");
+            }
+            code.push("Object.defineProperty(", reft.compile(o, LEVEL_LIST), ", ", key.compile(o, LEVEL_LIST), ", ", node.compileDescriptor(o), ")");
+            continue;
+          }
+          logic && (val = (logic.first = val, logic));
+          code.push(Assign(Chain(reft, [Index(key)]), val).compile(o, LEVEL_PAREN));
+        }
+        if (top) {
+          return sn.apply(null, [null].concat(arrayFrom$(code)));
+        }
+        this['void'] || key instanceof Splat || code.push(com ? ' ' : ', ', reft.compile(o, LEVEL_PAREN));
+        if (o.level < LEVEL_LIST) {
+          return sn.apply(null, [null].concat(arrayFrom$(code)));
+        } else {
+          return sn.apply(null, [null, "("].concat(arrayFrom$(code), [")"]));
+        }
+      };
+      Import.prototype.rewriteShorthand = function(o, assign){
+        var that, ref$, ref1$;
+        if (that = this.unfoldSoak(o)) {
+          return that.rewriteShorthand(o, assign) || that;
+        }
+        if (that = (ref$ = this.left) != null ? ref$.rewriteShorthand(o, assign) : void 8) {
+          this.left = that;
+        }
+        if (that = (ref1$ = this.right) != null ? ref1$.rewriteShorthand(o) : void 8) {
+          this.right = that;
+        }
+      };
+      return Import;
+    }(Node));
+    exports.In = In = (function(superclass){
+      var prototype = extend$((import$(In, superclass).displayName = 'In', In), superclass).prototype, constructor = In;
+      importAll$(prototype, arguments[1]);
+      function In(item, array){
+        this.item = item;
+        this.array = array;
+      }
+      In.prototype.children = ['item', 'array'];
+      In.prototype.compileNode = function(o){
+        var array, items, value, code, ref$, sub, ref, cmp, cnj, i$, len$, i, test;
+        items = (array = this.array).items;
+        if (!(array instanceof Arr)) {
+          return sn(this, this.negated ? '!' : '', util('in'), "(", this.item.compile(o, LEVEL_LIST), ", ", array.compile(o, LEVEL_LIST), ")");
+        }
+        if (items.length === 0) {
+          if (o.warn) {
+            this.warn("value can never be `in` an empty array");
+          }
+          value = !!this.negated + "";
+          return this.item.isComplex()
+            ? sn(this, "(", this.item.compile(o, LEVEL_LIST), ", ", value, ")")
+            : sn(this, value);
+        }
+        code = [];
+        ref$ = items.length === 1
+          ? [ref$ = this.item.compile(o, LEVEL_PAREN), ref$]
+          : this.item.cache(o, false, LEVEL_PAREN), sub = ref$[0], ref = ref$[1];
+        ref$ = this.negated
+          ? [' !== ', ' && ']
+          : [' === ', ' || '], cmp = ref$[0], cnj = ref$[1];
+        for (i$ = 0, len$ = items.length; i$ < len$; ++i$) {
+          i = i$;
+          test = items[i$];
+          if (code.length > 0) {
+            code.push(cnj);
+          }
+          if (test instanceof Splat) {
+            code.push((ref$ = new In(Var(ref), test.it), ref$.negated = this.negated, ref$).compile(o, LEVEL_TOP));
+            if (!(i || sub === ref)) {
+              code = ["(" + sub + ", "].concat(arrayFrom$(code), [")"]);
+            }
+          } else {
+            code.push(i || sub === ref
+              ? ref
+              : "(" + sub + ")", cmp, test.compile(o, LEVEL_OP + PREC['==']));
+          }
+        }
+        sub === ref || o.scope.free(ref);
+        if (o.level < LEVEL_OP + PREC[items.length === 1 ? '===' : '||']) {
+          return sn.apply(null, [this].concat(arrayFrom$(code)));
+        } else {
+          return sn.apply(null, [this, "("].concat(arrayFrom$(code), [")"]));
+        }
+      };
+      return In;
+    }(Node, Negatable));
+    exports.Existence = Existence = (function(superclass){
+      var prototype = extend$((import$(Existence, superclass).displayName = 'Existence', Existence), superclass).prototype, constructor = Existence;
+      importAll$(prototype, arguments[1]);
+      function Existence(it, negated){
+        var this$ = this instanceof ctor$ ? this : new ctor$;
+        this$.it = it;
+        this$.negated = negated;
+        return this$;
+      } function ctor$(){} ctor$.prototype = prototype;
+      Existence.prototype.children = ['it'];
+      Existence.prototype.compileNode = function(o){
+        var node, ref$, code, op, eq, anaphPre, anaphPost, that;
+        node = (ref$ = this.it.unwrap(), ref$.front = this.front, ref$);
+        code = [node.compile(o, LEVEL_OP + PREC['=='])];
+        if (this.doAnaphorize) {
+          o.scope.declare('that', Var('that'));
+        }
+        if (node instanceof Var && !o.scope.check(code.join(""), true)) {
+          ref$ = this.negated
+            ? ['||', '=']
+            : ['&&', '!'], op = ref$[0], eq = ref$[1];
+          if (this.doAnaphorize) {
+            ref$ = this.negated
+              ? [["(that = undefined) || "], []]
+              : [[], [" && (that = "].concat(arrayFrom$(code), [", true)"])], anaphPre = ref$[0], anaphPost = ref$[1];
+          }
+          code = ["typeof "].concat(arrayFrom$(code), [" " + eq + "= 'undefined' " + op + " "], arrayFrom$(code), [" " + eq + "== null"]);
+          if ((that = anaphPre) != null) {
+            code = that.concat(code);
+          }
+          if ((that = anaphPost) != null) {
+            code = code.concat(that);
+          }
+        } else {
+          if (this.doAnaphorize) {
+            code = ["(that = "].concat(arrayFrom$(code), [")"]);
+          }
+          code.push(" " + (op = this.negated ? '==' : '!=') + " null");
+        }
+        if (o.level < LEVEL_OP + PREC[op]) {
+          return sn.apply(null, [this].concat(arrayFrom$(code)));
+        } else {
+          return sn(this, "(", code, ")");
+        }
+      };
+      return Existence;
+    }(Node, Negatable));
+    exports.Fun = Fun = (function(superclass){
+      var prototype = extend$((import$(Fun, superclass).displayName = 'Fun', Fun), superclass).prototype, constructor = Fun;
+      function Fun(params, body, bound, curried, hushed, generator, async){
+        var this$ = this instanceof ctor$ ? this : new ctor$;
+        this$.params = params || [];
+        this$.body = body || Block();
+        this$.bound = bound && 'this$';
+        this$.curried = curried || false;
+        this$.hushed = hushed != null ? hushed : false;
+        this$.generator = generator != null ? generator : false;
+        this$.async = async != null ? async : false;
+        return this$;
+      } function ctor$(){} ctor$.prototype = prototype;
+      Fun.prototype.children = ['params', 'body'];
+      Fun.prototype.show = function(){
+        var that;
+        return [this.name] + [(that = this.bound) ? "~" + that : void 8];
+      };
+      Fun.prototype.named = function(it){
+        return this.name = it, this.statement = true, this;
+      };
+      Fun.prototype.isCallable = YES;
+      Fun.prototype.isStatement = function(){
+        return !!this.statement;
+      };
+      Fun.prototype.traverseChildren = function(arg$, xscope){
+        if (xscope) {
+          return superclass.prototype.traverseChildren.apply(this, arguments);
+        }
+      };
+      Fun.prototype.rewriteShorthand = VOID;
+      Fun.prototype.makeReturn = function(){
+        if (this.statement) {
+          return this.returns = true, this;
+        } else {
+          return superclass.prototype.makeReturn.apply(this, arguments);
+        }
+      };
+      Fun.prototype.ripName = function(it){
+        this.name || (this.name = it.varName());
+      };
+      Fun.prototype.compileNode = function(o){
+        var pscope, sscope, scope, that, inLoop, ref$, body, name, tab, code, bodyCode, curryCodeCheck, this$ = this;
+        pscope = o.scope;
+        sscope = pscope.shared || pscope;
+        scope = o.scope = this.body.scope = new Scope(this.wrapper ? pscope : sscope, this.wrapper && sscope);
+        scope.fun = this;
+        if (that = this.proto) {
+          scope.assign('prototype', that.compile(o) + ".prototype");
+        }
+        if (that = this.cname) {
+          scope.assign('constructor', that);
+        }
+        if (inLoop = (ref$ = o.loop, delete o.loop, ref$)) {
+          o.indent = this.tab = '';
+        }
+        o.indent += TAB;
+        body = this.body, name = this.name, tab = this.tab;
+        code = ['function'];
+        if (this.async) {
+          this.ctor && this.carp("a constructor can't be async");
+          o.inAsync = true;
+          code.unshift('async ');
+        } else if (!this.wrapper) {
+          o.inAsync = false;
+        }
+        if (this.generator) {
+          this.ctor && this.carp("a constructor can't be a generator");
+          o.inGenerator = true;
+          code.push('*');
+        } else if (!this.wrapper) {
+          o.inGenerator = false;
+        }
+        if (this.bound === 'this$') {
+          if (this.ctor) {
+            scope.assign('this$', 'this instanceof ctor$ ? this : new ctor$');
+            body.lines.push(Return(Literal('this$')));
+          } else if (that = (ref$ = sscope.fun) != null ? ref$.bound : void 8) {
+            this.bound = that;
+          } else if (this.usesThis()) {
+            sscope.assign('this$', 'this');
+          }
+        }
+        if (this.statement) {
+          name || this.carp('nameless function declaration');
+          pscope === o.block.scope || this.carp('misplaced function declaration');
+          this.accessor && this.carp('named accessor');
+          pscope.add(name, 'function', this);
+        }
+        if (this.statement || name && this.labeled) {
+          code.push(' ', scope.add(name, 'function', this));
+        }
+        this.hushed || this.ctor || this.newed || body.makeReturn();
+        code.push("(", this.compileParams(o, scope), ")");
+        code = [sn.apply(null, [this].concat(arrayFrom$(code)))];
+        code.push("{");
+        if (!snEmpty(bodyCode = body.compileWithDeclarations(o))) {
+          code.push("\n", bodyCode, "\n" + tab);
+        }
+        code.push('}');
+        curryCodeCheck = function(){
+          if (this$.curried && this$.hasSplats) {
+            this$.carp('cannot curry a function with a variable number of arguments');
+          }
+          if (this$.curried && this$.params.length > 1 && !this$.classBound) {
+            if (this$.bound) {
+              return [util('curry'), "(("].concat(arrayFrom$(code), ["), true)"]);
+            } else {
+              return [util('curry'), "("].concat(arrayFrom$(code), [")"]);
+            }
+          } else {
+            return code;
+          }
+        };
+        if (inLoop) {
+          return pscope.assign(pscope.temporary('fn'), sn.apply(null, [null].concat(arrayFrom$(curryCodeCheck()))));
+        }
+        if (this.returns) {
+          code.push("\n" + tab + "return ", name, ";");
+        } else if (this.bound && this.ctor) {
+          code.push(' function ctor$(){} ctor$.prototype = prototype;');
+        }
+        code = curryCodeCheck();
+        if (this.front && !this.statement) {
+          return sn.apply(null, [null, "("].concat(arrayFrom$(code), [")"]));
+        } else {
+          return sn.apply(null, [null].concat(arrayFrom$(code)));
+        }
+      };
+      Fun.prototype.compileParams = function(o, scope){
+        var params, length, body, i$, p, len$, i, splace, rest, that, names, assigns, vr, df, unaries, hasUnary, v, ref$, ref1$;
+        params = this.params, length = params.length, body = this.body;
+        for (i$ = params.length - 1; i$ >= 0; --i$) {
+          p = params[i$];
+          if (!(p.isEmpty() || p.filler)) {
+            break;
+          }
+          --params.length;
+        }
+        for (i$ = 0, len$ = params.length; i$ < len$; ++i$) {
+          i = i$;
+          p = params[i$];
+          if (p.left instanceof Splat) {
+            p.carp('invalid splat');
+          }
+          if (p instanceof Splat) {
+            this.hasSplats = true;
+            splace = i;
+          } else if (p.op === '=') {
+            params[i] = Binary(p.logic || '?', p.left, p.right);
+          }
+        }
+        if (splace != null) {
+          rest = params.splice(splace, 9e9);
+        } else if (this.accessor) {
+          if (that = params[1]) {
+            that.carp('excess accessor parameter');
+          }
+        } else if (!(length || this.wrapper)) {
+          if (body.traverseChildren(function(it){
+            return it.value === 'it' || null;
+          })) {
+            params[0] = Var('it');
+          }
+        }
+        names = [];
+        assigns = [];
+        for (i$ = 0, len$ = params.length; i$ < len$; ++i$) {
+          p = params[i$];
+          vr = p;
+          if (df = vr.getDefault()) {
+            vr = vr.first;
+          }
+          if (vr.isEmpty()) {
+            vr = Var(scope.temporary('arg'));
+          } else if (vr.value === '..') {
+            vr = Var(o.ref = scope.temporary());
+          } else if (!(vr instanceof Var)) {
+            unaries = [];
+            while (vr instanceof Unary) {
+              hasUnary = true;
+              unaries.push(vr);
+              vr = vr.it;
+            }
+            v = Var((ref1$ = (ref$ = vr.it || vr).name, delete ref$.name, ref1$) || vr.varName() || scope.temporary('arg'));
+            assigns.push(Assign(vr, (fn$())));
+            vr = v;
+          } else if (df) {
+            assigns.push(Assign(vr, p.second, '=', p.op, true));
+          }
+          names.push(scope.add(vr.value, 'arg', p), ', ');
+        }
+        if (rest) {
+          while (splace--) {
+            rest.unshift(Arr());
+          }
+          assigns.push(Assign(Arr(rest), Literal('arguments')));
+        }
+        if (assigns.length) {
+          (ref$ = this.body).prepend.apply(ref$, assigns);
+        }
+        names.pop();
+        return sn.apply(null, [null].concat(arrayFrom$(names)));
+        function fn$(){
+          switch (false) {
+          case !df:
+            return Binary(p.op, v, p.second);
+          case !hasUnary:
+            return fold(function(x, y){
+              y.it = x;
+              return y;
+            }, v, unaries.reverse());
+          default:
+            return v;
+          }
+        }
+      };
+      Fun.prototype.usesThis = function(){
+        return Node.prototype.traverseChildren.call(this, function(it){
+          switch (false) {
+          case !(it instanceof Literal && it.value === 'this'):
+            return true;
+          case !(it instanceof Fun && it.bound && it.usesThis()):
+            return true;
+          }
+        });
+      };
+      return Fun;
+    }(Node));
+    exports.Class = Class = (function(superclass){
+      var prototype = extend$((import$(Class, superclass).displayName = 'Class', Class), superclass).prototype, constructor = Class;
+      function Class(arg$){
+        var body;
+        this.title = arg$.title, this.sup = arg$.sup, this.mixins = arg$.mixins, body = arg$.body;
+        this.fun = Fun([], body);
+      }
+      Class.prototype.children = ['title', 'sup', 'mixins', 'fun'];
+      Class.prototype.isCallable = YES;
+      Class.prototype.ripName = function(it){
+        this.name = it.varName();
+      };
+      Class.prototype.getRef = function(){
+        var ref$, that;
+        if (that = ((ref$ = this.title) != null ? ref$.varName() : void 8) || this.name) {
+          return Var(that);
+        }
+      };
+      Class.prototype.compile = function(o, level){
+        var fun, body, lines, title, boundFuncs, curriedBoundFuncs, decl, name, proto, vname, ctorName, ctor, ctorPlace, importProtoObj, i$, len$, i, node, f, args, that, imports, ref$, res$, clas;
+        fun = this.fun, body = fun.body, lines = body.lines, title = this.title;
+        CopyL(this, fun);
+        boundFuncs = [];
+        curriedBoundFuncs = [];
+        decl = title != null ? title.varName() : void 8;
+        name = decl || this.name;
+        if (ID.test(name || '')) {
+          fun.cname = name;
+        } else {
+          name = 'constructor';
+        }
+        proto = Var('prototype');
+        vname = fun.proto = Var(fun.bound = name);
+        ctorName = 'constructor$$';
+        importProtoObj = function(node, i){
+          var j, prop, key, i$, ref$, len$, v;
+          j = 0;
+          for (; j < node.items.length; j++) {
+            prop = node.items[j];
+            key = prop.key;
+            if ((key instanceof Key && key.name === ctorName) || (key instanceof Literal && key.value === "'" + ctorName + "'")) {
+              if (ctor) {
+                node.carp('redundant constructor');
+              }
+              ctor = prop.val;
+              node.items.splice(j--, 1);
+              ctorPlace = i;
+            }
+            if (!(prop.val instanceof Fun || prop.accessor)) {
+              continue;
+            }
+            if (key.isComplex()) {
+              key = Var(o.scope.temporary('key'));
+              prop.key = Assign(key, prop.key);
+            }
+            if (prop.val.bound) {
+              if (prop.val.curried) {
+                curriedBoundFuncs.push(prop.key);
+              } else {
+                boundFuncs.push(prop.key);
+              }
+              prop.val.bound = false;
+              prop.val.classBound = true;
+            }
+            for (i$ = 0, len$ = (ref$ = [].concat(prop.val)).length; i$ < len$; ++i$) {
+              v = ref$[i$];
+              v.meth = key;
+            }
+          }
+          if (node.items.length) {
+            return ref$ = Import(Chain(vname).add(Index(Key('prototype'))), node), ref$.proto = true, ref$;
+          } else {
+            return Literal('void');
+          }
+        };
+        for (i$ = 0, len$ = lines.length; i$ < len$; ++i$) {
+          i = i$;
+          node = lines[i$];
+          if (node instanceof Obj) {
+            lines[i] = importProtoObj(node, i);
+          } else if (node instanceof Fun && !node.statement) {
+            ctor && node.carp('redundant constructor');
+            ctor = node;
+          } else if (node instanceof Assign && node.left instanceof Chain && node.left.head.value === 'this' && node.right instanceof Fun) {
+            node.right.stat = node.left.tails[0].key;
+          } else {
+            node.traverseChildren(fn$);
+          }
+        }
+        ctor || (ctor = lines[lines.length] = this.sup
+          ? Fun([], Block(Chain(new Super).add(Call([Splat(Literal('arguments'))]))))
+          : Fun());
+        if (!(ctor instanceof Fun)) {
+          lines.splice(ctorPlace + 1, 0, Assign(Var(ctorName), ctor));
+          lines.unshift(ctor = Fun([], Block(Return(Chain(Var(ctorName)).add(Call([Splat('arguments', true)]))))));
+        }
+        ctor.name = name;
+        ctor.ctor = true;
+        ctor.statement = true;
+        for (i$ = 0, len$ = boundFuncs.length; i$ < len$; ++i$) {
+          f = boundFuncs[i$];
+          ctor.body.lines.unshift(Assign(Chain(Literal('this')).add(Index(f)), Chain(Var(util('bind'))).add(Call([Literal('this'), Literal("'" + f.name + "'"), Var('prototype')]))));
+        }
+        for (i$ = 0, len$ = curriedBoundFuncs.length; i$ < len$; ++i$) {
+          f = curriedBoundFuncs[i$];
+          ctor.body.lines.unshift(Assign(Chain(Literal('this')).add(Index(Key("_" + f.name))), Chain(Var(util('curry'))).add(Call([Chain(Var('prototype')).add(Index(f)), Var('true')]))), Assign(Chain(Literal('this')).add(Index(f)), Chain(Var(util('bind'))).add(Call([Literal('this'), Literal("'_" + f.name + "'")]))));
+        }
+        lines.push(vname);
+        args = [];
+        if (that = this.sup) {
+          args.push(that);
+          imports = Chain(Import(Literal('this'), Var('superclass')));
+          fun.proto = Util.Extends(fun.cname ? Block([Assign(imports.add(Index(Key('displayName'))), Literal("'" + name + "'")), Literal(name)]) : imports, (ref$ = fun.params)[ref$.length] = Var('superclass'));
+        }
+        if (that = this.mixins) {
+          res$ = [];
+          for (i$ = 0, len$ = that.length; i$ < len$; ++i$) {
+            args[args.length] = that[i$];
+            res$.push(Import(proto, JS("arguments[" + (args.length - 1) + "]"), true));
+          }
+          imports = res$;
+          body.prepend.apply(body, imports);
+        }
+        if (fun.cname && !this.sup) {
+          body.prepend(Literal(name + ".displayName = '" + name + "'"));
+        }
+        clas = Parens(Call.make(fun, args), true);
+        if (decl && title.isComplex()) {
+          clas = Assign(vname, clas);
+        }
+        if (title) {
+          clas = Assign(title, clas);
+        }
+        return sn(null, clas.compile(o, level));
+        function fn$(it){
+          var i$, ref$, len$, k, child;
+          if (it instanceof Block) {
+            for (i$ = 0, len$ = (ref$ = it.lines).length; i$ < len$; ++i$) {
+              k = i$;
+              child = ref$[i$];
+              if (child instanceof Obj) {
+                it.lines[k] = importProtoObj(child, i);
+              }
+            }
+          }
+        }
+      };
+      return Class;
+    }(Node));
+    exports.Super = Super = (function(superclass){
+      var prototype = extend$((import$(Super, superclass).displayName = 'Super', Super), superclass).prototype, constructor = Super;
+      function Super(){}
+      Super.prototype.isCallable = YES;
+      Super.prototype.compile = function(o){
+        var scope, that, result, ref$;
+        scope = o.scope;
+        if (!this.sproto) {
+          for (; that = !scope.get('superclass') && scope.fun; scope = scope.parent) {
+            result = that;
+            if (that = result.meth) {
+              return sn(this, 'superclass.prototype', Index(that).compile(o));
+            }
+            if (that = result.stat) {
+              return sn(this, 'superclass', Index(that).compile(o));
+            }
+            if (that = scope.fun.inClass) {
+              return sn(this, that, ".superclass.prototype.", scope.fun.name);
+            } else if (that = scope.fun.inClassStatic) {
+              return sn(this, that, ".superclass.", scope.fun.name);
+            }
+          }
+          if (that = (ref$ = o.scope.fun) != null ? ref$.name : void 8) {
+            return sn(this, that, ".superclass");
+          }
+        }
+        return sn(this, 'superclass');
+      };
+      Super.prototype.maybeKey = function(){
+        return Key('super', true);
+      };
+      return Super;
+    }(Node));
+    exports.Parens = Parens = (function(superclass){
+      var prototype = extend$((import$(Parens, superclass).displayName = 'Parens', Parens), superclass).prototype, constructor = Parens;
+      function Parens(it, keep, string, lb, rb){
+        var this$ = this instanceof ctor$ ? this : new ctor$;
+        this$.it = it;
+        this$.keep = keep;
+        this$.string = string;
+        this$.lb = lb;
+        this$.rb = rb;
+        return this$;
+      } function ctor$(){} ctor$.prototype = prototype;
+      Parens.prototype.children = ['it'];
+      Parens.prototype.show = function(){
+        return this.string && '""';
+      };
+      prototype.delegate(['isComplex', 'isCallable', 'isArray', 'isRegex', 'isNextUnreachable', 'getRef'], function(it){
+        return this.it[it]();
+      });
+      Parens.prototype.isString = function(){
+        return this.string || this.it.isString();
+      };
+      Parens.prototype.unparen = function(){
+        if (this.keep) {
+          return this;
+        } else {
+          return this.it.unparen();
+        }
+      };
+      Parens.prototype.compile = function(o, level){
+        var it;
+        level == null && (level = o.level);
+        it = this.it;
+        it.cond || (it.cond = this.cond), it['void'] || (it['void'] = this['void']);
+        if (this.calling && (!level || this['void'])) {
+          it.head.hushed = true;
+        }
+        if (!(this.keep || this.newed || level >= LEVEL_OP + PREC[it.op])) {
+          return (it.front = this.front, it).compile(o, level || LEVEL_PAREN);
+        }
+        if (it.isStatement()) {
+          return it.compileClosure(o);
+        } else {
+          return sn(null, sn(this.lb, "("), it.compile(o, LEVEL_PAREN), sn(this.rb, ")"));
+        }
+      };
+      Parens.prototype.maybeKey = THIS;
+      Parens.prototype.extractKeyRef = function(o, assign, tempOwner){
+        var v, ref$, ref, key, val;
+        if (tempOwner != null && (v = this.it) instanceof Var && (ref$ = v.temp, delete v.temp, ref$)) {
+          (tempOwner.temps || (tempOwner.temps = [])).push(v.value);
+        }
+        if (this.it instanceof Chain && assign) {
+          ref$ = this.it.cacheReference(o), this.it = ref$[0], ref = ref$[1];
+          return Parens(ref);
+        }
+        ref$ = this.it.cache(o, true), key = ref$[0], val = ref$[1];
+        if (assign) {
+          ref$ = [val, key], key = ref$[0], val = ref$[1];
+        }
+        this.it = val.unparen();
+        return Parens(key);
+      };
+      Parens.prototype.rewriteShorthand = function(o){
+        var that;
+        if (that = this.it.rewriteShorthand(o)) {
+          this.it = that;
+        }
+      };
+      return Parens;
+    }(Node));
+    exports.Splat = Splat = (function(superclass){
+      var ref$, prototype = extend$((import$(Splat, superclass).displayName = 'Splat', Splat), superclass).prototype, constructor = Splat;
+      function Splat(it, filler){
+        var this$ = this instanceof ctor$ ? this : new ctor$;
+        this$.it = it;
+        this$.filler = filler;
+        return this$;
+      } function ctor$(){} ctor$.prototype = prototype;
+      ref$ = Parens.prototype, prototype.children = ref$.children, prototype.isComplex = ref$.isComplex;
+      Splat.prototype.isAssignable = YES;
+      Splat.prototype.assigns = function(){
+        return this.it.assigns();
+      };
+      Splat.prototype.compile = function(){
+        return this.carp('invalid splat');
+      };
+      Splat.compileArray = function(o, list, apply){
+        var index, i$, len$, node, args, atoms, ref$;
+        expand(list);
+        index = 0;
+        for (i$ = 0, len$ = list.length; i$ < len$; ++i$) {
+          node = list[i$];
+          if (node instanceof Splat) {
+            break;
+          }
+          ++index;
+        }
+        if (index >= list.length) {
+          return sn(this, '');
+        }
+        if (!list[1]) {
+          return sn(this, (apply ? Object : ensureArray)(list[0].it).compile(o, LEVEL_LIST));
+        }
+        args = [];
+        atoms = [];
+        for (i$ = 0, len$ = (ref$ = list.splice(index, 9e9)).length; i$ < len$; ++i$) {
+          node = ref$[i$];
+          if (node instanceof Splat) {
+            if (atoms.length) {
+              args.push(Arr(atoms.splice(0, 9e9)));
+            }
+            args.push(ensureArray(node.it));
+          } else {
+            atoms.push(node);
+          }
+        }
+        if (atoms.length) {
+          args.push(Arr(atoms));
+        }
+        return sn(null, (index
+          ? Arr(list)
+          : args.shift()).compile(o, LEVEL_CALL), sn(this, ".concat("), List.compile(o, args), sn(this, ")"));
+      };
+      function expand(nodes){
+        var index, node, it;
+        index = -1;
+        while (node = nodes[++index]) {
+          if (node instanceof Splat) {
+            it = node.it;
+            if (it.isEmpty()) {
+              nodes.splice(index--, 1);
+            } else if (it instanceof Arr) {
+              nodes.splice.apply(nodes, [index, 1].concat(arrayFrom$(expand(it.items))));
+              index += it.items.length - 1;
+            }
+          }
+        }
+        return nodes;
+      }
+      function ensureArray(node){
+        if (node.isArray()) {
+          return node;
+        }
+        util('slice');
+        return Call.make(Util('arrayFrom'), [node]);
+      }
+      return Splat;
+    }(Node));
+    exports.Jump = Jump = (function(superclass){
+      var prototype = extend$((import$(Jump, superclass).displayName = 'Jump', Jump), superclass).prototype, constructor = Jump;
+      function Jump(verb, label){
+        this.verb = verb;
+        this.label = label;
+      }
+      Jump.prototype.show = function(){
+        var that;
+        return (this.verb || '') + ((that = this.label) ? ' ' + that : '');
+      };
+      Jump.prototype.isStatement = YES;
+      Jump.prototype.makeReturn = THIS;
+      Jump.prototype.isNextUnreachable = YES;
+      Jump.prototype.getJump = function(ctx){
+        var that, ref$;
+        ctx || (ctx = {});
+        if (!ctx[this.verb]) {
+          return this;
+        }
+        if (that = this.label) {
+          return !in$(that, (ref$ = ctx.labels) != null
+            ? ref$
+            : ctx.labels = []) && this;
+        }
+      };
+      Jump.prototype.compileNode = function(o){
+        var that, ref$;
+        if (that = this.label) {
+          in$(that, (ref$ = o.labels) != null
+            ? ref$
+            : o.labels = []) || this.carp("unknown label \"" + that + "\"");
+        } else {
+          o[this.verb] || this.carp("stray " + this.verb);
+        }
+        return sn(this, this.show() + ';');
+      };
+      Jump.extended = function(sub){
+        sub.prototype.children = ['it'];
+        this[sub.displayName.toLowerCase()] = sub;
+      };
+      return Jump;
+    }(Node));
+    exports.Throw = Throw = (function(superclass){
+      var prototype = extend$((import$(Throw, superclass).displayName = 'Throw', Throw), superclass).prototype, constructor = Throw;
+      function Throw(it){
+        var this$ = this instanceof ctor$ ? this : new ctor$;
+        this$.it = it;
+        return this$;
+      } function ctor$(){} ctor$.prototype = prototype;
+      Throw.prototype.getJump = VOID;
+      Throw.prototype.compileNode = function(o){
+        var ref$;
+        return sn(this, "throw ", ((ref$ = this.it) != null ? ref$.compile(o, LEVEL_PAREN) : void 8) || 'null', ";");
+      };
+      return Throw;
+    }(Jump));
+    exports.Return = Return = (function(superclass){
+      var prototype = extend$((import$(Return, superclass).displayName = 'Return', Return), superclass).prototype, constructor = Return;
+      function Return(it){
+        var this$ = this instanceof ctor$ ? this : new ctor$;
+        if (it && it.value !== 'void') {
+          this$.it = it;
+        }
+        return this$;
+      } function ctor$(){} ctor$.prototype = prototype;
+      Return.prototype.getJump = THIS;
+      Return.prototype.compileNode = function(o){
+        var that;
+        return sn.apply(null, [this, "return"].concat(
+          (that = this.it)
+            ? [' ', that.compile(o, LEVEL_PAREN)]
+            : [], [";"]
+        ));
+      };
+      return Return;
+    }(Jump));
+    exports.While = While = (function(superclass){
+      var prototype = extend$((import$(While, superclass).displayName = 'While', While), superclass).prototype, constructor = While;
+      function While(test, un, mode){
+        this.un = un;
+        mode && (mode instanceof Node
+          ? this.update = mode
+          : this.post = true);
+        if (this.post || test.value !== '' + !un) {
+          this.test = test;
+        }
+      }
+      While.prototype.children = ['test', 'body', 'update', 'else'];
+      While.prototype.aSource = 'test';
+      While.prototype.aTargets = ['body', 'update'];
+      While.prototype.show = function(){
+        return [this.un ? '!' : void 8, this.post ? 'do' : void 8].join('');
+      };
+      prototype.isStatement = prototype.isArray = YES;
+      While.prototype.makeComprehension = function(toAdd, loops){
+        this.isComprehension = true;
+        while (loops.length) {
+          toAdd = loops.pop().addBody(Block(toAdd));
+          if (!toAdd.isComprehension) {
+            toAdd.inComprehension = true;
+          }
+        }
+        return this.addBody(Block(toAdd));
+      };
+      While.prototype.getJump = function(ctx){
+        var ref$, i$, ref1$, len$, node;
+        ctx || (ctx = {});
+        ctx['continue'] = true;
+        ctx['break'] = true;
+        for (i$ = 0, len$ = (ref1$ = ((ref$ = this.body) != null ? ref$.lines : void 8) || []).length; i$ < len$; ++i$) {
+          node = ref1$[i$];
+          if (node.getJump(ctx)) {
+            return node;
+          }
+        }
+      };
+      While.prototype.addBody = function(body){
+        var top;
+        this.body = body;
+        if (this.guard) {
+          this.body = Block(If(this.guard, this.body));
+        }
+        top = this.body.lines[0];
+        if ((top != null ? top.verb : void 8) === 'continue' && !top.label) {
+          this.body.lines.length = 0;
+        }
+        return this;
+      };
+      While.prototype.addGuard = function(guard){
+        this.guard = guard;
+        return this;
+      };
+      While.prototype.addObjComp = function(objComp){
+        this.objComp = objComp != null ? objComp : true;
+        return this;
+      };
+      While.prototype.makeReturn = function(it){
+        var ref$, last, ref1$, ref2$;
+        if (this.hasReturned) {
+          return this;
+        }
+        if (it) {
+          if (this.objComp) {
+            this.body = Block(this.body.makeReturn(it, true));
+          } else {
+            if (!(this.body || this.index)) {
+              this.addBody(Block(Var(this.index = 'ridx$')));
+            }
+            last = (ref$ = this.body.lines) != null ? ref$[ref$.length - 1] : void 8;
+            if ((this.isComprehension || this.inComprehension) && !(last != null && last.isComprehension)) {
+              (ref1$ = this.body).makeReturn.apply(ref1$, arguments);
+              if ((ref1$ = this['else']) != null) {
+                ref1$.makeReturn.apply(ref1$, arguments);
+              }
+              this.hasReturned = true;
+            } else {
+              this.resVar = it;
+              if ((ref2$ = this['else']) != null) {
+                ref2$.makeReturn.apply(ref2$, arguments);
+              }
+            }
+          }
+        } else {
+          this.getJump() || (this.returns = true);
+        }
+        return this;
+      };
+      While.prototype.compileNode = function(o){
+        var ref$, test, head, that;
+        o.loop = true;
+        this.test && (this.un
+          ? this.test = this.test.invert()
+          : this.anaphorize());
+        if (this.post) {
+          return sn(null, sn(this, 'do {'), this.compileBody((o.indent += TAB, o)));
+        }
+        test = ((ref$ = this.test) != null ? ref$.compile(o, LEVEL_PAREN) : void 8) || '';
+        if (!(this.update || this['else'])) {
+          head = !snEmpty(test)
+            ? [sn(this, "while ("), test]
+            : [sn(this, 'for (;;')];
+        } else {
+          head = [sn(this, 'for (')];
+          if (this['else']) {
+            head.push(this.yet = o.scope.temporary('yet'), " = true");
+          }
+          head.push(sn(this, ";"), test.toString() && ' ', test, sn(this, ";"));
+          if (that = this.update) {
+            head.push(' ', that.compile(o, LEVEL_PAREN));
+          }
+        }
+        return sn.apply(null, [null].concat(arrayFrom$(head), [sn(this, ') {'), this.compileBody((o.indent += TAB, o))]));
+      };
+      While.prototype.compileBody = function(o){
+        var lines, yet, tab, code, ret, mid, empty, _resultName, getResultName, last, hasLoop, res, temp, key$, ref$, bodyCode, this$ = this;
+        o['break'] = o['continue'] = true;
+        lines = this.body.lines, yet = this.yet, tab = this.tab;
+        code = [];
+        ret = [];
+        mid = [];
+        empty = this.objComp ? '{}' : '[]';
+        getResultName = function(){
+          return _resultName != null
+            ? _resultName
+            : _resultName = o.scope.temporary(this$.objComp ? 'resultObj' : 'results');
+        };
+        last = lines != null ? lines[lines.length - 1] : void 8;
+        if (!(this.isComprehension || this.inComprehension) || (last != null && last.isComprehension)) {
+          hasLoop = false;
+          if (last != null) {
+            last.traverseChildren(function(it){
+              var ref$;
+              if (it instanceof Block && (ref$ = it.lines)[ref$.length - 1] instanceof While) {
+                hasLoop = true;
+              }
+            });
+          }
+          if (this.returns && !this.resVar) {
+            this.resVar = res = o.scope.assign(getResultName(), empty);
+          }
+          if (this.resVar && (last instanceof While || hasLoop)) {
+            temp = o.scope.temporary('lresult');
+            lines.unshift(Assign(Var(temp), lines[lines.length - 1].objComp
+              ? Obj()
+              : Arr(), '='));
+            if (lines[key$ = lines.length - 1] != null) {
+              lines[key$] = lines[key$].makeReturn(temp);
+            }
+            mid.push(TAB, Chain(Var(this.resVar)).add(Index(Key('push'), '.', true)).add(Call([Chain(Var(temp))])).compile(o), ";\n" + this.tab);
+          } else {
+            this.hasReturned = true;
+            if (this.resVar) {
+              this.body.makeReturn(this.resVar);
+            }
+          }
+        }
+        if (this.returns) {
+          if ((!last instanceof While && !this.hasReturned) || this.isComprehension || this.inComprehension) {
+            if (lines[key$ = lines.length - 1] != null) {
+              lines[key$] = lines[key$].makeReturn(res = o.scope.assign(getResultName(), empty), this.objComp);
+            }
+          }
+          ret.push("\n" + this.tab + "return ", res || empty, ";");
+          if ((ref$ = this['else']) != null) {
+            ref$.makeReturn();
+          }
+        }
+        yet && lines.unshift(JS(yet + " = false;"));
+        if (!snEmpty(bodyCode = this.body.compile(o, LEVEL_TOP))) {
+          code.push("\n", bodyCode, "\n" + tab);
+        }
+        code.push.apply(code, mid);
+        code.push('}');
+        if (this.post) {
+          code.push(sn(this, " while ("), this.test.compile((o.tab = tab, o), LEVEL_PAREN), sn(this, ");"));
+        }
+        if (yet) {
+          code.push(sn(this, " if ("), yet, sn(this, ") "), this.compileBlock(o, Block(this['else'])));
+          o.scope.free(yet);
+        }
+        return sn.apply(null, [null].concat(arrayFrom$(code), arrayFrom$(ret)));
+      };
+      return While;
+    }(Node));
+    exports.For = For = (function(superclass){
+      var prototype = extend$((import$(For, superclass).displayName = 'For', For), superclass).prototype, constructor = For;
+      function For(it){
+        var i$, x$, ref$, len$;
+        importAll$(this, it);
+        if (this.item instanceof Var && !this.item.value) {
+          this.item = null;
+        }
+        for (i$ = 0, len$ = (ref$ = this.kind || []).length; i$ < len$; ++i$) {
+          x$ = ref$[i$];
+          this[x$] = true;
+        }
+        if (this.own && !this.object) {
+          this.carp('`for own` requires `of`');
+        }
+      }
+      For.prototype.children = ['item', 'source', 'from', 'to', 'step', 'body'];
+      For.prototype.aSource = null;
+      For.prototype.show = function(){
+        return ((this.kind || []).concat(this.index)).join(' ');
+      };
+      For.prototype.addBody = function(body){
+        var ref$, assignments, x$, that, assigned, name;
+        if (this['let']) {
+          if (ref$ = this.ref, delete this.ref, ref$) {
+            this.item = Literal('..');
+          }
+          assignments = (x$ = [], (that = this.index) && x$.push(Assign(Var(that), Literal('index$$'))), (that = this.item) && x$.push(Assign(that, Literal('item$$'))), x$);
+          body = Block(this.guard
+            ? (assigned = (function(){
+              var i$, x$, ref$, len$, j$, ref1$, len1$, results$ = [];
+              for (i$ = 0, len$ = (ref$ = assignments).length; i$ < len$; ++i$) {
+                x$ = ref$[i$];
+                if (that = x$.assigns()) {
+                  for (j$ = 0, len1$ = (ref1$ = that).length; j$ < len1$; ++j$) {
+                    name = ref1$[j$];
+                    results$.push(Var(name));
+                  }
+                }
+              }
+              return results$;
+            }()), assignments.concat([If((ref$ = this.guard, delete this.guard, ref$), Call['let'](assigned, body))]))
+            : Call['let'](assignments, body));
+        }
+        superclass.prototype.addBody.call(this, body);
+        if (this['let']) {
+          delete this.index;
+          delete this.item;
+        }
+        return this;
+      };
+      For.prototype.isNextUnreachable = NO;
+      For.prototype.compileNode = function(o){
+        var temps, idx, ref$, pvar, step, tvar, tail, fvar, vars, eq, cond, svar, srcPart, lvar, head, that, body;
+        o.loop = true;
+        temps = this.temps = [];
+        if (this.object && this.index) {
+          o.scope.declare(idx = this.index);
+        } else {
+          temps.push(idx = o.scope.temporary('i'));
+        }
+        if (!this.body) {
+          this.addBody(Block(Var(idx)));
+        }
+        if (!this.object) {
+          ref$ = (this.step || Literal(1)).compileLoopReference(o, 'step'), pvar = ref$[0], step = ref$[1];
+          pvar === step || temps.push(pvar);
+        }
+        if (this.from) {
+          if (this.ref) {
+            this.item = Var(idx);
+          }
+          ref$ = this.to.compileLoopReference(o, 'to'), tvar = ref$[0], tail = ref$[1];
+          fvar = this.from.compile(o, LEVEL_LIST);
+          vars = idx + " = " + fvar;
+          if (tail !== tvar) {
+            vars += ", " + tail;
+            temps.push(tvar);
+          }
+          if (!this.step && +fvar > +tvar) {
+            pvar = step = -1;
+          }
+          eq = this.op === 'til' ? '' : '=';
+          cond = +pvar
+            ? idx + " " + '<>'.charAt(pvar < 0) + eq + " " + tvar
+            : pvar + " < 0 ? " + idx + " >" + eq + " " + tvar + " : " + idx + " <" + eq + " " + tvar;
+        } else {
+          if (this.ref) {
+            this.item = Var(o.scope.temporary('x'));
+          }
+          if (this.item || this.object && this.own || this['let']) {
+            ref$ = this.source.compileLoopReference(o, 'ref', !this.object, true), svar = ref$[0], srcPart = ref$[1];
+            svar === srcPart || temps.push(svar);
+          } else {
+            svar = srcPart = this.source.compile(o, LEVEL_PAREN);
+          }
+          if (!this.object) {
+            if (0 > pvar && ~~pvar === +pvar) {
+              vars = idx + " = " + srcPart + ".length - 1";
+              cond = idx + " >= 0";
+            } else {
+              temps.push(lvar = o.scope.temporary('len'));
+              vars = idx + " = 0, " + lvar + " = " + srcPart + ".length";
+              cond = idx + " < " + lvar;
+            }
+          }
+        }
+        this['else'] && (this.yet = o.scope.temporary('yet'));
+        head = [sn(this, 'for (')];
+        if (this.object) {
+          head.push(idx, " in ");
+        }
+        if (that = this.yet) {
+          head.push(that, " = true, ");
+        }
+        if (this.object) {
+          head.push(srcPart);
+        } else {
+          step === pvar || (vars += ', ' + step);
+          head.push(vars, "; ", cond, "; " + (1 == Math.abs(pvar)
+            ? (pvar < 0 ? '--' : '++') + idx
+            : idx + (pvar < 0
+              ? ' -= ' + pvar.toString().slice(1)
+              : ' += ' + pvar)));
+        }
+        this.own && head.push(sn(this, ") if ("), o.scope.assign('own$', '{}.hasOwnProperty'), ".call(", svar, ", ", idx, ")");
+        head.push(sn(this, ') {'));
+        if (this['let']) {
+          this.body.traverseChildren(function(it){
+            switch (it.value) {
+            case 'index$$':
+              it.value = idx;
+              break;
+            case 'item$$':
+              it.value = svar + "[" + idx + "]";
+            }
+          });
+        }
+        o.indent += TAB;
+        if (this.index && !this.object) {
+          head.push('\n' + o.indent, Assign(Var(this.index), JS(idx)).compile(o, LEVEL_TOP), ';');
+        }
+        if (this.item && !this.item.isEmpty() && !this.from) {
+          head.push('\n' + o.indent, Assign(this.item, JS(svar + "[" + idx + "]")).compile(o, LEVEL_TOP), ';');
+        }
+        if (this.ref) {
+          o.ref = this.item.value;
+        }
+        body = this.compileBody(o);
+        if ((this.item || (this.index && !this.object)) && '}' === body.toString().charAt(0)) {
+          head.push('\n' + this.tab);
+        }
+        return sn.apply(null, [null].concat(arrayFrom$(head), [body]));
+      };
+      return For;
+    }(While));
+    exports.StepSlice = StepSlice = (function(superclass){
+      var prototype = extend$((import$(StepSlice, superclass).displayName = 'StepSlice', StepSlice), superclass).prototype, constructor = StepSlice;
+      StepSlice.prototype.makeReturn = function(makeReturnArg){
+        this.makeReturnArg = makeReturnArg;
+        return superclass.prototype.makeReturn.apply(this, arguments);
+      };
+      StepSlice.prototype.compileNode = function(o){
+        var ref$, sub, ref, temps, code;
+        this.index = o.scope.temporary('x');
+        ref$ = this.target.unwrap().cache(o), sub = ref$[0], ref = ref$[1], temps = ref$[2];
+        this.guard = Binary('<', Literal(this.index), Chain(ref).add(Index(Key('length'))));
+        this.makeComprehension(Chain(ref).add(Index(Literal(this.index))), this);
+        if (this.makeReturnArg != null) {
+          this.makeReturn(this.makeReturnArg);
+        }
+        code = [];
+        if (temps) {
+          code.push(sub.compile(o), ';' + '\n' + o.indent);
+        }
+        code.push(superclass.prototype.compileNode.apply(this, arguments));
+        return sn.apply(null, [this].concat(arrayFrom$(code)));
+      };
+      function StepSlice(){
+        StepSlice.superclass.apply(this, arguments);
+      }
+      return StepSlice;
+    }(For));
+    exports.Try = Try = (function(superclass){
+      var prototype = extend$((import$(Try, superclass).displayName = 'Try', Try), superclass).prototype, constructor = Try;
+      function Try(attempt, thrown, recovery, ensure){
+        var ref$;
+        this.attempt = attempt;
+        this.thrown = thrown;
+        this.recovery = recovery;
+        this.ensure = ensure;
+        if ((ref$ = this.recovery) != null) {
+          ref$.lines.unshift(Assign(this.thrown || Var('e'), Var('e$')));
+        }
+      }
+      Try.prototype.children = ['attempt', 'recovery', 'ensure'];
+      Try.prototype.show = function(){
+        return this.thrown;
+      };
+      Try.prototype.isStatement = YES;
+      Try.prototype.isCallable = function(){
+        var ref$;
+        return ((ref$ = this.recovery) != null ? ref$.isCallable() : void 8) && this.attempt.isCallable();
+      };
+      Try.prototype.getJump = function(it){
+        var ref$;
+        return this.attempt.getJump(it) || ((ref$ = this.recovery) != null ? ref$.getJump(it) : void 8);
+      };
+      Try.prototype.isNextUnreachable = function(){
+        var ref$, that;
+        return ((ref$ = this.ensure) != null ? ref$.isNextUnreachable() : void 8) || this.attempt.isNextUnreachable() && ((that = this.recovery) != null ? that.isNextUnreachable() : true);
+      };
+      Try.prototype.makeReturn = function(){
+        var ref$;
+        this.attempt = (ref$ = this.attempt).makeReturn.apply(ref$, arguments);
+        if (this.recovery != null) {
+          this.recovery = (ref$ = this.recovery).makeReturn.apply(ref$, arguments);
+        }
+        return this;
+      };
+      Try.prototype.compileNode = function(o){
+        var code, that;
+        o.indent += TAB;
+        code = [sn(this, 'try '), this.compileBlock(o, this.attempt)];
+        if (that = this.recovery || !this.ensure && JS('')) {
+          code.push(sn(that, ' catch (e$) '), this.compileBlock(o, that));
+        }
+        if (that = this.ensure) {
+          code.push(sn(that, ' finally '), this.compileBlock(o, that));
+        }
+        return sn.apply(null, [null].concat(arrayFrom$(code)));
+      };
+      return Try;
+    }(Node));
+    exports.Switch = Switch = (function(superclass){
+      var prototype = extend$((import$(Switch, superclass).displayName = 'Switch', Switch), superclass).prototype, constructor = Switch;
+      function Switch(type, topic, cases, $default){
+        var last, ref$;
+        this.type = type;
+        this.topic = topic;
+        this.cases = cases;
+        this['default'] = $default;
+        if (type === 'match') {
+          if (topic) {
+            this.topic = Arr(topic);
+          }
+        } else {
+          if (topic) {
+            if (topic.length > 1) {
+              throw "can't have more than one topic in switch statement";
+            }
+            this.topic = this.topic[0];
+          }
+        }
+        if (this.cases.length && (last = (ref$ = this.cases)[ref$.length - 1]).tests.length === 1 && last.tests[0] instanceof Var && last.tests[0].value === '_') {
+          this.cases.pop();
+          this['default'] = last.body;
+        }
+      }
+      Switch.prototype.children = ['topic', 'cases', 'default'];
+      Switch.prototype.aSource = 'topic';
+      Switch.prototype.aTargets = ['cases', 'default'];
+      Switch.prototype.show = function(){
+        return this.type;
+      };
+      Switch.prototype.isStatement = YES;
+      Switch.prototype.isCallable = function(){
+        var i$, ref$, len$, c;
+        for (i$ = 0, len$ = (ref$ = this.cases).length; i$ < len$; ++i$) {
+          c = ref$[i$];
+          if (!c.isCallable()) {
+            return false;
+          }
+        }
+        if (this['default']) {
+          return this['default'].isCallable();
+        } else {
+          return true;
+        }
+      };
+      Switch.prototype.getJump = function(ctx){
+        var i$, ref$, len$, c, that;
+        ctx || (ctx = {});
+        ctx['break'] = true;
+        for (i$ = 0, len$ = (ref$ = this.cases).length; i$ < len$; ++i$) {
+          c = ref$[i$];
+          if (that = c.body.getJump(ctx)) {
+            return that;
+          }
+        }
+        return (ref$ = this['default']) != null ? ref$.getJump(ctx) : void 8;
+      };
+      Switch.prototype.isNextUnreachable = function(){
+        var i$, ref$, len$, c;
+        for (i$ = 0, len$ = (ref$ = this.cases).length; i$ < len$; ++i$) {
+          c = ref$[i$];
+          if (!c.body.isNextUnreachable()) {
+            return false;
+          }
+        }
+        return (ref$ = this['default']) != null ? ref$.isNextUnreachable() : void 8;
+      };
+      Switch.prototype.makeReturn = function(){
+        var i$, ref$, len$, c;
+        for (i$ = 0, len$ = (ref$ = this.cases).length; i$ < len$; ++i$) {
+          c = ref$[i$];
+          c.makeReturn.apply(c, arguments);
+        }
+        if ((ref$ = this['default']) != null) {
+          ref$.makeReturn.apply(ref$, arguments);
+        }
+        return this;
+      };
+      Switch.prototype.compileNode = function(o){
+        var tab, topic, ref$, targetNode, target, t, code, stop, i$, len$, i, c, that;
+        tab = this.tab;
+        topic = this.type === 'match'
+          ? (this.topic && (ref$ = Chain(this.topic).cacheReference(o), targetNode = ref$[0], target = ref$[1]), t = target
+            ? [targetNode]
+            : [], Block(t.concat([Literal('false')])).compile(o, LEVEL_PAREN))
+          : !!this.topic && this.anaphorize().compile(o, LEVEL_PAREN);
+        code = [sn(this, "switch (", snSafe(topic), ") {\n")];
+        stop = this['default'] || this.cases.length - 1;
+        o['break'] = true;
+        for (i$ = 0, len$ = (ref$ = this.cases).length; i$ < len$; ++i$) {
+          i = i$;
+          c = ref$[i$];
+          code.push(c.compileCase(o, tab, i === stop, this.type === 'match' || !topic, this.type, target));
+        }
+        if (this['default']) {
+          o.indent = tab + TAB;
+          if (that = this['default'].compile(o, LEVEL_TOP)) {
+            code.push(tab + "default:\n", that, "\n");
+          }
+        }
+        return sn.apply(null, [null].concat(arrayFrom$(code), [tab + '}']));
+      };
+      return Switch;
+    }(Node));
+    exports.Case = Case = (function(superclass){
+      var prototype = extend$((import$(Case, superclass).displayName = 'Case', Case), superclass).prototype, constructor = Case;
+      function Case(tests, body){
+        this.tests = tests;
+        this.body = body;
+      }
+      Case.prototype.children = ['tests', 'body'];
+      Case.prototype.isCallable = function(){
+        return this.body.isCallable();
+      };
+      Case.prototype.makeReturn = function(){
+        var ref$, ref1$;
+        if (((ref$ = (ref1$ = this.body.lines)[ref1$.length - 1]) != null ? ref$.value : void 8) !== 'fallthrough') {
+          (ref1$ = this.body).makeReturn.apply(ref1$, arguments);
+        }
+        return this;
+      };
+      Case.prototype.compileCase = function(o, tab, nobr, bool, type, target){
+        var tests, i$, ref$, len$, test, j$, ref1$, len1$, t, i, tar, binary, that, code, lines, last, ft, bodyCode;
+        tests = [];
+        for (i$ = 0, len$ = (ref$ = this.tests).length; i$ < len$; ++i$) {
+          test = ref$[i$];
+          if (test instanceof Arr && type !== 'match') {
+            for (j$ = 0, len1$ = (ref1$ = test.items).length; j$ < len1$; ++j$) {
+              t = ref1$[j$];
+              tests.push(t);
+            }
+          } else {
+            tests.push(test);
+          }
+        }
+        tests.length || tests.push(Literal('void'));
+        if (type === 'match') {
+          for (i$ = 0, len$ = tests.length; i$ < len$; ++i$) {
+            i = i$;
+            test = tests[i$];
+            tar = Chain(target).add(Index(Literal(i), '.', true));
+            tests[i] = Parens(Chain(test).autoCompare(target ? [tar] : null));
+          }
+        }
+        if (bool) {
+          binary = type === 'match' ? '&&' : '||';
+          t = tests[0];
+          i = 0;
+          while (that = tests[++i]) {
+            t = Binary(binary, t, that);
+          }
+          tests = [(this.t = t, this.aSource = 't', this.aTargets = ['body'], this).anaphorize().invert()];
+        }
+        code = [];
+        for (i$ = 0, len$ = tests.length; i$ < len$; ++i$) {
+          t = tests[i$];
+          code.push(tab, sn(t, "case ", t.compile(o, LEVEL_PAREN), ":\n"));
+        }
+        lines = this.body.lines;
+        last = lines[lines.length - 1];
+        if (ft = (last != null ? last.value : void 8) === 'fallthrough') {
+          lines[lines.length - 1] = JS('// fallthrough');
+        }
+        o.indent = tab += TAB;
+        if (!snEmpty(bodyCode = this.body.compile(o, LEVEL_TOP))) {
+          code.push(bodyCode, '\n');
+        }
+        if (!(nobr || ft || (last != null && last.isNextUnreachable()))) {
+          code.push(tab + 'break;\n');
+        }
+        return sn.apply(null, [null].concat(arrayFrom$(code)));
+      };
+      return Case;
+    }(Node));
+    exports.If = If = (function(superclass){
+      var prototype = extend$((import$(If, superclass).displayName = 'If', If), superclass).prototype, constructor = If;
+      function If($if, then, un){
+        var this$ = this instanceof ctor$ ? this : new ctor$;
+        this$['if'] = $if;
+        this$.then = then;
+        this$.un = un;
+        return this$;
+      } function ctor$(){} ctor$.prototype = prototype;
+      If.prototype.children = ['if', 'then', 'else'];
+      If.prototype.aSource = 'if';
+      If.prototype.aTargets = ['then'];
+      If.prototype.show = function(){
+        return this.un && '!';
+      };
+      If.prototype.terminator = '';
+      prototype.delegate(['isCallable', 'isArray', 'isString', 'isRegex', 'isNextUnreachable'], function(it){
+        var ref$;
+        return ((ref$ = this['else']) != null ? ref$[it]() : void 8) && this.then[it]();
+      });
+      If.prototype.getJump = function(it){
+        var ref$;
+        return this.then.getJump(it) || ((ref$ = this['else']) != null ? ref$.getJump(it) : void 8);
+      };
+      If.prototype.makeReturn = function(){
+        var ref$;
+        this.then = (ref$ = this.then).makeReturn.apply(ref$, arguments);
+        if (this['else'] != null) {
+          this['else'] = (ref$ = this['else']).makeReturn.apply(ref$, arguments);
+        }
+        return this;
+      };
+      If.prototype.compileNode = function(o){
+        if (this.un) {
+          this['if'] = this['if'].invert();
+        } else {
+          this.soak || this.anaphorize();
+        }
+        if (o.level) {
+          return this.compileExpression(o);
+        } else {
+          return this.compileStatement(o);
+        }
+      };
+      If.prototype.compileStatement = function(o){
+        var code, els;
+        code = [sn(this, "if (", this['if'].compile(o, LEVEL_PAREN), ") ")];
+        o.indent += TAB;
+        code.push(this.compileBlock(o, Block(this.then)));
+        if (!(els = this['else'])) {
+          return sn.apply(null, [null].concat(arrayFrom$(code)));
+        }
+        return sn.apply(null, [null].concat(
+          arrayFrom$(code), [
+            sn(els, ' else '), els instanceof constructor
+              ? els.compile((o.indent = this.tab, o), LEVEL_TOP)
+              : this.compileBlock(o, els)
+          ]
+        ));
+      };
+      If.prototype.compileExpression = function(o){
+        var thn, els, code, pad;
+        thn = this.then, els = this['else'] || Literal('void');
+        this['void'] && (thn['void'] = els['void'] = true);
+        if (!this['else'] && (this.cond || this['void'])) {
+          return Parens(Binary('&&', this['if'], Parens(thn.unwrap()))).compile(o);
+        }
+        code = [sn(this, this['if'].compile(o, LEVEL_COND))];
+        pad = els.isComplex() ? '\n' + (o.indent += TAB) : ' ';
+        code.push(pad + "", sn(thn, "? "), thn.compile(o, LEVEL_LIST), pad + "", sn(els, ": "), els.compile(o, LEVEL_LIST));
+        if (o.level < LEVEL_COND) {
+          return sn.apply(null, [null].concat(arrayFrom$(code)));
+        } else {
+          return sn(null, "(", code, ")");
+        }
+      };
+      If.unfoldSoak = function(o, parent, name){
+        var that;
+        if (that = parent[name].unfoldSoak(o)) {
+          parent[name] = that.then;
+          return that.cond = parent.cond, that['void'] = parent['void'], that.then = Chain(parent), that;
+        }
+      };
+      return If;
+    }(Node));
+    exports.Label = Label = (function(superclass){
+      var ref$, prototype = extend$((import$(Label, superclass).displayName = 'Label', Label), superclass).prototype, constructor = Label;
+      function Label(label, it){
+        var fun;
+        this.label = label || '_';
+        this.it = it;
+        if (this.it.curried) {
+          this.carp("can't use label with a curried function (attempted label '" + this.label + "')");
+        }
+        if (fun = (it instanceof Fun || it instanceof Class) && it || it.calling && it.it.head) {
+          fun.name || (fun.name = this.label, fun.labeled = true);
+          return it;
+        }
+      }
+      ref$ = Parens.prototype, prototype.children = ref$.children, prototype.isCallable = ref$.isCallable, prototype.isArray = ref$.isArray;
+      Label.prototype.show = function(){
+        return this.label;
+      };
+      Label.prototype.isStatement = YES;
+      Label.prototype.getJump = function(ctx){
+        var ref$;
+        ctx || (ctx = {});
+        ((ref$ = ctx.labels) != null
+          ? ref$
+          : ctx.labels = []).push(this.label);
+        return this.it.getJump((ctx['break'] = true, ctx));
+      };
+      Label.prototype.makeReturn = function(){
+        var ref$;
+        this.it = (ref$ = this.it).makeReturn.apply(ref$, arguments);
+        return this;
+      };
+      Label.prototype.compileNode = function(o){
+        var label, it, labels;
+        label = this.label, it = this.it;
+        labels = o.labels = arrayFrom$(o.labels || []);
+        if (in$(label, labels)) {
+          this.carp("duplicate label \"" + label + "\"");
+        }
+        labels.push(label);
+        it.isStatement() || (it = Block(it));
+        return sn(null, sn(this, label, ": "), it instanceof Block
+          ? (o.indent += TAB, this.compileBlock(o, it))
+          : it.compile(o));
+      };
+      return Label;
+    }(Node));
+    exports.Cascade = Cascade = (function(superclass){
+      var prototype = extend$((import$(Cascade, superclass).displayName = 'Cascade', Cascade), superclass).prototype, constructor = Cascade;
+      function Cascade(input, output, prog1){
+        var this$ = this instanceof ctor$ ? this : new ctor$;
+        this$.input = input;
+        this$.output = output;
+        this$.prog1 = prog1;
+        return this$;
+      } function ctor$(){} ctor$.prototype = prototype;
+      Cascade.prototype.show = function(){
+        return this.prog1;
+      };
+      Cascade.prototype.children = ['input', 'output'];
+      Cascade.prototype.terminator = '';
+      prototype.delegate(['isCallable', 'isArray', 'isString', 'isRegex'], function(it){
+        return this[this.prog1 ? 'input' : 'output'][it]();
+      });
+      Cascade.prototype.getJump = function(it){
+        return this.output.getJump(it);
+      };
+      Cascade.prototype.makeReturn = function(ret){
+        this.ret = ret;
+        return this;
+      };
+      Cascade.prototype.compileNode = function(o){
+        var level, input, output, prog1, ref, ref$, code, out;
+        level = o.level;
+        input = this.input, output = this.output, prog1 = this.prog1, ref = this.ref;
+        if (prog1 && ('ret' in this || level && !this['void'])) {
+          output.add((ref$ = Literal('..'), ref$.cascadee = true, ref$));
+        }
+        if ('ret' in this) {
+          output = output.makeReturn(this.ret);
+        }
+        if (ref) {
+          prog1 || (output = Assign(Var(ref), output));
+        } else {
+          ref = o.scope.temporary('x');
+        }
+        if (input instanceof Cascade) {
+          input.ref = ref;
+        } else {
+          input && (input = Assign(Var(ref), input));
+        }
+        o.level && (o.level = LEVEL_PAREN);
+        code = [input.compile(o)];
+        out = Block(output).compile((o.ref = new String(ref), o));
+        if (prog1 === 'cascade' && !o.ref.erred) {
+          this.carp("unreferred cascadee");
+        }
+        if (!level) {
+          return sn.apply(null, [null].concat(arrayFrom$(code), [input.terminator, "\n", out]));
+        }
+        code.push(", ", out);
+        if (level > LEVEL_PAREN) {
+          return sn.apply(null, [null, "("].concat(arrayFrom$(code), [")"]));
+        } else {
+          return sn.apply(null, [null].concat(arrayFrom$(code)));
+        }
+      };
+      return Cascade;
+    }(Node));
+    exports.JS = JS = (function(superclass){
+      var prototype = extend$((import$(JS, superclass).displayName = 'JS', JS), superclass).prototype, constructor = JS;
+      function JS(code, literal, comment){
+        var this$ = this instanceof ctor$ ? this : new ctor$;
+        this$.code = code;
+        this$.literal = literal;
+        this$.comment = comment;
+        return this$;
+      } function ctor$(){} ctor$.prototype = prototype;
+      JS.prototype.show = function(){
+        if (this.comment) {
+          return this.code;
+        } else {
+          return "`" + this.code + "`";
+        }
+      };
+      JS.prototype.terminator = '';
+      prototype.isAssignable = prototype.isCallable = function(){
+        return !this.comment;
+      };
+      JS.prototype.compile = function(it){
+        return sn(this, snSafe(this.literal
+          ? entab(this.code, it.indent)
+          : this.code));
+      };
+      return JS;
+    }(Node));
+    exports.Require = Require = (function(superclass){
+      var prototype = extend$((import$(Require, superclass).displayName = 'Require', Require), superclass).prototype, constructor = Require;
+      function Require(body){
+        var this$ = this instanceof ctor$ ? this : new ctor$;
+        this$.body = body;
+        return this$;
+      } function ctor$(){} ctor$.prototype = prototype;
+      Require.prototype.children = ['body'];
+      Require.prototype.compile = function(o){
+        var getValue, processItem, code, i$, ref$, len$, item, this$ = this;
+        getValue = function(item, throwError){
+          switch (false) {
+          case !(item instanceof Key):
+            return item.name;
+          case !(item instanceof Var):
+            return item.value;
+          case !(item instanceof Literal):
+            return item.value;
+          default:
+            if (throwError) {
+              return this$.carp('invalid require! argument');
+            } else {
+              return item;
+            }
+          }
+        };
+        processItem = function(item){
+          var ref$, asg, value, asgValue, toAsg, main;
+          ref$ = (function(){
+            var ref$;
+            switch (false) {
+            case !(item instanceof Prop):
+              return [
+                item.val, (ref$ = item.key) != null
+                  ? ref$
+                  : item.val
+              ];
+            default:
+              return [item, item];
+            }
+          }()), asg = ref$[0], value = ref$[1];
+          asgValue = getValue(asg);
+          toAsg = toString$.call(asgValue).slice(8, -1) === 'String' ? CopyL(asg, Var(nameFromPath(asgValue))) : asg;
+          value = stripString(getValue(value, true));
+          main = Chain(CopyL(this, Var('require'))).add(Call([Literal("'" + value + "'")]));
+          return sn(item, Assign(toAsg, main).compile(o));
+        };
+        if (this.body.items != null) {
+          code = [];
+          for (i$ = 0, len$ = (ref$ = this.body.items).length; i$ < len$; ++i$) {
+            item = ref$[i$];
+            code.push(processItem(item), ";\n" + o.indent);
+          }
+          code.pop();
+          return sn.apply(null, [null].concat(arrayFrom$(code)));
+        } else {
+          return sn(null, processItem(this.body));
+        }
+      };
+      return Require;
+    }(Node));
+    exports.Util = Util = (function(superclass){
+      var prototype = extend$((import$(Util, superclass).displayName = 'Util', Util), superclass).prototype, constructor = Util;
+      function Util(verb){
+        var this$ = this instanceof ctor$ ? this : new ctor$;
+        this$.verb = verb;
+        return this$;
+      } function ctor$(){} ctor$.prototype = prototype;
+      Util.prototype.show = Jump.prototype.show;
+      Util.prototype.isCallable = YES;
+      Util.prototype.compile = function(){
+        return sn(this, util(this.verb));
+      };
+      Util.Extends = function(){
+        return Call.make(Util('extend'), [arguments[0], arguments[1]]);
+      };
+      return Util;
+    }(Node));
+    exports.Vars = Vars = (function(superclass){
+      var prototype = extend$((import$(Vars, superclass).displayName = 'Vars', Vars), superclass).prototype, constructor = Vars;
+      function Vars(vars){
+        var this$ = this instanceof ctor$ ? this : new ctor$;
+        this$.vars = vars;
+        return this$;
+      } function ctor$(){} ctor$.prototype = prototype;
+      Vars.prototype.children = ['vars'];
+      Vars.prototype.makeReturn = THIS;
+      Vars.prototype.compile = function(o, level){
+        var i$, ref$, len$, v, value;
+        for (i$ = 0, len$ = (ref$ = this.vars).length; i$ < len$; ++i$) {
+          v = ref$[i$], value = v.value;
+          if (!(v instanceof Var)) {
+            v.carp('invalid variable declaration');
+          }
+          if (o.scope.check(value)) {
+            v.carp("redeclaration of \"" + value + "\"");
+          }
+          o.scope.declare(value, v);
+        }
+        return sn(this, Literal('void').compile(o, level));
+      };
+      return Vars;
+    }(Node));
+    exports.L = function(a, b, node){
+      if (node && typeof node === "object") {
+        node.first_line = a.first_line + 1;
+        node.first_column = a.first_column;
+        node.last_line = b.last_line + 1;
+        node.last_column = b.last_column;
+        node.line = a.first_line + 1;
+        node.column = a.first_column;
+      }
+      return node;
+    };
+    exports.CopyL = CopyL = function(a, node){
+      if (node && typeof node === "object") {
+        node.first_line = a.first_line;
+        node.first_column = a.first_column;
+        node.last_line = a.last_line;
+        node.last_column = a.last_column;
+        node.line = a.line;
+        node.column = a.column;
+      }
+      return node;
+    };
+    exports.Box = function(v){
+      if (typeof v === "object") {
+        return v;
+      } else {
+        return new v.constructor(v);
+      }
+    };
+    exports.Decl = function(type, nodes, lno){
+      if (!nodes[0]) {
+        throw SyntaxError("empty " + type + " on line " + lno);
+      }
+      return DECLS[type](nodes);
+    };
+    DECLS = {
+      'export': function(lines){
+        var i, out, node, that, ref$;
+        i = -1;
+        out = Util('out');
+        while (node = lines[++i]) {
+          if (node instanceof Block) {
+            lines.splice.apply(lines, [i--, 1].concat(arrayFrom$(node.lines)));
+            continue;
+          }
+          if (that = node instanceof Fun && node.name) {
+            lines.splice(i++, 0, Assign(Chain(out, [Index(Key(that))]), Var(that)));
+            continue;
+          }
+          lines[i] = (that = node.varName() || node instanceof Assign && node.left.varName() || node instanceof Class && ((ref$ = node.title) != null ? ref$.varName() : void 8))
+            ? Assign(Chain(out, [Index(Key(that))]), node)
+            : Import(out, node);
+        }
+        return Block(lines);
+      },
+      'import': function(lines, all){
+        var i$, len$, i, line;
+        for (i$ = 0, len$ = lines.length; i$ < len$; ++i$) {
+          i = i$;
+          line = lines[i$];
+          lines[i] = Import(Literal('this'), line, all);
+        }
+        return Block(lines);
+      },
+      importAll: function(it){
+        return this['import'](it, true);
+      },
+      'const': function(lines){
+        var i$, len$, node;
+        for (i$ = 0, len$ = lines.length; i$ < len$; ++i$) {
+          node = lines[i$];
+          node.op === '=' || node.carp('invalid constant variable declaration');
+          node['const'] = true;
+        }
+        return Block(lines);
+      },
+      'var': Vars
+    };
+    function Scope(parent, shared){
+      this.parent = parent;
+      this.shared = shared;
+      this.variables = {};
+    }
+    ref$ = Scope.prototype;
+    ref$.READ_ONLY = {
+      'const': 'constant',
+      'function': 'function',
+      undefined: 'undeclared'
+    };
+    ref$.add = function(name, type, node){
+      var t, that;
+      if (node && (t = this.variables[name + "."])) {
+        if (that = this.READ_ONLY[t] || this.READ_ONLY[type]) {
+          node.carp("redeclaration of " + that + " \"" + name + "\"");
+        } else if (t === type && type === 'arg') {
+          node.carp("duplicate parameter \"" + name + "\"");
+        } else if (t === 'upvar') {
+          node.carp("accidental shadow of \"" + name + "\"");
+        }
+        if (t === 'arg' || t === 'function') {
+          return name;
+        }
+      }
+      this.variables[name + "."] = type;
+      return name;
+    };
+    ref$.get = function(name){
+      return this.variables[name + "."];
+    };
+    ref$.declare = function(name, node, constant){
+      var that, scope;
+      if (that = this.shared) {
+        if (this.check(name)) {
+          return;
+        }
+        scope = that;
+      } else {
+        scope = this;
+      }
+      return scope.add(name, constant && name !== "that" ? 'const' : 'var', node);
+    };
+    ref$.assign = function(name, value){
+      return this.add(name, {
+        value: value
+      });
+    };
+    ref$.temporary = function(name){
+      var ref$;
+      name || (name = 'ref');
+      while ((ref$ = this.variables[name + "$."]) !== 'reuse' && ref$ !== void 8) {
+        name = name.length < 2 && name < 'z'
+          ? String.fromCharCode(name.charCodeAt() + 1)
+          : name.replace(/\d*$/, fn$);
+      }
+      return this.add(name + '$', 'var');
+      function fn$(it){
+        return ++it;
+      }
+    };
+    ref$.free = function(name){
+      return this.add(name, 'reuse');
+    };
+    ref$.check = function(name, above){
+      var type, ref$;
+      if ((type = this.variables[name + "."]) || !above) {
+        return type;
+      }
+      return (ref$ = this.parent) != null ? ref$.check(name, above) : void 8;
+    };
+    ref$.checkReadOnly = function(name){
+      var that, ref$, key$;
+      if (that = this.READ_ONLY[this.check(name, true)]) {
+        return that;
+      }
+      (ref$ = this.variables)[key$ = name + "."] || (ref$[key$] = 'upvar');
+      return '';
+    };
+    ref$.emit = function(code, tab){
+      var vrs, asn, fun, name, ref$, type, that, val, declCode;
+      vrs = [];
+      asn = [];
+      fun = [];
+      for (name in ref$ = this.variables) {
+        type = ref$[name];
+        name = name.slice(0, -1);
+        if (type === 'var' || type === 'const' || type === 'reuse') {
+          vrs.push(name, ", ");
+        } else if (that = type.value) {
+          if (~(val = entab(that, tab)).toString().lastIndexOf('function(', 0)) {
+            if (val instanceof SourceNode) {
+              snRemoveLeft(val, 8);
+            } else {
+              val = val.slice(8);
+            }
+            fun.push("function ", name, val, "\n" + tab);
+          } else {
+            asn.push(name, " = ", val, ", ");
+          }
+        }
+      }
+      declCode = vrs.concat(asn);
+      declCode.pop();
+      fun.pop();
+      if (declCode.length > 0) {
+        code = sn.apply(null, [this, tab + "var "].concat(arrayFrom$(declCode), [";\n", code]));
+      }
+      if (fun.length > 0) {
+        return sn.apply(null, [this, code, "\n" + tab].concat(arrayFrom$(fun)));
+      } else {
+        return sn(this, code);
+      }
+    };
+    function YES(){
+      return true;
+    }
+    function NO(){
+      return false;
+    }
+    function THIS(){
+      return this;
+    }
+    function VOID(){}
+    UTILS = {
+      clone: 'function(it){\n  function fun(){} fun.prototype = it;\n  return new fun;\n}',
+      extend: 'function(sub, sup){\n  function fun(){} fun.prototype = (sub.superclass = sup).prototype;\n  (sub.prototype = new fun).constructor = sub;\n  if (typeof sup.extended == \'function\') sup.extended(sub);\n  return sub;\n}',
+      bind: 'function(obj, key, target){\n  return function(){ return (target || obj)[key].apply(obj, arguments) };\n}',
+      'import': 'function(obj, src){\n  var own = {}.hasOwnProperty;\n  for (var key in src) if (own.call(src, key)) obj[key] = src[key];\n  return obj;\n}',
+      importAll: 'function(obj, src){\n  for (var key in src) obj[key] = src[key];\n  return obj;\n}',
+      copyWithout: 'function(src, ex){\n  var obj = {}, own = {}.hasOwnProperty;\n  for (var key in src) if (own.call(src, key) && !own.call(ex, key)) obj[key] = src[key];\n  return obj;\n}',
+      repeatString: 'function(str, n){\n  for (var r = \'\'; n > 0; (n >>= 1) && (str += str)) if (n & 1) r += str;\n  return r;\n}',
+      repeatArray: 'function(arr, n){\n  for (var r = []; n > 0; (n >>= 1) && (arr = arr.concat(arr)))\n    if (n & 1) r.push.apply(r, arr);\n  return r;\n}',
+      'in': 'function(x, xs){\n  var i = -1, l = xs.length >>> 0;\n  while (++i < l) if (x === xs[i]) return true;\n  return false;\n}',
+      out: 'typeof exports != \'undefined\' && exports || this',
+      curry: 'function(f, bound){\n  var context,\n  _curry = function(args) {\n    return f.length > 1 ? function(){\n      var params = args ? args.concat() : [];\n      context = bound ? context || this : this;\n      return params.push.apply(params, arguments) <\n          f.length && arguments.length ?\n        _curry.call(context, params) : f.apply(context, params);\n    } : f;\n  };\n  return _curry();\n}',
+      flip: 'function(f){\n  return curry$(function (x, y) { return f(y, x); });\n}',
+      partialize: 'function(f, args, where){\n  var context = this;\n  return function(){\n    var params = slice$.call(arguments), i,\n        len = params.length, wlen = where.length,\n        ta = args ? args.concat() : [], tw = where ? where.concat() : [];\n    for(i = 0; i < len; ++i) { ta[tw[0]] = params[i]; tw.shift(); }\n    return len < wlen && len ?\n      partialize$.apply(context, [f, ta, tw]) : f.apply(context, ta);\n  };\n}',
+      not: 'function(x){ return !x; }',
+      compose: 'function() {\n  var functions = arguments;\n  return function() {\n    var i, result;\n    result = functions[0].apply(this, arguments);\n    for (i = 1; i < functions.length; ++i) {\n      result = functions[i](result);\n    }\n    return result;\n  };\n}',
+      deepEq: 'function(x, y, type){\n  var toString = {}.toString, hasOwnProperty = {}.hasOwnProperty,\n      has = function (obj, key) { return hasOwnProperty.call(obj, key); };\n  var first = true;\n  return eq(x, y, []);\n  function eq(a, b, stack) {\n    var className, length, size, result, alength, blength, r, key, ref, sizeB;\n    if (a == null || b == null) { return a === b; }\n    if (a.__placeholder__ || b.__placeholder__) { return true; }\n    if (a === b) { return a !== 0 || 1 / a == 1 / b; }\n    className = toString.call(a);\n    if (toString.call(b) != className) { return false; }\n    switch (className) {\n      case \'[object String]\': return a == String(b);\n      case \'[object Number]\':\n        return a != +a ? b != +b : (a == 0 ? 1 / a == 1 / b : a == +b);\n      case \'[object Date]\':\n      case \'[object Boolean]\':\n        return +a == +b;\n      case \'[object RegExp]\':\n        return a.source == b.source &&\n               a.global == b.global &&\n               a.multiline == b.multiline &&\n               a.ignoreCase == b.ignoreCase;\n    }\n    if (typeof a != \'object\' || typeof b != \'object\') { return false; }\n    length = stack.length;\n    while (length--) { if (stack[length] == a) { return true; } }\n    stack.push(a);\n    size = 0;\n    result = true;\n    if (className == \'[object Array]\') {\n      alength = a.length;\n      blength = b.length;\n      if (first) {\n        switch (type) {\n        case \'===\': result = alength === blength; break;\n        case \'<==\': result = alength <= blength; break;\n        case \'<<=\': result = alength < blength; break;\n        }\n        size = alength;\n        first = false;\n      } else {\n        result = alength === blength;\n        size = alength;\n      }\n      if (result) {\n        while (size--) {\n          if (!(result = size in a == size in b && eq(a[size], b[size], stack))){ break; }\n        }\n      }\n    } else {\n      if (\'constructor\' in a != \'constructor\' in b || a.constructor != b.constructor) {\n        return false;\n      }\n      for (key in a) {\n        if (has(a, key)) {\n          size++;\n          if (!(result = has(b, key) && eq(a[key], b[key], stack))) { break; }\n        }\n      }\n      if (result) {\n        sizeB = 0;\n        for (key in b) {\n          if (has(b, key)) { ++sizeB; }\n        }\n        if (first) {\n          if (type === \'<<=\') {\n            result = size < sizeB;\n          } else if (type === \'<==\') {\n            result = size <= sizeB\n          } else {\n            result = size === sizeB;\n          }\n        } else {\n          first = false;\n          result = size === sizeB;\n        }\n      }\n    }\n    stack.pop();\n    return result;\n  }\n}',
+      arrayFrom: 'Array.from || function(x){return slice$.call(x);}',
+      split: "''.split",
+      replace: "''.replace",
+      toString: '{}.toString',
+      join: '[].join',
+      slice: '[].slice',
+      splice: '[].splice'
+    };
+    LEVEL_TOP = 0;
+    LEVEL_PAREN = 1;
+    LEVEL_LIST = 2;
+    LEVEL_COND = 3;
+    LEVEL_OP = 4;
+    LEVEL_CALL = 5;
+    (function(){
+      this['&&'] = this['||'] = this['xor'] = 0.2;
+      this['.&.'] = this['.^.'] = this['.|.'] = 0.3;
+      this['=='] = this['!='] = this['~='] = this['!~='] = this['==='] = this['!=='] = 0.4;
+      this['<'] = this['>'] = this['<='] = this['>='] = this.of = this['instanceof'] = 0.5;
+      this['<<='] = this['>>='] = this['<=='] = this['>=='] = this['++'] = 0.5;
+      this['.<<.'] = this['.>>.'] = this['.>>>.'] = 0.6;
+      this['+'] = this['-'] = 0.7;
+      this['*'] = this['/'] = this['%'] = 0.8;
+    }.call(PREC = {
+      unary: 0.9
+    }));
+    TAB = '  ';
+    ID = /^(?!\d)[\w$\xAA-\uFFDC]+$/;
+    SIMPLENUM = /^\d+$/;
+    function util(it){
+      return Scope.root.assign(it + '$', UTILS[it]);
+    }
+    function entab(code, tab){
+      return code.replace(/\n/g, '\n' + tab);
+    }
+    function import$(obj, src){
+      var own = {}.hasOwnProperty;
+      for (var key in src) if (own.call(src, key)) obj[key] = src[key];
+      return obj;
+    }
+    function clone$(it){
+      function fun(){} fun.prototype = it;
+      return new fun;
+    }
+    function extend$(sub, sup){
+      function fun(){} fun.prototype = (sub.superclass = sup).prototype;
+      (sub.prototype = new fun).constructor = sub;
+      if (typeof sup.extended == 'function') sup.extended(sub);
+      return sub;
+    }
+    function in$(x, xs){
+      var i = -1, l = xs.length >>> 0;
+      while (++i < l) if (x === xs[i]) return true;
+      return false;
+    }
+    function repeatArray$(arr, n){
+      for (var r = []; n > 0; (n >>= 1) && (arr = arr.concat(arr)))
+        if (n & 1) r.push.apply(r, arr);
+      return r;
+    }
+    function repeatString$(str, n){
+      for (var r = ''; n > 0; (n >>= 1) && (str += str)) if (n & 1) r += str;
+      return r;
+    }
+    function importAll$(obj, src){
+      for (var key in src) obj[key] = src[key];
+      return obj;
+    }
+    },{"./util":6,"prelude-ls":19,"source-map":31}],2:[function(require,module,exports){
+    (function (Buffer){
+    // Generated by LiveScript 1.6.1
+    var lexer, parser, ast, SourceNode, path, bufferFrom, toString$ = {}.toString;
+    lexer = require('./lexer');
+    parser = require('./parser').parser;
+    ast = require('./ast');
+    SourceNode = require('source-map').SourceNode;
+    path = require('path');
+    parser.yy = ast;
+    parser.lexer = {
+      lex: function(){
+        var ref$, tag, first_line, first_column, last_line, last_column;
+        ref$ = this.tokens[++this.pos] || [''], tag = ref$[0], this.yytext = ref$[1], first_line = ref$[2], first_column = ref$[3];
+        ref$ = this.tokens[this.pos + 1] || [''], last_line = ref$[2], last_column = ref$[3];
+        this.yylineno = first_line;
+        this.yylloc = {
+          first_line: first_line,
+          first_column: first_column,
+          last_line: last_line,
+          last_column: last_column
+        };
+        return tag;
+      },
+      setInput: function(it){
+        this.pos = -1;
+        return this.tokens = it;
+      },
+      upcomingInput: function(){
+        return '';
+      }
+    };
+    bufferFrom = Buffer.alloc && Buffer.from || function(it){
+      return new Buffer(it);
+    };
+    exports.VERSION = '1.6.1';
+    exports.compile = function(code, options){
+      var result, ast, output, filename, outputFilename, ref$, mapPath, e, that;
+      options == null && (options = {});
+      options.warn == null && (options.warn = true);
+      options.header == null && (options.header = true);
+      if (options.header === true) {
+        options.header = "// Generated by LiveScript " + exports.VERSION + "\n";
+      }
+      try {
+        if (options.json) {
+          result = Function(exports.compile(code, {
+            bare: true,
+            run: true,
+            print: true
+          }))();
+          return JSON.stringify(result, null, 2) + "\n";
+        } else {
+          ast = parser.parse(lexer.lex(code));
+          if (options.run && options.print) {
+            ast.makeReturn();
+          }
+          output = ast.compileRoot(options);
+          if (options.map && options.map !== 'none') {
+            filename = options.filename, outputFilename = options.outputFilename;
+            if (!filename) {
+              filename = "unnamed-" + Math.floor(Math.random() * 4294967296).toString(16) + ".ls";
+            }
+            output.setFile(path.basename(filename));
+            result = output.toStringWithSourceMap();
+            if (options.map === 'embedded') {
+              result.map.setSourceContent(filename, code);
+            }
+            if ((ref$ = options.map) === 'linked' || ref$ === 'debug') {
+              mapPath = path.basename(outputFilename) + ".map";
+              result.code += "\n//# sourceMappingURL=" + mapPath + "\n";
+            } else {
+              result.code += "\n//# sourceMappingURL=data:application/json;base64," + bufferFrom(result.map.toString()).toString('base64') + "\n";
+            }
+            return result;
+          } else {
+            return output.toString();
+          }
+        }
+      } catch (e$) {
+        e = e$;
+        if (that = options.filename) {
+          e.message += "\nat " + that;
+        }
+        throw e;
+      }
+    };
+    exports.ast = function(it){
+      return parser.parse(typeof it === 'string' ? lexer.lex(it) : it);
+    };
+    exports.tokens = lexer.lex;
+    exports.lex = function(it){
+      return lexer.lex(it, {
+        raw: true
+      });
+    };
+    exports.run = function(code, options){
+      var output, ref$;
+      output = exports.compile(code, (ref$ = {}, import$(ref$, options), ref$.bare = true, ref$));
+      return Function(toString$.call(output).slice(8, -1) === 'String'
+        ? output
+        : output.code)();
+    };
+    exports.tokens.rewrite = lexer.rewrite;
+    importAll$(exports.ast, parser.yy);
+    if (require.extensions) {
+      require('./node')(exports);
+    } else {
+      exports.require = require;
+    }
+    function import$(obj, src){
+      var own = {}.hasOwnProperty;
+      for (var key in src) if (own.call(src, key)) obj[key] = src[key];
+      return obj;
+    }
+    function importAll$(obj, src){
+      for (var key in src) obj[key] = src[key];
+      return obj;
+    }
+    }).call(this,require("buffer").Buffer)
+    },{"./ast":1,"./lexer":3,"./node":4,"./parser":5,"buffer":9,"path":13,"source-map":31}],3:[function(require,module,exports){
+    // Generated by LiveScript 1.6.1
+    var string, TABS, unlines, enlines, enslash, reslash, camelize, deheregex, character, KEYWORDS_SHARED, KEYWORDS_UNUSED, JS_KEYWORDS, LS_KEYWORDS, ID, SYMBOL, SPACE, MULTIDENT, SIMPLESTR, JSTOKEN, BSTOKEN, NUMBER, NUMBER_OMIT, REGEX, HEREGEX_OMIT, LASTDENT, INLINEDENT, NONASCII, OPENERS, CLOSERS, INVERSES, i, o, c, CHAIN, ARG, BLOCK_USERS, slice$ = [].slice, arrayFrom$ = Array.from || function(x){return slice$.call(x);};
+    exports.lex = function(code, options){
+      return clone$(exports).tokenize(code || '', options || {});
+    };
+    exports.rewrite = function(it){
+      var ref$;
+      it || (it = this.tokens);
+      firstPass(it);
+      addImplicitIndentation(it);
+      rewriteBlockless(it);
+      addImplicitParentheses(it);
+      expandLiterals(it);
+      addImplicitBraces(it);
+      if (((ref$ = it[0]) != null ? ref$[0] : void 8) === 'NEWLINE') {
+        it.shift();
+      }
+      return it;
+    };
+    exports.tokenize = function(code, o){
+      var i, prevIndex, c, charsConsumed, that;
+      this.inter || (code = code.replace(/[\r\u2028\u2029\uFEFF]/g, ''));
+      code = '\n' + code;
+      this.tokens = [this.last = ['NEWLINE', '\n', 0, 0]];
+      this.line = ~-o.line;
+      this.column = o.column || 0;
+      this.dents = [];
+      this.closes = [];
+      this.parens = [];
+      this.flags = [];
+      i = 0;
+      prevIndex = i;
+      this.charsCounted = 0;
+      this.isAtPrefix = true;
+      while (c = code.charAt(i)) {
+        charsConsumed = i - prevIndex;
+        prevIndex = i;
+        if (this.charsCounted > charsConsumed) {
+          throw new Error('Location information out-of-sync in lexer');
+        }
+        this.column += charsConsumed - this.charsCounted;
+        this.charsCounted = 0;
+        switch (c) {
+        case ' ':
+          i += this.doSpace(code, i);
+          break;
+        case '\n':
+          i += this.doLine(code, i);
+          break;
+        case '\\':
+          i += this.doBackslash(code, i);
+          break;
+        case '\'':
+        case '"':
+          i += this.doString(code, i, c);
+          break;
+        case "0":
+        case "1":
+        case "2":
+        case "3":
+        case "4":
+        case "5":
+        case "6":
+        case "7":
+        case "8":
+        case "9":
+          i += this.doNumber(code, i);
+          break;
+        case '/':
+          switch (code.charAt(i + 1)) {
+          case '*':
+            i += this.doComment(code, i);
+            break;
+          case '/':
+            i += this.doHeregex(code, i);
+            break;
+          default:
+            i += this.doRegex(code, i) || this.doLiteral(code, i);
+          }
+          break;
+        case '`':
+          if ('`' === code.charAt(i + 1)) {
+            i += this.doJS(code, i);
+          } else {
+            i += this.doLiteral(code, i);
+          }
+          break;
+        default:
+          i += this.doID(code, i) || this.doLiteral(code, i) || this.doSpace(code, i);
+        }
+      }
+      this.dedent(this.dent);
+      if (that = this.closes.pop()) {
+        this.carp("missing `" + that + "`");
+      }
+      if (this.inter) {
+        this.rest == null && this.carp('unterminated interpolation');
+      } else {
+        this.last.spaced = true;
+        this.newline();
+      }
+      o.raw || this.rewrite();
+      return this.tokens;
+    };
+    exports.dent = 0;
+    exports.identifiers = {};
+    exports.reset = function(){
+      this.dent = 0;
+      this.identifiers = {};
+    };
+    exports.hasOwn = Object.prototype.hasOwnProperty;
+    exports.checkConsistency = function(camel, id){
+      if (this.hasOwn.call(this.identifiers, camel) && this.identifiers[camel] !== id) {
+        throw new ReferenceError("Inconsistent use of " + camel + " as " + id + " on line " + (-~this.line));
+      } else {
+        return this.identifiers[camel] = id;
+      }
+    };
+    exports.doID = function(code, index){
+      var regexMatch, input, id, e, last, ref$, tag, ref1$, that;
+      input = (regexMatch = (ID.lastIndex = index, ID).exec(code))[0];
+      if (!input) {
+        return 0;
+      }
+      id = camelize(regexMatch[1]);
+      if (/-/.test(regexMatch[1])) {
+        this.checkConsistency(id, regexMatch[1]);
+      }
+      if (NONASCII.test(id)) {
+        try {
+          Function("var " + id);
+        } catch (e$) {
+          e = e$;
+          this.carp("invalid identifier '" + id + "'");
+        }
+      }
+      last = this.last;
+      if (regexMatch[2] || last[0] === 'DOT' || this.adi()) {
+        this.token('ID', in$(id, JS_KEYWORDS) ? (ref$ = Object(id), ref$.reserved = true, ref$) : id);
+        if (regexMatch[2]) {
+          this.token(':', ':');
+        }
+        return input.length;
+      }
+      switch (id) {
+      case 'true':
+      case 'false':
+      case 'on':
+      case 'off':
+      case 'yes':
+      case 'no':
+      case 'null':
+      case 'void':
+      case 'arguments':
+      case 'debugger':
+        tag = 'LITERAL';
+        break;
+      case 'new':
+      case 'do':
+      case 'typeof':
+      case 'delete':
+        tag = 'UNARY';
+        break;
+      case 'yield':
+      case 'await':
+        tag = 'YIELD';
+        break;
+      case 'return':
+      case 'throw':
+        tag = 'HURL';
+        break;
+      case 'break':
+      case 'continue':
+        tag = 'JUMP';
+        break;
+      case 'this':
+      case 'eval':
+      case 'super':
+        return this.token('LITERAL', id, true).length;
+      case 'for':
+        id = [];
+        this.fset('for', true);
+        this.fset('to', false);
+        this.fset('by', true);
+        break;
+      case 'then':
+        this.fset('for', false);
+        this.fset('to', false);
+        break;
+      case 'catch':
+      case 'function':
+        id = '';
+        break;
+      case 'in':
+      case 'of':
+        if (this.fget('for')) {
+          this.fset('for', false);
+          if (id === 'in') {
+            this.fset('by', true);
+            id = '';
+            if (last[0] === 'ID' && ((ref$ = (ref1$ = this.tokens)[ref1$.length - 2][0]) === ',' || ref$ === ']' || ref$ === '}')) {
+              id = this.tokens.pop()[1];
+              if ((ref$ = this.tokens)[ref$.length - 1][0] === ',') {
+                this.tokens.pop();
+              }
+            }
+          }
+          break;
+        }
+        // fallthrough
+      case 'instanceof':
+        if (last[1] === '!') {
+          id = this.tokens.pop()[1] + id;
+        }
+        tag = (ref$ = this.tokens)[ref$.length - 1][0] === '(' ? 'BIOPR' : 'RELATION';
+        break;
+      case 'not':
+        if (last.alias && last[1] === '===') {
+          return last[1] = '!==', 3;
+        }
+        tag = 'UNARY';
+        id = '!';
+        break;
+      case 'and':
+      case 'or':
+      case 'xor':
+      case 'is':
+      case 'isnt':
+        this.unline();
+        tag = id === 'is' || id === 'isnt' ? 'COMPARE' : 'LOGIC';
+        if (last[0] === '(') {
+          tag = 'BIOP';
+        }
+        this.token(tag, (function(){
+          switch (id) {
+          case 'is':
+            return '===';
+          case 'isnt':
+            return '!==';
+          case 'or':
+            return '||';
+          case 'and':
+            return '&&';
+          case 'xor':
+            return 'xor';
+          }
+        }()));
+        this.last.alias = true;
+        return id.length;
+      case 'unless':
+        tag = 'IF';
+        break;
+      case 'until':
+        tag = 'WHILE';
+        break;
+      case 'import':
+        if (last[0] === '(') {
+          id = '<<<';
+          tag = 'BIOP';
+        } else {
+          if (able(this.tokens)) {
+            id = '<<<';
+          } else {
+            tag = 'DECL';
+          }
+        }
+        break;
+      case 'export':
+      case 'const':
+      case 'var':
+        tag = 'DECL';
+        break;
+      case 'with':
+        tag = (function(){
+          switch (false) {
+          case !able(this.tokens):
+            return 'CLONEPORT';
+          case last[0] !== '(':
+            return 'BIOP';
+          default:
+            return 'WITH';
+          }
+        }.call(this));
+        break;
+      case 'when':
+        tag = 'CASE';
+        // fallthrough
+      case 'case':
+        if (this.doCase()) {
+          return input.length;
+        }
+        break;
+      case 'match':
+        tag = 'SWITCH';
+        break;
+      case 'loop':
+        this.token('WHILE', id);
+        this.token('LITERAL', 'true');
+        return input.length;
+      case 'let':
+      case 'own':
+        if (last[0] === 'FOR' && !in$(id, last[1])) {
+          last[1].push(id);
+          return 3;
+        }
+        // fallthrough
+      default:
+        if (in$(id, KEYWORDS_SHARED)) {
+          break;
+        }
+        if (in$(id, KEYWORDS_UNUSED)) {
+          this.carp("reserved word '" + id + "'");
+        }
+        if (!last[1] && ((ref$ = last[0]) === 'FUNCTION' || ref$ === 'GENERATOR' || ref$ === 'LABEL')) {
+          last[1] = id;
+          last.spaced = false;
+          return input.length;
+        }
+        tag = 'ID';
+        switch (id) {
+        case 'otherwise':
+          if ((ref$ = last[0]) === 'CASE' || ref$ === '|') {
+            last[0] = 'DEFAULT';
+            return id.length;
+          }
+          break;
+        case 'all':
+          if (that = last[1] === '<<<' && '<' || last[1] === 'import' && 'All') {
+            last[1] += that;
+            return 3;
+          }
+          break;
+        case 'from':
+          if (last[1] === 'yield') {
+            last[1] += 'from';
+            return 4;
+          }
+          this.forange() && (tag = 'FROM');
+          break;
+        case 'to':
+        case 'til':
+          this.forange() && this.tokens.push(['FROM', '', this.line, this.column], ['STRNUM', '0', this.line, this.column]);
+          if (this.fget('from')) {
+            this.fset('from', false);
+            this.fset('by', true);
+            tag = 'TO';
+          } else if (!last.callable && last[0] === 'STRNUM' && (ref$ = this.tokens)[ref$.length - 2][0] === '[') {
+            last[0] = 'RANGE';
+            last.op = id;
+            return id.length;
+          } else if (in$(']', this.closes)) {
+            this.token('TO', id);
+            return id.length;
+          }
+          break;
+        case 'by':
+          if (last[0] === 'STRNUM' && (ref$ = this.tokens)[ref$.length - 2][0] === 'RANGE' && (ref$ = this.tokens)[ref$.length - 3][0] === '[') {
+            tag = 'RANGE_BY';
+          } else if (in$(']', this.closes)) {
+            tag = 'BY';
+          } else if (this.fget('by') && last[0] !== 'FOR') {
+            tag = 'BY';
+            this.fset('by', false);
+          }
+          break;
+        case 'ever':
+          if (last[0] === 'FOR') {
+            this.fset('for', false);
+            last[0] = 'WHILE';
+            tag = 'LITERAL';
+            id = 'true';
+          }
+        }
+      }
+      tag || (tag = regexMatch[1].toUpperCase());
+      if ((tag === 'COMPARE' || tag === 'LOGIC' || tag === 'RELATION') && last[0] === '(') {
+        tag = tag === 'RELATION' ? 'BIOPR' : 'BIOP';
+      }
+      if (tag === 'THEN' || tag === 'IF' || tag === 'WHILE') {
+        this.fset('for', false);
+        this.fset('by', false);
+      }
+      if (tag === 'RELATION' || tag === 'THEN' || tag === 'ELSE' || tag === 'CASE' || tag === 'DEFAULT' || tag === 'CATCH' || tag === 'FINALLY' || tag === 'IN' || tag === 'OF' || tag === 'FROM' || tag === 'TO' || tag === 'BY' || tag === 'EXTENDS' || tag === 'IMPLEMENTS' || tag === 'WHERE') {
+        this.unline();
+      }
+      this.token(tag, id);
+      return input.length;
+    };
+    exports.doNumber = function(code, lastIndex){
+      var input, regexMatch, last, radix, num, rnum, bound, ref$;
+      NUMBER.lastIndex = lastIndex;
+      if (!(input = (regexMatch = NUMBER.exec(code))[0])) {
+        return 0;
+      }
+      last = this.last;
+      if (regexMatch[5] && (last[0] === 'DOT' || this.adi())) {
+        this.token('STRNUM', regexMatch[4].replace(NUMBER_OMIT, ''));
+        return regexMatch[4].length;
+      }
+      if (radix = regexMatch[1]) {
+        num = parseInt(rnum = regexMatch[2].replace(NUMBER_OMIT, ''), radix);
+        bound = false;
+        if (radix > 36 || radix < 2) {
+          if (/[0-9]/.exec(rnum)) {
+            this.carp("invalid number base " + radix + " (with number " + rnum + "),base must be from 2 to 36");
+          } else {
+            bound = true;
+          }
+        }
+        if (isNaN(num) || num === parseInt(rnum.slice(0, -1), radix)) {
+          this.strnum(regexMatch[1]);
+          this.token('DOT', '.~');
+          this.token('ID', regexMatch[2]);
+          return input.length;
+        }
+        num += '';
+      } else {
+        num = (regexMatch[3] || input).replace(NUMBER_OMIT, '');
+        if (regexMatch[3] && num.charAt() === '0' && ((ref$ = num.charAt(1)) !== '' && ref$ !== '.')) {
+          this.carp("deprecated octal literal " + regexMatch[4]);
+        }
+      }
+      if (!last.spaced && last[0] === '+-') {
+        last[0] = 'STRNUM';
+        last[1] += num;
+        return input.length;
+      }
+      this.strnum(num);
+      return input.length;
+    };
+    exports.doString = function(code, index, q){
+      var parts, str;
+      if (q === code.charAt(index + 1)) {
+        return q === code.charAt(index + 2)
+          ? this.doHeredoc(code, index, q)
+          : (this.strnum(q + q), 2);
+      }
+      if (q === '"') {
+        parts = this.interpolate(code, index, q);
+        this.addInterpolated(parts, unlines);
+        return parts.size;
+      }
+      str = (SIMPLESTR.lastIndex = index, SIMPLESTR).exec(code)[0] || this.carp('unterminated string');
+      this.strnum(unlines(this.string(q, str.slice(1, -1))));
+      return this.countLines(str).length;
+    };
+    exports.doHeredoc = function(code, index, q){
+      var end, raw, doc, parts, tabs, i$, len$, i, t;
+      if (q === '\'') {
+        ~(end = code.indexOf(q + q + q, index + 3)) || this.carp('unterminated heredoc');
+        raw = code.slice(index + 3, end);
+        doc = raw.replace(LASTDENT, '');
+        this.strnum(enlines(this.string(q, lchomp(detab(doc, heretabs(doc))))));
+        return this.countLines(raw).length + 6;
+      }
+      parts = this.interpolate(code, index, q + q + q);
+      tabs = heretabs(code.slice(index + 3, index + parts.size - 3).replace(LASTDENT, ''));
+      for (i$ = 0, len$ = parts.length; i$ < len$; ++i$) {
+        i = i$;
+        t = parts[i$];
+        if (t[0] === 'S') {
+          if (i + 1 === parts.length) {
+            t[1] = t[1].replace(LASTDENT, '');
+          }
+          t[1] = detab(t[1], tabs);
+          if (i === 0) {
+            t[1] = lchomp(t[1]);
+          }
+        }
+      }
+      this.addInterpolated(parts, enlines);
+      return parts.size;
+    };
+    exports.doComment = function(code, index){
+      var comment, end, ref$;
+      comment = ~(end = code.indexOf('*/', index + 2))
+        ? code.slice(index, end + 2)
+        : code.slice(index) + '*/';
+      if ((ref$ = this.last[0]) === 'NEWLINE' || ref$ === 'INDENT' || ref$ === 'THEN') {
+        this.token('COMMENT', detab(comment, this.dent));
+        this.token('NEWLINE', '\n');
+      }
+      return this.countLines(comment).length;
+    };
+    exports.doJS = function(code, lastIndex){
+      var js, ref$;
+      JSTOKEN.lastIndex = lastIndex;
+      js = JSTOKEN.exec(code)[0] || this.carp('unterminated JS literal');
+      this.token('LITERAL', (ref$ = Object(detab(js.slice(2, -2), this.dent)), ref$.js = true, ref$), true);
+      return this.countLines(js).length;
+    };
+    exports.doRegex = function(code, index){
+      var divisible, ref$, input, body, flag;
+      if (divisible = able(this.tokens) || this.last[0] === 'CREMENT') {
+        if (!this.last.spaced || ((ref$ = code.charAt(index + 1)) === ' ' || ref$ === '=')) {
+          return 0;
+        }
+      }
+      ref$ = (REGEX.lastIndex = index, REGEX).exec(code), input = ref$[0], body = ref$[1], flag = ref$[2];
+      if (input) {
+        this.regex(body, flag);
+      } else if (!divisible && this.last[0] !== '(') {
+        this.carp('unterminated regex');
+      }
+      return input.length;
+    };
+    exports.doHeregex = function(code, index){
+      var tokens, last, parts, rest, flag, i$, i, t, dynaflag, len$, val, one;
+      tokens = this.tokens, last = this.last;
+      parts = this.interpolate(code, index, '//');
+      rest = code.slice(index + parts.size);
+      flag = this.validate(/^(?:[gimy]{1,4}|[?$]?)/.exec(rest)[0]);
+      if (parts[1]) {
+        if (flag === '$') {
+          this.adi();
+          this.token('(', '"');
+        } else {
+          tokens.push(['ID', 'RegExp', last[2], last[3]], ['CALL(', '', last[2], last[3]]);
+          if (flag === '?') {
+            for (i$ = parts.length - 1; i$ >= 0; --i$) {
+              i = i$;
+              t = parts[i$];
+              if (t[0] === 'TOKENS') {
+                dynaflag = parts.splice(i, 1)[0][1];
+                break;
+              }
+            }
+          }
+        }
+        for (i$ = 0, len$ = parts.length; i$ < len$; ++i$) {
+          i = i$;
+          t = parts[i$];
+          if (t[0] === 'TOKENS') {
+            tokens.push.apply(tokens, t[1]);
+          } else {
+            val = deheregex(t[1]);
+            if (one && !val) {
+              continue;
+            }
+            one = tokens.push((t[0] = 'STRNUM', t[1] = this.string('\'', enslash(val)), t));
+          }
+          tokens.push(['+-', '+', tokens[tokens.length - 1][2], tokens[tokens.length - 1][3]]);
+        }
+        --tokens.length;
+        if (dynaflag || flag >= 'g') {
+          this.token(',', ',');
+          if (dynaflag) {
+            tokens.push.apply(tokens, dynaflag);
+          } else {
+            this.token('STRNUM', "'" + flag + "'");
+          }
+        }
+        this.token(flag === '$' ? ')' : ')CALL', '');
+      } else {
+        this.regex(reslash(deheregex(parts[0][1])), flag);
+      }
+      return parts.size + flag.length;
+    };
+    exports.doBackslash = function(code, lastIndex){
+      var ref$, input, word;
+      BSTOKEN.lastIndex = lastIndex;
+      ref$ = BSTOKEN.exec(code), input = ref$[0], word = ref$[1];
+      if (word) {
+        this.strnum(this.string('\'', word));
+      } else {
+        this.countLines(input);
+      }
+      return input.length;
+    };
+    exports.doLine = function(code, index){
+      var ref$, input, tabs, length, last, that, delta, tag, val;
+      ref$ = (MULTIDENT.lastIndex = index, MULTIDENT).exec(code), input = ref$[0], tabs = ref$[1];
+      length = this.countLines(input).length;
+      last = this.last;
+      last.eol = true;
+      last.spaced = true;
+      if (index + length >= code.length) {
+        return length;
+      }
+      if (that = tabs && (this.emender || (this.emender = RegExp('[^' + tabs.charAt() + ']'))).exec(tabs)) {
+        this.carp("contaminated indent " + escape(that));
+      }
+      if (0 > (delta = tabs.length - this.dent)) {
+        this.dedent(-delta);
+        this.newline();
+      } else {
+        tag = last[0], val = last[1];
+        if (tag === 'ASSIGN' && ((ref$ = val + '') !== '=' && ref$ !== ':=' && ref$ !== '+=') || tag === 'CREMENT' && val === '++' && (ref$ = this.tokens)[ref$.length - 2].spaced || (tag === '+-' || tag === 'PIPE' || tag === 'BACKPIPE' || tag === 'COMPOSE' || tag === 'DOT' || tag === 'LOGIC' || tag === 'MATH' || tag === 'COMPARE' || tag === 'RELATION' || tag === 'SHIFT' || tag === 'IN' || tag === 'OF' || tag === 'TO' || tag === 'BY' || tag === 'FROM' || tag === 'EXTENDS' || tag === 'IMPLEMENTS')) {
+          return length;
+        }
+        if (delta) {
+          this.indent(delta);
+        } else {
+          this.newline();
+        }
+      }
+      this.fset('for', false);
+      this.fset('by', false);
+      return length;
+    };
+    exports.doSpace = function(code, lastIndex){
+      var input;
+      SPACE.lastIndex = lastIndex;
+      if (input = SPACE.exec(code)[0]) {
+        this.last.spaced = true;
+      }
+      return input.length;
+    };
+    exports.doCase = function(){
+      var ref$, ref1$;
+      this.fset('for', false);
+      if (((ref$ = this.last[0]) === 'ASSIGN' || ref$ === '->' || ref$ === ':') || (this.last[0] === 'INDENT' && ((ref$ = (ref1$ = this.tokens)[ref1$.length - 2][0]) === 'ASSIGN' || ref$ === '->' || ref$ === ':'))) {
+        this.token('SWITCH', 'switch');
+        return this.token('CASE', 'case');
+      }
+    };
+    exports.doLiteral = function(code, index){
+      var sym, tag, val, ref$, that;
+      if (!(sym = (SYMBOL.lastIndex = index, SYMBOL).exec(code)[0])) {
+        return 0;
+      }
+      switch (tag = val = sym) {
+      case '|':
+        tag = 'CASE';
+        if (this.doCase()) {
+          return sym.length;
+        }
+        break;
+      case '|>':
+        tag = 'PIPE';
+        break;
+      case '`':
+        tag = 'BACKTICK';
+        break;
+      case '<<':
+      case '>>':
+        tag = 'COMPOSE';
+        break;
+      case '<|':
+        tag = 'BACKPIPE';
+        break;
+      case '+':
+      case '-':
+        tag = '+-';
+        break;
+      case '&&':
+      case '||':
+        tag = 'LOGIC';
+        break;
+      case '.&.':
+      case '.|.':
+      case '.^.':
+        tag = 'BITWISE';
+        break;
+      case '^^':
+        tag = 'CLONE';
+        break;
+      case '**':
+      case '^':
+        tag = 'POWER';
+        break;
+      case '?':
+        if (this.last[0] === '(') {
+          this.token('PARAM(', '(');
+          this.token(')PARAM', ')');
+          this.token('->', '->');
+          this.token('ID', 'it');
+        } else {
+          if (this.last.spaced) {
+            tag = 'LOGIC';
+          }
+        }
+        break;
+      case '/':
+      case '%':
+      case '%%':
+        tag = 'MATH';
+        break;
+      case '++':
+      case '--':
+        tag = 'CREMENT';
+        break;
+      case '<<<':
+      case '<<<<':
+        tag = 'IMPORT';
+        break;
+      case ';':
+        tag = 'NEWLINE';
+        this.fset('by', false);
+        break;
+      case '..':
+        this.token('LITERAL', '..', true);
+        return 2;
+      case '.':
+        if (this.last[1] === '?') {
+          this.last[0] = '?';
+        }
+        tag = 'DOT';
+        break;
+      case ',':
+        switch (this.last[0]) {
+        case ',':
+        case '[':
+        case '(':
+        case 'CALL(':
+          this.token('LITERAL', 'void');
+          break;
+        case 'FOR':
+        case 'OWN':
+          this.token('ID', '');
+        }
+        break;
+      case '!=':
+      case '~=':
+        if (!(able(this.tokens) || ((ref$ = this.last[0]) === '(' || ref$ === 'CREMENT'))) {
+          this.tokens.push(val === '!='
+            ? ['UNARY', '!', this.line, this.column]
+            : ['UNARY', '~', this.line, this.column], ['ASSIGN', '=', this.line, this.column]);
+          return 2;
+        }
+        // fallthrough
+      case '!~=':
+      case '==':
+        val = (function(){
+          switch (val) {
+          case '~=':
+            return '==';
+          case '!~=':
+            return '!=';
+          case '==':
+            return '===';
+          case '!=':
+            return '!==';
+          }
+        }());
+        tag = 'COMPARE';
+        break;
+      case '===':
+      case '!==':
+        val += '=';
+        // fallthrough
+      case '<':
+      case '>':
+      case '<=':
+      case '>=':
+      case '<==':
+      case '>==':
+      case '>>=':
+      case '<<=':
+        tag = 'COMPARE';
+        break;
+      case '.<<.':
+      case '.>>.':
+      case '.>>>.':
+      case '<?':
+      case '>?':
+        tag = 'SHIFT';
+        break;
+      case '(':
+        if (!(((ref$ = this.last[0]) === 'FUNCTION' || ref$ === 'GENERATOR' || ref$ === 'LET') || this.able(true) || this.last[1] === '.@')) {
+          this.token('(', '(');
+          this.closes.push(')');
+          this.parens.push(this.last);
+          return 1;
+        }
+        tag = 'CALL(';
+        this.closes.push(')CALL');
+        break;
+      case '[':
+      case '{':
+        this.adi();
+        this.closes.push(']}'.charAt(val === '{'));
+        break;
+      case '}':
+        if (this.inter && val !== (ref$ = this.closes)[ref$.length - 1]) {
+          this.rest = code.slice(index + 1);
+          return 9e9;
+        }
+        // fallthrough
+      case ']':
+      case ')':
+        if (tag === ')' && ((ref$ = this.last[0]) === '+-' || ref$ === 'COMPARE' || ref$ === 'LOGIC' || ref$ === 'MATH' || ref$ === 'POWER' || ref$ === 'SHIFT' || ref$ === 'BITWISE' || ref$ === 'CONCAT' || ref$ === 'COMPOSE' || ref$ === 'RELATION' || ref$ === 'PIPE' || ref$ === 'BACKPIPE' || ref$ === 'IMPORT' || ref$ === 'CLONEPORT' || ref$ === 'ASSIGN')) {
+          (ref$ = this.tokens)[ref$.length - 1][0] = (function(){
+            switch (this.last[0]) {
+            case 'RELATION':
+              return 'BIOPR';
+            case 'PIPE':
+              this.parameters(false, -1);
+              return 'BIOPP';
+            default:
+              return 'BIOP';
+            }
+          }.call(this));
+        }
+        if (')' === (tag = val = this.pair(val))) {
+          this.lpar = this.parens.pop();
+        }
+        break;
+      case '=':
+      case ':':
+        if (val === ':') {
+          switch (this.last[0]) {
+          case 'ID':
+          case 'STRNUM':
+          case ')':
+            break;
+          case '...':
+            this.last[0] = 'STRNUM';
+            break;
+          default:
+            tag = 'LABEL';
+            val = '';
+          }
+          this.token(tag, val);
+          return sym.length;
+        }
+        // fallthrough
+      case ':=':
+      case '+=':
+      case '-=':
+      case '*=':
+      case '/=':
+      case '%=':
+      case '%%=':
+      case '<?=':
+      case '>?=':
+      case '**=':
+      case '^=':
+      case '.&.=':
+      case '.|.=':
+      case '.^.=':
+      case '.<<.=':
+      case '.>>.=':
+      case '.>>>.=':
+      case '++=':
+      case '|>=':
+        if (this.last[1] === '.' || this.last[0] === '?' && this.adi()) {
+          this.last[1] += val;
+          return val.length;
+        }
+        if (this.last[0] === 'LOGIC') {
+          (val = Object(val)).logic = this.tokens.pop()[1];
+        } else if ((val === '+=' || val === '-=') && !able(this.tokens) && ((ref$ = this.last[0]) !== '+-' && ref$ !== 'UNARY' && ref$ !== 'LABEL')) {
+          this.token('UNARY', val.charAt());
+          val = '=';
+        }
+        tag = 'ASSIGN';
+        break;
+      case '::=':
+        this.token('DOT', '.');
+        this.token('ID', 'prototype');
+        this.token('IMPORT', '<<');
+        return sym.length;
+      case '*':
+        if (this.last[0] === 'FUNCTION') {
+          this.last[0] = 'GENERATOR';
+          return sym.length;
+        }
+        if (that = ((ref$ = this.last[0]) === 'NEWLINE' || ref$ === 'INDENT' || ref$ === 'THEN' || ref$ === '=>') && (INLINEDENT.lastIndex = index + 1, INLINEDENT).exec(code)[0].length) {
+          this.tokens.push(['LITERAL', 'void', this.line, this.column], ['ASSIGN', '=', this.line, this.column]);
+          this.indent(index + that - 1 - this.dent - code.lastIndexOf('\n', index - 1));
+          return that;
+        }
+        tag = able(this.tokens) || this.last[0] === 'CREMENT' && able(this.tokens, this.tokens.length - 1) || this.last[0] === '(' ? 'MATH' : 'STRNUM';
+        break;
+      case '@':
+        this.adi();
+        if (this.last[0] === 'DOT' && this.last[1] === '.' && (ref$ = this.tokens)[ref$.length - 2][0] === 'ID' && (ref$ = this.tokens)[ref$.length - 2][1] === 'constructor') {
+          this.tokens.pop();
+          this.tokens.pop();
+          this.token('LITERAL', 'this', true);
+          this.adi();
+          this.token('ID', 'constructor', true);
+        } else {
+          this.token('LITERAL', 'this', true);
+        }
+        return 1;
+      case '@@':
+        this.adi();
+        this.token('ID', 'constructor', true);
+        return 2;
+      case '&':
+        this.token('LITERAL', 'arguments');
+        return 1;
+      case '!':
+        switch (false) {
+        default:
+          if (!this.last.spaced) {
+            if (this.last[1] === 'require') {
+              this.last[0] = 'REQUIRE';
+              this.last[1] = 'require!';
+            } else if (able(this.tokens, null, true)) {
+              this.token('CALL(', '!');
+              this.token(')CALL', ')');
+            } else if (this.last[1] === 'typeof') {
+              this.last[1] = 'classof';
+            } else if (this.last[1] === 'delete') {
+              this.last[1] = 'jsdelete';
+            } else {
+              break;
+            }
+            return 1;
+          }
+        }
+        tag = 'UNARY';
+        break;
+      case '|':
+        tag = 'BITWISE';
+        break;
+      case '~':
+        if (this.dotcat(val)) {
+          return 1;
+        }
+        tag = 'UNARY';
+        break;
+      case '::':
+        this.adi();
+        val = 'prototype';
+        tag = 'ID';
+        break;
+      case '=>':
+        this.unline();
+        this.fset('for', false);
+        tag = 'THEN';
+        break;
+      default:
+        if (/^!?(?:--?|~~?)>>?\*?$/.test(val)) {
+          this.parameters(tag = '->');
+        } else if (/^\*?<(?:--?|~~?)!?$/.test(val)) {
+          this.parameters(tag = '<-');
+        } else {
+          switch (val.charAt(0)) {
+          case '(':
+            this.token('CALL(', '(');
+            tag = ')CALL';
+            val = ')';
+            break;
+          case '<':
+            if (val.length < 4) {
+              this.carp('unterminated words');
+            }
+            this.token('WORDS', val.slice(2, -2), this.adi());
+            return this.countLines(val).length;
+          }
+        }
+      }
+      if ((tag === '+-' || tag === 'COMPARE' || tag === 'LOGIC' || tag === 'MATH' || tag === 'POWER' || tag === 'SHIFT' || tag === 'BITWISE' || tag === 'CONCAT' || tag === 'RELATION' || tag === 'PIPE' || tag === 'BACKPIPE' || tag === 'COMPOSE' || tag === 'IMPORT') && this.last[0] === '(') {
+        tag = tag === 'BACKPIPE' ? 'BIOPBP' : 'BIOP';
+      }
+      if (tag === ',' || tag === 'CASE' || tag === 'PIPE' || tag === 'BACKPIPE' || tag === 'COMPOSE' || tag === 'DOT' || tag === 'LOGIC' || tag === 'COMPARE' || tag === 'MATH' || tag === 'POWER' || tag === 'IMPORT' || tag === 'SHIFT' || tag === 'BITWISE') {
+        this.unline();
+      }
+      this.token(tag, val);
+      return sym.length;
+    };
+    exports.token = function(tag, value, callable){
+      this.tokens.push(this.last = [tag, value, this.line, this.column]);
+      if (callable) {
+        this.last.callable = true;
+      }
+      return value;
+    };
+    exports.indent = function(delta){
+      this.dent += delta;
+      this.dents.push(this.token('INDENT', delta));
+      this.closes.push('DEDENT');
+    };
+    exports.dedent = function(debt){
+      var dent;
+      this.dent -= debt;
+      while (debt > 0 && (dent = this.dents.pop())) {
+        if (debt < dent && !this.inter) {
+          this.carp("unmatched dedent (" + debt + " for " + dent + ")");
+        }
+        this.pair('DEDENT');
+        debt -= typeof dent === 'number' ? this.token('DEDENT', dent) : dent;
+      }
+    };
+    exports.newline = function(){
+      var ref$;
+      if (!(this.last[0] === 'NEWLINE' && this.last[1] === '\n')) {
+        this.tokens.push(this.last = (ref$ = ['NEWLINE', '\n', this.line, this.column], ref$.spaced = true, ref$));
+      }
+    };
+    exports.unline = function(){
+      var ref$;
+      if (!this.tokens[1]) {
+        return;
+      }
+      switch (this.last[0]) {
+      case 'INDENT':
+        (ref$ = this.dents)[ref$.length - 1] += '';
+        // fallthrough
+      case 'NEWLINE':
+        this.tokens.length--;
+      }
+    };
+    exports.parameters = function(arrow, offset){
+      var i$, ref$, i, t, ref1$;
+      if (this.last[0] === ')' && ')' === this.last[1]) {
+        this.lpar[0] = 'PARAM(';
+        this.last[0] = ')PARAM';
+        return;
+      }
+      if (arrow === '->') {
+        this.token('PARAM(', '');
+      } else {
+        for (i$ = (ref$ = this.tokens).length - 1; i$ >= 0; --i$) {
+          i = i$;
+          t = ref$[i$];
+          if ((ref1$ = t[0]) === 'NEWLINE' || ref1$ === 'INDENT' || ref1$ === 'THEN' || ref1$ === '=>' || ref1$ === '(') {
+            break;
+          }
+        }
+        this.tokens.splice(i + 1, 0, ['PARAM(', '', t[2], t[3]]);
+      }
+      if (offset) {
+        this.tokens.splice(this.tokens.length + offset, 0, [')PARAM', '', t[2], t[3]]);
+      } else {
+        this.token(')PARAM', '');
+      }
+    };
+    exports.interpolate = function(str, idx, end){
+      var parts, end0, pos, i, ref$, oldLine, oldColumn, ch, c1, id, stringified, length, tag, e, delta, nested, clone, ref1$;
+      parts = [];
+      end0 = end.charAt(0);
+      pos = 0;
+      i = -1;
+      str = str.slice(idx + end.length);
+      ref$ = [this.line, this.column], oldLine = ref$[0], oldColumn = ref$[1];
+      this.countLines(end);
+      while (ch = str.charAt(++i)) {
+        switch (ch) {
+        case end0:
+          if (end !== str.slice(i, i + end.length)) {
+            continue;
+          }
+          parts.push(['S', this.countLines(str.slice(0, i)), oldLine, oldColumn]);
+          this.countLines(end);
+          return parts.size = pos + i + end.length * 2, parts;
+        case '#':
+          c1 = str.charAt(i + 1);
+          id = c1 === '@' && c1 || (ID.lastIndex = i + 1, ID).exec(str)[1];
+          if (!(id || c1 === '{')) {
+            continue;
+          }
+          break;
+        case '\\':
+          ++i;
+          // fallthrough
+        default:
+          continue;
+        }
+        if (i || nested && !stringified) {
+          stringified = parts.push(['S', this.countLines(str.slice(0, i)), oldLine, oldColumn]);
+          ref$ = [this.line, this.column], oldLine = ref$[0], oldColumn = ref$[1];
+        }
+        if (id) {
+          length = id.length;
+          if (id === '@') {
+            id = 'this';
+          }
+          if (id === 'this') {
+            tag = 'LITERAL';
+          } else {
+            id = camelize(id);
+            try {
+              Function("'use strict'; var " + id);
+            } catch (e$) {
+              e = e$;
+              this.carp("invalid variable interpolation '" + id + "'");
+            }
+            tag = 'ID';
+          }
+          str = str.slice(delta = i + 1 + length);
+          parts.push(['TOKENS', nested = [[tag, id, this.line, this.column]]]);
+        } else {
+          clone = (ref$ = clone$(exports), ref$.inter = true, ref$.emender = this.emender, ref$);
+          nested = clone.tokenize(str.slice(i + 2), {
+            line: this.line,
+            column: this.column + 2,
+            raw: true
+          });
+          delta = str.length - clone.rest.length;
+          this.countLines(str.slice(i, delta));
+          str = clone.rest;
+          while (((ref$ = nested[0]) != null ? ref$[0] : void 8) === 'NEWLINE') {
+            nested.shift();
+          }
+          if (nested.length) {
+            nested.unshift(['(', '(', oldLine, oldColumn]);
+            nested.push([')', ')', this.line, this.column - 1]);
+            parts.push(['TOKENS', nested]);
+          }
+          ref1$ = [this.line, this.column], oldLine = ref1$[0], oldColumn = ref1$[1];
+        }
+        pos += delta;
+        i = -1;
+      }
+      this.carp("missing `" + end + "`");
+    };
+    exports.addInterpolated = function(parts, nlines){
+      var tokens, last, ref$, left, right, joint, callable, i$, len$, i, t;
+      if (!parts[1]) {
+        return this.strnum(nlines(this.string('"', parts[0][1])));
+      }
+      tokens = this.tokens, last = this.last;
+      ref$ = !last.spaced && last[1] === '%'
+        ? (--tokens.length, this.last = last = tokens[tokens.length - 1], ['[', ']', [',', ',']])
+        : ['(', ')', ['+-', '+']], left = ref$[0], right = ref$[1], joint = ref$[2];
+      callable = this.adi();
+      tokens.push([left, '"', last[2], last[3]]);
+      for (i$ = 0, len$ = parts.length; i$ < len$; ++i$) {
+        i = i$;
+        t = parts[i$];
+        if (t[0] === 'TOKENS') {
+          tokens.push.apply(tokens, t[1]);
+        } else {
+          if (i > 1 && !t[1]) {
+            continue;
+          }
+          tokens.push(['STRNUM', nlines(this.string('"', t[1])), t[2], t[3]]);
+        }
+        tokens.push(joint.concat(tokens[tokens.length - 1][2], tokens[tokens.length - 1][3]));
+      }
+      --tokens.length;
+      this.token(right, '', callable);
+    };
+    exports.strnum = function(it){
+      this.token('STRNUM', it, this.adi() || this.last[0] === 'DOT');
+    };
+    exports.regex = function(body, flag){
+      var e;
+      try {
+        RegExp(body);
+      } catch (e$) {
+        e = e$;
+        this.carp(e.message);
+      }
+      if (flag === '$') {
+        return this.strnum(this.string('\'', enslash(body)));
+      }
+      return this.token('LITERAL', "/" + (body || '(?:)') + "/" + this.validate(flag));
+    };
+    exports.adi = function(){
+      if (this.last.spaced) {
+        return;
+      }
+      if (!able(this.tokens)) {
+        return;
+      }
+      return this.token('DOT', '.');
+    };
+    exports.dotcat = function(it){
+      if (this.last[1] === '.' || this.adi()) {
+        return this.last[1] += it;
+      }
+    };
+    exports.pair = function(it){
+      var wanted, ref$;
+      if (!(it === (wanted = (ref$ = this.closes)[ref$.length - 1]) || ')CALL' === wanted && it === ')')) {
+        if ('DEDENT' !== wanted) {
+          this.carp("unmatched `" + it + "`");
+        }
+        this.dedent((ref$ = this.dents)[ref$.length - 1]);
+        return this.pair(it);
+      }
+      this.unline();
+      this.fclear();
+      return this.closes.pop();
+    };
+    exports.able = function(call){
+      return !this.last.spaced && able(this.tokens, null, call);
+    };
+    exports.countLines = function(it){
+      var pos;
+      if (!this.isAtPrefix) {
+        this.column += it.length;
+      }
+      while (pos = 1 + it.indexOf('\n', pos)) {
+        if (!this.isAtPrefix) {
+          this.column = 0;
+        }
+        this.column += it.length - pos;
+        ++this.line;
+        this.isAtPrefix = false;
+      }
+      this.charsCounted += it.length;
+      return it;
+    };
+    exports.forange = function(){
+      var ref$, ref1$, ref2$;
+      if (((ref$ = (ref1$ = this.tokens)[ref1$.length - 2 - ((ref2$ = this.last[0]) === 'NEWLINE' || ref2$ === 'INDENT')]) != null ? ref$[0] : void 8) === 'FOR' || this.last[0] === 'FOR') {
+        this.fset('for', false);
+        this.fset('from', true);
+        return true;
+      } else {
+        return false;
+      }
+    };
+    exports.validate = function(flag){
+      var that;
+      if (that = flag && /(.).*\1/.exec(flag)) {
+        this.carp("duplicate regex flag `" + that[1] + "`");
+      }
+      return flag;
+    };
+    exports.fget = function(key){
+      var ref$;
+      return (ref$ = this.flags[this.closes.length]) != null ? ref$[key] : void 8;
+    };
+    exports.fset = function(key, val){
+      var ref$, key$;
+      ((ref$ = this.flags)[key$ = this.closes.length] || (ref$[key$] = {}))[key] = val;
+    };
+    exports.fclear = function(){
+      this.flags.splice(this.closes.length);
+    };
+    exports.carp = function(it){
+      carp(it, this.line);
+    };
+    exports.string = function(q, body){
+      return string(q, body, this.line);
+    };
+    function carp(msg, lno){
+      throw SyntaxError(msg + " on line " + (-~lno));
+    }
+    function able(tokens, i, call){
+      var token, tag;
+      i == null && (i = tokens.length);
+      tag = (token = tokens[i - 1])[0];
+      return (tag === 'ID' || tag === ']' || tag === '?') || (call
+        ? token.callable || (tag === ')' || tag === ')CALL' || tag === 'BIOPBP') && token[1]
+        : tag === '}' || tag === ')' || tag === ')CALL' || tag === 'STRNUM' || tag === 'LITERAL' || tag === 'WORDS');
+    }
+    string = (function(re){
+      return function(q, body, lno){
+        body = body.replace(re, function(it, oct, xu, rest){
+          if (it === q || it === '\\') {
+            return '\\' + it;
+          }
+          if (oct) {
+            return '\\x' + (0x100 + parseInt(oct, 8)).toString(16).slice(1);
+          }
+          if (xu) {
+            carp('malformed character escape sequence', lno);
+          }
+          if (!rest || q === rest) {
+            return it;
+          } else {
+            return rest;
+          }
+        });
+        return q + body + q;
+      };
+    }.call(this, /['"]|\\(?:([0-3]?[0-7]{2}|[1-7]|0(?=[89]))|x[\dA-Fa-f]{2}|u[\dA-Fa-f]{4}|([xu])|[\\0bfnrtv]|[^\n\S]|([\w\W]))?/g));
+    function heretabs(doc){
+      var dent, that, ref$;
+      dent = 0 / 0;
+      while (that = TABS.exec(doc)) {
+        dent <= (ref$ = that[0].length - 1) || (dent = ref$);
+      }
+      return dent;
+    }
+    TABS = /\n(?!$)[^\n\S]*/mg;
+    function detab(str, len){
+      if (len) {
+        return str.replace(detab[len] || (detab[len] = RegExp('\\n[^\\n\\S]{1,' + len + '}', 'g')), '\n');
+      } else {
+        return str;
+      }
+    }
+    unlines = function(it){
+      return it.replace(/\n[^\n\S]*/g, '');
+    };
+    enlines = function(it){
+      return it.replace(/\n/g, '\\n');
+    };
+    enslash = function(it){
+      return it.replace(/\\/g, '\\\\');
+    };
+    reslash = function(it){
+      return it.replace(/(\\.)|\//g, function(){
+        return arguments[1] || '\\/';
+      });
+    };
+    camelize = function(it){
+      return it.replace(/-[a-z]/ig, function(it){
+        return it.charAt(1).toUpperCase();
+      });
+    };
+    deheregex = function(it){
+      return it.replace(/\s+(?:#.*)?|(\\[\s\S])/g, function(arg$, bs){
+        bs || (bs = '');
+        if ('\n' === bs.charAt(1)) {
+          return '\\n';
+        } else {
+          return bs;
+        }
+      });
+    };
+    function lchomp(it){
+      return it.slice(1 + it.lastIndexOf('\n', 0));
+    }
+    function decode(val, lno){
+      if (!isNaN(val)) {
+        return [+val];
+      }
+      val = val.length > 8
+        ? 'ng'
+        : Function('return ' + val)();
+      val.length === 1 || carp('bad string in range', lno);
+      return [val.charCodeAt(), true];
+    }
+    function uxxxx(it){
+      return '"\\u' + ('000' + it.toString(16)).slice(-4) + '"';
+    }
+    character = typeof JSON == 'undefined' || JSON === null
+      ? uxxxx
+      : function(it){
+        switch (it) {
+        case 0x2028:
+        case 0x2029:
+          return uxxxx(it);
+        default:
+          return JSON.stringify(String.fromCharCode(it));
+        }
+      };
+    function firstPass(tokens){
+      var prev, i, token, tag, val, line, column, next, parens, i$, j, ts, ref$;
+      prev = ['NEWLINE', '\n', 0];
+      i = 0;
+      while (token = tokens[++i]) {
+        tag = token[0], val = token[1], line = token[2], column = token[3];
+        switch (tag) {
+        case 'ASSIGN':
+          if (in$(prev[1], LS_KEYWORDS) && tokens[i - 2][0] !== 'DOT') {
+            carp("cannot assign to reserved word '" + prev[1] + "'", line);
+          }
+          break;
+        case 'DOT':
+          switch (false) {
+          case !(prev[0] === ']' && tokens[i - 2][0] === '[' && tokens[i - 3][0] === 'DOT'):
+            tokens.splice(i - 2, 3);
+            tokens[i - 3][1] = '[]';
+            i -= 3;
+            break;
+          case !(prev[0] === '}' && tokens[i - 2][0] === '{' && tokens[i - 3][0] === 'DOT'):
+            tokens.splice(i - 2, 3);
+            tokens[i - 3][1] = '{}';
+            i -= 3;
+            break;
+          case !(val === '.' && token.spaced && prev.spaced):
+            tokens[i] = ['COMPOSE', '<<', line, column];
+            break;
+          default:
+            next = tokens[i + 1];
+            if (prev[0] === '(' && next[0] === ')') {
+              tokens[i][0] = 'BIOP';
+            } else if (prev[0] === '(') {
+              tokens.splice(i, 0, ['PARAM(', '(', line, column], [')PARAM', ')', line, column], ['->', '~>', line, column], ['ID', 'it', line, column]);
+            } else if (next[0] === ')') {
+              tokens.splice(i + 1, 0, ['[', '[', line, column], ['ID', 'it', line, column], [']', ']', line, column]);
+              parens = 1;
+              LOOP: for (i$ = i + 1; i$ >= 0; --i$) {
+                j = i$;
+                switch (tokens[j][0]) {
+                case ')':
+                  ++parens;
+                  break;
+                case '(':
+                  if (--parens === 0) {
+                    tokens.splice(j + 1, 0, ['PARAM(', '(', line, column], ['ID', 'it', line, column], [')PARAM', ')', line, column], ['->', '~>', line, column]);
+                    break LOOP;
+                  }
+                }
+              }
+            }
+          }
+          break;
+        case 'CREMENT':
+          if (!(val === '++' && (next = tokens[i + 1]))) {
+            break;
+          }
+          ts = ['ID', 'LITERAL', 'STRNUM'];
+          if (prev.spaced && token.spaced || !(prev.spaced || token.spaced) && in$(prev[0], ts) && in$(next[0], ts)) {
+            tokens[i][0] = 'CONCAT';
+          }
+          if (prev[0] === '(' && next[0] === ')' || prev[0] === '(' && token.spaced || next[0] === ')' && prev.spaced) {
+            tokens[i][0] = 'BIOP';
+          }
+          break;
+        case 'ID':
+          if (val !== 'async') {
+            break;
+          }
+          next = tokens[i + 1];
+          if ((ref$ = next[0]) === 'FUNCTION' || ref$ === 'GENERATOR') {
+            token[0] = 'ASYNC';
+          }
+        }
+        prev = token;
+        continue;
+      }
+    }
+    function rewriteBlockless(tokens){
+      var i, token, tag;
+      i = -1;
+      while (token = tokens[++i]) {
+        tag = token[0];
+        if (tag === 'IF' || tag === 'CLASS' || tag === 'CATCH') {
+          detectEnd(tokens, i + 1, ok, go);
+        }
+      }
+      function ok(it){
+        var ref$;
+        return (ref$ = it[0]) === 'NEWLINE' || ref$ === 'INDENT';
+      }
+      function go(it, i){
+        var lno, cno;
+        if (tag === 'IF') {
+          if (it[0] !== 'INDENT' || !it[1] && !it.then || in$(tokens[i - 1][0], BLOCK_USERS)) {
+            token[0] = 'POST_IF';
+          }
+        } else if (it[0] !== 'INDENT') {
+          tokens.splice(i, 0, ['INDENT', 0, lno = tokens[i - 1][2], cno = tokens[i - 1][3]], ['DEDENT', 0, lno, cno]);
+        }
+      }
+    }
+    function addImplicitIndentation(tokens){
+      var i, token, tag, next, indent, dedent, ref$, ref1$, idx;
+      i = 0;
+      while (token = tokens[++i]) {
+        tag = token[0];
+        if (tag !== '->' && tag !== 'THEN' && tag !== 'ELSE' && tag !== 'DEFAULT' && tag !== 'TRY' && tag !== 'FINALLY' && tag !== 'DECL') {
+          continue;
+        }
+        switch (next = tokens[i + 1][0]) {
+        case 'IF':
+          if (tag === 'ELSE') {
+            continue;
+          }
+          break;
+        case 'INDENT':
+        case 'THEN':
+          if (tag === 'THEN') {
+            tokens.splice(i--, 1);
+          }
+          continue;
+        }
+        indent = ['INDENT', 0, token[2], token[3]];
+        dedent = ['DEDENT', 0];
+        if (tag === 'THEN') {
+          (tokens[i] = indent).then = true;
+        } else {
+          tokens.splice(++i, 0, indent);
+        }
+        switch (false) {
+        case tag !== 'DECL':
+          break;
+        case next !== 'DOT' && next !== '?' && next !== ',' && next !== 'PIPE' && next !== 'BACKPIPE':
+          --i;
+          // fallthrough
+        case !((next === 'ID' || next === 'STRNUM' || next === 'LITERAL') && ',' === ((ref$ = tokens[i + 2]) != null ? ref$[0] : void 8)):
+          go(0, i += 2);
+          ++i;
+          continue;
+        case !((next === '(' || next === '[' || next === '{') && ',' === ((ref1$ = tokens[idx = 1 + indexOfPair(tokens, i + 1)]) != null ? ref1$[0] : void 8)):
+          go(0, idx);
+          ++i;
+          continue;
+        }
+        detectEnd(tokens, i + 1, ok, go);
+      }
+      function ok(token, i){
+        var t0, t;
+        t0 = token[0];
+        t = tag;
+        if (tag === t0 || tag === 'THEN' && t0 === 'SWITCH') {
+          tag = '';
+        }
+        switch (t0) {
+        case 'NEWLINE':
+          return token[1] !== ';';
+        case 'DOT':
+        case '?':
+        case ',':
+        case 'PIPE':
+        case 'BACKPIPE':
+          return tokens[i - 1].eol;
+        case 'ELSE':
+          return t === 'THEN';
+        case 'CATCH':
+          return t === 'TRY';
+        case 'FINALLY':
+          return t === 'TRY' || t === 'CATCH' || t === 'THEN';
+        case 'CASE':
+        case 'DEFAULT':
+          return t === 'CASE' || t === 'THEN';
+        }
+      }
+      function go(arg$, i){
+        var prev;
+        prev = tokens[i - 1];
+        tokens.splice(prev[0] === ',' ? i - 1 : i, 0, (dedent[2] = prev[2], dedent[3] = prev[3], dedent));
+      }
+    }
+    function addImplicitParentheses(tokens){
+      var i, brackets, token, endi, ref$, tpair, tag, prev, ref1$, skipBlock, seenSwitch;
+      i = 0;
+      brackets = [];
+      while (token = tokens[++i]) {
+        if (token[1] === 'do' && tokens[i + 1][0] === 'INDENT') {
+          endi = indexOfPair(tokens, i + 1);
+          if (tokens[endi + 1][0] === 'NEWLINE' && ((ref$ = tokens[endi + 2]) != null ? ref$[0] : void 8) === 'WHILE') {
+            token[0] = 'DO';
+            tokens[endi + 2].done = true;
+            tokens.splice(endi + 1, 1);
+          } else {
+            (token = tokens[1 + i])[0] = '(';
+            (tpair = tokens[endi])[0] = ')';
+            token.doblock = true;
+            tokens.splice(i, 1);
+          }
+        }
+        tag = token[0];
+        prev = tokens[i - 1];
+        tag === '[' && brackets.push(prev[0] === 'DOT');
+        if (prev[0] === ']') {
+          if (brackets.pop()) {
+            prev.index = true;
+          } else {
+            continue;
+          }
+        }
+        if (!(((ref1$ = prev[0]) === 'FUNCTION' || ref1$ === 'GENERATOR' || ref1$ === 'LET' || ref1$ === 'WHERE') || prev.spaced && able(tokens, i, true))) {
+          continue;
+        }
+        if (token.doblock) {
+          token[0] = 'CALL(';
+          tpair[0] = ')CALL';
+          continue;
+        }
+        if (!exp(token)) {
+          continue;
+        }
+        if (tag === 'CREMENT') {
+          if (token.spaced || !in$((ref1$ = tokens[i + 1]) != null ? ref1$[0] : void 8, CHAIN)) {
+            continue;
+          }
+        }
+        skipBlock = seenSwitch = false;
+        tokens.splice(i++, 0, ['CALL(', '', token[2], token[3]]);
+        detectEnd(tokens, i, ok, go);
+      }
+      function exp(token){
+        var tag;
+        tag = token[0];
+        return in$(tag, ARG) || !token.spaced && (tag === '+-' || tag === 'CLONE');
+      }
+      function ok(token, i){
+        var tag, ref$, pre;
+        tag = token[0];
+        if (tag === 'POST_IF' || tag === 'PIPE' || tag === 'BACKPIPE') {
+          return true;
+        }
+        if (!skipBlock) {
+          if (token.alias && ((ref$ = token[1]) === '&&' || ref$ === '||' || ref$ === 'xor') || (tag === 'TO' || tag === 'BY' || tag === 'IMPLEMENTS')) {
+            return true;
+          }
+        }
+        pre = tokens[i - 1];
+        switch (tag) {
+        case 'NEWLINE':
+          return pre[0] !== ',';
+        case 'DOT':
+        case '?':
+          return !skipBlock && (pre.spaced || pre[0] === 'DEDENT');
+        case 'SWITCH':
+          seenSwitch = true;
+          // fallthrough
+        case 'IF':
+        case 'CLASS':
+        case 'FUNCTION':
+        case 'GENERATOR':
+        case 'LET':
+        case 'WITH':
+        case 'CATCH':
+          skipBlock = true;
+          break;
+        case 'CASE':
+          if (seenSwitch) {
+            skipBlock = true;
+          } else {
+            return true;
+          }
+          break;
+        case 'INDENT':
+          if (skipBlock) {
+            return skipBlock = false;
+          }
+          return !in$(pre[0], BLOCK_USERS);
+        case 'WHILE':
+          if (token.done) {
+            return false;
+          }
+          // fallthrough
+        case 'FOR':
+          skipBlock = true;
+          return able(tokens, i) || pre[0] === 'CREMENT' || pre[0] === '...' && pre.spaced;
+        }
+        return false;
+      }
+      function go(token, i){
+        tokens.splice(i, 0, [')CALL', '', tokens[i - 1][2], tokens[i - 1][3]]);
+      }
+    }
+    function addImplicitBraces(tokens){
+      var stack, i, token, tag, start, paren, index, pre, ref$, ref1$, inline;
+      stack = [];
+      i = 0;
+      while (token = tokens[++i]) {
+        if (':' !== (tag = token[0])) {
+          switch (false) {
+          case !in$(tag, CLOSERS):
+            start = stack.pop();
+            break;
+          case !in$(tag, OPENERS):
+            if (tag === 'INDENT' && tokens[i - 1][0] === '{') {
+              tag = '{';
+            }
+            stack.push([tag, i]);
+          }
+          continue;
+        }
+        paren = tokens[i - 1][0] === ')';
+        index = paren
+          ? start[1]
+          : i - 1;
+        pre = tokens[index - 1];
+        if (!(((ref1$ = pre[0]) === ':' || ref1$ === 'ASSIGN' || ref1$ === 'IMPORT') || ((ref$ = stack[stack.length - 1]) != null ? ref$[0] : void 8) !== '{')) {
+          continue;
+        }
+        stack.push(['{']);
+        inline = !pre.doblock && ((ref1$ = pre[0]) !== 'NEWLINE' && ref1$ !== 'INDENT');
+        while (((ref1$ = tokens[index - 2]) != null ? ref1$[0] : void 8) === 'COMMENT') {
+          index -= 2;
+        }
+        tokens.splice(index, 0, ['{', '{', tokens[index][2], tokens[index][3]]);
+        detectEnd(tokens, ++i + 1, ok, go);
+      }
+      function ok(token, i){
+        var tag, ref$, t1, ref1$;
+        switch (tag = token[0]) {
+        case ',':
+          break;
+        case 'NEWLINE':
+          if (inline) {
+            return true;
+          }
+          break;
+        case 'DEDENT':
+          return true;
+        case 'POST_IF':
+        case 'FOR':
+        case 'WHILE':
+          return inline;
+        default:
+          return false;
+        }
+        t1 = (ref$ = tokens[i + 1]) != null ? ref$[0] : void 8;
+        return t1 !== (tag === ',' ? 'NEWLINE' : 'COMMENT') && ':' !== ((ref1$ = tokens[t1 === '('
+          ? 1 + indexOfPair(tokens, i + 1)
+          : i + 2]) != null ? ref1$[0] : void 8);
+      }
+      function go(token, i){
+        tokens.splice(i, 0, ['}', '', token[2], token[3]]);
+      }
+    }
+    function expandLiterals(tokens){
+      var i, fromNum, token, sig, ref$, ref1$, ref2$, lno, cno, ref3$, ref4$, char, toNum, tochar, byNum, byp, ref5$, ts, enc, add, i$, n, ref6$, ref7$, len$, word, that;
+      i = 0;
+      while (token = tokens[++i]) {
+        switch (token[0]) {
+        case 'STRNUM':
+          if (~'-+'.indexOf(sig = token[1].charAt(0))) {
+            token[1] = token[1].slice(1);
+            tokens.splice(i++, 0, ['+-', sig, token[2], token[3]]);
+          }
+          if (token.callable) {
+            continue;
+          }
+          break;
+        case 'TO':
+        case 'TIL':
+          if (!(tokens[i - 1][0] === '[' && ((tokens[i + 2][0] === ']' && (((ref2$ = tokens[i + 1][1].charAt(0)) === '\'' || ref2$ === '"') || +tokens[i + 1][1] >= 0)) || (tokens[i + 2][0] === 'BY' && ((ref$ = tokens[i + 3]) != null ? ref$[0] : void 8) === 'STRNUM' && ((ref1$ = tokens[i + 4]) != null ? ref1$[0] : void 8) === ']')))) {
+            continue;
+          }
+          if (tokens[i + 2][0] === 'BY') {
+            tokens[i + 2][0] = 'RANGE_BY';
+          }
+          token.op = token[1];
+          fromNum = 0;
+          // fallthrough
+        case 'RANGE':
+          lno = token[2];
+          cno = token[3];
+          if (fromNum != null || (tokens[i - 1][0] === '[' && tokens[i + 1][0] === 'STRNUM' && ((tokens[i + 2][0] === ']' && (((ref4$ = tokens[i + 1][1].charAt(0)) === '\'' || ref4$ === '"') || +tokens[i + 1][1] >= 0)) || (tokens[i + 2][0] === 'RANGE_BY' && ((ref2$ = tokens[i + 3]) != null ? ref2$[0] : void 8) === 'STRNUM' && ((ref3$ = tokens[i + 4]) != null ? ref3$[0] : void 8) === ']')))) {
+            if (fromNum == null) {
+              ref4$ = decode(token[1], lno), fromNum = ref4$[0], char = ref4$[1];
+            }
+            ref4$ = decode(tokens[i + 1][1], lno), toNum = ref4$[0], tochar = ref4$[1];
+            if (toNum == null || char ^ tochar) {
+              carp('bad "to" in range', lno);
+            }
+            byNum = 1;
+            if (byp = ((ref4$ = tokens[i + 2]) != null ? ref4$[0] : void 8) === 'RANGE_BY') {
+              if (!(byNum = +((ref5$ = tokens[i + 3]) != null ? ref5$[1] : void 8))) {
+                carp('bad "by" in range', tokens[i + 2][2]);
+              }
+            } else if (fromNum > toNum) {
+              byNum = -1;
+            }
+            ts = [];
+            enc = char ? character : String;
+            add = fn$;
+            if (token.op === 'to') {
+              for (i$ = fromNum; byNum < 0 ? i$ >= toNum : i$ <= toNum; i$ += byNum) {
+                n = i$;
+                add();
+              }
+            } else {
+              for (i$ = fromNum; byNum < 0 ? i$ > toNum : i$ < toNum; i$ += byNum) {
+                n = i$;
+                add();
+              }
+            }
+            ts.pop() || carp('empty range', lno);
+            tokens.splice.apply(tokens, [i, 2 + 2 * byp].concat(arrayFrom$(ts)));
+            i += ts.length - 1;
+          } else {
+            token[0] = 'STRNUM';
+            if (((ref6$ = tokens[i + 2]) != null ? ref6$[0] : void 8) === 'RANGE_BY') {
+              tokens.splice(i + 2, 1, ['BY', 'by', lno, cno]);
+            }
+            tokens.splice(i + 1, 0, ['TO', token.op, lno, cno]);
+          }
+          fromNum = null;
+          break;
+        case 'WORDS':
+          ts = [['[', '[', lno = token[2], cno = token[3]]];
+          for (i$ = 0, len$ = (ref7$ = token[1].match(/\S+/g) || '').length; i$ < len$; ++i$) {
+            word = ref7$[i$];
+            ts.push(['STRNUM', string('\'', word, lno), lno, cno], [',', ',', lno, cno]);
+          }
+          tokens.splice.apply(tokens, [i, 1].concat(arrayFrom$(ts), [[']', ']', lno, cno]]));
+          i += ts.length;
+          break;
+        case 'INDENT':
+          if (that = tokens[i - 1]) {
+            if (that[1] === 'new') {
+              tokens.splice(i++, 0, ['PARAM(', '', token[2], token[3]], [')PARAM', '', token[2], token[3]], ['->', '', token[2], token[3]]);
+            } else if ((ref7$ = that[0]) === 'FUNCTION' || ref7$ === 'GENERATOR' || ref7$ === 'LET') {
+              tokens.splice(i, 0, ['CALL(', '', token[2], token[3]], [')CALL', '', token[2], token[3]]);
+              i += 2;
+            }
+          }
+          continue;
+        case 'LITERAL':
+        case '}':
+          break;
+        case ')':
+        case ')CALL':
+          if (token[1]) {
+            continue;
+          }
+          break;
+        case ']':
+          if (token.index) {
+            continue;
+          }
+          break;
+        case 'CREMENT':
+          if (!able(tokens, i)) {
+            continue;
+          }
+          break;
+        case 'BIOP':
+          if (!token.spaced && ((ref7$ = token[1]) === '+' || ref7$ === '-') && tokens[i + 1][0] !== ')') {
+            tokens[i][0] = '+-';
+          }
+          continue;
+        default:
+          continue;
+        }
+        if (token.spaced && in$(tokens[i + 1][0], ARG)) {
+          tokens.splice(++i, 0, [',', ',', token[2], token[3]]);
+        }
+      }
+      function fn$(){
+        if (0x10000 < ts.push(['STRNUM', enc(n), lno, cno], [',', ',', lno, cno])) {
+          carp('range limit exceeded', lno);
+        }
+      }
+    }
+    function detectEnd(tokens, i, ok, go){
+      var levels, token, tag;
+      levels = 0;
+      for (; token = tokens[i]; ++i) {
+        if (!levels && ok(token, i)) {
+          return go(token, i);
+        }
+        tag = token[0];
+        if (0 > (levels += in$(tag, OPENERS) || -in$(tag, CLOSERS))) {
+          return go(token, i);
+        }
+      }
+    }
+    function indexOfPair(tokens, i){
+      var level, end, start, that;
+      level = 1;
+      end = INVERSES[start = tokens[i][0]];
+      while (that = tokens[++i]) {
+        switch (that[0]) {
+        case start:
+          ++level;
+          break;
+        case end:
+          if (!--level) {
+            return i;
+          }
+        }
+      }
+      return -1;
+    }
+    KEYWORDS_SHARED = ['true', 'false', 'null', 'this', 'void', 'super', 'return', 'throw', 'break', 'continue', 'if', 'else', 'for', 'while', 'switch', 'case', 'default', 'try', 'catch', 'finally', 'function', 'class', 'extends', 'implements', 'new', 'do', 'delete', 'typeof', 'in', 'instanceof', 'let', 'with', 'var', 'const', 'import', 'export', 'debugger', 'yield'];
+    KEYWORDS_UNUSED = ['enum', 'interface', 'package', 'private', 'protected', 'public', 'static'];
+    JS_KEYWORDS = KEYWORDS_SHARED.concat(KEYWORDS_UNUSED);
+    LS_KEYWORDS = ['xor', 'match', 'where'];
+    ID = /((?!\s)[a-z_$\xAA-\uFFDC](?:(?!\s)[\w$\xAA-\uFFDC]|-[a-z])*)([^\n\S]*:(?![:=]))?|/ig;
+    SYMBOL = /[-\/^]=|[%+:*]{1,2}=|\|>=|\.(?:[&\|\^]|<<|>>>?)\.=?|\.{1,3}|\^\^|\*?<(?:--?|~~?)!?|!?(?:--?|~~?)>>?\*?|([-+&|:])\1|%%|&|\([^\n\S]*\)|[!=]==?|!?\~=|@@?|<\[(?:[\s\S]*?\]>)?|<<<<?|<\||[<>]==|<<=|>>=|<<|>>|[<>]\??=?|\|>|\||=>|\*\*|\^|`|[^\s#]?/g;
+    SPACE = /[^\n\S]*(?:#.*)?/g;
+    MULTIDENT = /(?:\s*#.*)*(?:\n([^\n\S]*))*/g;
+    SIMPLESTR = /'[^\\']*(?:\\[\s\S][^\\']*)*'|/g;
+    JSTOKEN = /``[^\\`]*(?:\\[\s\S][^\\`]*)*``|/g;
+    BSTOKEN = RegExp('\\\\(?:(\\S[^\\s,;)}\\]]*)|(?:' + SPACE.source + '\\n?)*)', 'g');
+    NUMBER = /0x[\dA-Fa-f][\dA-Fa-f_]*|(\d*)~([\dA-Za-z]\w*)|((\d[\d_]*)(\.\d[\d_]*)?(?:e[+-]?\d[\d_]*)?)[$\w]*|/g;
+    NUMBER_OMIT = /_+/g;
+    REGEX = /\/([^[\/\n\\]*(?:(?:\\.|\[[^\]\n\\]*(?:\\.[^\]\n\\]*)*\])[^[\/\n\\]*)*)\/([gimy]{1,4}|\$?)|/g;
+    HEREGEX_OMIT = /\s+(?:#.*)?/g;
+    LASTDENT = /\n[^\n\S]*$/;
+    INLINEDENT = /[^\n\S]*[^#\s]?/g;
+    NONASCII = /[\x80-\uFFFF]/;
+    OPENERS = ['(', '[', '{', 'CALL(', 'PARAM(', 'INDENT'];
+    CLOSERS = [')', ']', '}', ')CALL', ')PARAM', 'DEDENT'];
+    INVERSES = import$((function(){
+      var i$, ref$, len$, resultObj$ = {};
+      for (i$ = 0, len$ = (ref$ = OPENERS).length; i$ < len$; ++i$) {
+        i = i$;
+        o = ref$[i$];
+        resultObj$[o] = CLOSERS[i];
+      }
+      return resultObj$;
+    }()), (function(){
+      var i$, ref$, len$, resultObj$ = {};
+      for (i$ = 0, len$ = (ref$ = CLOSERS).length; i$ < len$; ++i$) {
+        i = i$;
+        c = ref$[i$];
+        resultObj$[c] = OPENERS[i];
+      }
+      return resultObj$;
+    }()));
+    CHAIN = ['(', '{', '[', 'ID', 'STRNUM', 'LITERAL', 'LET', 'WITH', 'WORDS'];
+    ARG = CHAIN.concat(['...', 'UNARY', 'YIELD', 'CREMENT', 'PARAM(', 'FUNCTION', 'GENERATOR', 'IF', 'SWITCH', 'TRY', 'CLASS', 'RANGE', 'LABEL', 'DECL', 'DO', 'BIOPBP']);
+    BLOCK_USERS = [',', ':', '->', 'ELSE', 'ASSIGN', 'IMPORT', 'UNARY', 'DEFAULT', 'TRY', 'FINALLY', 'HURL', 'DECL', 'DO', 'LET', 'FUNCTION', 'GENERATOR', '...'];
+    function clone$(it){
+      function fun(){} fun.prototype = it;
+      return new fun;
+    }
+    function in$(x, xs){
+      var i = -1, l = xs.length >>> 0;
+      while (++i < l) if (x === xs[i]) return true;
+      return false;
+    }
+    function import$(obj, src){
+      var own = {}.hasOwnProperty;
+      for (var key in src) if (own.call(src, key)) obj[key] = src[key];
+      return obj;
+    }
+    },{}],4:[function(require,module,exports){
+    (function (global){
+    // Generated by LiveScript 1.6.1
+    module.exports = function(LiveScript){
+      var fs, path, events;
+      fs = require('fs');
+      path = require('path');
+      events = require('events');
+      LiveScript.run = function(code, options, arg$){
+        var filename, ref$, js, context, main, dirname, that, e;
+        if (options != null) {
+          filename = options.filename;
+        }
+        ref$ = arg$ != null
+          ? arg$
+          : {}, js = ref$.js, context = ref$.context;
+        main = require.main;
+        dirname = filename
+          ? path.dirname(fs.realpathSync(filename = path.resolve(filename)))
+          : filename = '.';
+        main.paths = main.constructor._nodeModulePaths(dirname);
+        main.filename = filename;
+        if (!js) {
+          code = LiveScript.compile(code, (ref$ = {}, import$(ref$, options), ref$.bare = true, ref$));
+          if (that = code.code) {
+            code = that;
+          }
+        }
+        if (context) {
+          global.__runContext = context;
+          code = "return (function() {\n" + code + "\n}).call(global.__runContext);";
+        }
+        filename += '(js)';
+        try {
+          return main._compile(code, filename);
+        } catch (e$) {
+          e = e$;
+          throw hackTrace(e, code, filename);
+        }
+      };
+      importAll$(LiveScript, events.EventEmitter.prototype);
+      require.extensions['.ls'] = function(module, filename){
+        var file, js, e;
+        file = fs.readFileSync(filename, 'utf8');
+        js = '.json.ls' === filename.substr(-8)
+          ? 'module.exports = ' + LiveScript.compile(file, {
+            filename: filename,
+            json: true
+          })
+          : LiveScript.compile(file, {
+            filename: filename,
+            bare: true,
+            map: "embedded"
+          }).code;
+        try {
+          return module._compile(js, filename);
+        } catch (e$) {
+          e = e$;
+          throw hackTrace(e, js, filename);
+        }
+      };
+    };
+    function hackTrace(error, js, filename){
+      var stack, traces, i$, len$, i, trace, index, lno, end, length, lines, j$, ref$, n;
+      if (error != null) {
+        stack = error.stack;
+      }
+      if (!stack) {
+        return error;
+      }
+      traces = stack.split('\n');
+      if (!(traces.length > 1)) {
+        return error;
+      }
+      for (i$ = 0, len$ = traces.length; i$ < len$; ++i$) {
+        i = i$;
+        trace = traces[i$];
+        if (0 > (index = trace.indexOf("(" + filename + ":"))) {
+          continue;
+        }
+        lno = (/:(\d+):/.exec(trace.slice(index + filename.length)) || '')[1];
+        if (!(lno = +lno)) {
+          continue;
+        }
+        end = lno + 4;
+        length = ('' + end).length;
+        lines || (lines = js.split('\n'));
+        for (j$ = 1 > (ref$ = lno - 4) ? 1 : ref$; j$ <= end; ++j$) {
+          n = j$;
+          traces[i] += "\n" + ('    ' + n).slice(-length) + "" + '|+'.charAt(n === lno) + " " + [lines[n - 1]];
+        }
+      }
+      return error.stack = traces.join('\n'), error;
+    }
+    function import$(obj, src){
+      var own = {}.hasOwnProperty;
+      for (var key in src) if (own.call(src, key)) obj[key] = src[key];
+      return obj;
+    }
+    function importAll$(obj, src){
+      for (var key in src) obj[key] = src[key];
+      return obj;
+    }
+    }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+    },{"events":10,"fs":8,"path":13}],5:[function(require,module,exports){
+    (function (process){
+    /* parser generated by jison 0.4.18 */
+    /*
+      Returns a Parser object of the following structure:
+    
+      Parser: {
+        yy: {}
+      }
+    
+      Parser.prototype: {
+        yy: {},
+        trace: function(),
+        symbols_: {associative list: name ==> number},
+        terminals_: {associative list: number ==> name},
+        productions_: [...],
+        performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate, $$, _$),
+        table: [...],
+        defaultActions: {...},
+        parseError: function(str, hash),
+        parse: function(input),
+    
+        lexer: {
+            EOF: 1,
+            parseError: function(str, hash),
+            setInput: function(input),
+            input: function(),
+            unput: function(str),
+            more: function(),
+            less: function(n),
+            pastInput: function(),
+            upcomingInput: function(),
+            showPosition: function(),
+            test_match: function(regex_match_array, rule_index),
+            next: function(),
+            lex: function(),
+            begin: function(condition),
+            popState: function(),
+            _currentRules: function(),
+            topState: function(),
+            pushState: function(condition),
+    
+            options: {
+                ranges: boolean           (optional: true ==> token location info will include a .range[] member)
+                flex: boolean             (optional: true ==> flex-like lexing behaviour where the rules are tested exhaustively to find the longest match)
+                backtrack_lexer: boolean  (optional: true ==> lexer regexes are tested in order and for each matching regex the action code is invoked; the lexer terminates the scan when a token is returned by the action code)
+            },
+    
+            performAction: function(yy, yy_, $avoiding_name_collisions, YY_START),
+            rules: [...],
+            conditions: {associative list: name ==> set},
+        }
+      }
+    
+    
+      token location info (@$, _$, etc.): {
+        first_line: n,
+        last_line: n,
+        first_column: n,
+        last_column: n,
+        range: [start_number, end_number]       (where the numbers are indexes into the input string, regular zero-based)
+      }
+    
+    
+      the parseError function receives a 'hash' object with these members for lexer and parser errors: {
+        text:        (matched text)
+        token:       (the produced terminal token, if any)
+        line:        (yylineno)
+      }
+      while parser (grammar) errors will also provide these members, i.e. parser errors deliver a superset of attributes: {
+        loc:         (yylloc)
+        expected:    (string describing the set of expected tokens)
+        recoverable: (boolean: TRUE when the parser has a error recovery rule available for this particular error)
+      }
+    */
+    var parser = (function(){
+    var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[2,60],$V1=[1,31],$V2=[1,34],$V3=[1,35],$V4=[1,36],$V5=[1,37],$V6=[1,38],$V7=[1,8],$V8=[1,15],$V9=[1,14],$Va=[1,39],$Vb=[1,41],$Vc=[1,29],$Vd=[1,6],$Ve=[1,10],$Vf=[1,9],$Vg=[1,11],$Vh=[1,16],$Vi=[1,17],$Vj=[1,18],$Vk=[1,19],$Vl=[1,20],$Vm=[1,21],$Vn=[1,22],$Vo=[1,23],$Vp=[1,44],$Vq=[1,24],$Vr=[1,25],$Vs=[1,26],$Vt=[1,27],$Vu=[1,28],$Vv=[1,30],$Vw=[1,43],$Vx=[1,45],$Vy=[1,20,25,47],$Vz=[20,47],$VA=[2,64],$VB=[1,49],$VC=[1,50],$VD=[1,51],$VE=[1,52],$VF=[1,53],$VG=[1,54],$VH=[1,55],$VI=[1,56],$VJ=[1,57],$VK=[1,58],$VL=[1,59],$VM=[1,60],$VN=[1,61],$VO=[1,62],$VP=[1,63],$VQ=[30,46,47,48],$VR=[2,50],$VS=[1,68],$VT=[1,67],$VU=[1,12,19,20,22,24,25,26,30,33,34,35,46,47,48,58,59,62,63,64,65,66,67,68,69,70,71,72,79,81,82,102,105],$VV=[2,75],$VW=[1,77],$VX=[1,78],$VY=[1,73],$VZ=[1,79],$V_=[1,71],$V$=[1,72],$V01=[1,74],$V11=[1,75],$V21=[1,83],$V31=[1,87],$V41=[1,86],$V51=[1,84],$V61=[1,95],$V71=[1,109],$V81=[48,105],$V91=[2,201],$Va1=[1,113],$Vb1=[2,1],$Vc1=[1,9,12,13,19,20,22,24,25,26,30,32,33,34,35,37,46,47,48,56,57,58,59,62,63,64,65,66,67,68,69,70,71,72,73,79,81,82,96,102,103,104,105],$Vd1=[2,2],$Ve1=[19,46,47,48],$Vf1=[1,120],$Vg1=[1,119],$Vh1=[22,46,47],$Vi1=[2,156],$Vj1=[1,130],$Vk1=[1,125],$Vl1=[1,128],$Vm1=[1,129],$Vn1=[25,47],$Vo1=[1,9,12,13,19,20,22,24,25,26,30,32,33,34,35,37,46,47,48,56,57,58,59,62,63,64,65,66,67,68,69,70,71,72,73,79,81,82,96,99,102,103,104,105],$Vp1=[30,47,48],$Vq1=[2,58],$Vr1=[1,169],$Vs1=[12,19,20,30,46,47,48],$Vt1=[2,55],$Vu1=[2,71],$Vv1=[12,46,47,48],$Vw1=[1,12,19,20,22,24,25,26,30,34,35,46,47,48,58,59,62,63,64,66,67,68,70,71,72,79,81,82,102,105],$Vx1=[20,46,47,48],$Vy1=[1,12,19,20,22,24,25,26,30,34,35,46,47,48,79,81,82,102,105],$Vz1=[1,206],$VA1=[1,12,19,20,22,24,25,26,30,33,34,35,46,47,48,58,59,62,63,64,65,66,67,68,69,70,71,72,79,81,102,105],$VB1=[1,209],$VC1=[46,48,82],$VD1=[2,203],$VE1=[1,215],$VF1=[1,12,19,20,22,24,25,26,30,34,35,46,47,48,71,72,79,81,82,102,105],$VG1=[19,47,48],$VH1=[1,227],$VI1=[20,22,46,47],$VJ1=[9,13,20,22,32,33,37,46,47,56,57,58,59,62,63,64,65,66,67,68,69,70,71,72,73,79,96],$VK1=[2,165],$VL1=[1,251],$VM1=[19,20,22,47,48,81,102],$VN1=[1,12,19,20,22,24,25,26,30,34,35,46,47,48,58,62,63,66,67,68,70,71,72,79,81,82,102,105],$VO1=[1,12,19,20,22,24,25,26,30,34,35,46,47,48,63,67,71,72,79,81,82,102,105],$VP1=[1,12,19,20,22,24,25,26,30,34,35,46,47,48,62,63,67,70,71,72,79,81,82,102,105],$VQ1=[1,264],$VR1=[1,265],$VS1=[2,59],$VT1=[12,47,48],$VU1=[20,47,48],$VV1=[1,302],$VW1=[1,303],$VX1=[1,311],$VY1=[4,7,14,16,21,23,29,31,32,38,41,44,48,49,59,60,61,75,76,77,78,80,81,83,84,85,90,93,97,102],$VZ1=[1,336],$V_1=[1,337],$V$1=[1,12,19,20,22,24,25,26,30,33,34,35,46,47,48,58,59,62,63,64,65,66,67,68,69,70,71,72,79,81,82,88,89,102,105],$V02=[2,46],$V12=[1,369];
+    var parser = {trace: function trace () { },
+    yy: {},
+    symbols_: {"error":2,"Chain":3,"ID":4,"KeyLike":5,"List":6,"LITERAL":7,"Index":8,"CALL(":9,"ArgList":10,"OptComma":11,")CALL":12,"?":13,"LET":14,"Block":15,"[":16,"Expression":17,"LoopHeads":18,"]":19,"DEDENT":20,"{":21,"}":22,"(":23,"BIOP":24,")":25,"BIOPR":26,"BIOPBP":27,"BIOPP":28,"PARAM(":29,")PARAM":30,"UNARY":31,"CREMENT":32,"BACKTICK":33,"TO":34,"BY":35,"FROM":36,"DOT":37,"WITH":38,"LoopHead":39,"Else":40,"STRNUM":41,"Parenthetical":42,"Properties":43,"LABEL":44,"Arg":45,",":46,"NEWLINE":47,"INDENT":48,"...":49,"Lines":50,"Line":51,"<-":52,"COMMENT":53,"REQUIRE":54,"SplatChain":55,"CLONEPORT":56,"ASSIGN":57,"IMPORT":58,"+-":59,"CLONE":60,"YIELD":61,"COMPARE":62,"LOGIC":63,"MATH":64,"POWER":65,"SHIFT":66,"BITWISE":67,"CONCAT":68,"COMPOSE":69,"RELATION":70,"PIPE":71,"BACKPIPE":72,"!?":73,"->":74,"FUNCTION":75,"GENERATOR":76,"ASYNC":77,"IF":78,"POST_IF":79,"DO":80,"WHILE":81,"CASE":82,"HURL":83,"JUMP":84,"SWITCH":85,"Exprs":86,"Cases":87,"DEFAULT":88,"ELSE":89,"TRY":90,"CATCH":91,"FINALLY":92,"CLASS":93,"OptExtends":94,"OptImplements":95,"EXTENDS":96,"DECL":97,"KeyColon":98,":":99,"Property":100,"Body":101,"FOR":102,"IN":103,"OF":104,"IMPLEMENTS":105,"Root":106,"$accept":0,"$end":1},
+    terminals_: {2:"error",4:"ID",7:"LITERAL",9:"CALL(",12:")CALL",13:"?",14:"LET",16:"[",19:"]",20:"DEDENT",21:"{",22:"}",23:"(",24:"BIOP",25:")",26:"BIOPR",27:"BIOPBP",28:"BIOPP",29:"PARAM(",30:")PARAM",31:"UNARY",32:"CREMENT",33:"BACKTICK",34:"TO",35:"BY",36:"FROM",37:"DOT",38:"WITH",41:"STRNUM",44:"LABEL",46:",",47:"NEWLINE",48:"INDENT",49:"...",52:"<-",53:"COMMENT",54:"REQUIRE",56:"CLONEPORT",57:"ASSIGN",58:"IMPORT",59:"+-",60:"CLONE",61:"YIELD",62:"COMPARE",63:"LOGIC",64:"MATH",65:"POWER",66:"SHIFT",67:"BITWISE",68:"CONCAT",69:"COMPOSE",70:"RELATION",71:"PIPE",72:"BACKPIPE",73:"!?",74:"->",75:"FUNCTION",76:"GENERATOR",77:"ASYNC",78:"IF",79:"POST_IF",80:"DO",81:"WHILE",82:"CASE",83:"HURL",84:"JUMP",85:"SWITCH",88:"DEFAULT",89:"ELSE",90:"TRY",91:"CATCH",92:"FINALLY",93:"CLASS",96:"EXTENDS",97:"DECL",99:":",102:"FOR",103:"IN",104:"OF",105:"IMPLEMENTS"},
+    productions_: [0,[3,1],[3,1],[3,1],[3,1],[3,2],[3,5],[3,2],[3,6],[3,4],[3,5],[3,7],[3,3],[3,4],[3,4],[3,3],[3,4],[3,4],[3,3],[3,7],[3,3],[3,7],[3,3],[3,3],[3,5],[3,6],[3,6],[3,5],[3,7],[3,6],[3,8],[3,4],[3,6],[3,9],[3,8],[3,7],[3,6],[3,6],[3,5],[3,3],[3,3],[5,1],[5,1],[8,2],[8,2],[8,2],[6,4],[6,4],[6,5],[6,5],[10,0],[10,1],[10,3],[10,4],[10,6],[45,1],[45,2],[45,1],[11,0],[11,1],[50,0],[50,1],[50,3],[50,2],[51,1],[51,2],[51,6],[51,1],[51,1],[51,2],[15,3],[55,2],[17,3],[17,3],[17,5],[17,1],[17,3],[17,3],[17,6],[17,3],[17,6],[17,2],[17,2],[17,3],[17,2],[17,3],[17,3],[17,3],[17,4],[17,4],[17,4],[17,2],[17,2],[17,2],[17,3],[17,3],[17,3],[17,6],[17,5],[17,1],[17,2],[17,3],[17,3],[17,3],[17,3],[17,3],[17,3],[17,3],[17,3],[17,3],[17,3],[17,3],[17,3],[17,2],[17,6],[17,6],[17,6],[17,7],[17,7],[17,4],[17,3],[17,4],[17,6],[17,2],[17,5],[17,1],[17,1],[17,2],[17,3],[17,5],[17,5],[17,2],[17,4],[17,4],[17,2],[17,2],[17,4],[17,6],[17,5],[17,7],[17,4],[17,5],[17,4],[17,3],[17,2],[17,2],[17,5],[86,1],[86,3],[98,2],[98,2],[100,2],[100,5],[100,1],[100,2],[100,1],[43,0],[43,1],[43,3],[43,4],[43,4],[42,3],[101,1],[101,1],[101,3],[40,0],[40,2],[40,5],[39,4],[39,6],[39,6],[39,8],[39,2],[39,4],[39,4],[39,6],[39,4],[39,6],[39,6],[39,8],[39,6],[39,5],[39,8],[39,7],[39,8],[39,7],[39,10],[39,9],[39,10],[39,9],[39,2],[39,4],[39,4],[39,6],[18,1],[18,2],[18,3],[18,3],[87,3],[87,4],[94,2],[94,0],[95,2],[95,0],[106,1]],
+    performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
+    /* this == yyval */
+    
+    var $0 = $$.length - 1;
+    switch (yystate) {
+    case 1:
+    this.$ = yy.L(_$[$0], _$[$0],yy.Chain(yy.L(_$[$0],_$[$0],yy.Var($$[$0]))));
+    break;
+    case 2: case 3:
+    this.$ = yy.L(_$[$0], _$[$0],yy.Chain($$[$0]));
+    break;
+    case 4:
+    this.$ = yy.L(_$[$0], _$[$0],yy.Chain(yy.L(_$[$0],_$[$0],yy.Literal($$[$0]))));
+    break;
+    case 5:
+    this.$ = yy.L(_$[$0-1], _$[$0],$$[$0-1].add($$[$0]));
+    break;
+    case 6:
+    this.$ = yy.L(_$[$0-4], _$[$0],$$[$0-4].add(yy.L(_$[$0-3],_$[$0], yy.Call($$[$0-2]))));
+    break;
+    case 7:
+    this.$ = yy.L(_$[$0-1], _$[$0],yy.Chain(yy.L(_$[$0-1],_$[$0], yy.Existence($$[$0-1].unwrap()))));
+    break;
+    case 8:
+    this.$ = yy.L(_$[$0-5], _$[$0],yy.Chain(yy.L(_$[$0-5],_$[$0-1], yy.Call['let']($$[$0-3], $$[$0]))));
+    break;
+    case 9:
+    this.$ = yy.L(_$[$0-3], _$[$0],yy.Chain(yy.L(_$[$0-3],_$[$0], $$[$0-1][0].makeComprehension($$[$0-2], $$[$0-1].slice(1)))));
+    break;
+    case 10:
+    this.$ = yy.L(_$[$0-4], _$[$0],yy.Chain(yy.L(_$[$0-4],_$[$0], $$[$0-2][0].makeComprehension($$[$0-3], $$[$0-2].slice(1)))));
+    break;
+    case 11:
+    this.$ = yy.L(_$[$0-6], _$[$0],yy.Chain(yy.L(_$[$0-6],_$[$0], $$[$0-1][0].addObjComp().makeComprehension(yy.L(_$[$0-4],_$[$0-4],yy.Arr($$[$0-4])), $$[$0-1].slice(1)))));
+    break;
+    case 12: case 18: case 20:
+    this.$ = yy.L(_$[$0-2], _$[$0],yy.Chain(yy.L(_$[$0-1],_$[$0-1],yy.Binary($$[$0-1]))));
+    break;
+    case 13:
+    this.$ = yy.L(_$[$0-3], _$[$0],yy.Chain(yy.L(_$[$0-2],_$[$0-2],yy.Binary($$[$0-2], void 8, $$[$0-1]))));
+    break;
+    case 14:
+    this.$ = yy.L(_$[$0-3], _$[$0],yy.Chain(yy.L(_$[$0-1],_$[$0-1],yy.Binary($$[$0-1], $$[$0-2]))));
+    break;
+    case 15:
+    this.$ = yy.L(_$[$0-2], _$[$0],yy.Chain(yy.L(_$[$0-1],_$[$0-1],'!' === $$[$0-1].charAt(0)
+            ? yy.Binary($$[$0-1].slice(1)).invertIt()
+            : yy.Binary($$[$0-1]))));
+    break;
+    case 16:
+    this.$ = yy.L(_$[$0-3], _$[$0],yy.Chain(yy.L(_$[$0-2],_$[$0-2],'!' === $$[$0-2].charAt(0)
+            ? yy.Binary($$[$0-2].slice(1), void 8, $$[$0-1]).invertIt()
+            : yy.Binary($$[$0-2], void 8, $$[$0-1]))));
+    break;
+    case 17:
+    this.$ = yy.L(_$[$0-3], _$[$0],yy.Chain(yy.L(_$[$0-1],_$[$0-1],'!' === $$[$0-1].charAt(0)
+            ? yy.Binary($$[$0-1].slice(1), $$[$0-2]).invertIt()
+            : yy.Binary($$[$0-1], $$[$0-2]))));
+    break;
+    case 19:
+    this.$ = yy.L(_$[$0-6], _$[$0],yy.Chain(yy.L(_$[$0-5],_$[$0-5],yy.Binary($$[$0-5], void 8, $$[$0-3]))));
+    break;
+    case 21:
+    this.$ = yy.L(_$[$0-6], _$[$0],yy.Chain(yy.L(_$[$0-1],_$[$0-1],yy.Binary($$[$0-1], $$[$0-4]))));
+    break;
+    case 22: case 23:
+    this.$ = yy.L(_$[$0-2], _$[$0],yy.Chain(yy.L(_$[$0-1],_$[$0-1],yy.Unary($$[$0-1]))));
+    break;
+    case 24:
+    this.$ = yy.L(_$[$0-4], _$[$0],yy.Chain($$[$0-2]));
+    break;
+    case 25:
+    this.$ = yy.L(_$[$0-5], _$[$0],yy.Chain(yy.L(_$[$0-4],_$[$0-1], $$[$0-2].add(yy.L(_$[$0-4],_$[$0-4],yy.Call([$$[$0-4]]))))));
+    break;
+    case 26:
+    this.$ = yy.L(_$[$0-5], _$[$0],yy.Chain(yy.L(_$[$0-3],_$[$0-3],yy.Chain(yy.Var('flip$'))).add(yy.L(_$[$0-3],_$[$0-3],yy.Call([$$[$0-3]])))).flipIt().add(yy.L(_$[$0-1],_$[$0-1],yy.Call([$$[$0-1]]))));
+    break;
+    case 27:
+    this.$ = yy.L(_$[$0-4], _$[$0],yy.Chain(yy.L(_$[$0-3],_$[$0-1], new yy.For({
+            from: $$[$0-3],
+            op: $$[$0-2],
+            to: $$[$0-1],
+            inComprehension: true
+          }))));
+    break;
+    case 28:
+    this.$ = yy.L(_$[$0-6], _$[$0],yy.Chain(yy.L(_$[$0-5],_$[$0-1], new yy.For({
+            from: $$[$0-5],
+            op: $$[$0-4],
+            to: $$[$0-3],
+            step: $$[$0-1],
+            inComprehension: true
+          }))));
+    break;
+    case 29:
+    this.$ = yy.L(_$[$0-5], _$[$0],yy.Chain(yy.L(_$[$0-4],_$[$0-1], new yy.For({
+            from: $$[$0-3],
+            op: $$[$0-2],
+            to: $$[$0-1],
+            inComprehension: true
+          }))));
+    break;
+    case 30:
+    this.$ = yy.L(_$[$0-7], _$[$0],yy.Chain(yy.L(_$[$0-6],_$[$0-1], new yy.For({
+            from: $$[$0-5],
+            op: $$[$0-4],
+            to: $$[$0-3],
+            step: $$[$0-1],
+            inComprehension: true
+          }))));
+    break;
+    case 31:
+    this.$ = yy.L(_$[$0-3], _$[$0],yy.Chain(yy.L(_$[$0-2],_$[$0-1], new yy.For({
+            from: yy.Chain(yy.Literal(0)),
+            op: $$[$0-2],
+            to: $$[$0-1],
+            inComprehension: true
+          }))));
+    break;
+    case 32:
+    this.$ = yy.L(_$[$0-5], _$[$0],yy.Chain(yy.L(_$[$0-4],_$[$0-1], new yy.For({
+            from: yy.Chain(yy.Literal(0)),
+            op: $$[$0-4],
+            to: $$[$0-3],
+            step: $$[$0-1],
+            inComprehension: true
+          }))));
+    break;
+    case 33:
+    this.$ = yy.L(_$[$0-8], _$[$0],yy.Chain(yy.L(_$[$0-8],_$[$0], new yy.StepSlice({
+            op: $$[$0-4],
+            target: $$[$0-8],
+            from: $$[$0-5],
+            to: $$[$0-3],
+            step: $$[$0-1]
+          }))));
+    break;
+    case 34:
+    this.$ = yy.L(_$[$0-7], _$[$0],yy.Chain(yy.L(_$[$0-7],_$[$0], new yy.StepSlice({
+            op: $$[$0-4],
+            target: $$[$0-7],
+            from: yy.Literal(0),
+            to: $$[$0-3],
+            step: $$[$0-1]
+          }))));
+    break;
+    case 35:
+    this.$ = yy.L(_$[$0-6], _$[$0],yy.Chain(yy.L(_$[$0-6],_$[$0], yy.Slice({
+            type: $$[$0-2],
+            target: $$[$0-6],
+            from: $$[$0-3],
+            to: $$[$0-1]
+          }))));
+    break;
+    case 36:
+    this.$ = yy.L(_$[$0-5], _$[$0],yy.Chain(yy.L(_$[$0-5],_$[$0], yy.Slice({
+            type: $$[$0-1],
+            target: $$[$0-5],
+            from: $$[$0-2]
+          }))));
+    break;
+    case 37:
+    this.$ = yy.L(_$[$0-5], _$[$0],yy.Chain(yy.L(_$[$0-5],_$[$0], yy.Slice({
+            type: $$[$0-2],
+            target: $$[$0-5],
+            to: $$[$0-1]
+          }))));
+    break;
+    case 38:
+    this.$ = yy.L(_$[$0-4], _$[$0],yy.Chain(yy.L(_$[$0-4],_$[$0], yy.Slice({
+            type: $$[$0-1],
+            target: $$[$0-4]
+          }))));
+    break;
+    case 39:
+    this.$ = yy.L(_$[$0-2], _$[$0],yy.Chain(yy.L(_$[$0-2],_$[$0-1], yy.Cascade($$[$0-1], $$[$0], 'with'))));
+    break;
+    case 40:
+    this.$ = yy.L(_$[$0-2], _$[$0],yy.Chain($$[$0-2].addBody($$[$0-1]).addElse($$[$0])));
+    break;
+    case 41:
+    this.$ = yy.L(_$[$0], _$[$0],yy.Literal($$[$0]));
+    break;
+    case 42: case 55: case 58: case 59: case 63: case 64: case 162: case 163:
+    
+    break;
+    case 43:
+    this.$ = yy.L(_$[$0-1], _$[$0],yy.Index(yy.L(_$[$0],_$[$0],yy.Key($$[$0])), $$[$0-1], true));
+    break;
+    case 44: case 45:
+    this.$ = yy.L(_$[$0-1], _$[$0],yy.Index($$[$0], $$[$0-1], true));
+    break;
+    case 46:
+    this.$ = yy.L(_$[$0-3], _$[$0],yy.Arr($$[$0-2]));
+    break;
+    case 47:
+    this.$ = yy.L(_$[$0-3], _$[$0],yy.Obj($$[$0-2]));
+    break;
+    case 48:
+    this.$ = yy.L(_$[$0-4], _$[$0],yy.Arr($$[$0-3]).named($$[$0]));
+    break;
+    case 49:
+    this.$ = yy.L(_$[$0-4], _$[$0],yy.Obj($$[$0-3]).named($$[$0]));
+    break;
+    case 50: case 156:
+    this.$ = yy.L(_$[$0], _$[$0],[]);
+    break;
+    case 51: case 147: case 157: case 194:
+    this.$ = yy.L(_$[$0], _$[$0],[$$[$0]]);
+    break;
+    case 52: case 148: case 158: case 196: case 197:
+    this.$ = yy.L(_$[$0-2], _$[$0],$$[$0-2].concat($$[$0]));
+    break;
+    case 53: case 159:
+    this.$ = yy.L(_$[$0-3], _$[$0],$$[$0-3].concat($$[$0]));
+    break;
+    case 54:
+    this.$ = yy.L(_$[$0-5], _$[$0-2],$$[$0-5].concat($$[$0-2]));
+    break;
+    case 56:
+    this.$ = yy.L(_$[$0-1], _$[$0],yy.Splat($$[$0]));
+    break;
+    case 57:
+    this.$ = yy.L(_$[$0], _$[$0],yy.Splat(yy.L(_$[$0],_$[$0],yy.Arr()), true));
+    break;
+    case 60:
+    this.$ = yy.L(_$[$0], _$[$0],yy.Block());
+    break;
+    case 61:
+    this.$ = yy.L(_$[$0], _$[$0],yy.Block($$[$0]));
+    break;
+    case 62: case 164:
+    this.$ = yy.L(_$[$0-2], _$[$0],$$[$0-2].add($$[$0]));
+    break;
+    case 65:
+    this.$ = yy.L(_$[$0-1], _$[$0],yy.Cascade($$[$0-1], $$[$0], 'cascade'));
+    break;
+    case 66:
+    this.$ = yy.L(_$[$0-5], _$[$0],yy.Call.back($$[$0-4], $$[$0], /~/.test($$[$0-1]), /--|~~/.test($$[$0-1]), /!/.test($$[$0-1]), /\*/.test($$[$0-1])));
+    break;
+    case 67: case 155:
+    this.$ = yy.L(_$[$0], _$[$0],yy.JS($$[$0], true, true));
+    break;
+    case 68:
+    this.$ = yy.L(_$[$0], _$[$0],yy.Throw(yy.L(_$[$0],_$[$0],yy.JS("Error('unimplemented')"))));
+    break;
+    case 69:
+    this.$ = yy.L(_$[$0-1], _$[$0],yy.Require($$[$0].unwrap()));
+    break;
+    case 70:
+    this.$ = yy.L(_$[$0-2], _$[$0],$$[$0-1]);
+    break;
+    case 71:
+    this.$ = yy.L(_$[$0-1], _$[$0],yy.Splat($$[$0].unwrap()));
+    break;
+    case 72:
+    this.$ = yy.L(_$[$0-2], _$[$0],yy.Import(yy.L(_$[$0-2],_$[$0-1], yy.Unary('^^', $$[$0-2], {
+            prec: 'yy.UNARY'
+          })), $$[$0], false));
+    break;
+    case 73:
+    this.$ = yy.L(_$[$0-2], _$[$0],yy.Import(yy.L(_$[$0-2],_$[$0-1], yy.Unary('^^', $$[$0-2], {
+            prec: 'yy.UNARY'
+          })), $$[$0].unwrap(), false));
+    break;
+    case 74:
+    this.$ = yy.L(_$[$0-4], _$[$0],$$[$0-2].add(yy.L(_$[$0-4],_$[$0], yy.Call([$$[$0-4], $$[$0]]))));
+    break;
+    case 75:
+    this.$ = yy.L(_$[$0], _$[$0],$$[$0].unwrap());
+    break;
+    case 76:
+    this.$ = yy.L(_$[$0-2], _$[$0],yy.Assign($$[$0-2].unwrap(), $$[$0], yy.L(_$[$0-1],_$[$0-1],yy.Box($$[$0-1]))));
+    break;
+    case 77:
+    this.$ = yy.L(_$[$0-2], _$[$0],yy.Assign($$[$0-2], $$[$0], yy.L(_$[$0-1],_$[$0-1],yy.Box($$[$0-1]))));
+    break;
+    case 78:
+    this.$ = yy.L(_$[$0-5], _$[$0],yy.Assign($$[$0-5].unwrap(), yy.Arr.maybe($$[$0-2]), yy.L(_$[$0-4],_$[$0-4],yy.Box($$[$0-4]))));
+    break;
+    case 79:
+    this.$ = yy.L(_$[$0-2], _$[$0],yy.Import($$[$0-2], $$[$0], $$[$0-1] === '<<<<'));
+    break;
+    case 80:
+    this.$ = yy.L(_$[$0-5], _$[$0],yy.Import($$[$0-5], yy.Arr.maybe($$[$0-2]), $$[$0-4] === '<<<<'));
+    break;
+    case 81:
+    this.$ = yy.L(_$[$0-1], _$[$0],yy.Unary($$[$0-1], $$[$0].unwrap()));
+    break;
+    case 82:
+    this.$ = yy.L(_$[$0-1], _$[$0],yy.Unary($$[$0], $$[$0-1].unwrap(), true));
+    break;
+    case 83:
+    this.$ = yy.L(_$[$0-2], _$[$0],yy.Unary($$[$0-2], yy.Splat($$[$0].unwrap())));
+    break;
+    case 84:
+    this.$ = yy.L(_$[$0-1], _$[$0],yy.Unary($$[$0], $$[$0-1], true));
+    break;
+    case 85: case 86: case 87:
+    this.$ = yy.L(_$[$0-2], _$[$0],yy.Assign($$[$0].unwrap(), [$$[$0-2]], yy.L(_$[$0-1],_$[$0-1],yy.Box($$[$0-1]))));
+    break;
+    case 88: case 89: case 90:
+    this.$ = yy.L(_$[$0-3], _$[$0],yy.Assign(yy.Splat($$[$0].unwrap()), [$$[$0-3]], yy.L(_$[$0-2],_$[$0-2],yy.Box($$[$0-2]))));
+    break;
+    case 91: case 92: case 93:
+    this.$ = yy.L(_$[$0-1], _$[$0],yy.Unary($$[$0-1], $$[$0]));
+    break;
+    case 94: case 95: case 96:
+    this.$ = yy.L(_$[$0-2], _$[$0],yy.Unary($$[$0-2], yy.Splat($$[$0])));
+    break;
+    case 97:
+    this.$ = yy.L(_$[$0-5], _$[$0],yy.Unary($$[$0-5], yy.Splat(yy.Arr($$[$0-2]))));
+    break;
+    case 98:
+    this.$ = yy.L(_$[$0-4], _$[$0],yy.Unary($$[$0-4], yy.Arr.maybe($$[$0-2])));
+    break;
+    case 99:
+    this.$ = yy.L(_$[$0], _$[$0],yy.Yield($$[$0]));
+    break;
+    case 100:
+    this.$ = yy.L(_$[$0-1], _$[$0],yy.Yield($$[$0-1], $$[$0]));
+    break;
+    case 101: case 102: case 103: case 104: case 105: case 106: case 107: case 108: case 109:
+    this.$ = (yy.L(_$[$0-1],_$[$0-1],yy.Binary($$[$0-1], $$[$0-2], $$[$0])));
+    break;
+    case 110:
+    this.$ = yy.L(_$[$0-2], _$[$0],'!' === $$[$0-1].charAt(0)
+            ? yy.Binary($$[$0-1].slice(1), $$[$0-2], $$[$0]).invert()
+            : yy.Binary($$[$0-1], $$[$0-2], $$[$0]));
+    break;
+    case 111:
+    this.$ = yy.L(_$[$0-2], _$[$0],yy.Block($$[$0-2]).pipe($$[$0], $$[$0-1]));
+    break;
+    case 112:
+    this.$ = yy.L(_$[$0-2], _$[$0],yy.Block($$[$0-2]).pipe([$$[$0]], $$[$0-1]));
+    break;
+    case 113:
+    this.$ = yy.L(_$[$0-1], _$[$0],yy.Existence($$[$0-1].unwrap(), true));
+    break;
+    case 114:
+    this.$ = yy.L(_$[$0-5], _$[$0],yy.Fun($$[$0-4], $$[$0], /~/.test($$[$0-1]), /--|~~/.test($$[$0-1]), /!/.test($$[$0-1]), /\*/.test($$[$0-1]), />>/.test($$[$0-1])));
+    break;
+    case 115:
+    this.$ = yy.L(_$[$0-5], _$[$0],yy.Fun($$[$0-3], $$[$0]).named($$[$0-5]));
+    break;
+    case 116:
+    this.$ = yy.L(_$[$0-5], _$[$0],yy.Fun($$[$0-3], $$[$0], false, false, false, true, false).named($$[$0-5]));
+    break;
+    case 117:
+    this.$ = yy.L(_$[$0-6], _$[$0],yy.Fun($$[$0-3], $$[$0], false, false, false, false, true).named($$[$0-5]));
+    break;
+    case 118:
+    this.$ = yy.L(_$[$0-6], _$[$0],yy.Fun($$[$0-3], $$[$0], false, false, false, true, true).named($$[$0-5]));
+    break;
+    case 119:
+    this.$ = (yy.L(_$[$0-3],_$[$0-2], yy.If($$[$0-2], $$[$0-1], $$[$0-3] === 'unless')).addElse($$[$0]));
+    break;
+    case 120:
+    this.$ = (yy.L(_$[$0-1],_$[$0], yy.If($$[$0], $$[$0-2], $$[$0-1] === 'unless')));
+    break;
+    case 121:
+    this.$ = yy.L(_$[$0-3], _$[$0],new yy.While($$[$0], $$[$0-1] === 'until', true).addBody($$[$0-2]));
+    break;
+    case 122:
+    this.$ = yy.L(_$[$0-5], _$[$0],new yy.While($$[$0-2], $$[$0-3] === 'until', true).addGuard($$[$0]).addBody($$[$0-4]));
+    break;
+    case 123:
+    this.$ = yy.L(_$[$0-1], _$[$0],yy.Jump[$$[$0-1]]($$[$0]));
+    break;
+    case 124:
+    this.$ = yy.L(_$[$0-4], _$[$0],yy.Jump[$$[$0-4]](yy.Arr.maybe($$[$0-2])));
+    break;
+    case 125:
+    this.$ = yy.L(_$[$0], _$[$0],yy.Jump[$$[$0]]());
+    break;
+    case 126:
+    this.$ = yy.L(_$[$0], _$[$0],new yy.Jump($$[$0]));
+    break;
+    case 127:
+    this.$ = yy.L(_$[$0-1], _$[$0],new yy.Jump($$[$0-1], $$[$0]));
+    break;
+    case 128:
+    this.$ = yy.L(_$[$0-2], _$[$0],new yy.Switch($$[$0-2], $$[$0-1], $$[$0]));
+    break;
+    case 129: case 130:
+    this.$ = yy.L(_$[$0-4], _$[$0],new yy.Switch($$[$0-4], $$[$0-3], $$[$0-2], $$[$0]));
+    break;
+    case 131:
+    this.$ = yy.L(_$[$0-1], _$[$0],new yy.Switch($$[$0-1], null, $$[$0]));
+    break;
+    case 132: case 133:
+    this.$ = yy.L(_$[$0-3], _$[$0],new yy.Switch($$[$0-3], null, $$[$0-2], $$[$0]));
+    break;
+    case 134:
+    this.$ = yy.L(_$[$0-1], _$[$0],new yy.Switch($$[$0-1], null, [], $$[$0]));
+    break;
+    case 135:
+    this.$ = yy.L(_$[$0-1], _$[$0],new yy.Try($$[$0]));
+    break;
+    case 136:
+    this.$ = yy.L(_$[$0-3], _$[$0],new yy.Try($$[$0-2], void 8, yy.L(_$[$0-1],_$[$0-1],$$[$0])));
+    break;
+    case 137:
+    this.$ = yy.L(_$[$0-5], _$[$0],new yy.Try($$[$0-4], void 8, yy.L(_$[$0-3],_$[$0-3],$$[$0-2]), yy.L(_$[$0-1],_$[$0-1],$$[$0])));
+    break;
+    case 138:
+    this.$ = yy.L(_$[$0-4], _$[$0],new yy.Try($$[$0-3], $$[$0-1], yy.L(_$[$0-2],_$[$0-1], $$[$0])));
+    break;
+    case 139:
+    this.$ = yy.L(_$[$0-6], _$[$0],new yy.Try($$[$0-5], $$[$0-3], yy.L(_$[$0-4],_$[$0-3], $$[$0-2]), yy.L(_$[$0-1],_$[$0-1],$$[$0])));
+    break;
+    case 140:
+    this.$ = yy.L(_$[$0-3], _$[$0],new yy.Try($$[$0-2], void 8, void 8, yy.L(_$[$0-1],_$[$0-1],$$[$0])));
+    break;
+    case 141:
+    this.$ = yy.L(_$[$0-4], _$[$0],new yy.Class({
+            title: $$[$0-3].unwrap(),
+            sup: $$[$0-2],
+            mixins: $$[$0-1],
+            body: $$[$0]
+          }));
+    break;
+    case 142:
+    this.$ = yy.L(_$[$0-3], _$[$0],new yy.Class({
+            sup: $$[$0-2],
+            mixins: $$[$0-1],
+            body: $$[$0]
+          }));
+    break;
+    case 143:
+    this.$ = yy.L(_$[$0-2], _$[$0],yy.Util.Extends($$[$0-2].unwrap(), $$[$0]));
+    break;
+    case 144: case 145:
+    this.$ = yy.L(_$[$0-1], _$[$0],new yy.Label($$[$0-1], $$[$0]));
+    break;
+    case 146:
+    this.$ = yy.L(_$[$0-4], _$[$0],yy.Decl($$[$0-4], $$[$0-2], yylineno + 1));
+    break;
+    case 149:
+    this.$ = yy.L(_$[$0-1], _$[$0],yy.Key($$[$0-1]));
+    break;
+    case 150:
+    this.$ = yy.L(_$[$0-1], _$[$0],$$[$0-1]);
+    break;
+    case 151:
+    this.$ = yy.L(_$[$0-1], _$[$0],yy.Prop($$[$0-1], $$[$0]));
+    break;
+    case 152:
+    this.$ = yy.L(_$[$0-4], _$[$0],yy.Prop($$[$0-4], yy.Arr.maybe($$[$0-2])));
+    break;
+    case 153:
+    this.$ = yy.L(_$[$0], _$[$0],yy.Prop(null, $$[$0]));
+    break;
+    case 154:
+    this.$ = yy.L(_$[$0-1], _$[$0],yy.Prop(yy.Splat(), $$[$0]));
+    break;
+    case 160:
+    this.$ = yy.L(_$[$0-3], _$[$0],$$[$0-2]);
+    break;
+    case 161:
+    this.$ = yy.L(_$[$0-2], _$[$0],yy.Parens($$[$0-1].chomp().unwrap(), false, $$[$0-2] === '"', yy.L(_$[$0-2],_$[$0-2],{}), yy.L(_$[$0],_$[$0],{})));
+    break;
+    case 165: case 201: case 203:
+    this.$ = yy.L(_$[$0], _$[$0],null);
+    break;
+    case 166: case 200: case 202:
+    this.$ = yy.L(_$[$0-1], _$[$0],$$[$0]);
+    break;
+    case 167:
+    this.$ = yy.L(_$[$0-4], _$[$0],yy.If($$[$0-2], $$[$0-1], $$[$0-3] === 'unless').addElse($$[$0]));
+    break;
+    case 168:
+    this.$ = yy.L(_$[$0-3], _$[$0],new yy.For({
+            kind: $$[$0-3],
+            item: $$[$0-2].unwrap(),
+            index: $$[$0-1],
+            source: $$[$0]
+          }));
+    break;
+    case 169:
+    this.$ = yy.L(_$[$0-5], _$[$0],new yy.For({
+            kind: $$[$0-5],
+            item: $$[$0-4].unwrap(),
+            index: $$[$0-3],
+            source: $$[$0-2],
+            guard: $$[$0]
+          }));
+    break;
+    case 170:
+    this.$ = yy.L(_$[$0-5], _$[$0],new yy.For({
+            kind: $$[$0-5],
+            item: $$[$0-4].unwrap(),
+            index: $$[$0-3],
+            source: $$[$0-2],
+            step: $$[$0]
+          }));
+    break;
+    case 171:
+    this.$ = yy.L(_$[$0-7], _$[$0],new yy.For({
+            kind: $$[$0-7],
+            item: $$[$0-6].unwrap(),
+            index: $$[$0-5],
+            source: $$[$0-4],
+            step: $$[$0-2],
+            guard: $$[$0]
+          }));
+    break;
+    case 172:
+    this.$ = yy.L(_$[$0-1], _$[$0],new yy.For({
+            kind: $$[$0-1],
+            source: $$[$0],
+            ref: true
+          }));
+    break;
+    case 173:
+    this.$ = yy.L(_$[$0-3], _$[$0],new yy.For({
+            kind: $$[$0-3],
+            source: $$[$0-2],
+            ref: true,
+            guard: $$[$0]
+          }));
+    break;
+    case 174:
+    this.$ = yy.L(_$[$0-3], _$[$0],new yy.For({
+            kind: $$[$0-3],
+            source: $$[$0-2],
+            ref: true,
+            step: $$[$0]
+          }));
+    break;
+    case 175:
+    this.$ = yy.L(_$[$0-5], _$[$0],new yy.For({
+            kind: $$[$0-5],
+            source: $$[$0-4],
+            ref: true,
+            step: $$[$0-2],
+            guard: $$[$0]
+          }));
+    break;
+    case 176:
+    this.$ = yy.L(_$[$0-3], _$[$0],new yy.For({
+            object: true,
+            kind: $$[$0-3],
+            index: $$[$0-2],
+            source: $$[$0]
+          }));
+    break;
+    case 177:
+    this.$ = yy.L(_$[$0-5], _$[$0],new yy.For({
+            object: true,
+            kind: $$[$0-5],
+            index: $$[$0-4],
+            source: $$[$0-2],
+            guard: $$[$0]
+          }));
+    break;
+    case 178:
+    this.$ = yy.L(_$[$0-5], _$[$0],new yy.For({
+            object: true,
+            kind: $$[$0-5],
+            index: $$[$0-4],
+            item: $$[$0-2].unwrap(),
+            source: $$[$0]
+          }));
+    break;
+    case 179:
+    this.$ = yy.L(_$[$0-7], _$[$0],new yy.For({
+            object: true,
+            kind: $$[$0-7],
+            index: $$[$0-6],
+            item: $$[$0-4].unwrap(),
+            source: $$[$0-2],
+            guard: $$[$0]
+          }));
+    break;
+    case 180:
+    this.$ = yy.L(_$[$0-5], _$[$0],new yy.For({
+            kind: $$[$0-5],
+            index: $$[$0-4],
+            from: $$[$0-2],
+            op: $$[$0-1],
+            to: $$[$0]
+          }));
+    break;
+    case 181:
+    this.$ = yy.L(_$[$0-4], _$[$0],new yy.For({
+            kind: $$[$0-4],
+            from: $$[$0-2],
+            op: $$[$0-1],
+            to: $$[$0],
+            ref: true
+          }));
+    break;
+    case 182:
+    this.$ = yy.L(_$[$0-7], _$[$0],new yy.For({
+            kind: $$[$0-7],
+            index: $$[$0-6],
+            from: $$[$0-4],
+            op: $$[$0-3],
+            to: $$[$0-2],
+            guard: $$[$0]
+          }));
+    break;
+    case 183:
+    this.$ = yy.L(_$[$0-6], _$[$0],new yy.For({
+            kind: $$[$0-6],
+            from: $$[$0-4],
+            op: $$[$0-3],
+            to: $$[$0-2],
+            guard: $$[$0],
+            ref: true
+          }));
+    break;
+    case 184:
+    this.$ = yy.L(_$[$0-7], _$[$0],new yy.For({
+            kind: $$[$0-7],
+            index: $$[$0-6],
+            from: $$[$0-4],
+            op: $$[$0-3],
+            to: $$[$0-2],
+            step: $$[$0]
+          }));
+    break;
+    case 185:
+    this.$ = yy.L(_$[$0-6], _$[$0],new yy.For({
+            kind: $$[$0-6],
+            from: $$[$0-4],
+            op: $$[$0-3],
+            to: $$[$0-2],
+            step: $$[$0],
+            ref: true
+          }));
+    break;
+    case 186:
+    this.$ = yy.L(_$[$0-9], _$[$0],new yy.For({
+            kind: $$[$0-9],
+            index: $$[$0-8],
+            from: $$[$0-6],
+            op: $$[$0-5],
+            to: $$[$0-4],
+            step: $$[$0-2],
+            guard: $$[$0]
+          }));
+    break;
+    case 187:
+    this.$ = yy.L(_$[$0-8], _$[$0],new yy.For({
+            kind: $$[$0-8],
+            from: $$[$0-6],
+            op: $$[$0-5],
+            to: $$[$0-4],
+            step: $$[$0-2],
+            guard: $$[$0],
+            ref: true
+          }));
+    break;
+    case 188:
+    this.$ = yy.L(_$[$0-9], _$[$0],new yy.For({
+            kind: $$[$0-9],
+            index: $$[$0-8],
+            from: $$[$0-6],
+            op: $$[$0-5],
+            to: $$[$0-4],
+            guard: $$[$0-2],
+            step: $$[$0]
+          }));
+    break;
+    case 189:
+    this.$ = yy.L(_$[$0-8], _$[$0],new yy.For({
+            kind: $$[$0-8],
+            from: $$[$0-6],
+            op: $$[$0-5],
+            to: $$[$0-4],
+            guard: $$[$0-2],
+            step: $$[$0],
+            ref: true
+          }));
+    break;
+    case 190:
+    this.$ = yy.L(_$[$0-1], _$[$0],new yy.While($$[$0], $$[$0-1] === 'until'));
+    break;
+    case 191:
+    this.$ = yy.L(_$[$0-3], _$[$0],new yy.While($$[$0-2], $$[$0-3] === 'until').addGuard($$[$0]));
+    break;
+    case 192:
+    this.$ = yy.L(_$[$0-3], _$[$0],new yy.While($$[$0-2], $$[$0-3] === 'until', $$[$0]));
+    break;
+    case 193:
+    this.$ = yy.L(_$[$0-5], _$[$0],new yy.While($$[$0-4], $$[$0-5] === 'until', $$[$0-2]).addGuard($$[$0]));
+    break;
+    case 195:
+    this.$ = yy.L(_$[$0-1], _$[$0],$$[$0-1].concat($$[$0]));
+    break;
+    case 198:
+    this.$ = yy.L(_$[$0-2], _$[$0],[yy.L(_$[$0-2],_$[$0-1], new yy.Case($$[$0-1], $$[$0]))]);
+    break;
+    case 199:
+    this.$ = yy.L(_$[$0-3], _$[$0],$$[$0-3].concat(yy.L(_$[$0-2],_$[$0-1], new yy.Case($$[$0-1], $$[$0]))));
+    break;
+    case 204:
+    return this.$
+    break;
+    }
+    },
+    table: [o([1,47],$V0,{106:1,101:2,50:3,15:4,51:5,17:7,3:12,55:13,5:32,6:33,39:40,42:42,4:$V1,7:$V2,14:$V3,16:$V4,21:$V5,23:$V6,29:$V7,31:$V8,32:$V9,38:$Va,41:$Vb,44:$Vc,48:$Vd,49:$Ve,53:$Vf,54:$Vg,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw}),{1:[3]},{1:[2,204]},o($Vr,[2,162],{47:$Vx}),o($Vr,[2,163],{47:[1,46]}),o($Vy,[2,61]),o($Vz,$V0,{51:5,17:7,3:12,55:13,5:32,6:33,39:40,42:42,50:47,4:$V1,7:$V2,14:$V3,16:$V4,21:$V5,23:$V6,29:$V7,31:$V8,32:$V9,38:$Va,41:$Vb,44:$Vc,49:$Ve,53:$Vf,54:$Vg,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw}),o($Vy,$VA,{15:48,33:$VB,48:$Vd,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP}),o($VQ,$VR,{3:12,55:13,5:32,6:33,39:40,42:42,10:64,45:65,17:66,4:$V1,7:$V2,14:$V3,16:$V4,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,41:$Vb,44:$Vc,49:$VT,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw}),o($Vy,[2,67]),o($Vy,[2,68],{5:32,6:33,39:40,42:42,3:69,4:$V1,7:$V2,14:$V3,16:$V4,21:$V5,23:$V6,38:$Va,41:$Vb,81:$Vp,102:$Vw}),{3:70,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,21:$V5,23:$V6,38:$Va,39:40,41:$Vb,42:42,81:$Vp,102:$Vw},o($VU,$VV,{8:76,9:$VW,13:$VX,32:$VY,37:$VZ,56:$V_,57:$V$,73:$V01,96:$V11}),{32:[1,81],57:[1,80]},{3:82,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,21:$V5,23:$V6,38:$Va,39:40,41:$Vb,42:42,49:$V21,81:$Vp,102:$Vw},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:85,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,48:$V31,49:$V41,55:13,57:$V51,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:89,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:[1,90],55:13,57:[1,88],59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:92,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:[1,93],55:13,57:[1,91],59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},o([1,12,19,20,22,24,25,26,30,33,34,35,46,47,48,58,62,63,64,65,66,67,68,69,70,71,72,79,82,105],[2,99],{3:12,55:13,5:32,6:33,39:40,42:42,17:94,4:$V1,7:$V2,14:$V3,16:$V4,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,41:$Vb,44:$Vc,49:$V61,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw}),{9:[1,96]},{9:[1,97]},{75:[1,98],76:[1,99]},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:100,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},{15:101,48:$Vd},o([1,12,19,20,22,24,25,26,30,33,34,35,46,47,58,62,63,64,65,66,67,68,69,70,71,72,79,82,105],[2,125],{3:12,55:13,5:32,6:33,39:40,42:42,17:102,4:$V1,7:$V2,14:$V3,16:$V4,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,41:$Vb,44:$Vc,48:[1,103],49:$V61,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw}),o($VU,[2,126],{4:[1,104]}),{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,15:107,16:$V4,17:108,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,48:$Vd,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,82:$V71,83:$Vq,84:$Vr,85:$Vs,86:105,87:106,90:$Vt,93:$Vu,97:$Vv,102:$Vw},{15:110,48:$Vd},o($V81,$V91,{5:32,6:33,39:40,42:42,3:111,94:112,4:$V1,7:$V2,14:$V3,16:$V4,21:$V5,23:$V6,38:$Va,41:$Vb,81:$Vp,96:$Va1,102:$Vw}),{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,15:115,16:$V4,17:114,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,48:$Vd,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},{48:[1,116]},o([1,9,12,13,19,20,22,24,25,26,30,32,33,34,35,37,46,47,48,56,57,58,59,62,63,64,65,66,67,68,69,70,71,72,73,79,81,82,96,102,104,105],$Vb1),o($Vc1,$Vd1),o($Vc1,[2,3]),o($Vc1,[2,4]),{9:[1,117]},o($Ve1,$VR,{3:12,55:13,5:32,6:33,39:40,42:42,45:65,17:118,10:121,4:$V1,7:$V2,14:$V3,16:$V4,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,34:$Vf1,36:$Vg1,38:$Va,41:$Vb,44:$Vc,49:$VT,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw}),o($Vh1,$Vi1,{3:12,55:13,6:33,39:40,42:42,43:123,100:124,98:126,17:127,5:131,4:$Vj1,7:$V2,14:$V3,16:[1,122],21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,41:$Vb,44:$Vc,48:$Vk1,49:$Vl1,53:$Vm1,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw}),o($Vn1,$V0,{50:3,15:4,51:5,3:12,55:13,5:32,6:33,39:40,42:42,17:133,101:141,4:$V1,7:$V2,14:$V3,16:$V4,21:$V5,23:$V6,24:[1,132],26:[1,134],27:[1,135],28:[1,136],29:[1,137],31:[1,138],32:[1,139],33:[1,140],38:$Va,41:$Vb,44:$Vc,48:$Vd,49:$Ve,53:$Vf,54:$Vg,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw}),{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:142,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},{15:143,48:$Vd},o($Vo1,[2,41]),o($Vo1,[2,42]),{3:144,4:[1,146],5:32,6:33,7:$V2,14:$V3,16:$V4,17:145,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,36:[1,147],38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:148,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},o($Vy,[2,63],{17:7,3:12,55:13,5:32,6:33,39:40,42:42,51:149,4:$V1,7:$V2,14:$V3,16:$V4,21:$V5,23:$V6,29:$V7,31:$V8,32:$V9,38:$Va,41:$Vb,44:$Vc,49:$Ve,53:$Vf,54:$Vg,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw}),o([1,25,47],$V0,{51:5,17:7,3:12,55:13,5:32,6:33,39:40,42:42,50:150,4:$V1,7:$V2,14:$V3,16:$V4,21:$V5,23:$V6,29:$V7,31:$V8,32:$V9,38:$Va,41:$Vb,44:$Vc,49:$Ve,53:$Vf,54:$Vg,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw}),{20:[1,151],47:$Vx},o($Vy,[2,65]),{3:152,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,21:$V5,23:$V6,38:$Va,39:40,41:$Vb,42:42,81:$Vp,102:$Vw},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:153,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,48:[1,154],49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:155,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:156,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:157,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:158,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:159,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:160,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:161,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:162,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:163,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:164,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:165,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:166,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:167,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},o($Vp1,$Vq1,{11:168,46:$Vr1}),o($Vs1,[2,51]),o($Vs1,$Vt1,{33:$VB,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP}),o($Vs1,[2,57],{55:13,5:32,6:33,39:40,42:42,17:170,3:171,4:$V1,7:$V2,14:$V3,16:$V4,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,41:$Vb,44:$Vc,49:$V61,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw}),o($VQ,$VR,{3:12,55:13,5:32,6:33,39:40,42:42,45:65,17:66,10:172,4:$V1,7:$V2,14:$V3,16:$V4,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,41:$Vb,44:$Vc,49:$VT,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw}),o([32,57],$Vu1,{8:76,9:$VW,13:$VX,37:$VZ}),o($Vy,[2,69],{8:76,9:$VW,13:$VX,37:$VZ}),{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,15:174,16:$V4,17:173,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,48:$Vd,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:175,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,48:[1,176],49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},o($VU,[2,82]),o($VU,[2,113]),{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:177,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},o($Vc1,[2,5]),o($Vv1,$VR,{3:12,55:13,5:32,6:33,39:40,42:42,45:65,17:66,10:178,4:$V1,7:$V2,14:$V3,16:$V4,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,41:$Vb,44:$Vc,49:$VT,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw}),o($Vc1,[2,7]),{4:[1,180],5:181,6:182,16:[1,179],21:[1,183],23:[1,184],41:$Vb,42:42},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:185,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},o($VU,[2,84]),o($VU,[2,81],{8:76,9:$VW,13:$VX,37:$VZ}),{3:186,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,21:$V5,23:$V6,38:$Va,39:40,41:$Vb,42:42,81:$Vp,102:$Vw},{3:187,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,21:$V5,23:$V6,38:$Va,39:40,41:$Vb,42:42,49:[1,188],81:$Vp,102:$Vw},o($Vw1,[2,91],{33:$VB,65:$VH,69:$VL}),{3:171,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:189,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,48:[1,190],49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},o($Vx1,$VR,{3:12,55:13,5:32,6:33,39:40,42:42,45:65,17:66,10:191,4:$V1,7:$V2,14:$V3,16:$V4,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,41:$Vb,44:$Vc,49:$VT,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw}),{3:192,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,21:$V5,23:$V6,38:$Va,39:40,41:$Vb,42:42,49:[1,193],81:$Vp,102:$Vw},o($Vw1,[2,92],{33:$VB,65:$VH,69:$VL}),{3:171,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:194,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},{3:195,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,21:$V5,23:$V6,38:$Va,39:40,41:$Vb,42:42,49:[1,196],81:$Vp,102:$Vw},o($Vw1,[2,93],{33:$VB,65:$VH,69:$VL}),{3:171,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:197,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},o($Vy1,[2,100],{33:$VB,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO}),{3:69,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,21:$V5,23:$V6,38:$Va,39:40,41:$Vb,42:42,81:$Vp,102:$Vw},o($Vv1,$VR,{3:12,55:13,5:32,6:33,39:40,42:42,45:65,17:66,10:198,4:$V1,7:$V2,14:$V3,16:$V4,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,41:$Vb,44:$Vc,49:$VT,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw}),o($Vv1,$VR,{3:12,55:13,5:32,6:33,39:40,42:42,45:65,17:66,10:199,4:$V1,7:$V2,14:$V3,16:$V4,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,41:$Vb,44:$Vc,49:$VT,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw}),{9:[1,200]},{9:[1,201]},{15:202,33:$VB,48:$Vd,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP},{81:[1,203]},o($Vy1,[2,123],{33:$VB,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO}),o($Vx1,$VR,{3:12,55:13,5:32,6:33,39:40,42:42,45:65,17:66,10:204,4:$V1,7:$V2,14:$V3,16:$V4,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,41:$Vb,44:$Vc,49:$VT,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw}),o($VU,[2,127]),{46:$Vz1,82:$V71,87:205},o($VA1,[2,131],{82:$VB1,88:[1,207],89:[1,208]}),o($VU,[2,134]),o($VC1,[2,147],{33:$VB,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP}),{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:108,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,86:210,90:$Vt,93:$Vu,97:$Vv,102:$Vw},o($VU,[2,135],{91:[1,211],92:[1,212]}),o($V81,$V91,{8:76,94:213,9:$VW,13:$VX,37:$VZ,96:$Va1}),{48:$VD1,95:214,105:$VE1},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:216,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},o($VF1,[2,144],{33:$VB,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM}),o($VU,[2,145]),o($Vx1,$VR,{3:12,55:13,5:32,6:33,39:40,42:42,45:65,17:66,10:217,4:$V1,7:$V2,14:$V3,16:$V4,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,41:$Vb,44:$Vc,49:$VT,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw}),o($Vv1,$VR,{3:12,55:13,5:32,6:33,39:40,42:42,45:65,17:66,10:218,4:$V1,7:$V2,14:$V3,16:$V4,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,41:$Vb,44:$Vc,49:$VT,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw}),o($Ve1,$Vt1,{18:219,39:221,33:$VB,34:[1,220],58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP,81:$Vp,102:$Vw}),{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:222,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:223,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},o($VG1,$Vq1,{11:224,46:$Vr1}),o($Ve1,$VR,{3:12,55:13,5:32,6:33,39:40,42:42,45:65,17:118,10:225,4:$V1,7:$V2,14:$V3,16:$V4,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,34:$Vf1,36:$Vg1,38:$Va,41:$Vb,44:$Vc,49:$VT,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw}),o([22,47],$Vq1,{11:226,46:$VH1}),o($VI1,[2,157]),o([20,46,47],$Vi1,{3:12,55:13,6:33,39:40,42:42,100:124,98:126,17:127,5:131,43:228,4:$Vj1,7:$V2,14:$V3,16:$V4,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,41:$Vb,44:$Vc,48:$Vk1,49:$Vl1,53:$Vm1,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw}),{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:229,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,48:[1,230],49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},o($VI1,[2,153],{33:$VB,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP}),{3:171,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:231,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},o($VI1,[2,155]),o($VJ1,$Vb1,{99:[1,232]}),o($VJ1,$Vd1,{99:[1,233]}),{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:235,21:$V5,23:$V6,25:[1,234],29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},o($Vn1,$VA,{15:48,24:[1,236],26:[1,237],33:[1,238],48:$Vd,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP}),{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:240,21:$V5,23:$V6,25:[1,239],29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},{9:[1,242],25:[1,241]},{25:[1,243]},o($VQ,$VR,{3:12,55:13,5:32,6:33,39:40,42:42,45:65,17:66,10:244,4:$V1,7:$V2,14:$V3,16:$V4,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,41:$Vb,44:$Vc,49:$VT,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw}),{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:85,21:$V5,23:$V6,25:[1,245],29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,48:$V31,49:$V41,55:13,57:$V51,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},{3:82,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,21:$V5,23:$V6,25:[1,246],38:$Va,39:40,41:$Vb,42:42,49:$V21,81:$Vp,102:$Vw},{3:247,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,21:$V5,23:$V6,38:$Va,39:40,41:$Vb,42:42,81:$Vp,102:$Vw},{25:[1,248]},{15:249,33:$VB,48:$Vd,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP},o($Vc1,$VK1,{40:250,89:$VL1}),o([19,20,22,33,35,47,48,58,59,62,63,64,65,66,67,68,69,70,71,72,79,81,82,102],$VV,{8:76,9:$VW,13:$VX,32:$VY,37:$VZ,56:$V_,57:$V$,73:$V01,96:$V11,103:[1,252]}),o($VM1,[2,172],{33:$VB,35:[1,254],58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP,82:[1,253]}),o([9,13,19,20,22,32,33,35,37,47,48,56,57,58,59,62,63,64,65,66,67,68,69,70,71,72,73,79,81,82,96,102,103],$Vb1,{36:[1,257],46:[1,256],104:[1,255]}),{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:258,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},o($VM1,[2,190],{33:$VB,46:[1,260],58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP,82:[1,259]}),o($Vy,[2,62]),o($Vr,[2,164],{47:$Vx}),o([1,9,12,13,19,20,22,24,25,26,30,32,33,34,35,37,46,47,48,56,57,58,59,62,63,64,65,66,67,68,69,70,71,72,73,79,81,82,88,89,91,92,96,102,103,104,105],[2,70]),{8:76,9:$VW,13:$VX,33:[1,261],37:$VZ},o($VN1,[2,79],{33:$VB,59:$VD,64:$VG,65:$VH,69:$VL}),o($Vx1,$VR,{3:12,55:13,5:32,6:33,39:40,42:42,45:65,17:66,10:262,4:$V1,7:$V2,14:$V3,16:$V4,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,41:$Vb,44:$Vc,49:$VT,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw}),o([1,12,19,20,22,24,25,26,30,34,35,46,47,48,58,59,62,63,66,67,68,70,71,72,79,81,82,102,105],[2,101],{33:$VB,64:$VG,65:$VH,69:$VL}),o($VO1,[2,102],{33:$VB,58:$VC,59:$VD,62:$VE,64:$VG,65:$VH,66:$VI,68:$VK,69:$VL,70:$VM}),o($VF1,[2,103],{33:$VB,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM}),o($Vw1,[2,104],{33:$VB,65:$VH,69:$VL}),o($Vw1,[2,105],{33:$VB,65:$VH,69:$VL}),o($VN1,[2,106],{33:$VB,59:$VD,64:$VG,65:$VH,69:$VL}),o($VO1,[2,107],{33:$VB,58:$VC,59:$VD,62:$VE,64:$VG,65:$VH,66:$VI,68:$VK,69:$VL,70:$VM}),o($VP1,[2,108],{33:$VB,58:$VC,59:$VD,64:$VG,65:$VH,66:$VI,68:$VK,69:$VL}),o([1,12,19,20,22,24,25,26,30,34,35,46,47,48,58,59,62,63,64,65,66,67,68,70,71,72,79,81,82,102,105],[2,109],{33:$VB,69:$VL}),o($VP1,[2,110],{33:$VB,58:$VC,59:$VD,64:$VG,65:$VH,66:$VI,68:$VK,69:$VL}),o($VF1,[2,111],{33:$VB,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM}),o($Vy1,[2,112],{33:$VB,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO}),o($Vy1,[2,120],{33:$VB,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO}),{30:[1,263],47:$VQ1,48:$VR1},o([12,19,20,30,47,48],$VS1,{3:12,55:13,5:32,6:33,39:40,42:42,17:66,45:266,4:$V1,7:$V2,14:$V3,16:$V4,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,41:$Vb,44:$Vc,49:$VT,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw}),o($Vs1,[2,56],{33:$VB,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP}),o($VU,$VV,{8:76,9:$VW,13:$VX,32:$Vu1,57:$Vu1,37:$VZ,56:$V_,73:$V01,96:$V11}),o($Vp1,$Vq1,{11:267,46:$Vr1}),o($VN1,[2,72],{33:$VB,59:$VD,64:$VG,65:$VH,69:$VL}),o($VU,[2,73]),o($Vy1,[2,76],{33:$VB,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO}),o($Vx1,$VR,{3:12,55:13,5:32,6:33,39:40,42:42,45:65,17:66,10:268,4:$V1,7:$V2,14:$V3,16:$V4,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,41:$Vb,44:$Vc,49:$VT,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw}),o($VF1,[2,143],{33:$VB,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM}),o($VT1,$Vq1,{11:269,46:$Vr1}),o($Ve1,$VR,{3:12,55:13,5:32,6:33,39:40,42:42,45:65,10:121,17:270,4:$V1,7:$V2,14:$V3,16:$V4,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,34:[1,271],38:$Va,41:$Vb,44:$Vc,49:$VT,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw}),o($Vc1,[2,43]),o($Vc1,[2,44]),o($Vc1,[2,45]),o($Vh1,$Vi1,{3:12,55:13,6:33,39:40,42:42,43:123,100:124,98:126,17:127,5:131,4:$Vj1,7:$V2,14:$V3,16:$V4,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,41:$Vb,44:$Vc,48:$Vk1,49:$Vl1,53:$Vm1,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw}),o($Vn1,$V0,{50:3,15:4,51:5,17:7,3:12,55:13,5:32,6:33,39:40,42:42,101:141,4:$V1,7:$V2,14:$V3,16:$V4,21:$V5,23:$V6,29:$V7,31:$V8,32:$V9,38:$Va,41:$Vb,44:$Vc,48:$Vd,49:$Ve,53:$Vf,54:$Vg,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw}),o($Vy1,[2,77],{33:$VB,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO}),o($VU,[2,83],{8:76,9:$VW,13:$VX,37:$VZ}),o($VU,[2,85],{8:76,9:$VW,13:$VX,37:$VZ}),{3:272,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,21:$V5,23:$V6,38:$Va,39:40,41:$Vb,42:42,81:$Vp,102:$Vw},o($Vw1,[2,94],{33:$VB,65:$VH,69:$VL}),o($Vx1,$VR,{3:12,55:13,5:32,6:33,39:40,42:42,45:65,17:66,10:273,4:$V1,7:$V2,14:$V3,16:$V4,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,41:$Vb,44:$Vc,49:$VT,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw}),o($VU1,$Vq1,{11:274,46:$Vr1}),o($VU,[2,86],{8:76,9:$VW,13:$VX,37:$VZ}),{3:275,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,21:$V5,23:$V6,38:$Va,39:40,41:$Vb,42:42,81:$Vp,102:$Vw},o($Vw1,[2,95],{33:$VB,65:$VH,69:$VL}),o($VU,[2,87],{8:76,9:$VW,13:$VX,37:$VZ}),{3:276,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,21:$V5,23:$V6,38:$Va,39:40,41:$Vb,42:42,81:$Vp,102:$Vw},o($Vw1,[2,96],{33:$VB,65:$VH,69:$VL}),o($VT1,$Vq1,{11:277,46:$Vr1}),o($VT1,$Vq1,{11:278,46:$Vr1}),o($Vv1,$VR,{3:12,55:13,5:32,6:33,39:40,42:42,45:65,17:66,10:279,4:$V1,7:$V2,14:$V3,16:$V4,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,41:$Vb,44:$Vc,49:$VT,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw}),o($Vv1,$VR,{3:12,55:13,5:32,6:33,39:40,42:42,45:65,17:66,10:280,4:$V1,7:$V2,14:$V3,16:$V4,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,41:$Vb,44:$Vc,49:$VT,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw}),o($VU,$VK1,{40:281,89:$VL1}),{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:282,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},o($VU1,$Vq1,{11:283,46:$Vr1}),o($VA1,[2,128],{82:$VB1,88:[1,284],89:[1,285]}),{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:286,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},{15:287,48:$Vd},{15:288,48:$Vd},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:108,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,86:289,90:$Vt,93:$Vu,97:$Vv,102:$Vw},{15:290,46:$Vz1,48:$Vd},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,15:291,16:$V4,17:66,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,45:292,48:$Vd,49:$VT,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},{15:293,48:$Vd},{48:$VD1,95:294,105:$VE1},{15:295,48:$Vd},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:108,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,86:296,90:$Vt,93:$Vu,97:$Vv,102:$Vw},o($V81,[2,200],{33:$VB,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP}),o($VU1,$Vq1,{11:297,46:$Vr1}),o($VT1,$Vq1,{11:298,46:$Vr1}),{19:[1,299],20:[1,300],39:301,47:$VV1,48:$VW1,81:$Vp,102:$Vw},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:304,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},o($VM1,[2,194]),{33:$VB,34:[1,305],58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP},{19:[1,306],33:$VB,35:[1,307],58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP},{19:[1,308],47:$VQ1,48:$VR1},o($VG1,$Vq1,{11:309,46:$Vr1}),{22:[1,310],47:$VX1},o([20,22,47],$VS1,{3:12,55:13,6:33,39:40,42:42,98:126,17:127,5:131,100:312,4:$Vj1,7:$V2,14:$V3,16:$V4,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,41:$Vb,44:$Vc,49:$Vl1,53:$Vm1,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw}),o($Vz,$Vq1,{11:313,46:$VH1}),o($VI1,[2,151],{33:$VB,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP}),o($Vx1,$VR,{3:12,55:13,5:32,6:33,39:40,42:42,45:65,17:66,10:314,4:$V1,7:$V2,14:$V3,16:$V4,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,41:$Vb,44:$Vc,49:$VT,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw}),o($VI1,[2,154],{33:$VB,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP}),o($VY1,[2,149]),o($VY1,[2,150]),o($Vc1,[2,12]),{25:[1,315],33:$VB,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP},{25:[1,316]},{25:[1,317]},{3:318,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,21:$V5,23:$V6,38:$Va,39:40,41:$Vb,42:42,81:$Vp,102:$Vw},o($Vc1,[2,15]),{25:[1,319],33:$VB,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP},o($Vc1,[2,18]),o($Vv1,$VR,{3:12,55:13,5:32,6:33,39:40,42:42,45:65,17:66,10:320,4:$V1,7:$V2,14:$V3,16:$V4,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,41:$Vb,44:$Vc,49:$VT,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw}),o($Vc1,[2,20]),o($Vp1,$Vq1,{11:321,46:$Vr1}),o($Vc1,[2,22]),o($Vc1,[2,23]),{8:76,9:$VW,13:$VX,33:[1,322],37:$VZ},o($Vo1,[2,161]),o($Vc1,[2,39]),o($Vc1,[2,40]),{15:323,48:$Vd,78:[1,324]},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:325,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:326,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:327,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:328,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},{3:329,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,21:$V5,23:$V6,38:$Va,39:40,41:$Vb,42:42,81:$Vp,102:$Vw},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:330,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},{33:$VB,34:[1,331],58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:332,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:333,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:334,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},o($VU1,$Vq1,{11:335,46:$Vr1}),{52:$VZ1,74:$V_1},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:66,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,45:338,49:$VT,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},o($Vx1,$VR,{3:12,55:13,5:32,6:33,39:40,42:42,45:65,17:66,10:339,4:$V1,7:$V2,14:$V3,16:$V4,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,41:$Vb,44:$Vc,49:$VT,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw}),o($Vs1,[2,52]),{30:[1,340],47:$VQ1,48:$VR1},o($VU1,$Vq1,{11:341,46:$Vr1}),{12:[1,342],47:$VQ1,48:$VR1},o($Ve1,$Vt1,{33:$VB,34:[1,343],58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP}),{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:344,19:[1,345],21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},o($VU,[2,88],{8:76,9:$VW,13:$VX,37:$VZ}),o($VU1,$Vq1,{11:346,46:$Vr1}),{20:[1,347],47:$VQ1,48:$VR1},o($VU,[2,89],{8:76,9:$VW,13:$VX,37:$VZ}),o($VU,[2,90],{8:76,9:$VW,13:$VX,37:$VZ}),{12:[1,348],47:$VQ1,48:$VR1},{12:[1,349],47:$VQ1,48:$VR1},o($VT1,$Vq1,{11:350,46:$Vr1}),o($VT1,$Vq1,{11:351,46:$Vr1}),o($VU,[2,119]),o([1,12,19,20,22,24,25,26,30,34,35,46,47,48,71,72,79,81,102,105],[2,121],{33:$VB,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,82:[1,352]}),{20:[1,353],47:$VQ1,48:$VR1},{15:354,48:$Vd},{15:355,48:$Vd},o($VC1,[2,148],{33:$VB,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP}),o($VU,[2,132]),o($VU,[2,133]),{15:356,46:$Vz1,48:$Vd},o($V$1,[2,198]),o($VU,[2,136],{92:[1,357]}),{15:358,48:$Vd},o($VU,[2,140]),{15:359,48:$Vd},o($VU,[2,142]),{46:$Vz1,48:[2,202]},{20:[1,360],47:$VQ1,48:$VR1},{12:[1,361],47:$VQ1,48:$VR1},o($Vc1,[2,9]),{19:[1,362]},o($VM1,[2,195]),{39:363,81:$Vp,102:$Vw},{39:364,81:$Vp,102:$Vw},{19:[1,365],33:$VB,35:[1,366],58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:367,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},o($Vc1,[2,31]),{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:368,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},o($Vc1,$V02,{44:$V12}),{19:[1,370],47:$VQ1,48:$VR1},o($Vc1,[2,47],{44:[1,371]}),{3:12,4:$Vj1,5:131,6:33,7:$V2,14:$V3,16:$V4,17:127,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$Vl1,53:$Vm1,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,98:126,100:372,102:$Vw},o($VI1,[2,158]),{20:[1,373],47:$VX1},o($VU1,$Vq1,{11:374,46:$Vr1}),o($Vc1,[2,13]),o($Vc1,[2,14]),o($Vc1,[2,17]),{8:76,9:$VW,13:$VX,33:[1,375],37:$VZ},o($Vc1,[2,16]),o($VT1,$Vq1,{11:376,46:$Vr1}),{30:[1,377],47:$VQ1,48:$VR1},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:379,21:$V5,23:$V6,25:[1,378],29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},o($Vc1,[2,166]),{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:380,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},o($VM1,[2,168],{33:$VB,35:[1,382],58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP,82:[1,381]}),o($VM1,[2,173],{33:$VB,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP}),o($VM1,[2,174],{33:$VB,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP,82:[1,383]}),o($VM1,[2,176],{33:$VB,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP,82:[1,384]}),{8:76,9:$VW,13:$VX,37:$VZ,104:[1,385]},{33:$VB,34:[1,386],58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:387,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},o($VM1,[2,191],{33:$VB,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP}),o($VM1,[2,192],{33:$VB,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP,82:[1,388]}),o($VU,[2,74]),{20:[1,389],47:$VQ1,48:$VR1},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:390,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},{15:391,48:$Vd},o($Vs1,[2,53]),o($VU1,$Vq1,{11:392,46:$Vr1}),{74:$V_1},{20:[1,393],47:$VQ1,48:$VR1},o($Vc1,[2,6]),{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:394,19:[1,395],21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},{19:[1,397],33:$VB,35:[1,396],58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP},o($Vc1,[2,38]),{20:[1,398],47:$VQ1,48:$VR1},o($VU,[2,98]),{15:399,48:$Vd},{15:400,48:$Vd},{12:[1,401],47:$VQ1,48:$VR1},{12:[1,402],47:$VQ1,48:$VR1},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:403,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},o($VU,[2,124]),o($VU,[2,129]),o($VU,[2,130]),o($V$1,[2,199]),{15:404,48:$Vd},o($VU,[2,138],{92:[1,405]}),o($VU,[2,141]),o($VU,[2,146]),{15:406,48:$Vd},o($Vc1,[2,10]),o($VM1,[2,196]),o($VM1,[2,197]),o($Vc1,[2,27]),{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:407,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},{19:[1,408],33:$VB,35:[1,409],58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP},{19:[1,410],33:$VB,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP},o($Vc1,[2,48]),o([9,13,22,32,33,37,46,47,56,57,58,59,62,63,64,65,66,67,68,69,70,71,72,73,79,96],$V02,{39:221,18:411,44:$V12,81:$Vp,102:$Vw}),o($Vc1,[2,49]),o($VI1,[2,159]),o($VI1,[2,160]),{20:[1,412],47:$VQ1,48:$VR1},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:334,21:$V5,23:$V6,25:[1,413],29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},{12:[1,414],47:$VQ1,48:$VR1},{28:[1,415],52:$VZ1,74:$V_1},o($Vc1,[2,24]),{25:[1,416],33:$VB,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP},{15:417,33:$VB,48:$Vd,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:418,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:419,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:420,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:421,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:422,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:423,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},o($VM1,[2,181],{33:$VB,35:[1,425],58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP,82:[1,424]}),{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:426,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},o($VU,[2,80]),o($Vy,[2,66],{33:$VB,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP}),o($VU,[2,114]),{20:[1,427],47:$VQ1,48:$VR1},o($VU,[2,78]),{19:[1,429],33:$VB,35:[1,428],58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP},o($Vc1,[2,36]),{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:430,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},o($Vc1,[2,37]),o($VU,[2,97]),o($VU,[2,115]),o($VU,[2,116]),{15:431,48:$Vd},{15:432,48:$Vd},o($VF1,[2,122],{33:$VB,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM}),o($VU,[2,137]),{15:433,48:$Vd},o($Vc1,[2,8]),{19:[1,434],33:$VB,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP},o($Vc1,[2,29]),{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:435,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},o($Vc1,[2,32]),{22:[1,436],39:301,47:$VV1,48:$VW1,81:$Vp,102:$Vw},o($VI1,[2,152]),o($Vc1,[2,25]),{25:[1,437]},{25:[1,438]},o($Vc1,[2,26]),o($Vc1,$VK1,{40:439,89:$VL1}),o($VM1,[2,169],{33:$VB,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP}),o($VM1,[2,170],{33:$VB,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP,82:[1,440]}),o($VM1,[2,175],{33:$VB,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP}),o($VM1,[2,177],{33:$VB,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP}),o($VM1,[2,178],{33:$VB,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP,82:[1,441]}),o($VM1,[2,180],{33:$VB,35:[1,443],58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP,82:[1,442]}),{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:444,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:445,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},o($VM1,[2,193],{33:$VB,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP}),o($Vs1,[2,54]),{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:446,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},o($Vc1,[2,35]),{19:[1,447],33:$VB,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP},o($VU,[2,117]),o($VU,[2,118]),o($VU,[2,139]),o($Vc1,[2,28]),{19:[1,448],33:$VB,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP},o($Vc1,[2,11]),o($Vc1,[2,19]),o($Vc1,[2,21]),o($Vc1,[2,167]),{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:449,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:450,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:451,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:452,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},o($VM1,[2,183],{33:$VB,35:[1,453],58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP}),o($VM1,[2,185],{33:$VB,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP,82:[1,454]}),{19:[1,455],33:$VB,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP},o($Vc1,[2,34]),o($Vc1,[2,30]),o($VM1,[2,171],{33:$VB,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP}),o($VM1,[2,179],{33:$VB,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP}),o($VM1,[2,182],{33:$VB,35:[1,456],58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP}),o($VM1,[2,184],{33:$VB,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP,82:[1,457]}),{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:458,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:459,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},o($Vc1,[2,33]),{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:460,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},{3:12,4:$V1,5:32,6:33,7:$V2,14:$V3,16:$V4,17:461,21:$V5,23:$V6,29:$VS,31:$V8,32:$V9,38:$Va,39:40,41:$Vb,42:42,44:$Vc,49:$V61,55:13,59:$Vh,60:$Vi,61:$Vj,75:$Vk,76:$Vl,77:$Vm,78:$Vn,80:$Vo,81:$Vp,83:$Vq,84:$Vr,85:$Vs,90:$Vt,93:$Vu,97:$Vv,102:$Vw},o($VM1,[2,189],{33:$VB,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP}),o($VM1,[2,187],{33:$VB,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP}),o($VM1,[2,188],{33:$VB,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP}),o($VM1,[2,186],{33:$VB,58:$VC,59:$VD,62:$VE,63:$VF,64:$VG,65:$VH,66:$VI,67:$VJ,68:$VK,69:$VL,70:$VM,71:$VN,72:$VO,79:$VP})],
+    defaultActions: {2:[2,204]},
+    parseError: function parseError (str, hash) {
+        if (hash.recoverable) {
+            this.trace(str);
+        } else {
+            var error = new Error(str);
+            error.hash = hash;
+            throw error;
+        }
+    },
+    parse: function parse(input) {
+        var self = this, stack = [0], tstack = [], vstack = [null], lstack = [], table = this.table, yytext = '', yylineno = 0, yyleng = 0, recovering = 0, TERROR = 2, EOF = 1;
+        var args = lstack.slice.call(arguments, 1);
+        var lexer = Object.create(this.lexer);
+        var sharedState = { yy: {} };
+        for (var k in this.yy) {
+            if (Object.prototype.hasOwnProperty.call(this.yy, k)) {
+                sharedState.yy[k] = this.yy[k];
+            }
+        }
+        lexer.setInput(input, sharedState.yy);
+        sharedState.yy.lexer = lexer;
+        sharedState.yy.parser = this;
+        if (typeof lexer.yylloc == 'undefined') {
+            lexer.yylloc = {};
+        }
+        var yyloc = lexer.yylloc;
+        lstack.push(yyloc);
+        var ranges = lexer.options && lexer.options.ranges;
+        if (typeof sharedState.yy.parseError === 'function') {
+            this.parseError = sharedState.yy.parseError;
+        } else {
+            this.parseError = Object.getPrototypeOf(this).parseError;
+        }
+        function popStack(n) {
+            stack.length = stack.length - 2 * n;
+            vstack.length = vstack.length - n;
+            lstack.length = lstack.length - n;
+        }
+        var lex = function () {
+                var token;
+                token = lexer.lex() || EOF;
+                if (typeof token !== 'number') {
+                    token = self.symbols_[token] || token;
+                }
+                return token;
+            };
+        var symbol, preErrorSymbol, state, action, a, r, yyval = {}, p, len, newState, expected;
+        while (true) {
+            state = stack[stack.length - 1];
+            if (this.defaultActions[state]) {
+                action = this.defaultActions[state];
+            } else {
+                if (symbol === null || typeof symbol == 'undefined') {
+                    symbol = lex();
+                }
+                action = table[state] && table[state][symbol];
+            }
+                        if (typeof action === 'undefined' || !action.length || !action[0]) {
+                    var errStr = '';
+                    expected = [];
+                    for (p in table[state]) {
+                        if (this.terminals_[p] && p > TERROR) {
+                            expected.push('\'' + this.terminals_[p] + '\'');
+                        }
+                    }
+                    if (lexer.showPosition) {
+                        errStr = 'Parse error on line ' + (yylineno + 1) + ':\n' + lexer.showPosition() + '\nExpecting ' + expected.join(', ') + ', got \'' + (this.terminals_[symbol] || symbol) + '\'';
+                    } else {
+                        errStr = 'Parse error on line ' + (yylineno + 1) + ': Unexpected ' + (symbol == EOF ? 'end of input' : '\'' + (this.terminals_[symbol] || symbol) + '\'');
+                    }
+                    this.parseError(errStr, {
+                        text: lexer.match,
+                        token: this.terminals_[symbol] || symbol,
+                        line: lexer.yylineno,
+                        loc: yyloc,
+                        expected: expected
+                    });
+                }
+            if (action[0] instanceof Array && action.length > 1) {
+                throw new Error('Parse Error: multiple actions possible at state: ' + state + ', token: ' + symbol);
+            }
+            switch (action[0]) {
+            case 1:
+                stack.push(symbol);
+                vstack.push(lexer.yytext);
+                lstack.push(lexer.yylloc);
+                stack.push(action[1]);
+                symbol = null;
+                if (!preErrorSymbol) {
+                    yyleng = lexer.yyleng;
+                    yytext = lexer.yytext;
+                    yylineno = lexer.yylineno;
+                    yyloc = lexer.yylloc;
+                    if (recovering > 0) {
+                        recovering--;
+                    }
+                } else {
+                    symbol = preErrorSymbol;
+                    preErrorSymbol = null;
+                }
+                break;
+            case 2:
+                len = this.productions_[action[1]][1];
+                yyval.$ = vstack[vstack.length - len];
+                yyval._$ = {
+                    first_line: lstack[lstack.length - (len || 1)].first_line,
+                    last_line: lstack[lstack.length - 1].last_line,
+                    first_column: lstack[lstack.length - (len || 1)].first_column,
+                    last_column: lstack[lstack.length - 1].last_column
+                };
+                if (ranges) {
+                    yyval._$.range = [
+                        lstack[lstack.length - (len || 1)].range[0],
+                        lstack[lstack.length - 1].range[1]
+                    ];
+                }
+                r = this.performAction.apply(yyval, [
+                    yytext,
+                    yyleng,
+                    yylineno,
+                    sharedState.yy,
+                    action[1],
+                    vstack,
+                    lstack
+                ].concat(args));
+                if (typeof r !== 'undefined') {
+                    return r;
+                }
+                if (len) {
+                    stack = stack.slice(0, -1 * len * 2);
+                    vstack = vstack.slice(0, -1 * len);
+                    lstack = lstack.slice(0, -1 * len);
+                }
+                stack.push(this.productions_[action[1]][0]);
+                vstack.push(yyval.$);
+                lstack.push(yyval._$);
+                newState = table[stack[stack.length - 2]][stack[stack.length - 1]];
+                stack.push(newState);
+                break;
+            case 3:
+                return true;
+            }
+        }
+        return true;
+    }};
+    
+    function Parser () {
+      this.yy = {};
+    }
+    Parser.prototype = parser;parser.Parser = Parser;
+    return new Parser;
+    })();
+    
+    
+    if (typeof require !== 'undefined' && typeof exports !== 'undefined') {
+    exports.parser = parser;
+    exports.Parser = parser.Parser;
+    exports.parse = function () { return parser.parse.apply(parser, arguments); };
+    exports.main = function commonjsMain (args) {
+        if (!args[1]) {
+            console.log('Usage: '+args[0]+' FILE');
+            process.exit(1);
+        }
+        var source = require('fs').readFileSync(require('path').normalize(args[1]), "utf8");
+        return exports.parser.parse(source);
+    };
+    if (typeof module !== 'undefined' && require.main === module) {
+      exports.main(process.argv.slice(1));
+    }
+    }
+    
+    }).call(this,require('_process'))
+    },{"_process":20,"fs":8,"path":13}],6:[function(require,module,exports){
+    // Generated by LiveScript 1.6.1
+    var path, stripString, nameFromPath;
+    path = require('path');
+    stripString = function(val){
+      var that;
+      if (that = /^['"](.*)['"]$/.exec(val.trim())) {
+        return that[1];
+      } else {
+        return val;
+      }
+    };
+    nameFromPath = function(modulePath){
+      return path.basename(stripString(modulePath)).split('.')[0].replace(/-[a-z]/ig, function(it){
+        return it.charAt(1).toUpperCase();
+      });
+    };
+    module.exports = {
+      nameFromPath: nameFromPath,
+      stripString: stripString
+    };
+    },{"path":13}],7:[function(require,module,exports){
+    'use strict'
+    
+    exports.byteLength = byteLength
+    exports.toByteArray = toByteArray
+    exports.fromByteArray = fromByteArray
+    
+    var lookup = []
+    var revLookup = []
+    var Arr = typeof Uint8Array !== 'undefined' ? Uint8Array : Array
+    
+    var code = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+    for (var i = 0, len = code.length; i < len; ++i) {
+      lookup[i] = code[i]
+      revLookup[code.charCodeAt(i)] = i
+    }
+    
+    // Support decoding URL-safe base64 strings, as Node.js does.
+    // See: https://en.wikipedia.org/wiki/Base64#URL_applications
+    revLookup['-'.charCodeAt(0)] = 62
+    revLookup['_'.charCodeAt(0)] = 63
+    
+    function getLens (b64) {
+      var len = b64.length
+    
+      if (len % 4 > 0) {
+        throw new Error('Invalid string. Length must be a multiple of 4')
+      }
+    
+      // Trim off extra bytes after placeholder bytes are found
+      // See: https://github.com/beatgammit/base64-js/issues/42
+      var validLen = b64.indexOf('=')
+      if (validLen === -1) validLen = len
+    
+      var placeHoldersLen = validLen === len
+        ? 0
+        : 4 - (validLen % 4)
+    
+      return [validLen, placeHoldersLen]
+    }
+    
+    // base64 is 4/3 + up to two characters of the original data
+    function byteLength (b64) {
+      var lens = getLens(b64)
+      var validLen = lens[0]
+      var placeHoldersLen = lens[1]
+      return ((validLen + placeHoldersLen) * 3 / 4) - placeHoldersLen
+    }
+    
+    function _byteLength (b64, validLen, placeHoldersLen) {
+      return ((validLen + placeHoldersLen) * 3 / 4) - placeHoldersLen
+    }
+    
+    function toByteArray (b64) {
+      var tmp
+      var lens = getLens(b64)
+      var validLen = lens[0]
+      var placeHoldersLen = lens[1]
+    
+      var arr = new Arr(_byteLength(b64, validLen, placeHoldersLen))
+    
+      var curByte = 0
+    
+      // if there are placeholders, only get up to the last complete 4 chars
+      var len = placeHoldersLen > 0
+        ? validLen - 4
+        : validLen
+    
+      for (var i = 0; i < len; i += 4) {
+        tmp =
+          (revLookup[b64.charCodeAt(i)] << 18) |
+          (revLookup[b64.charCodeAt(i + 1)] << 12) |
+          (revLookup[b64.charCodeAt(i + 2)] << 6) |
+          revLookup[b64.charCodeAt(i + 3)]
+        arr[curByte++] = (tmp >> 16) & 0xFF
+        arr[curByte++] = (tmp >> 8) & 0xFF
+        arr[curByte++] = tmp & 0xFF
+      }
+    
+      if (placeHoldersLen === 2) {
+        tmp =
+          (revLookup[b64.charCodeAt(i)] << 2) |
+          (revLookup[b64.charCodeAt(i + 1)] >> 4)
+        arr[curByte++] = tmp & 0xFF
+      }
+    
+      if (placeHoldersLen === 1) {
+        tmp =
+          (revLookup[b64.charCodeAt(i)] << 10) |
+          (revLookup[b64.charCodeAt(i + 1)] << 4) |
+          (revLookup[b64.charCodeAt(i + 2)] >> 2)
+        arr[curByte++] = (tmp >> 8) & 0xFF
+        arr[curByte++] = tmp & 0xFF
+      }
+    
+      return arr
+    }
+    
+    function tripletToBase64 (num) {
+      return lookup[num >> 18 & 0x3F] +
+        lookup[num >> 12 & 0x3F] +
+        lookup[num >> 6 & 0x3F] +
+        lookup[num & 0x3F]
+    }
+    
+    function encodeChunk (uint8, start, end) {
+      var tmp
+      var output = []
+      for (var i = start; i < end; i += 3) {
+        tmp =
+          ((uint8[i] << 16) & 0xFF0000) +
+          ((uint8[i + 1] << 8) & 0xFF00) +
+          (uint8[i + 2] & 0xFF)
+        output.push(tripletToBase64(tmp))
+      }
+      return output.join('')
+    }
+    
+    function fromByteArray (uint8) {
+      var tmp
+      var len = uint8.length
+      var extraBytes = len % 3 // if we have 1 byte left, pad 2 bytes
+      var parts = []
+      var maxChunkLength = 16383 // must be multiple of 3
+    
+      // go through the array every three bytes, we'll deal with trailing stuff later
+      for (var i = 0, len2 = len - extraBytes; i < len2; i += maxChunkLength) {
+        parts.push(encodeChunk(
+          uint8, i, (i + maxChunkLength) > len2 ? len2 : (i + maxChunkLength)
+        ))
+      }
+    
+      // pad the end with zeros, but make sure to not forget the extra bytes
+      if (extraBytes === 1) {
+        tmp = uint8[len - 1]
+        parts.push(
+          lookup[tmp >> 2] +
+          lookup[(tmp << 4) & 0x3F] +
+          '=='
+        )
+      } else if (extraBytes === 2) {
+        tmp = (uint8[len - 2] << 8) + uint8[len - 1]
+        parts.push(
+          lookup[tmp >> 10] +
+          lookup[(tmp >> 4) & 0x3F] +
+          lookup[(tmp << 2) & 0x3F] +
+          '='
+        )
+      }
+    
+      return parts.join('')
+    }
+    
+    },{}],8:[function(require,module,exports){
+    
+    },{}],9:[function(require,module,exports){
+    (function (global){
+    /*!
+     * The buffer module from node.js, for the browser.
+     *
+     * @author   Feross Aboukhadijeh <feross@feross.org> <http://feross.org>
+     * @license  MIT
+     */
+    /* eslint-disable no-proto */
+    
+    'use strict'
+    
+    var base64 = require('base64-js')
+    var ieee754 = require('ieee754')
+    var isArray = require('isarray')
+    
+    exports.Buffer = Buffer
+    exports.SlowBuffer = SlowBuffer
+    exports.INSPECT_MAX_BYTES = 50
+    
+    /**
+     * If `Buffer.TYPED_ARRAY_SUPPORT`:
+     *   === true    Use Uint8Array implementation (fastest)
+     *   === false   Use Object implementation (most compatible, even IE6)
+     *
+     * Browsers that support typed arrays are IE 10+, Firefox 4+, Chrome 7+, Safari 5.1+,
+     * Opera 11.6+, iOS 4.2+.
+     *
+     * Due to various browser bugs, sometimes the Object implementation will be used even
+     * when the browser supports typed arrays.
+     *
+     * Note:
+     *
+     *   - Firefox 4-29 lacks support for adding new properties to `Uint8Array` instances,
+     *     See: https://bugzilla.mozilla.org/show_bug.cgi?id=695438.
+     *
+     *   - Chrome 9-10 is missing the `TypedArray.prototype.subarray` function.
+     *
+     *   - IE10 has a broken `TypedArray.prototype.subarray` function which returns arrays of
+     *     incorrect length in some situations.
+    
+     * We detect these buggy browsers and set `Buffer.TYPED_ARRAY_SUPPORT` to `false` so they
+     * get the Object implementation, which is slower but behaves correctly.
+     */
+    Buffer.TYPED_ARRAY_SUPPORT = global.TYPED_ARRAY_SUPPORT !== undefined
+      ? global.TYPED_ARRAY_SUPPORT
+      : typedArraySupport()
+    
+    /*
+     * Export kMaxLength after typed array support is determined.
+     */
+    exports.kMaxLength = kMaxLength()
+    
+    function typedArraySupport () {
+      try {
+        var arr = new Uint8Array(1)
+        arr.__proto__ = {__proto__: Uint8Array.prototype, foo: function () { return 42 }}
+        return arr.foo() === 42 && // typed array instances can be augmented
+            typeof arr.subarray === 'function' && // chrome 9-10 lack `subarray`
+            arr.subarray(1, 1).byteLength === 0 // ie10 has broken `subarray`
+      } catch (e) {
+        return false
+      }
+    }
+    
+    function kMaxLength () {
+      return Buffer.TYPED_ARRAY_SUPPORT
+        ? 0x7fffffff
+        : 0x3fffffff
+    }
+    
+    function createBuffer (that, length) {
+      if (kMaxLength() < length) {
+        throw new RangeError('Invalid typed array length')
+      }
+      if (Buffer.TYPED_ARRAY_SUPPORT) {
+        // Return an augmented `Uint8Array` instance, for best performance
+        that = new Uint8Array(length)
+        that.__proto__ = Buffer.prototype
+      } else {
+        // Fallback: Return an object instance of the Buffer class
+        if (that === null) {
+          that = new Buffer(length)
+        }
+        that.length = length
+      }
+    
+      return that
+    }
+    
+    /**
+     * The Buffer constructor returns instances of `Uint8Array` that have their
+     * prototype changed to `Buffer.prototype`. Furthermore, `Buffer` is a subclass of
+     * `Uint8Array`, so the returned instances will have all the node `Buffer` methods
+     * and the `Uint8Array` methods. Square bracket notation works as expected -- it
+     * returns a single octet.
+     *
+     * The `Uint8Array` prototype remains unmodified.
+     */
+    
+    function Buffer (arg, encodingOrOffset, length) {
+      if (!Buffer.TYPED_ARRAY_SUPPORT && !(this instanceof Buffer)) {
+        return new Buffer(arg, encodingOrOffset, length)
+      }
+    
+      // Common case.
+      if (typeof arg === 'number') {
+        if (typeof encodingOrOffset === 'string') {
+          throw new Error(
+            'If encoding is specified then the first argument must be a string'
+          )
+        }
+        return allocUnsafe(this, arg)
+      }
+      return from(this, arg, encodingOrOffset, length)
+    }
+    
+    Buffer.poolSize = 8192 // not used by this implementation
+    
+    // TODO: Legacy, not needed anymore. Remove in next major version.
+    Buffer._augment = function (arr) {
+      arr.__proto__ = Buffer.prototype
+      return arr
+    }
+    
+    function from (that, value, encodingOrOffset, length) {
+      if (typeof value === 'number') {
+        throw new TypeError('"value" argument must not be a number')
+      }
+    
+      if (typeof ArrayBuffer !== 'undefined' && value instanceof ArrayBuffer) {
+        return fromArrayBuffer(that, value, encodingOrOffset, length)
+      }
+    
+      if (typeof value === 'string') {
+        return fromString(that, value, encodingOrOffset)
+      }
+    
+      return fromObject(that, value)
+    }
+    
+    /**
+     * Functionally equivalent to Buffer(arg, encoding) but throws a TypeError
+     * if value is a number.
+     * Buffer.from(str[, encoding])
+     * Buffer.from(array)
+     * Buffer.from(buffer)
+     * Buffer.from(arrayBuffer[, byteOffset[, length]])
+     **/
+    Buffer.from = function (value, encodingOrOffset, length) {
+      return from(null, value, encodingOrOffset, length)
+    }
+    
+    if (Buffer.TYPED_ARRAY_SUPPORT) {
+      Buffer.prototype.__proto__ = Uint8Array.prototype
+      Buffer.__proto__ = Uint8Array
+      if (typeof Symbol !== 'undefined' && Symbol.species &&
+          Buffer[Symbol.species] === Buffer) {
+        // Fix subarray() in ES2016. See: https://github.com/feross/buffer/pull/97
+        Object.defineProperty(Buffer, Symbol.species, {
+          value: null,
+          configurable: true
+        })
+      }
+    }
+    
+    function assertSize (size) {
+      if (typeof size !== 'number') {
+        throw new TypeError('"size" argument must be a number')
+      } else if (size < 0) {
+        throw new RangeError('"size" argument must not be negative')
+      }
+    }
+    
+    function alloc (that, size, fill, encoding) {
+      assertSize(size)
+      if (size <= 0) {
+        return createBuffer(that, size)
+      }
+      if (fill !== undefined) {
+        // Only pay attention to encoding if it's a string. This
+        // prevents accidentally sending in a number that would
+        // be interpretted as a start offset.
+        return typeof encoding === 'string'
+          ? createBuffer(that, size).fill(fill, encoding)
+          : createBuffer(that, size).fill(fill)
+      }
+      return createBuffer(that, size)
+    }
+    
+    /**
+     * Creates a new filled Buffer instance.
+     * alloc(size[, fill[, encoding]])
+     **/
+    Buffer.alloc = function (size, fill, encoding) {
+      return alloc(null, size, fill, encoding)
+    }
+    
+    function allocUnsafe (that, size) {
+      assertSize(size)
+      that = createBuffer(that, size < 0 ? 0 : checked(size) | 0)
+      if (!Buffer.TYPED_ARRAY_SUPPORT) {
+        for (var i = 0; i < size; ++i) {
+          that[i] = 0
+        }
+      }
+      return that
+    }
+    
+    /**
+     * Equivalent to Buffer(num), by default creates a non-zero-filled Buffer instance.
+     * */
+    Buffer.allocUnsafe = function (size) {
+      return allocUnsafe(null, size)
+    }
+    /**
+     * Equivalent to SlowBuffer(num), by default creates a non-zero-filled Buffer instance.
+     */
+    Buffer.allocUnsafeSlow = function (size) {
+      return allocUnsafe(null, size)
+    }
+    
+    function fromString (that, string, encoding) {
+      if (typeof encoding !== 'string' || encoding === '') {
+        encoding = 'utf8'
+      }
+    
+      if (!Buffer.isEncoding(encoding)) {
+        throw new TypeError('"encoding" must be a valid string encoding')
+      }
+    
+      var length = byteLength(string, encoding) | 0
+      that = createBuffer(that, length)
+    
+      var actual = that.write(string, encoding)
+    
+      if (actual !== length) {
+        // Writing a hex string, for example, that contains invalid characters will
+        // cause everything after the first invalid character to be ignored. (e.g.
+        // 'abxxcd' will be treated as 'ab')
+        that = that.slice(0, actual)
+      }
+    
+      return that
+    }
+    
+    function fromArrayLike (that, array) {
+      var length = array.length < 0 ? 0 : checked(array.length) | 0
+      that = createBuffer(that, length)
+      for (var i = 0; i < length; i += 1) {
+        that[i] = array[i] & 255
+      }
+      return that
+    }
+    
+    function fromArrayBuffer (that, array, byteOffset, length) {
+      array.byteLength // this throws if `array` is not a valid ArrayBuffer
+    
+      if (byteOffset < 0 || array.byteLength < byteOffset) {
+        throw new RangeError('\'offset\' is out of bounds')
+      }
+    
+      if (array.byteLength < byteOffset + (length || 0)) {
+        throw new RangeError('\'length\' is out of bounds')
+      }
+    
+      if (byteOffset === undefined && length === undefined) {
+        array = new Uint8Array(array)
+      } else if (length === undefined) {
+        array = new Uint8Array(array, byteOffset)
+      } else {
+        array = new Uint8Array(array, byteOffset, length)
+      }
+    
+      if (Buffer.TYPED_ARRAY_SUPPORT) {
+        // Return an augmented `Uint8Array` instance, for best performance
+        that = array
+        that.__proto__ = Buffer.prototype
+      } else {
+        // Fallback: Return an object instance of the Buffer class
+        that = fromArrayLike(that, array)
+      }
+      return that
+    }
+    
+    function fromObject (that, obj) {
+      if (Buffer.isBuffer(obj)) {
+        var len = checked(obj.length) | 0
+        that = createBuffer(that, len)
+    
+        if (that.length === 0) {
+          return that
+        }
+    
+        obj.copy(that, 0, 0, len)
+        return that
+      }
+    
+      if (obj) {
+        if ((typeof ArrayBuffer !== 'undefined' &&
+            obj.buffer instanceof ArrayBuffer) || 'length' in obj) {
+          if (typeof obj.length !== 'number' || isnan(obj.length)) {
+            return createBuffer(that, 0)
+          }
+          return fromArrayLike(that, obj)
+        }
+    
+        if (obj.type === 'Buffer' && isArray(obj.data)) {
+          return fromArrayLike(that, obj.data)
+        }
+      }
+    
+      throw new TypeError('First argument must be a string, Buffer, ArrayBuffer, Array, or array-like object.')
+    }
+    
+    function checked (length) {
+      // Note: cannot use `length < kMaxLength()` here because that fails when
+      // length is NaN (which is otherwise coerced to zero.)
+      if (length >= kMaxLength()) {
+        throw new RangeError('Attempt to allocate Buffer larger than maximum ' +
+                             'size: 0x' + kMaxLength().toString(16) + ' bytes')
+      }
+      return length | 0
+    }
+    
+    function SlowBuffer (length) {
+      if (+length != length) { // eslint-disable-line eqeqeq
+        length = 0
+      }
+      return Buffer.alloc(+length)
+    }
+    
+    Buffer.isBuffer = function isBuffer (b) {
+      return !!(b != null && b._isBuffer)
+    }
+    
+    Buffer.compare = function compare (a, b) {
+      if (!Buffer.isBuffer(a) || !Buffer.isBuffer(b)) {
+        throw new TypeError('Arguments must be Buffers')
+      }
+    
+      if (a === b) return 0
+    
+      var x = a.length
+      var y = b.length
+    
+      for (var i = 0, len = Math.min(x, y); i < len; ++i) {
+        if (a[i] !== b[i]) {
+          x = a[i]
+          y = b[i]
+          break
+        }
+      }
+    
+      if (x < y) return -1
+      if (y < x) return 1
+      return 0
+    }
+    
+    Buffer.isEncoding = function isEncoding (encoding) {
+      switch (String(encoding).toLowerCase()) {
+        case 'hex':
+        case 'utf8':
+        case 'utf-8':
+        case 'ascii':
+        case 'latin1':
+        case 'binary':
+        case 'base64':
+        case 'ucs2':
+        case 'ucs-2':
+        case 'utf16le':
+        case 'utf-16le':
+          return true
+        default:
+          return false
+      }
+    }
+    
+    Buffer.concat = function concat (list, length) {
+      if (!isArray(list)) {
+        throw new TypeError('"list" argument must be an Array of Buffers')
+      }
+    
+      if (list.length === 0) {
+        return Buffer.alloc(0)
+      }
+    
+      var i
+      if (length === undefined) {
+        length = 0
+        for (i = 0; i < list.length; ++i) {
+          length += list[i].length
+        }
+      }
+    
+      var buffer = Buffer.allocUnsafe(length)
+      var pos = 0
+      for (i = 0; i < list.length; ++i) {
+        var buf = list[i]
+        if (!Buffer.isBuffer(buf)) {
+          throw new TypeError('"list" argument must be an Array of Buffers')
+        }
+        buf.copy(buffer, pos)
+        pos += buf.length
+      }
+      return buffer
+    }
+    
+    function byteLength (string, encoding) {
+      if (Buffer.isBuffer(string)) {
+        return string.length
+      }
+      if (typeof ArrayBuffer !== 'undefined' && typeof ArrayBuffer.isView === 'function' &&
+          (ArrayBuffer.isView(string) || string instanceof ArrayBuffer)) {
+        return string.byteLength
+      }
+      if (typeof string !== 'string') {
+        string = '' + string
+      }
+    
+      var len = string.length
+      if (len === 0) return 0
+    
+      // Use a for loop to avoid recursion
+      var loweredCase = false
+      for (;;) {
+        switch (encoding) {
+          case 'ascii':
+          case 'latin1':
+          case 'binary':
+            return len
+          case 'utf8':
+          case 'utf-8':
+          case undefined:
+            return utf8ToBytes(string).length
+          case 'ucs2':
+          case 'ucs-2':
+          case 'utf16le':
+          case 'utf-16le':
+            return len * 2
+          case 'hex':
+            return len >>> 1
+          case 'base64':
+            return base64ToBytes(string).length
+          default:
+            if (loweredCase) return utf8ToBytes(string).length // assume utf8
+            encoding = ('' + encoding).toLowerCase()
+            loweredCase = true
+        }
+      }
+    }
+    Buffer.byteLength = byteLength
+    
+    function slowToString (encoding, start, end) {
+      var loweredCase = false
+    
+      // No need to verify that "this.length <= MAX_UINT32" since it's a read-only
+      // property of a typed array.
+    
+      // This behaves neither like String nor Uint8Array in that we set start/end
+      // to their upper/lower bounds if the value passed is out of range.
+      // undefined is handled specially as per ECMA-262 6th Edition,
+      // Section 13.3.3.7 Runtime Semantics: KeyedBindingInitialization.
+      if (start === undefined || start < 0) {
+        start = 0
+      }
+      // Return early if start > this.length. Done here to prevent potential uint32
+      // coercion fail below.
+      if (start > this.length) {
+        return ''
+      }
+    
+      if (end === undefined || end > this.length) {
+        end = this.length
+      }
+    
+      if (end <= 0) {
+        return ''
+      }
+    
+      // Force coersion to uint32. This will also coerce falsey/NaN values to 0.
+      end >>>= 0
+      start >>>= 0
+    
+      if (end <= start) {
+        return ''
+      }
+    
+      if (!encoding) encoding = 'utf8'
+    
+      while (true) {
+        switch (encoding) {
+          case 'hex':
+            return hexSlice(this, start, end)
+    
+          case 'utf8':
+          case 'utf-8':
+            return utf8Slice(this, start, end)
+    
+          case 'ascii':
+            return asciiSlice(this, start, end)
+    
+          case 'latin1':
+          case 'binary':
+            return latin1Slice(this, start, end)
+    
+          case 'base64':
+            return base64Slice(this, start, end)
+    
+          case 'ucs2':
+          case 'ucs-2':
+          case 'utf16le':
+          case 'utf-16le':
+            return utf16leSlice(this, start, end)
+    
+          default:
+            if (loweredCase) throw new TypeError('Unknown encoding: ' + encoding)
+            encoding = (encoding + '').toLowerCase()
+            loweredCase = true
+        }
+      }
+    }
+    
+    // The property is used by `Buffer.isBuffer` and `is-buffer` (in Safari 5-7) to detect
+    // Buffer instances.
+    Buffer.prototype._isBuffer = true
+    
+    function swap (b, n, m) {
+      var i = b[n]
+      b[n] = b[m]
+      b[m] = i
+    }
+    
+    Buffer.prototype.swap16 = function swap16 () {
+      var len = this.length
+      if (len % 2 !== 0) {
+        throw new RangeError('Buffer size must be a multiple of 16-bits')
+      }
+      for (var i = 0; i < len; i += 2) {
+        swap(this, i, i + 1)
+      }
+      return this
+    }
+    
+    Buffer.prototype.swap32 = function swap32 () {
+      var len = this.length
+      if (len % 4 !== 0) {
+        throw new RangeError('Buffer size must be a multiple of 32-bits')
+      }
+      for (var i = 0; i < len; i += 4) {
+        swap(this, i, i + 3)
+        swap(this, i + 1, i + 2)
+      }
+      return this
+    }
+    
+    Buffer.prototype.swap64 = function swap64 () {
+      var len = this.length
+      if (len % 8 !== 0) {
+        throw new RangeError('Buffer size must be a multiple of 64-bits')
+      }
+      for (var i = 0; i < len; i += 8) {
+        swap(this, i, i + 7)
+        swap(this, i + 1, i + 6)
+        swap(this, i + 2, i + 5)
+        swap(this, i + 3, i + 4)
+      }
+      return this
+    }
+    
+    Buffer.prototype.toString = function toString () {
+      var length = this.length | 0
+      if (length === 0) return ''
+      if (arguments.length === 0) return utf8Slice(this, 0, length)
+      return slowToString.apply(this, arguments)
+    }
+    
+    Buffer.prototype.equals = function equals (b) {
+      if (!Buffer.isBuffer(b)) throw new TypeError('Argument must be a Buffer')
+      if (this === b) return true
+      return Buffer.compare(this, b) === 0
+    }
+    
+    Buffer.prototype.inspect = function inspect () {
+      var str = ''
+      var max = exports.INSPECT_MAX_BYTES
+      if (this.length > 0) {
+        str = this.toString('hex', 0, max).match(/.{2}/g).join(' ')
+        if (this.length > max) str += ' ... '
+      }
+      return '<Buffer ' + str + '>'
+    }
+    
+    Buffer.prototype.compare = function compare (target, start, end, thisStart, thisEnd) {
+      if (!Buffer.isBuffer(target)) {
+        throw new TypeError('Argument must be a Buffer')
+      }
+    
+      if (start === undefined) {
+        start = 0
+      }
+      if (end === undefined) {
+        end = target ? target.length : 0
+      }
+      if (thisStart === undefined) {
+        thisStart = 0
+      }
+      if (thisEnd === undefined) {
+        thisEnd = this.length
+      }
+    
+      if (start < 0 || end > target.length || thisStart < 0 || thisEnd > this.length) {
+        throw new RangeError('out of range index')
+      }
+    
+      if (thisStart >= thisEnd && start >= end) {
+        return 0
+      }
+      if (thisStart >= thisEnd) {
+        return -1
+      }
+      if (start >= end) {
+        return 1
+      }
+    
+      start >>>= 0
+      end >>>= 0
+      thisStart >>>= 0
+      thisEnd >>>= 0
+    
+      if (this === target) return 0
+    
+      var x = thisEnd - thisStart
+      var y = end - start
+      var len = Math.min(x, y)
+    
+      var thisCopy = this.slice(thisStart, thisEnd)
+      var targetCopy = target.slice(start, end)
+    
+      for (var i = 0; i < len; ++i) {
+        if (thisCopy[i] !== targetCopy[i]) {
+          x = thisCopy[i]
+          y = targetCopy[i]
+          break
+        }
+      }
+    
+      if (x < y) return -1
+      if (y < x) return 1
+      return 0
+    }
+    
+    // Finds either the first index of `val` in `buffer` at offset >= `byteOffset`,
+    // OR the last index of `val` in `buffer` at offset <= `byteOffset`.
+    //
+    // Arguments:
+    // - buffer - a Buffer to search
+    // - val - a string, Buffer, or number
+    // - byteOffset - an index into `buffer`; will be clamped to an int32
+    // - encoding - an optional encoding, relevant is val is a string
+    // - dir - true for indexOf, false for lastIndexOf
+    function bidirectionalIndexOf (buffer, val, byteOffset, encoding, dir) {
+      // Empty buffer means no match
+      if (buffer.length === 0) return -1
+    
+      // Normalize byteOffset
+      if (typeof byteOffset === 'string') {
+        encoding = byteOffset
+        byteOffset = 0
+      } else if (byteOffset > 0x7fffffff) {
+        byteOffset = 0x7fffffff
+      } else if (byteOffset < -0x80000000) {
+        byteOffset = -0x80000000
+      }
+      byteOffset = +byteOffset  // Coerce to Number.
+      if (isNaN(byteOffset)) {
+        // byteOffset: it it's undefined, null, NaN, "foo", etc, search whole buffer
+        byteOffset = dir ? 0 : (buffer.length - 1)
+      }
+    
+      // Normalize byteOffset: negative offsets start from the end of the buffer
+      if (byteOffset < 0) byteOffset = buffer.length + byteOffset
+      if (byteOffset >= buffer.length) {
+        if (dir) return -1
+        else byteOffset = buffer.length - 1
+      } else if (byteOffset < 0) {
+        if (dir) byteOffset = 0
+        else return -1
+      }
+    
+      // Normalize val
+      if (typeof val === 'string') {
+        val = Buffer.from(val, encoding)
+      }
+    
+      // Finally, search either indexOf (if dir is true) or lastIndexOf
+      if (Buffer.isBuffer(val)) {
+        // Special case: looking for empty string/buffer always fails
+        if (val.length === 0) {
+          return -1
+        }
+        return arrayIndexOf(buffer, val, byteOffset, encoding, dir)
+      } else if (typeof val === 'number') {
+        val = val & 0xFF // Search for a byte value [0-255]
+        if (Buffer.TYPED_ARRAY_SUPPORT &&
+            typeof Uint8Array.prototype.indexOf === 'function') {
+          if (dir) {
+            return Uint8Array.prototype.indexOf.call(buffer, val, byteOffset)
+          } else {
+            return Uint8Array.prototype.lastIndexOf.call(buffer, val, byteOffset)
+          }
+        }
+        return arrayIndexOf(buffer, [ val ], byteOffset, encoding, dir)
+      }
+    
+      throw new TypeError('val must be string, number or Buffer')
+    }
+    
+    function arrayIndexOf (arr, val, byteOffset, encoding, dir) {
+      var indexSize = 1
+      var arrLength = arr.length
+      var valLength = val.length
+    
+      if (encoding !== undefined) {
+        encoding = String(encoding).toLowerCase()
+        if (encoding === 'ucs2' || encoding === 'ucs-2' ||
+            encoding === 'utf16le' || encoding === 'utf-16le') {
+          if (arr.length < 2 || val.length < 2) {
+            return -1
+          }
+          indexSize = 2
+          arrLength /= 2
+          valLength /= 2
+          byteOffset /= 2
+        }
+      }
+    
+      function read (buf, i) {
+        if (indexSize === 1) {
+          return buf[i]
+        } else {
+          return buf.readUInt16BE(i * indexSize)
+        }
+      }
+    
+      var i
+      if (dir) {
+        var foundIndex = -1
+        for (i = byteOffset; i < arrLength; i++) {
+          if (read(arr, i) === read(val, foundIndex === -1 ? 0 : i - foundIndex)) {
+            if (foundIndex === -1) foundIndex = i
+            if (i - foundIndex + 1 === valLength) return foundIndex * indexSize
+          } else {
+            if (foundIndex !== -1) i -= i - foundIndex
+            foundIndex = -1
+          }
+        }
+      } else {
+        if (byteOffset + valLength > arrLength) byteOffset = arrLength - valLength
+        for (i = byteOffset; i >= 0; i--) {
+          var found = true
+          for (var j = 0; j < valLength; j++) {
+            if (read(arr, i + j) !== read(val, j)) {
+              found = false
+              break
+            }
+          }
+          if (found) return i
+        }
+      }
+    
+      return -1
+    }
+    
+    Buffer.prototype.includes = function includes (val, byteOffset, encoding) {
+      return this.indexOf(val, byteOffset, encoding) !== -1
+    }
+    
+    Buffer.prototype.indexOf = function indexOf (val, byteOffset, encoding) {
+      return bidirectionalIndexOf(this, val, byteOffset, encoding, true)
+    }
+    
+    Buffer.prototype.lastIndexOf = function lastIndexOf (val, byteOffset, encoding) {
+      return bidirectionalIndexOf(this, val, byteOffset, encoding, false)
+    }
+    
+    function hexWrite (buf, string, offset, length) {
+      offset = Number(offset) || 0
+      var remaining = buf.length - offset
+      if (!length) {
+        length = remaining
+      } else {
+        length = Number(length)
+        if (length > remaining) {
+          length = remaining
+        }
+      }
+    
+      // must be an even number of digits
+      var strLen = string.length
+      if (strLen % 2 !== 0) throw new TypeError('Invalid hex string')
+    
+      if (length > strLen / 2) {
+        length = strLen / 2
+      }
+      for (var i = 0; i < length; ++i) {
+        var parsed = parseInt(string.substr(i * 2, 2), 16)
+        if (isNaN(parsed)) return i
+        buf[offset + i] = parsed
+      }
+      return i
+    }
+    
+    function utf8Write (buf, string, offset, length) {
+      return blitBuffer(utf8ToBytes(string, buf.length - offset), buf, offset, length)
+    }
+    
+    function asciiWrite (buf, string, offset, length) {
+      return blitBuffer(asciiToBytes(string), buf, offset, length)
+    }
+    
+    function latin1Write (buf, string, offset, length) {
+      return asciiWrite(buf, string, offset, length)
+    }
+    
+    function base64Write (buf, string, offset, length) {
+      return blitBuffer(base64ToBytes(string), buf, offset, length)
+    }
+    
+    function ucs2Write (buf, string, offset, length) {
+      return blitBuffer(utf16leToBytes(string, buf.length - offset), buf, offset, length)
+    }
+    
+    Buffer.prototype.write = function write (string, offset, length, encoding) {
+      // Buffer#write(string)
+      if (offset === undefined) {
+        encoding = 'utf8'
+        length = this.length
+        offset = 0
+      // Buffer#write(string, encoding)
+      } else if (length === undefined && typeof offset === 'string') {
+        encoding = offset
+        length = this.length
+        offset = 0
+      // Buffer#write(string, offset[, length][, encoding])
+      } else if (isFinite(offset)) {
+        offset = offset | 0
+        if (isFinite(length)) {
+          length = length | 0
+          if (encoding === undefined) encoding = 'utf8'
+        } else {
+          encoding = length
+          length = undefined
+        }
+      // legacy write(string, encoding, offset, length) - remove in v0.13
+      } else {
+        throw new Error(
+          'Buffer.write(string, encoding, offset[, length]) is no longer supported'
+        )
+      }
+    
+      var remaining = this.length - offset
+      if (length === undefined || length > remaining) length = remaining
+    
+      if ((string.length > 0 && (length < 0 || offset < 0)) || offset > this.length) {
+        throw new RangeError('Attempt to write outside buffer bounds')
+      }
+    
+      if (!encoding) encoding = 'utf8'
+    
+      var loweredCase = false
+      for (;;) {
+        switch (encoding) {
+          case 'hex':
+            return hexWrite(this, string, offset, length)
+    
+          case 'utf8':
+          case 'utf-8':
+            return utf8Write(this, string, offset, length)
+    
+          case 'ascii':
+            return asciiWrite(this, string, offset, length)
+    
+          case 'latin1':
+          case 'binary':
+            return latin1Write(this, string, offset, length)
+    
+          case 'base64':
+            // Warning: maxLength not taken into account in base64Write
+            return base64Write(this, string, offset, length)
+    
+          case 'ucs2':
+          case 'ucs-2':
+          case 'utf16le':
+          case 'utf-16le':
+            return ucs2Write(this, string, offset, length)
+    
+          default:
+            if (loweredCase) throw new TypeError('Unknown encoding: ' + encoding)
+            encoding = ('' + encoding).toLowerCase()
+            loweredCase = true
+        }
+      }
+    }
+    
+    Buffer.prototype.toJSON = function toJSON () {
+      return {
+        type: 'Buffer',
+        data: Array.prototype.slice.call(this._arr || this, 0)
+      }
+    }
+    
+    function base64Slice (buf, start, end) {
+      if (start === 0 && end === buf.length) {
+        return base64.fromByteArray(buf)
+      } else {
+        return base64.fromByteArray(buf.slice(start, end))
+      }
+    }
+    
+    function utf8Slice (buf, start, end) {
+      end = Math.min(buf.length, end)
+      var res = []
+    
+      var i = start
+      while (i < end) {
+        var firstByte = buf[i]
+        var codePoint = null
+        var bytesPerSequence = (firstByte > 0xEF) ? 4
+          : (firstByte > 0xDF) ? 3
+          : (firstByte > 0xBF) ? 2
+          : 1
+    
+        if (i + bytesPerSequence <= end) {
+          var secondByte, thirdByte, fourthByte, tempCodePoint
+    
+          switch (bytesPerSequence) {
+            case 1:
+              if (firstByte < 0x80) {
+                codePoint = firstByte
+              }
+              break
+            case 2:
+              secondByte = buf[i + 1]
+              if ((secondByte & 0xC0) === 0x80) {
+                tempCodePoint = (firstByte & 0x1F) << 0x6 | (secondByte & 0x3F)
+                if (tempCodePoint > 0x7F) {
+                  codePoint = tempCodePoint
+                }
+              }
+              break
+            case 3:
+              secondByte = buf[i + 1]
+              thirdByte = buf[i + 2]
+              if ((secondByte & 0xC0) === 0x80 && (thirdByte & 0xC0) === 0x80) {
+                tempCodePoint = (firstByte & 0xF) << 0xC | (secondByte & 0x3F) << 0x6 | (thirdByte & 0x3F)
+                if (tempCodePoint > 0x7FF && (tempCodePoint < 0xD800 || tempCodePoint > 0xDFFF)) {
+                  codePoint = tempCodePoint
+                }
+              }
+              break
+            case 4:
+              secondByte = buf[i + 1]
+              thirdByte = buf[i + 2]
+              fourthByte = buf[i + 3]
+              if ((secondByte & 0xC0) === 0x80 && (thirdByte & 0xC0) === 0x80 && (fourthByte & 0xC0) === 0x80) {
+                tempCodePoint = (firstByte & 0xF) << 0x12 | (secondByte & 0x3F) << 0xC | (thirdByte & 0x3F) << 0x6 | (fourthByte & 0x3F)
+                if (tempCodePoint > 0xFFFF && tempCodePoint < 0x110000) {
+                  codePoint = tempCodePoint
+                }
+              }
+          }
+        }
+    
+        if (codePoint === null) {
+          // we did not generate a valid codePoint so insert a
+          // replacement char (U+FFFD) and advance only 1 byte
+          codePoint = 0xFFFD
+          bytesPerSequence = 1
+        } else if (codePoint > 0xFFFF) {
+          // encode to utf16 (surrogate pair dance)
+          codePoint -= 0x10000
+          res.push(codePoint >>> 10 & 0x3FF | 0xD800)
+          codePoint = 0xDC00 | codePoint & 0x3FF
+        }
+    
+        res.push(codePoint)
+        i += bytesPerSequence
+      }
+    
+      return decodeCodePointsArray(res)
+    }
+    
+    // Based on http://stackoverflow.com/a/22747272/680742, the browser with
+    // the lowest limit is Chrome, with 0x10000 args.
+    // We go 1 magnitude less, for safety
+    var MAX_ARGUMENTS_LENGTH = 0x1000
+    
+    function decodeCodePointsArray (codePoints) {
+      var len = codePoints.length
+      if (len <= MAX_ARGUMENTS_LENGTH) {
+        return String.fromCharCode.apply(String, codePoints) // avoid extra slice()
+      }
+    
+      // Decode in chunks to avoid "call stack size exceeded".
+      var res = ''
+      var i = 0
+      while (i < len) {
+        res += String.fromCharCode.apply(
+          String,
+          codePoints.slice(i, i += MAX_ARGUMENTS_LENGTH)
+        )
+      }
+      return res
+    }
+    
+    function asciiSlice (buf, start, end) {
+      var ret = ''
+      end = Math.min(buf.length, end)
+    
+      for (var i = start; i < end; ++i) {
+        ret += String.fromCharCode(buf[i] & 0x7F)
+      }
+      return ret
+    }
+    
+    function latin1Slice (buf, start, end) {
+      var ret = ''
+      end = Math.min(buf.length, end)
+    
+      for (var i = start; i < end; ++i) {
+        ret += String.fromCharCode(buf[i])
+      }
+      return ret
+    }
+    
+    function hexSlice (buf, start, end) {
+      var len = buf.length
+    
+      if (!start || start < 0) start = 0
+      if (!end || end < 0 || end > len) end = len
+    
+      var out = ''
+      for (var i = start; i < end; ++i) {
+        out += toHex(buf[i])
+      }
+      return out
+    }
+    
+    function utf16leSlice (buf, start, end) {
+      var bytes = buf.slice(start, end)
+      var res = ''
+      for (var i = 0; i < bytes.length; i += 2) {
+        res += String.fromCharCode(bytes[i] + bytes[i + 1] * 256)
+      }
+      return res
+    }
+    
+    Buffer.prototype.slice = function slice (start, end) {
+      var len = this.length
+      start = ~~start
+      end = end === undefined ? len : ~~end
+    
+      if (start < 0) {
+        start += len
+        if (start < 0) start = 0
+      } else if (start > len) {
+        start = len
+      }
+    
+      if (end < 0) {
+        end += len
+        if (end < 0) end = 0
+      } else if (end > len) {
+        end = len
+      }
+    
+      if (end < start) end = start
+    
+      var newBuf
+      if (Buffer.TYPED_ARRAY_SUPPORT) {
+        newBuf = this.subarray(start, end)
+        newBuf.__proto__ = Buffer.prototype
+      } else {
+        var sliceLen = end - start
+        newBuf = new Buffer(sliceLen, undefined)
+        for (var i = 0; i < sliceLen; ++i) {
+          newBuf[i] = this[i + start]
+        }
+      }
+    
+      return newBuf
+    }
+    
+    /*
+     * Need to make sure that buffer isn't trying to write out of bounds.
+     */
+    function checkOffset (offset, ext, length) {
+      if ((offset % 1) !== 0 || offset < 0) throw new RangeError('offset is not uint')
+      if (offset + ext > length) throw new RangeError('Trying to access beyond buffer length')
+    }
+    
+    Buffer.prototype.readUIntLE = function readUIntLE (offset, byteLength, noAssert) {
+      offset = offset | 0
+      byteLength = byteLength | 0
+      if (!noAssert) checkOffset(offset, byteLength, this.length)
+    
+      var val = this[offset]
+      var mul = 1
+      var i = 0
+      while (++i < byteLength && (mul *= 0x100)) {
+        val += this[offset + i] * mul
+      }
+    
+      return val
+    }
+    
+    Buffer.prototype.readUIntBE = function readUIntBE (offset, byteLength, noAssert) {
+      offset = offset | 0
+      byteLength = byteLength | 0
+      if (!noAssert) {
+        checkOffset(offset, byteLength, this.length)
+      }
+    
+      var val = this[offset + --byteLength]
+      var mul = 1
+      while (byteLength > 0 && (mul *= 0x100)) {
+        val += this[offset + --byteLength] * mul
+      }
+    
+      return val
+    }
+    
+    Buffer.prototype.readUInt8 = function readUInt8 (offset, noAssert) {
+      if (!noAssert) checkOffset(offset, 1, this.length)
+      return this[offset]
+    }
+    
+    Buffer.prototype.readUInt16LE = function readUInt16LE (offset, noAssert) {
+      if (!noAssert) checkOffset(offset, 2, this.length)
+      return this[offset] | (this[offset + 1] << 8)
+    }
+    
+    Buffer.prototype.readUInt16BE = function readUInt16BE (offset, noAssert) {
+      if (!noAssert) checkOffset(offset, 2, this.length)
+      return (this[offset] << 8) | this[offset + 1]
+    }
+    
+    Buffer.prototype.readUInt32LE = function readUInt32LE (offset, noAssert) {
+      if (!noAssert) checkOffset(offset, 4, this.length)
+    
+      return ((this[offset]) |
+          (this[offset + 1] << 8) |
+          (this[offset + 2] << 16)) +
+          (this[offset + 3] * 0x1000000)
+    }
+    
+    Buffer.prototype.readUInt32BE = function readUInt32BE (offset, noAssert) {
+      if (!noAssert) checkOffset(offset, 4, this.length)
+    
+      return (this[offset] * 0x1000000) +
+        ((this[offset + 1] << 16) |
+        (this[offset + 2] << 8) |
+        this[offset + 3])
+    }
+    
+    Buffer.prototype.readIntLE = function readIntLE (offset, byteLength, noAssert) {
+      offset = offset | 0
+      byteLength = byteLength | 0
+      if (!noAssert) checkOffset(offset, byteLength, this.length)
+    
+      var val = this[offset]
+      var mul = 1
+      var i = 0
+      while (++i < byteLength && (mul *= 0x100)) {
+        val += this[offset + i] * mul
+      }
+      mul *= 0x80
+    
+      if (val >= mul) val -= Math.pow(2, 8 * byteLength)
+    
+      return val
+    }
+    
+    Buffer.prototype.readIntBE = function readIntBE (offset, byteLength, noAssert) {
+      offset = offset | 0
+      byteLength = byteLength | 0
+      if (!noAssert) checkOffset(offset, byteLength, this.length)
+    
+      var i = byteLength
+      var mul = 1
+      var val = this[offset + --i]
+      while (i > 0 && (mul *= 0x100)) {
+        val += this[offset + --i] * mul
+      }
+      mul *= 0x80
+    
+      if (val >= mul) val -= Math.pow(2, 8 * byteLength)
+    
+      return val
+    }
+    
+    Buffer.prototype.readInt8 = function readInt8 (offset, noAssert) {
+      if (!noAssert) checkOffset(offset, 1, this.length)
+      if (!(this[offset] & 0x80)) return (this[offset])
+      return ((0xff - this[offset] + 1) * -1)
+    }
+    
+    Buffer.prototype.readInt16LE = function readInt16LE (offset, noAssert) {
+      if (!noAssert) checkOffset(offset, 2, this.length)
+      var val = this[offset] | (this[offset + 1] << 8)
+      return (val & 0x8000) ? val | 0xFFFF0000 : val
+    }
+    
+    Buffer.prototype.readInt16BE = function readInt16BE (offset, noAssert) {
+      if (!noAssert) checkOffset(offset, 2, this.length)
+      var val = this[offset + 1] | (this[offset] << 8)
+      return (val & 0x8000) ? val | 0xFFFF0000 : val
+    }
+    
+    Buffer.prototype.readInt32LE = function readInt32LE (offset, noAssert) {
+      if (!noAssert) checkOffset(offset, 4, this.length)
+    
+      return (this[offset]) |
+        (this[offset + 1] << 8) |
+        (this[offset + 2] << 16) |
+        (this[offset + 3] << 24)
+    }
+    
+    Buffer.prototype.readInt32BE = function readInt32BE (offset, noAssert) {
+      if (!noAssert) checkOffset(offset, 4, this.length)
+    
+      return (this[offset] << 24) |
+        (this[offset + 1] << 16) |
+        (this[offset + 2] << 8) |
+        (this[offset + 3])
+    }
+    
+    Buffer.prototype.readFloatLE = function readFloatLE (offset, noAssert) {
+      if (!noAssert) checkOffset(offset, 4, this.length)
+      return ieee754.read(this, offset, true, 23, 4)
+    }
+    
+    Buffer.prototype.readFloatBE = function readFloatBE (offset, noAssert) {
+      if (!noAssert) checkOffset(offset, 4, this.length)
+      return ieee754.read(this, offset, false, 23, 4)
+    }
+    
+    Buffer.prototype.readDoubleLE = function readDoubleLE (offset, noAssert) {
+      if (!noAssert) checkOffset(offset, 8, this.length)
+      return ieee754.read(this, offset, true, 52, 8)
+    }
+    
+    Buffer.prototype.readDoubleBE = function readDoubleBE (offset, noAssert) {
+      if (!noAssert) checkOffset(offset, 8, this.length)
+      return ieee754.read(this, offset, false, 52, 8)
+    }
+    
+    function checkInt (buf, value, offset, ext, max, min) {
+      if (!Buffer.isBuffer(buf)) throw new TypeError('"buffer" argument must be a Buffer instance')
+      if (value > max || value < min) throw new RangeError('"value" argument is out of bounds')
+      if (offset + ext > buf.length) throw new RangeError('Index out of range')
+    }
+    
+    Buffer.prototype.writeUIntLE = function writeUIntLE (value, offset, byteLength, noAssert) {
+      value = +value
+      offset = offset | 0
+      byteLength = byteLength | 0
+      if (!noAssert) {
+        var maxBytes = Math.pow(2, 8 * byteLength) - 1
+        checkInt(this, value, offset, byteLength, maxBytes, 0)
+      }
+    
+      var mul = 1
+      var i = 0
+      this[offset] = value & 0xFF
+      while (++i < byteLength && (mul *= 0x100)) {
+        this[offset + i] = (value / mul) & 0xFF
+      }
+    
+      return offset + byteLength
+    }
+    
+    Buffer.prototype.writeUIntBE = function writeUIntBE (value, offset, byteLength, noAssert) {
+      value = +value
+      offset = offset | 0
+      byteLength = byteLength | 0
+      if (!noAssert) {
+        var maxBytes = Math.pow(2, 8 * byteLength) - 1
+        checkInt(this, value, offset, byteLength, maxBytes, 0)
+      }
+    
+      var i = byteLength - 1
+      var mul = 1
+      this[offset + i] = value & 0xFF
+      while (--i >= 0 && (mul *= 0x100)) {
+        this[offset + i] = (value / mul) & 0xFF
+      }
+    
+      return offset + byteLength
+    }
+    
+    Buffer.prototype.writeUInt8 = function writeUInt8 (value, offset, noAssert) {
+      value = +value
+      offset = offset | 0
+      if (!noAssert) checkInt(this, value, offset, 1, 0xff, 0)
+      if (!Buffer.TYPED_ARRAY_SUPPORT) value = Math.floor(value)
+      this[offset] = (value & 0xff)
+      return offset + 1
+    }
+    
+    function objectWriteUInt16 (buf, value, offset, littleEndian) {
+      if (value < 0) value = 0xffff + value + 1
+      for (var i = 0, j = Math.min(buf.length - offset, 2); i < j; ++i) {
+        buf[offset + i] = (value & (0xff << (8 * (littleEndian ? i : 1 - i)))) >>>
+          (littleEndian ? i : 1 - i) * 8
+      }
+    }
+    
+    Buffer.prototype.writeUInt16LE = function writeUInt16LE (value, offset, noAssert) {
+      value = +value
+      offset = offset | 0
+      if (!noAssert) checkInt(this, value, offset, 2, 0xffff, 0)
+      if (Buffer.TYPED_ARRAY_SUPPORT) {
+        this[offset] = (value & 0xff)
+        this[offset + 1] = (value >>> 8)
+      } else {
+        objectWriteUInt16(this, value, offset, true)
+      }
+      return offset + 2
+    }
+    
+    Buffer.prototype.writeUInt16BE = function writeUInt16BE (value, offset, noAssert) {
+      value = +value
+      offset = offset | 0
+      if (!noAssert) checkInt(this, value, offset, 2, 0xffff, 0)
+      if (Buffer.TYPED_ARRAY_SUPPORT) {
+        this[offset] = (value >>> 8)
+        this[offset + 1] = (value & 0xff)
+      } else {
+        objectWriteUInt16(this, value, offset, false)
+      }
+      return offset + 2
+    }
+    
+    function objectWriteUInt32 (buf, value, offset, littleEndian) {
+      if (value < 0) value = 0xffffffff + value + 1
+      for (var i = 0, j = Math.min(buf.length - offset, 4); i < j; ++i) {
+        buf[offset + i] = (value >>> (littleEndian ? i : 3 - i) * 8) & 0xff
+      }
+    }
+    
+    Buffer.prototype.writeUInt32LE = function writeUInt32LE (value, offset, noAssert) {
+      value = +value
+      offset = offset | 0
+      if (!noAssert) checkInt(this, value, offset, 4, 0xffffffff, 0)
+      if (Buffer.TYPED_ARRAY_SUPPORT) {
+        this[offset + 3] = (value >>> 24)
+        this[offset + 2] = (value >>> 16)
+        this[offset + 1] = (value >>> 8)
+        this[offset] = (value & 0xff)
+      } else {
+        objectWriteUInt32(this, value, offset, true)
+      }
+      return offset + 4
+    }
+    
+    Buffer.prototype.writeUInt32BE = function writeUInt32BE (value, offset, noAssert) {
+      value = +value
+      offset = offset | 0
+      if (!noAssert) checkInt(this, value, offset, 4, 0xffffffff, 0)
+      if (Buffer.TYPED_ARRAY_SUPPORT) {
+        this[offset] = (value >>> 24)
+        this[offset + 1] = (value >>> 16)
+        this[offset + 2] = (value >>> 8)
+        this[offset + 3] = (value & 0xff)
+      } else {
+        objectWriteUInt32(this, value, offset, false)
+      }
+      return offset + 4
+    }
+    
+    Buffer.prototype.writeIntLE = function writeIntLE (value, offset, byteLength, noAssert) {
+      value = +value
+      offset = offset | 0
+      if (!noAssert) {
+        var limit = Math.pow(2, 8 * byteLength - 1)
+    
+        checkInt(this, value, offset, byteLength, limit - 1, -limit)
+      }
+    
+      var i = 0
+      var mul = 1
+      var sub = 0
+      this[offset] = value & 0xFF
+      while (++i < byteLength && (mul *= 0x100)) {
+        if (value < 0 && sub === 0 && this[offset + i - 1] !== 0) {
+          sub = 1
+        }
+        this[offset + i] = ((value / mul) >> 0) - sub & 0xFF
+      }
+    
+      return offset + byteLength
+    }
+    
+    Buffer.prototype.writeIntBE = function writeIntBE (value, offset, byteLength, noAssert) {
+      value = +value
+      offset = offset | 0
+      if (!noAssert) {
+        var limit = Math.pow(2, 8 * byteLength - 1)
+    
+        checkInt(this, value, offset, byteLength, limit - 1, -limit)
+      }
+    
+      var i = byteLength - 1
+      var mul = 1
+      var sub = 0
+      this[offset + i] = value & 0xFF
+      while (--i >= 0 && (mul *= 0x100)) {
+        if (value < 0 && sub === 0 && this[offset + i + 1] !== 0) {
+          sub = 1
+        }
+        this[offset + i] = ((value / mul) >> 0) - sub & 0xFF
+      }
+    
+      return offset + byteLength
+    }
+    
+    Buffer.prototype.writeInt8 = function writeInt8 (value, offset, noAssert) {
+      value = +value
+      offset = offset | 0
+      if (!noAssert) checkInt(this, value, offset, 1, 0x7f, -0x80)
+      if (!Buffer.TYPED_ARRAY_SUPPORT) value = Math.floor(value)
+      if (value < 0) value = 0xff + value + 1
+      this[offset] = (value & 0xff)
+      return offset + 1
+    }
+    
+    Buffer.prototype.writeInt16LE = function writeInt16LE (value, offset, noAssert) {
+      value = +value
+      offset = offset | 0
+      if (!noAssert) checkInt(this, value, offset, 2, 0x7fff, -0x8000)
+      if (Buffer.TYPED_ARRAY_SUPPORT) {
+        this[offset] = (value & 0xff)
+        this[offset + 1] = (value >>> 8)
+      } else {
+        objectWriteUInt16(this, value, offset, true)
+      }
+      return offset + 2
+    }
+    
+    Buffer.prototype.writeInt16BE = function writeInt16BE (value, offset, noAssert) {
+      value = +value
+      offset = offset | 0
+      if (!noAssert) checkInt(this, value, offset, 2, 0x7fff, -0x8000)
+      if (Buffer.TYPED_ARRAY_SUPPORT) {
+        this[offset] = (value >>> 8)
+        this[offset + 1] = (value & 0xff)
+      } else {
+        objectWriteUInt16(this, value, offset, false)
+      }
+      return offset + 2
+    }
+    
+    Buffer.prototype.writeInt32LE = function writeInt32LE (value, offset, noAssert) {
+      value = +value
+      offset = offset | 0
+      if (!noAssert) checkInt(this, value, offset, 4, 0x7fffffff, -0x80000000)
+      if (Buffer.TYPED_ARRAY_SUPPORT) {
+        this[offset] = (value & 0xff)
+        this[offset + 1] = (value >>> 8)
+        this[offset + 2] = (value >>> 16)
+        this[offset + 3] = (value >>> 24)
+      } else {
+        objectWriteUInt32(this, value, offset, true)
+      }
+      return offset + 4
+    }
+    
+    Buffer.prototype.writeInt32BE = function writeInt32BE (value, offset, noAssert) {
+      value = +value
+      offset = offset | 0
+      if (!noAssert) checkInt(this, value, offset, 4, 0x7fffffff, -0x80000000)
+      if (value < 0) value = 0xffffffff + value + 1
+      if (Buffer.TYPED_ARRAY_SUPPORT) {
+        this[offset] = (value >>> 24)
+        this[offset + 1] = (value >>> 16)
+        this[offset + 2] = (value >>> 8)
+        this[offset + 3] = (value & 0xff)
+      } else {
+        objectWriteUInt32(this, value, offset, false)
+      }
+      return offset + 4
+    }
+    
+    function checkIEEE754 (buf, value, offset, ext, max, min) {
+      if (offset + ext > buf.length) throw new RangeError('Index out of range')
+      if (offset < 0) throw new RangeError('Index out of range')
+    }
+    
+    function writeFloat (buf, value, offset, littleEndian, noAssert) {
+      if (!noAssert) {
+        checkIEEE754(buf, value, offset, 4, 3.4028234663852886e+38, -3.4028234663852886e+38)
+      }
+      ieee754.write(buf, value, offset, littleEndian, 23, 4)
+      return offset + 4
+    }
+    
+    Buffer.prototype.writeFloatLE = function writeFloatLE (value, offset, noAssert) {
+      return writeFloat(this, value, offset, true, noAssert)
+    }
+    
+    Buffer.prototype.writeFloatBE = function writeFloatBE (value, offset, noAssert) {
+      return writeFloat(this, value, offset, false, noAssert)
+    }
+    
+    function writeDouble (buf, value, offset, littleEndian, noAssert) {
+      if (!noAssert) {
+        checkIEEE754(buf, value, offset, 8, 1.7976931348623157E+308, -1.7976931348623157E+308)
+      }
+      ieee754.write(buf, value, offset, littleEndian, 52, 8)
+      return offset + 8
+    }
+    
+    Buffer.prototype.writeDoubleLE = function writeDoubleLE (value, offset, noAssert) {
+      return writeDouble(this, value, offset, true, noAssert)
+    }
+    
+    Buffer.prototype.writeDoubleBE = function writeDoubleBE (value, offset, noAssert) {
+      return writeDouble(this, value, offset, false, noAssert)
+    }
+    
+    // copy(targetBuffer, targetStart=0, sourceStart=0, sourceEnd=buffer.length)
+    Buffer.prototype.copy = function copy (target, targetStart, start, end) {
+      if (!start) start = 0
+      if (!end && end !== 0) end = this.length
+      if (targetStart >= target.length) targetStart = target.length
+      if (!targetStart) targetStart = 0
+      if (end > 0 && end < start) end = start
+    
+      // Copy 0 bytes; we're done
+      if (end === start) return 0
+      if (target.length === 0 || this.length === 0) return 0
+    
+      // Fatal error conditions
+      if (targetStart < 0) {
+        throw new RangeError('targetStart out of bounds')
+      }
+      if (start < 0 || start >= this.length) throw new RangeError('sourceStart out of bounds')
+      if (end < 0) throw new RangeError('sourceEnd out of bounds')
+    
+      // Are we oob?
+      if (end > this.length) end = this.length
+      if (target.length - targetStart < end - start) {
+        end = target.length - targetStart + start
+      }
+    
+      var len = end - start
+      var i
+    
+      if (this === target && start < targetStart && targetStart < end) {
+        // descending copy from end
+        for (i = len - 1; i >= 0; --i) {
+          target[i + targetStart] = this[i + start]
+        }
+      } else if (len < 1000 || !Buffer.TYPED_ARRAY_SUPPORT) {
+        // ascending copy from start
+        for (i = 0; i < len; ++i) {
+          target[i + targetStart] = this[i + start]
+        }
+      } else {
+        Uint8Array.prototype.set.call(
+          target,
+          this.subarray(start, start + len),
+          targetStart
+        )
+      }
+    
+      return len
+    }
+    
+    // Usage:
+    //    buffer.fill(number[, offset[, end]])
+    //    buffer.fill(buffer[, offset[, end]])
+    //    buffer.fill(string[, offset[, end]][, encoding])
+    Buffer.prototype.fill = function fill (val, start, end, encoding) {
+      // Handle string cases:
+      if (typeof val === 'string') {
+        if (typeof start === 'string') {
+          encoding = start
+          start = 0
+          end = this.length
+        } else if (typeof end === 'string') {
+          encoding = end
+          end = this.length
+        }
+        if (val.length === 1) {
+          var code = val.charCodeAt(0)
+          if (code < 256) {
+            val = code
+          }
+        }
+        if (encoding !== undefined && typeof encoding !== 'string') {
+          throw new TypeError('encoding must be a string')
+        }
+        if (typeof encoding === 'string' && !Buffer.isEncoding(encoding)) {
+          throw new TypeError('Unknown encoding: ' + encoding)
+        }
+      } else if (typeof val === 'number') {
+        val = val & 255
+      }
+    
+      // Invalid ranges are not set to a default, so can range check early.
+      if (start < 0 || this.length < start || this.length < end) {
+        throw new RangeError('Out of range index')
+      }
+    
+      if (end <= start) {
+        return this
+      }
+    
+      start = start >>> 0
+      end = end === undefined ? this.length : end >>> 0
+    
+      if (!val) val = 0
+    
+      var i
+      if (typeof val === 'number') {
+        for (i = start; i < end; ++i) {
+          this[i] = val
+        }
+      } else {
+        var bytes = Buffer.isBuffer(val)
+          ? val
+          : utf8ToBytes(new Buffer(val, encoding).toString())
+        var len = bytes.length
+        for (i = 0; i < end - start; ++i) {
+          this[i + start] = bytes[i % len]
+        }
+      }
+    
+      return this
+    }
+    
+    // HELPER FUNCTIONS
+    // ================
+    
+    var INVALID_BASE64_RE = /[^+\/0-9A-Za-z-_]/g
+    
+    function base64clean (str) {
+      // Node strips out invalid characters like \n and \t from the string, base64-js does not
+      str = stringtrim(str).replace(INVALID_BASE64_RE, '')
+      // Node converts strings with length < 2 to ''
+      if (str.length < 2) return ''
+      // Node allows for non-padded base64 strings (missing trailing ===), base64-js does not
+      while (str.length % 4 !== 0) {
+        str = str + '='
+      }
+      return str
+    }
+    
+    function stringtrim (str) {
+      if (str.trim) return str.trim()
+      return str.replace(/^\s+|\s+$/g, '')
+    }
+    
+    function toHex (n) {
+      if (n < 16) return '0' + n.toString(16)
+      return n.toString(16)
+    }
+    
+    function utf8ToBytes (string, units) {
+      units = units || Infinity
+      var codePoint
+      var length = string.length
+      var leadSurrogate = null
+      var bytes = []
+    
+      for (var i = 0; i < length; ++i) {
+        codePoint = string.charCodeAt(i)
+    
+        // is surrogate component
+        if (codePoint > 0xD7FF && codePoint < 0xE000) {
+          // last char was a lead
+          if (!leadSurrogate) {
+            // no lead yet
+            if (codePoint > 0xDBFF) {
+              // unexpected trail
+              if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
+              continue
+            } else if (i + 1 === length) {
+              // unpaired lead
+              if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
+              continue
+            }
+    
+            // valid lead
+            leadSurrogate = codePoint
+    
+            continue
+          }
+    
+          // 2 leads in a row
+          if (codePoint < 0xDC00) {
+            if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
+            leadSurrogate = codePoint
+            continue
+          }
+    
+          // valid surrogate pair
+          codePoint = (leadSurrogate - 0xD800 << 10 | codePoint - 0xDC00) + 0x10000
+        } else if (leadSurrogate) {
+          // valid bmp char, but last char was a lead
+          if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
+        }
+    
+        leadSurrogate = null
+    
+        // encode utf8
+        if (codePoint < 0x80) {
+          if ((units -= 1) < 0) break
+          bytes.push(codePoint)
+        } else if (codePoint < 0x800) {
+          if ((units -= 2) < 0) break
+          bytes.push(
+            codePoint >> 0x6 | 0xC0,
+            codePoint & 0x3F | 0x80
+          )
+        } else if (codePoint < 0x10000) {
+          if ((units -= 3) < 0) break
+          bytes.push(
+            codePoint >> 0xC | 0xE0,
+            codePoint >> 0x6 & 0x3F | 0x80,
+            codePoint & 0x3F | 0x80
+          )
+        } else if (codePoint < 0x110000) {
+          if ((units -= 4) < 0) break
+          bytes.push(
+            codePoint >> 0x12 | 0xF0,
+            codePoint >> 0xC & 0x3F | 0x80,
+            codePoint >> 0x6 & 0x3F | 0x80,
+            codePoint & 0x3F | 0x80
+          )
+        } else {
+          throw new Error('Invalid code point')
+        }
+      }
+    
+      return bytes
+    }
+    
+    function asciiToBytes (str) {
+      var byteArray = []
+      for (var i = 0; i < str.length; ++i) {
+        // Node's code seems to be doing this and not & 0x7F..
+        byteArray.push(str.charCodeAt(i) & 0xFF)
+      }
+      return byteArray
+    }
+    
+    function utf16leToBytes (str, units) {
+      var c, hi, lo
+      var byteArray = []
+      for (var i = 0; i < str.length; ++i) {
+        if ((units -= 2) < 0) break
+    
+        c = str.charCodeAt(i)
+        hi = c >> 8
+        lo = c % 256
+        byteArray.push(lo)
+        byteArray.push(hi)
+      }
+    
+      return byteArray
+    }
+    
+    function base64ToBytes (str) {
+      return base64.toByteArray(base64clean(str))
+    }
+    
+    function blitBuffer (src, dst, offset, length) {
+      for (var i = 0; i < length; ++i) {
+        if ((i + offset >= dst.length) || (i >= src.length)) break
+        dst[i + offset] = src[i]
+      }
+      return i
+    }
+    
+    function isnan (val) {
+      return val !== val // eslint-disable-line no-self-compare
+    }
+    
+    }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+    },{"base64-js":7,"ieee754":11,"isarray":12}],10:[function(require,module,exports){
+    // Copyright Joyent, Inc. and other Node contributors.
+    //
+    // Permission is hereby granted, free of charge, to any person obtaining a
+    // copy of this software and associated documentation files (the
+    // "Software"), to deal in the Software without restriction, including
+    // without limitation the rights to use, copy, modify, merge, publish,
+    // distribute, sublicense, and/or sell copies of the Software, and to permit
+    // persons to whom the Software is furnished to do so, subject to the
+    // following conditions:
+    //
+    // The above copyright notice and this permission notice shall be included
+    // in all copies or substantial portions of the Software.
+    //
+    // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+    // OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+    // MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+    // NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+    // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+    // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+    // USE OR OTHER DEALINGS IN THE SOFTWARE.
+    
+    function EventEmitter() {
+      this._events = this._events || {};
+      this._maxListeners = this._maxListeners || undefined;
+    }
+    module.exports = EventEmitter;
+    
+    // Backwards-compat with node 0.10.x
+    EventEmitter.EventEmitter = EventEmitter;
+    
+    EventEmitter.prototype._events = undefined;
+    EventEmitter.prototype._maxListeners = undefined;
+    
+    // By default EventEmitters will print a warning if more than 10 listeners are
+    // added to it. This is a useful default which helps finding memory leaks.
+    EventEmitter.defaultMaxListeners = 10;
+    
+    // Obviously not all Emitters should be limited to 10. This function allows
+    // that to be increased. Set to zero for unlimited.
+    EventEmitter.prototype.setMaxListeners = function(n) {
+      if (!isNumber(n) || n < 0 || isNaN(n))
+        throw TypeError('n must be a positive number');
+      this._maxListeners = n;
+      return this;
+    };
+    
+    EventEmitter.prototype.emit = function(type) {
+      var er, handler, len, args, i, listeners;
+    
+      if (!this._events)
+        this._events = {};
+    
+      // If there is no 'error' event listener then throw.
+      if (type === 'error') {
+        if (!this._events.error ||
+            (isObject(this._events.error) && !this._events.error.length)) {
+          er = arguments[1];
+          if (er instanceof Error) {
+            throw er; // Unhandled 'error' event
+          } else {
+            // At least give some kind of context to the user
+            var err = new Error('Uncaught, unspecified "error" event. (' + er + ')');
+            err.context = er;
+            throw err;
+          }
+        }
+      }
+    
+      handler = this._events[type];
+    
+      if (isUndefined(handler))
+        return false;
+    
+      if (isFunction(handler)) {
+        switch (arguments.length) {
+          // fast cases
+          case 1:
+            handler.call(this);
+            break;
+          case 2:
+            handler.call(this, arguments[1]);
+            break;
+          case 3:
+            handler.call(this, arguments[1], arguments[2]);
+            break;
+          // slower
+          default:
+            args = Array.prototype.slice.call(arguments, 1);
+            handler.apply(this, args);
+        }
+      } else if (isObject(handler)) {
+        args = Array.prototype.slice.call(arguments, 1);
+        listeners = handler.slice();
+        len = listeners.length;
+        for (i = 0; i < len; i++)
+          listeners[i].apply(this, args);
+      }
+    
+      return true;
+    };
+    
+    EventEmitter.prototype.addListener = function(type, listener) {
+      var m;
+    
+      if (!isFunction(listener))
+        throw TypeError('listener must be a function');
+    
+      if (!this._events)
+        this._events = {};
+    
+      // To avoid recursion in the case that type === "newListener"! Before
+      // adding it to the listeners, first emit "newListener".
+      if (this._events.newListener)
+        this.emit('newListener', type,
+                  isFunction(listener.listener) ?
+                  listener.listener : listener);
+    
+      if (!this._events[type])
+        // Optimize the case of one listener. Don't need the extra array object.
+        this._events[type] = listener;
+      else if (isObject(this._events[type]))
+        // If we've already got an array, just append.
+        this._events[type].push(listener);
+      else
+        // Adding the second element, need to change to array.
+        this._events[type] = [this._events[type], listener];
+    
+      // Check for listener leak
+      if (isObject(this._events[type]) && !this._events[type].warned) {
+        if (!isUndefined(this._maxListeners)) {
+          m = this._maxListeners;
+        } else {
+          m = EventEmitter.defaultMaxListeners;
+        }
+    
+        if (m && m > 0 && this._events[type].length > m) {
+          this._events[type].warned = true;
+          console.error('(node) warning: possible EventEmitter memory ' +
+                        'leak detected. %d listeners added. ' +
+                        'Use emitter.setMaxListeners() to increase limit.',
+                        this._events[type].length);
+          if (typeof console.trace === 'function') {
+            // not supported in IE 10
+            console.trace();
+          }
+        }
+      }
+    
+      return this;
+    };
+    
+    EventEmitter.prototype.on = EventEmitter.prototype.addListener;
+    
+    EventEmitter.prototype.once = function(type, listener) {
+      if (!isFunction(listener))
+        throw TypeError('listener must be a function');
+    
+      var fired = false;
+    
+      function g() {
+        this.removeListener(type, g);
+    
+        if (!fired) {
+          fired = true;
+          listener.apply(this, arguments);
+        }
+      }
+    
+      g.listener = listener;
+      this.on(type, g);
+    
+      return this;
+    };
+    
+    // emits a 'removeListener' event iff the listener was removed
+    EventEmitter.prototype.removeListener = function(type, listener) {
+      var list, position, length, i;
+    
+      if (!isFunction(listener))
+        throw TypeError('listener must be a function');
+    
+      if (!this._events || !this._events[type])
+        return this;
+    
+      list = this._events[type];
+      length = list.length;
+      position = -1;
+    
+      if (list === listener ||
+          (isFunction(list.listener) && list.listener === listener)) {
+        delete this._events[type];
+        if (this._events.removeListener)
+          this.emit('removeListener', type, listener);
+    
+      } else if (isObject(list)) {
+        for (i = length; i-- > 0;) {
+          if (list[i] === listener ||
+              (list[i].listener && list[i].listener === listener)) {
+            position = i;
+            break;
+          }
+        }
+    
+        if (position < 0)
+          return this;
+    
+        if (list.length === 1) {
+          list.length = 0;
+          delete this._events[type];
+        } else {
+          list.splice(position, 1);
+        }
+    
+        if (this._events.removeListener)
+          this.emit('removeListener', type, listener);
+      }
+    
+      return this;
+    };
+    
+    EventEmitter.prototype.removeAllListeners = function(type) {
+      var key, listeners;
+    
+      if (!this._events)
+        return this;
+    
+      // not listening for removeListener, no need to emit
+      if (!this._events.removeListener) {
+        if (arguments.length === 0)
+          this._events = {};
+        else if (this._events[type])
+          delete this._events[type];
+        return this;
+      }
+    
+      // emit removeListener for all listeners on all events
+      if (arguments.length === 0) {
+        for (key in this._events) {
+          if (key === 'removeListener') continue;
+          this.removeAllListeners(key);
+        }
+        this.removeAllListeners('removeListener');
+        this._events = {};
+        return this;
+      }
+    
+      listeners = this._events[type];
+    
+      if (isFunction(listeners)) {
+        this.removeListener(type, listeners);
+      } else if (listeners) {
+        // LIFO order
+        while (listeners.length)
+          this.removeListener(type, listeners[listeners.length - 1]);
+      }
+      delete this._events[type];
+    
+      return this;
+    };
+    
+    EventEmitter.prototype.listeners = function(type) {
+      var ret;
+      if (!this._events || !this._events[type])
+        ret = [];
+      else if (isFunction(this._events[type]))
+        ret = [this._events[type]];
+      else
+        ret = this._events[type].slice();
+      return ret;
+    };
+    
+    EventEmitter.prototype.listenerCount = function(type) {
+      if (this._events) {
+        var evlistener = this._events[type];
+    
+        if (isFunction(evlistener))
+          return 1;
+        else if (evlistener)
+          return evlistener.length;
+      }
+      return 0;
+    };
+    
+    EventEmitter.listenerCount = function(emitter, type) {
+      return emitter.listenerCount(type);
+    };
+    
+    function isFunction(arg) {
+      return typeof arg === 'function';
+    }
+    
+    function isNumber(arg) {
+      return typeof arg === 'number';
+    }
+    
+    function isObject(arg) {
+      return typeof arg === 'object' && arg !== null;
+    }
+    
+    function isUndefined(arg) {
+      return arg === void 0;
+    }
+    
+    },{}],11:[function(require,module,exports){
+    exports.read = function (buffer, offset, isLE, mLen, nBytes) {
+      var e, m
+      var eLen = (nBytes * 8) - mLen - 1
+      var eMax = (1 << eLen) - 1
+      var eBias = eMax >> 1
+      var nBits = -7
+      var i = isLE ? (nBytes - 1) : 0
+      var d = isLE ? -1 : 1
+      var s = buffer[offset + i]
+    
+      i += d
+    
+      e = s & ((1 << (-nBits)) - 1)
+      s >>= (-nBits)
+      nBits += eLen
+      for (; nBits > 0; e = (e * 256) + buffer[offset + i], i += d, nBits -= 8) {}
+    
+      m = e & ((1 << (-nBits)) - 1)
+      e >>= (-nBits)
+      nBits += mLen
+      for (; nBits > 0; m = (m * 256) + buffer[offset + i], i += d, nBits -= 8) {}
+    
+      if (e === 0) {
+        e = 1 - eBias
+      } else if (e === eMax) {
+        return m ? NaN : ((s ? -1 : 1) * Infinity)
+      } else {
+        m = m + Math.pow(2, mLen)
+        e = e - eBias
+      }
+      return (s ? -1 : 1) * m * Math.pow(2, e - mLen)
+    }
+    
+    exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
+      var e, m, c
+      var eLen = (nBytes * 8) - mLen - 1
+      var eMax = (1 << eLen) - 1
+      var eBias = eMax >> 1
+      var rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0)
+      var i = isLE ? 0 : (nBytes - 1)
+      var d = isLE ? 1 : -1
+      var s = value < 0 || (value === 0 && 1 / value < 0) ? 1 : 0
+    
+      value = Math.abs(value)
+    
+      if (isNaN(value) || value === Infinity) {
+        m = isNaN(value) ? 1 : 0
+        e = eMax
+      } else {
+        e = Math.floor(Math.log(value) / Math.LN2)
+        if (value * (c = Math.pow(2, -e)) < 1) {
+          e--
+          c *= 2
+        }
+        if (e + eBias >= 1) {
+          value += rt / c
+        } else {
+          value += rt * Math.pow(2, 1 - eBias)
+        }
+        if (value * c >= 2) {
+          e++
+          c /= 2
+        }
+    
+        if (e + eBias >= eMax) {
+          m = 0
+          e = eMax
+        } else if (e + eBias >= 1) {
+          m = ((value * c) - 1) * Math.pow(2, mLen)
+          e = e + eBias
+        } else {
+          m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen)
+          e = 0
+        }
+      }
+    
+      for (; mLen >= 8; buffer[offset + i] = m & 0xff, i += d, m /= 256, mLen -= 8) {}
+    
+      e = (e << mLen) | m
+      eLen += mLen
+      for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8) {}
+    
+      buffer[offset + i - d] |= s * 128
+    }
+    
+    },{}],12:[function(require,module,exports){
+    var toString = {}.toString;
+    
+    module.exports = Array.isArray || function (arr) {
+      return toString.call(arr) == '[object Array]';
+    };
+    
+    },{}],13:[function(require,module,exports){
+    (function (process){
+    // .dirname, .basename, and .extname methods are extracted from Node.js v8.11.1,
+    // backported and transplited with Babel, with backwards-compat fixes
+    
+    // Copyright Joyent, Inc. and other Node contributors.
+    //
+    // Permission is hereby granted, free of charge, to any person obtaining a
+    // copy of this software and associated documentation files (the
+    // "Software"), to deal in the Software without restriction, including
+    // without limitation the rights to use, copy, modify, merge, publish,
+    // distribute, sublicense, and/or sell copies of the Software, and to permit
+    // persons to whom the Software is furnished to do so, subject to the
+    // following conditions:
+    //
+    // The above copyright notice and this permission notice shall be included
+    // in all copies or substantial portions of the Software.
+    //
+    // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+    // OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+    // MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+    // NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+    // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+    // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+    // USE OR OTHER DEALINGS IN THE SOFTWARE.
+    
+    // resolves . and .. elements in a path array with directory names there
+    // must be no slashes, empty elements, or device names (c:\) in the array
+    // (so also no leading and trailing slashes - it does not distinguish
+    // relative and absolute paths)
+    function normalizeArray(parts, allowAboveRoot) {
+      // if the path tries to go above the root, `up` ends up > 0
+      var up = 0;
+      for (var i = parts.length - 1; i >= 0; i--) {
+        var last = parts[i];
+        if (last === '.') {
+          parts.splice(i, 1);
+        } else if (last === '..') {
+          parts.splice(i, 1);
+          up++;
+        } else if (up) {
+          parts.splice(i, 1);
+          up--;
+        }
+      }
+    
+      // if the path is allowed to go above the root, restore leading ..s
+      if (allowAboveRoot) {
+        for (; up--; up) {
+          parts.unshift('..');
+        }
+      }
+    
+      return parts;
+    }
+    
+    // path.resolve([from ...], to)
+    // posix version
+    exports.resolve = function() {
+      var resolvedPath = '',
+          resolvedAbsolute = false;
+    
+      for (var i = arguments.length - 1; i >= -1 && !resolvedAbsolute; i--) {
+        var path = (i >= 0) ? arguments[i] : process.cwd();
+    
+        // Skip empty and invalid entries
+        if (typeof path !== 'string') {
+          throw new TypeError('Arguments to path.resolve must be strings');
+        } else if (!path) {
+          continue;
+        }
+    
+        resolvedPath = path + '/' + resolvedPath;
+        resolvedAbsolute = path.charAt(0) === '/';
+      }
+    
+      // At this point the path should be resolved to a full absolute path, but
+      // handle relative paths to be safe (might happen when process.cwd() fails)
+    
+      // Normalize the path
+      resolvedPath = normalizeArray(filter(resolvedPath.split('/'), function(p) {
+        return !!p;
+      }), !resolvedAbsolute).join('/');
+    
+      return ((resolvedAbsolute ? '/' : '') + resolvedPath) || '.';
+    };
+    
+    // path.normalize(path)
+    // posix version
+    exports.normalize = function(path) {
+      var isAbsolute = exports.isAbsolute(path),
+          trailingSlash = substr(path, -1) === '/';
+    
+      // Normalize the path
+      path = normalizeArray(filter(path.split('/'), function(p) {
+        return !!p;
+      }), !isAbsolute).join('/');
+    
+      if (!path && !isAbsolute) {
+        path = '.';
+      }
+      if (path && trailingSlash) {
+        path += '/';
+      }
+    
+      return (isAbsolute ? '/' : '') + path;
+    };
+    
+    // posix version
+    exports.isAbsolute = function(path) {
+      return path.charAt(0) === '/';
+    };
+    
+    // posix version
+    exports.join = function() {
+      var paths = Array.prototype.slice.call(arguments, 0);
+      return exports.normalize(filter(paths, function(p, index) {
+        if (typeof p !== 'string') {
+          throw new TypeError('Arguments to path.join must be strings');
+        }
+        return p;
+      }).join('/'));
+    };
+    
+    
+    // path.relative(from, to)
+    // posix version
+    exports.relative = function(from, to) {
+      from = exports.resolve(from).substr(1);
+      to = exports.resolve(to).substr(1);
+    
+      function trim(arr) {
+        var start = 0;
+        for (; start < arr.length; start++) {
+          if (arr[start] !== '') break;
+        }
+    
+        var end = arr.length - 1;
+        for (; end >= 0; end--) {
+          if (arr[end] !== '') break;
+        }
+    
+        if (start > end) return [];
+        return arr.slice(start, end - start + 1);
+      }
+    
+      var fromParts = trim(from.split('/'));
+      var toParts = trim(to.split('/'));
+    
+      var length = Math.min(fromParts.length, toParts.length);
+      var samePartsLength = length;
+      for (var i = 0; i < length; i++) {
+        if (fromParts[i] !== toParts[i]) {
+          samePartsLength = i;
+          break;
+        }
+      }
+    
+      var outputParts = [];
+      for (var i = samePartsLength; i < fromParts.length; i++) {
+        outputParts.push('..');
+      }
+    
+      outputParts = outputParts.concat(toParts.slice(samePartsLength));
+    
+      return outputParts.join('/');
+    };
+    
+    exports.sep = '/';
+    exports.delimiter = ':';
+    
+    exports.dirname = function (path) {
+      if (typeof path !== 'string') path = path + '';
+      if (path.length === 0) return '.';
+      var code = path.charCodeAt(0);
+      var hasRoot = code === 47 /*/*/;
+      var end = -1;
+      var matchedSlash = true;
+      for (var i = path.length - 1; i >= 1; --i) {
+        code = path.charCodeAt(i);
+        if (code === 47 /*/*/) {
+            if (!matchedSlash) {
+              end = i;
+              break;
+            }
+          } else {
+          // We saw the first non-path separator
+          matchedSlash = false;
+        }
+      }
+    
+      if (end === -1) return hasRoot ? '/' : '.';
+      if (hasRoot && end === 1) {
+        // return '//';
+        // Backwards-compat fix:
+        return '/';
+      }
+      return path.slice(0, end);
+    };
+    
+    function basename(path) {
+      if (typeof path !== 'string') path = path + '';
+    
+      var start = 0;
+      var end = -1;
+      var matchedSlash = true;
+      var i;
+    
+      for (i = path.length - 1; i >= 0; --i) {
+        if (path.charCodeAt(i) === 47 /*/*/) {
+            // If we reached a path separator that was not part of a set of path
+            // separators at the end of the string, stop now
+            if (!matchedSlash) {
+              start = i + 1;
+              break;
+            }
+          } else if (end === -1) {
+          // We saw the first non-path separator, mark this as the end of our
+          // path component
+          matchedSlash = false;
+          end = i + 1;
+        }
+      }
+    
+      if (end === -1) return '';
+      return path.slice(start, end);
+    }
+    
+    // Uses a mixed approach for backwards-compatibility, as ext behavior changed
+    // in new Node.js versions, so only basename() above is backported here
+    exports.basename = function (path, ext) {
+      var f = basename(path);
+      if (ext && f.substr(-1 * ext.length) === ext) {
+        f = f.substr(0, f.length - ext.length);
+      }
+      return f;
+    };
+    
+    exports.extname = function (path) {
+      if (typeof path !== 'string') path = path + '';
+      var startDot = -1;
+      var startPart = 0;
+      var end = -1;
+      var matchedSlash = true;
+      // Track the state of characters (if any) we see before our first dot and
+      // after any path separator we find
+      var preDotState = 0;
+      for (var i = path.length - 1; i >= 0; --i) {
+        var code = path.charCodeAt(i);
+        if (code === 47 /*/*/) {
+            // If we reached a path separator that was not part of a set of path
+            // separators at the end of the string, stop now
+            if (!matchedSlash) {
+              startPart = i + 1;
+              break;
+            }
+            continue;
+          }
+        if (end === -1) {
+          // We saw the first non-path separator, mark this as the end of our
+          // extension
+          matchedSlash = false;
+          end = i + 1;
+        }
+        if (code === 46 /*.*/) {
+            // If this is our first dot, mark it as the start of our extension
+            if (startDot === -1)
+              startDot = i;
+            else if (preDotState !== 1)
+              preDotState = 1;
+        } else if (startDot !== -1) {
+          // We saw a non-dot and non-path separator before our dot, so we should
+          // have a good chance at having a non-empty extension
+          preDotState = -1;
+        }
+      }
+    
+      if (startDot === -1 || end === -1 ||
+          // We saw a non-dot character immediately before the dot
+          preDotState === 0 ||
+          // The (right-most) trimmed path component is exactly '..'
+          preDotState === 1 && startDot === end - 1 && startDot === startPart + 1) {
+        return '';
+      }
+      return path.slice(startDot, end);
+    };
+    
+    function filter (xs, f) {
+        if (xs.filter) return xs.filter(f);
+        var res = [];
+        for (var i = 0; i < xs.length; i++) {
+            if (f(xs[i], i, xs)) res.push(xs[i]);
+        }
+        return res;
+    }
+    
+    // String.prototype.substr - negative index don't work in IE8
+    var substr = 'ab'.substr(-1) === 'b'
+        ? function (str, start, len) { return str.substr(start, len) }
+        : function (str, start, len) {
+            if (start < 0) start = str.length + start;
+            return str.substr(start, len);
+        }
+    ;
+    
+    }).call(this,require('_process'))
+    },{"_process":20}],14:[function(require,module,exports){
+    // Generated by LiveScript 1.6.0
+    var apply, curry, flip, fix, over, memoize, toString$ = {}.toString;
+    apply = curry$(function(f, list){
+      return f.apply(null, list);
+    });
+    curry = function(f){
+      return curry$(f);
+    };
+    flip = curry$(function(f, x, y){
+      return f(y, x);
+    });
+    fix = function(f){
+      return function(g){
+        return function(){
+          return f(g(g)).apply(null, arguments);
+        };
+      }(function(g){
+        return function(){
+          return f(g(g)).apply(null, arguments);
+        };
+      });
+    };
+    over = curry$(function(f, g, x, y){
+      return f(g(x), g(y));
+    });
+    memoize = function(f){
+      var memo;
+      memo = {};
+      return function(){
+        var args, res$, i$, to$, key, arg;
+        res$ = [];
+        for (i$ = 0, to$ = arguments.length; i$ < to$; ++i$) {
+          res$.push(arguments[i$]);
+        }
+        args = res$;
+        key = (function(){
+          var i$, ref$, len$, results$ = [];
+          for (i$ = 0, len$ = (ref$ = args).length; i$ < len$; ++i$) {
+            arg = ref$[i$];
+            results$.push(arg + toString$.call(arg).slice(8, -1));
+          }
+          return results$;
+        }()).join('');
+        return memo[key] = key in memo
+          ? memo[key]
+          : f.apply(null, args);
+      };
+    };
+    module.exports = {
+      curry: curry,
+      flip: flip,
+      fix: fix,
+      apply: apply,
+      over: over,
+      memoize: memoize
+    };
+    function curry$(f, bound){
+      var context,
+      _curry = function(args) {
+        return f.length > 1 ? function(){
+          var params = args ? args.concat() : [];
+          context = bound ? context || this : this;
+          return params.push.apply(params, arguments) <
+              f.length && arguments.length ?
+            _curry.call(context, params) : f.apply(context, params);
+        } : f;
+      };
+      return _curry();
+    }
+    },{}],15:[function(require,module,exports){
+    // Generated by LiveScript 1.6.0
+    var each, map, compact, filter, reject, remove, partition, find, head, first, tail, last, initial, empty, reverse, unique, uniqueBy, fold, foldl, fold1, foldl1, foldr, foldr1, unfoldr, concat, concatMap, flatten, difference, intersection, union, countBy, groupBy, andList, orList, any, all, sort, sortWith, sortBy, sum, product, mean, average, maximum, minimum, maximumBy, minimumBy, scan, scanl, scan1, scanl1, scanr, scanr1, slice, take, drop, splitAt, takeWhile, dropWhile, span, breakList, zip, zipWith, zipAll, zipAllWith, at, elemIndex, elemIndices, findIndex, findIndices, toString$ = {}.toString;
+    each = curry$(function(f, xs){
+      var i$, len$, x;
+      for (i$ = 0, len$ = xs.length; i$ < len$; ++i$) {
+        x = xs[i$];
+        f(x);
+      }
+      return xs;
+    });
+    map = curry$(function(f, xs){
+      var i$, len$, x, results$ = [];
+      for (i$ = 0, len$ = xs.length; i$ < len$; ++i$) {
+        x = xs[i$];
+        results$.push(f(x));
+      }
+      return results$;
+    });
+    compact = function(xs){
+      var i$, len$, x, results$ = [];
+      for (i$ = 0, len$ = xs.length; i$ < len$; ++i$) {
+        x = xs[i$];
+        if (x) {
+          results$.push(x);
+        }
+      }
+      return results$;
+    };
+    filter = curry$(function(f, xs){
+      var i$, len$, x, results$ = [];
+      for (i$ = 0, len$ = xs.length; i$ < len$; ++i$) {
+        x = xs[i$];
+        if (f(x)) {
+          results$.push(x);
+        }
+      }
+      return results$;
+    });
+    reject = curry$(function(f, xs){
+      var i$, len$, x, results$ = [];
+      for (i$ = 0, len$ = xs.length; i$ < len$; ++i$) {
+        x = xs[i$];
+        if (!f(x)) {
+          results$.push(x);
+        }
+      }
+      return results$;
+    });
+    remove = curry$(function(el, xs){
+      var i, x$;
+      i = elemIndex(el, xs);
+      x$ = xs.slice();
+      if (i != null) {
+        x$.splice(i, 1);
+      }
+      return x$;
+    });
+    partition = curry$(function(f, xs){
+      var passed, failed, i$, len$, x;
+      passed = [];
+      failed = [];
+      for (i$ = 0, len$ = xs.length; i$ < len$; ++i$) {
+        x = xs[i$];
+        (f(x) ? passed : failed).push(x);
+      }
+      return [passed, failed];
+    });
+    find = curry$(function(f, xs){
+      var i$, len$, x;
+      for (i$ = 0, len$ = xs.length; i$ < len$; ++i$) {
+        x = xs[i$];
+        if (f(x)) {
+          return x;
+        }
+      }
+    });
+    head = first = function(xs){
+      return xs[0];
+    };
+    tail = function(xs){
+      if (!xs.length) {
+        return;
+      }
+      return xs.slice(1);
+    };
+    last = function(xs){
+      return xs[xs.length - 1];
+    };
+    initial = function(xs){
+      if (!xs.length) {
+        return;
+      }
+      return xs.slice(0, -1);
+    };
+    empty = function(xs){
+      return !xs.length;
+    };
+    reverse = function(xs){
+      return xs.concat().reverse();
+    };
+    unique = function(xs){
+      var result, i$, len$, x;
+      result = [];
+      for (i$ = 0, len$ = xs.length; i$ < len$; ++i$) {
+        x = xs[i$];
+        if (!in$(x, result)) {
+          result.push(x);
+        }
+      }
+      return result;
+    };
+    uniqueBy = curry$(function(f, xs){
+      var seen, i$, len$, x, val, results$ = [];
+      seen = [];
+      for (i$ = 0, len$ = xs.length; i$ < len$; ++i$) {
+        x = xs[i$];
+        val = f(x);
+        if (in$(val, seen)) {
+          continue;
+        }
+        seen.push(val);
+        results$.push(x);
+      }
+      return results$;
+    });
+    fold = foldl = curry$(function(f, memo, xs){
+      var i$, len$, x;
+      for (i$ = 0, len$ = xs.length; i$ < len$; ++i$) {
+        x = xs[i$];
+        memo = f(memo, x);
+      }
+      return memo;
+    });
+    fold1 = foldl1 = curry$(function(f, xs){
+      return fold(f, xs[0], xs.slice(1));
+    });
+    foldr = curry$(function(f, memo, xs){
+      var i$, x;
+      for (i$ = xs.length - 1; i$ >= 0; --i$) {
+        x = xs[i$];
+        memo = f(x, memo);
+      }
+      return memo;
+    });
+    foldr1 = curry$(function(f, xs){
+      return foldr(f, xs[xs.length - 1], xs.slice(0, -1));
+    });
+    unfoldr = curry$(function(f, b){
+      var result, x, that;
+      result = [];
+      x = b;
+      while ((that = f(x)) != null) {
+        result.push(that[0]);
+        x = that[1];
+      }
+      return result;
+    });
+    concat = function(xss){
+      return [].concat.apply([], xss);
+    };
+    concatMap = curry$(function(f, xs){
+      var x;
+      return [].concat.apply([], (function(){
+        var i$, ref$, len$, results$ = [];
+        for (i$ = 0, len$ = (ref$ = xs).length; i$ < len$; ++i$) {
+          x = ref$[i$];
+          results$.push(f(x));
+        }
+        return results$;
+      }()));
+    });
+    flatten = function(xs){
+      var x;
+      return [].concat.apply([], (function(){
+        var i$, ref$, len$, results$ = [];
+        for (i$ = 0, len$ = (ref$ = xs).length; i$ < len$; ++i$) {
+          x = ref$[i$];
+          if (toString$.call(x).slice(8, -1) === 'Array') {
+            results$.push(flatten(x));
+          } else {
+            results$.push(x);
+          }
+        }
+        return results$;
+      }()));
+    };
+    difference = function(xs){
+      var yss, res$, i$, to$, results, len$, x, j$, len1$, ys;
+      res$ = [];
+      for (i$ = 1, to$ = arguments.length; i$ < to$; ++i$) {
+        res$.push(arguments[i$]);
+      }
+      yss = res$;
+      results = [];
+      outer: for (i$ = 0, len$ = xs.length; i$ < len$; ++i$) {
+        x = xs[i$];
+        for (j$ = 0, len1$ = yss.length; j$ < len1$; ++j$) {
+          ys = yss[j$];
+          if (in$(x, ys)) {
+            continue outer;
+          }
+        }
+        results.push(x);
+      }
+      return results;
+    };
+    intersection = function(xs){
+      var yss, res$, i$, to$, results, len$, x, j$, len1$, ys;
+      res$ = [];
+      for (i$ = 1, to$ = arguments.length; i$ < to$; ++i$) {
+        res$.push(arguments[i$]);
+      }
+      yss = res$;
+      results = [];
+      outer: for (i$ = 0, len$ = xs.length; i$ < len$; ++i$) {
+        x = xs[i$];
+        for (j$ = 0, len1$ = yss.length; j$ < len1$; ++j$) {
+          ys = yss[j$];
+          if (!in$(x, ys)) {
+            continue outer;
+          }
+        }
+        results.push(x);
+      }
+      return results;
+    };
+    union = function(){
+      var xss, res$, i$, to$, results, len$, xs, j$, len1$, x;
+      res$ = [];
+      for (i$ = 0, to$ = arguments.length; i$ < to$; ++i$) {
+        res$.push(arguments[i$]);
+      }
+      xss = res$;
+      results = [];
+      for (i$ = 0, len$ = xss.length; i$ < len$; ++i$) {
+        xs = xss[i$];
+        for (j$ = 0, len1$ = xs.length; j$ < len1$; ++j$) {
+          x = xs[j$];
+          if (!in$(x, results)) {
+            results.push(x);
+          }
+        }
+      }
+      return results;
+    };
+    countBy = curry$(function(f, xs){
+      var results, i$, len$, x, key;
+      results = {};
+      for (i$ = 0, len$ = xs.length; i$ < len$; ++i$) {
+        x = xs[i$];
+        key = f(x);
+        if (key in results) {
+          results[key] += 1;
+        } else {
+          results[key] = 1;
+        }
+      }
+      return results;
+    });
+    groupBy = curry$(function(f, xs){
+      var results, i$, len$, x, key;
+      results = {};
+      for (i$ = 0, len$ = xs.length; i$ < len$; ++i$) {
+        x = xs[i$];
+        key = f(x);
+        if (key in results) {
+          results[key].push(x);
+        } else {
+          results[key] = [x];
+        }
+      }
+      return results;
+    });
+    andList = function(xs){
+      var i$, len$, x;
+      for (i$ = 0, len$ = xs.length; i$ < len$; ++i$) {
+        x = xs[i$];
+        if (!x) {
+          return false;
+        }
+      }
+      return true;
+    };
+    orList = function(xs){
+      var i$, len$, x;
+      for (i$ = 0, len$ = xs.length; i$ < len$; ++i$) {
+        x = xs[i$];
+        if (x) {
+          return true;
+        }
+      }
+      return false;
+    };
+    any = curry$(function(f, xs){
+      var i$, len$, x;
+      for (i$ = 0, len$ = xs.length; i$ < len$; ++i$) {
+        x = xs[i$];
+        if (f(x)) {
+          return true;
+        }
+      }
+      return false;
+    });
+    all = curry$(function(f, xs){
+      var i$, len$, x;
+      for (i$ = 0, len$ = xs.length; i$ < len$; ++i$) {
+        x = xs[i$];
+        if (!f(x)) {
+          return false;
+        }
+      }
+      return true;
+    });
+    sort = function(xs){
+      return xs.concat().sort(function(x, y){
+        if (x > y) {
+          return 1;
+        } else if (x < y) {
+          return -1;
+        } else {
+          return 0;
+        }
+      });
+    };
+    sortWith = curry$(function(f, xs){
+      return xs.concat().sort(f);
+    });
+    sortBy = curry$(function(f, xs){
+      return xs.concat().sort(function(x, y){
+        if (f(x) > f(y)) {
+          return 1;
+        } else if (f(x) < f(y)) {
+          return -1;
+        } else {
+          return 0;
+        }
+      });
+    });
+    sum = function(xs){
+      var result, i$, len$, x;
+      result = 0;
+      for (i$ = 0, len$ = xs.length; i$ < len$; ++i$) {
+        x = xs[i$];
+        result += x;
+      }
+      return result;
+    };
+    product = function(xs){
+      var result, i$, len$, x;
+      result = 1;
+      for (i$ = 0, len$ = xs.length; i$ < len$; ++i$) {
+        x = xs[i$];
+        result *= x;
+      }
+      return result;
+    };
+    mean = average = function(xs){
+      var sum, i$, len$, x;
+      sum = 0;
+      for (i$ = 0, len$ = xs.length; i$ < len$; ++i$) {
+        x = xs[i$];
+        sum += x;
+      }
+      return sum / xs.length;
+    };
+    maximum = function(xs){
+      var max, i$, ref$, len$, x;
+      max = xs[0];
+      for (i$ = 0, len$ = (ref$ = xs.slice(1)).length; i$ < len$; ++i$) {
+        x = ref$[i$];
+        if (x > max) {
+          max = x;
+        }
+      }
+      return max;
+    };
+    minimum = function(xs){
+      var min, i$, ref$, len$, x;
+      min = xs[0];
+      for (i$ = 0, len$ = (ref$ = xs.slice(1)).length; i$ < len$; ++i$) {
+        x = ref$[i$];
+        if (x < min) {
+          min = x;
+        }
+      }
+      return min;
+    };
+    maximumBy = curry$(function(f, xs){
+      var max, i$, ref$, len$, x;
+      max = xs[0];
+      for (i$ = 0, len$ = (ref$ = xs.slice(1)).length; i$ < len$; ++i$) {
+        x = ref$[i$];
+        if (f(x) > f(max)) {
+          max = x;
+        }
+      }
+      return max;
+    });
+    minimumBy = curry$(function(f, xs){
+      var min, i$, ref$, len$, x;
+      min = xs[0];
+      for (i$ = 0, len$ = (ref$ = xs.slice(1)).length; i$ < len$; ++i$) {
+        x = ref$[i$];
+        if (f(x) < f(min)) {
+          min = x;
+        }
+      }
+      return min;
+    });
+    scan = scanl = curry$(function(f, memo, xs){
+      var last, x;
+      last = memo;
+      return [memo].concat((function(){
+        var i$, ref$, len$, results$ = [];
+        for (i$ = 0, len$ = (ref$ = xs).length; i$ < len$; ++i$) {
+          x = ref$[i$];
+          results$.push(last = f(last, x));
+        }
+        return results$;
+      }()));
+    });
+    scan1 = scanl1 = curry$(function(f, xs){
+      if (!xs.length) {
+        return;
+      }
+      return scan(f, xs[0], xs.slice(1));
+    });
+    scanr = curry$(function(f, memo, xs){
+      xs = xs.concat().reverse();
+      return scan(f, memo, xs).reverse();
+    });
+    scanr1 = curry$(function(f, xs){
+      if (!xs.length) {
+        return;
+      }
+      xs = xs.concat().reverse();
+      return scan(f, xs[0], xs.slice(1)).reverse();
+    });
+    slice = curry$(function(x, y, xs){
+      return xs.slice(x, y);
+    });
+    take = curry$(function(n, xs){
+      if (n <= 0) {
+        return xs.slice(0, 0);
+      } else {
+        return xs.slice(0, n);
+      }
+    });
+    drop = curry$(function(n, xs){
+      if (n <= 0) {
+        return xs;
+      } else {
+        return xs.slice(n);
+      }
+    });
+    splitAt = curry$(function(n, xs){
+      return [take(n, xs), drop(n, xs)];
+    });
+    takeWhile = curry$(function(p, xs){
+      var len, i;
+      len = xs.length;
+      if (!len) {
+        return xs;
+      }
+      i = 0;
+      while (i < len && p(xs[i])) {
+        i += 1;
+      }
+      return xs.slice(0, i);
+    });
+    dropWhile = curry$(function(p, xs){
+      var len, i;
+      len = xs.length;
+      if (!len) {
+        return xs;
+      }
+      i = 0;
+      while (i < len && p(xs[i])) {
+        i += 1;
+      }
+      return xs.slice(i);
+    });
+    span = curry$(function(p, xs){
+      return [takeWhile(p, xs), dropWhile(p, xs)];
+    });
+    breakList = curry$(function(p, xs){
+      return span(compose$(p, not$), xs);
+    });
+    zip = curry$(function(xs, ys){
+      var result, len, i$, len$, i, x;
+      result = [];
+      len = ys.length;
+      for (i$ = 0, len$ = xs.length; i$ < len$; ++i$) {
+        i = i$;
+        x = xs[i$];
+        if (i === len) {
+          break;
+        }
+        result.push([x, ys[i]]);
+      }
+      return result;
+    });
+    zipWith = curry$(function(f, xs, ys){
+      var result, len, i$, len$, i, x;
+      result = [];
+      len = ys.length;
+      for (i$ = 0, len$ = xs.length; i$ < len$; ++i$) {
+        i = i$;
+        x = xs[i$];
+        if (i === len) {
+          break;
+        }
+        result.push(f(x, ys[i]));
+      }
+      return result;
+    });
+    zipAll = function(){
+      var xss, res$, i$, to$, minLength, len$, xs, ref$, i, lresult$, j$, results$ = [];
+      res$ = [];
+      for (i$ = 0, to$ = arguments.length; i$ < to$; ++i$) {
+        res$.push(arguments[i$]);
+      }
+      xss = res$;
+      minLength = undefined;
+      for (i$ = 0, len$ = xss.length; i$ < len$; ++i$) {
+        xs = xss[i$];
+        minLength <= (ref$ = xs.length) || (minLength = ref$);
+      }
+      for (i$ = 0; i$ < minLength; ++i$) {
+        i = i$;
+        lresult$ = [];
+        for (j$ = 0, len$ = xss.length; j$ < len$; ++j$) {
+          xs = xss[j$];
+          lresult$.push(xs[i]);
+        }
+        results$.push(lresult$);
+      }
+      return results$;
+    };
+    zipAllWith = function(f){
+      var xss, res$, i$, to$, minLength, len$, xs, ref$, i, results$ = [];
+      res$ = [];
+      for (i$ = 1, to$ = arguments.length; i$ < to$; ++i$) {
+        res$.push(arguments[i$]);
+      }
+      xss = res$;
+      minLength = undefined;
+      for (i$ = 0, len$ = xss.length; i$ < len$; ++i$) {
+        xs = xss[i$];
+        minLength <= (ref$ = xs.length) || (minLength = ref$);
+      }
+      for (i$ = 0; i$ < minLength; ++i$) {
+        i = i$;
+        results$.push(f.apply(null, (fn$())));
+      }
+      return results$;
+      function fn$(){
+        var i$, ref$, len$, results$ = [];
+        for (i$ = 0, len$ = (ref$ = xss).length; i$ < len$; ++i$) {
+          xs = ref$[i$];
+          results$.push(xs[i]);
+        }
+        return results$;
+      }
+    };
+    at = curry$(function(n, xs){
+      if (n < 0) {
+        return xs[xs.length + n];
+      } else {
+        return xs[n];
+      }
+    });
+    elemIndex = curry$(function(el, xs){
+      var i$, len$, i, x;
+      for (i$ = 0, len$ = xs.length; i$ < len$; ++i$) {
+        i = i$;
+        x = xs[i$];
+        if (x === el) {
+          return i;
+        }
+      }
+    });
+    elemIndices = curry$(function(el, xs){
+      var i$, len$, i, x, results$ = [];
+      for (i$ = 0, len$ = xs.length; i$ < len$; ++i$) {
+        i = i$;
+        x = xs[i$];
+        if (x === el) {
+          results$.push(i);
+        }
+      }
+      return results$;
+    });
+    findIndex = curry$(function(f, xs){
+      var i$, len$, i, x;
+      for (i$ = 0, len$ = xs.length; i$ < len$; ++i$) {
+        i = i$;
+        x = xs[i$];
+        if (f(x)) {
+          return i;
+        }
+      }
+    });
+    findIndices = curry$(function(f, xs){
+      var i$, len$, i, x, results$ = [];
+      for (i$ = 0, len$ = xs.length; i$ < len$; ++i$) {
+        i = i$;
+        x = xs[i$];
+        if (f(x)) {
+          results$.push(i);
+        }
+      }
+      return results$;
+    });
+    module.exports = {
+      each: each,
+      map: map,
+      filter: filter,
+      compact: compact,
+      reject: reject,
+      remove: remove,
+      partition: partition,
+      find: find,
+      head: head,
+      first: first,
+      tail: tail,
+      last: last,
+      initial: initial,
+      empty: empty,
+      reverse: reverse,
+      difference: difference,
+      intersection: intersection,
+      union: union,
+      countBy: countBy,
+      groupBy: groupBy,
+      fold: fold,
+      fold1: fold1,
+      foldl: foldl,
+      foldl1: foldl1,
+      foldr: foldr,
+      foldr1: foldr1,
+      unfoldr: unfoldr,
+      andList: andList,
+      orList: orList,
+      any: any,
+      all: all,
+      unique: unique,
+      uniqueBy: uniqueBy,
+      sort: sort,
+      sortWith: sortWith,
+      sortBy: sortBy,
+      sum: sum,
+      product: product,
+      mean: mean,
+      average: average,
+      concat: concat,
+      concatMap: concatMap,
+      flatten: flatten,
+      maximum: maximum,
+      minimum: minimum,
+      maximumBy: maximumBy,
+      minimumBy: minimumBy,
+      scan: scan,
+      scan1: scan1,
+      scanl: scanl,
+      scanl1: scanl1,
+      scanr: scanr,
+      scanr1: scanr1,
+      slice: slice,
+      take: take,
+      drop: drop,
+      splitAt: splitAt,
+      takeWhile: takeWhile,
+      dropWhile: dropWhile,
+      span: span,
+      breakList: breakList,
+      zip: zip,
+      zipWith: zipWith,
+      zipAll: zipAll,
+      zipAllWith: zipAllWith,
+      at: at,
+      elemIndex: elemIndex,
+      elemIndices: elemIndices,
+      findIndex: findIndex,
+      findIndices: findIndices
+    };
+    function curry$(f, bound){
+      var context,
+      _curry = function(args) {
+        return f.length > 1 ? function(){
+          var params = args ? args.concat() : [];
+          context = bound ? context || this : this;
+          return params.push.apply(params, arguments) <
+              f.length && arguments.length ?
+            _curry.call(context, params) : f.apply(context, params);
+        } : f;
+      };
+      return _curry();
+    }
+    function in$(x, xs){
+      var i = -1, l = xs.length >>> 0;
+      while (++i < l) if (x === xs[i]) return true;
+      return false;
+    }
+    function compose$() {
+      var functions = arguments;
+      return function() {
+        var i, result;
+        result = functions[0].apply(this, arguments);
+        for (i = 1; i < functions.length; ++i) {
+          result = functions[i](result);
+        }
+        return result;
+      };
+    }
+    function not$(x){ return !x; }
+    },{}],16:[function(require,module,exports){
+    // Generated by LiveScript 1.6.0
+    var max, min, negate, abs, signum, quot, rem, div, mod, recip, pi, tau, exp, sqrt, ln, pow, sin, tan, cos, asin, acos, atan, atan2, truncate, round, ceiling, floor, isItNaN, even, odd, gcd, lcm;
+    max = curry$(function(x$, y$){
+      return x$ > y$ ? x$ : y$;
+    });
+    min = curry$(function(x$, y$){
+      return x$ < y$ ? x$ : y$;
+    });
+    negate = function(x){
+      return -x;
+    };
+    abs = Math.abs;
+    signum = function(x){
+      if (x < 0) {
+        return -1;
+      } else if (x > 0) {
+        return 1;
+      } else {
+        return 0;
+      }
+    };
+    quot = curry$(function(x, y){
+      return ~~(x / y);
+    });
+    rem = curry$(function(x$, y$){
+      return x$ % y$;
+    });
+    div = curry$(function(x, y){
+      return Math.floor(x / y);
+    });
+    mod = curry$(function(x$, y$){
+      var ref$;
+      return ((x$) % (ref$ = y$) + ref$) % ref$;
+    });
+    recip = (function(it){
+      return 1 / it;
+    });
+    pi = Math.PI;
+    tau = pi * 2;
+    exp = Math.exp;
+    sqrt = Math.sqrt;
+    ln = Math.log;
+    pow = curry$(function(x$, y$){
+      return Math.pow(x$, y$);
+    });
+    sin = Math.sin;
+    tan = Math.tan;
+    cos = Math.cos;
+    asin = Math.asin;
+    acos = Math.acos;
+    atan = Math.atan;
+    atan2 = curry$(function(x, y){
+      return Math.atan2(x, y);
+    });
+    truncate = function(x){
+      return ~~x;
+    };
+    round = Math.round;
+    ceiling = Math.ceil;
+    floor = Math.floor;
+    isItNaN = function(x){
+      return x !== x;
+    };
+    even = function(x){
+      return x % 2 === 0;
+    };
+    odd = function(x){
+      return x % 2 !== 0;
+    };
+    gcd = curry$(function(x, y){
+      var z;
+      x = Math.abs(x);
+      y = Math.abs(y);
+      while (y !== 0) {
+        z = x % y;
+        x = y;
+        y = z;
+      }
+      return x;
+    });
+    lcm = curry$(function(x, y){
+      return Math.abs(Math.floor(x / gcd(x, y) * y));
+    });
+    module.exports = {
+      max: max,
+      min: min,
+      negate: negate,
+      abs: abs,
+      signum: signum,
+      quot: quot,
+      rem: rem,
+      div: div,
+      mod: mod,
+      recip: recip,
+      pi: pi,
+      tau: tau,
+      exp: exp,
+      sqrt: sqrt,
+      ln: ln,
+      pow: pow,
+      sin: sin,
+      tan: tan,
+      cos: cos,
+      acos: acos,
+      asin: asin,
+      atan: atan,
+      atan2: atan2,
+      truncate: truncate,
+      round: round,
+      ceiling: ceiling,
+      floor: floor,
+      isItNaN: isItNaN,
+      even: even,
+      odd: odd,
+      gcd: gcd,
+      lcm: lcm
+    };
+    function curry$(f, bound){
+      var context,
+      _curry = function(args) {
+        return f.length > 1 ? function(){
+          var params = args ? args.concat() : [];
+          context = bound ? context || this : this;
+          return params.push.apply(params, arguments) <
+              f.length && arguments.length ?
+            _curry.call(context, params) : f.apply(context, params);
+        } : f;
+      };
+      return _curry();
+    }
+    },{}],17:[function(require,module,exports){
+    // Generated by LiveScript 1.6.0
+    var values, keys, pairsToObj, objToPairs, listsToObj, objToLists, empty, each, map, compact, filter, reject, partition, find;
+    values = function(object){
+      var i$, x, results$ = [];
+      for (i$ in object) {
+        x = object[i$];
+        results$.push(x);
+      }
+      return results$;
+    };
+    keys = function(object){
+      var x, results$ = [];
+      for (x in object) {
+        results$.push(x);
+      }
+      return results$;
+    };
+    pairsToObj = function(object){
+      var i$, len$, x, resultObj$ = {};
+      for (i$ = 0, len$ = object.length; i$ < len$; ++i$) {
+        x = object[i$];
+        resultObj$[x[0]] = x[1];
+      }
+      return resultObj$;
+    };
+    objToPairs = function(object){
+      var key, value, results$ = [];
+      for (key in object) {
+        value = object[key];
+        results$.push([key, value]);
+      }
+      return results$;
+    };
+    listsToObj = curry$(function(keys, values){
+      var i$, len$, i, key, resultObj$ = {};
+      for (i$ = 0, len$ = keys.length; i$ < len$; ++i$) {
+        i = i$;
+        key = keys[i$];
+        resultObj$[key] = values[i];
+      }
+      return resultObj$;
+    });
+    objToLists = function(object){
+      var keys, values, key, value;
+      keys = [];
+      values = [];
+      for (key in object) {
+        value = object[key];
+        keys.push(key);
+        values.push(value);
+      }
+      return [keys, values];
+    };
+    empty = function(object){
+      var x;
+      for (x in object) {
+        return false;
+      }
+      return true;
+    };
+    each = curry$(function(f, object){
+      var i$, x;
+      for (i$ in object) {
+        x = object[i$];
+        f(x);
+      }
+      return object;
+    });
+    map = curry$(function(f, object){
+      var k, x, resultObj$ = {};
+      for (k in object) {
+        x = object[k];
+        resultObj$[k] = f(x);
+      }
+      return resultObj$;
+    });
+    compact = function(object){
+      var k, x, resultObj$ = {};
+      for (k in object) {
+        x = object[k];
+        if (x) {
+          resultObj$[k] = x;
+        }
+      }
+      return resultObj$;
+    };
+    filter = curry$(function(f, object){
+      var k, x, resultObj$ = {};
+      for (k in object) {
+        x = object[k];
+        if (f(x)) {
+          resultObj$[k] = x;
+        }
+      }
+      return resultObj$;
+    });
+    reject = curry$(function(f, object){
+      var k, x, resultObj$ = {};
+      for (k in object) {
+        x = object[k];
+        if (!f(x)) {
+          resultObj$[k] = x;
+        }
+      }
+      return resultObj$;
+    });
+    partition = curry$(function(f, object){
+      var passed, failed, k, x;
+      passed = {};
+      failed = {};
+      for (k in object) {
+        x = object[k];
+        (f(x) ? passed : failed)[k] = x;
+      }
+      return [passed, failed];
+    });
+    find = curry$(function(f, object){
+      var i$, x;
+      for (i$ in object) {
+        x = object[i$];
+        if (f(x)) {
+          return x;
+        }
+      }
+    });
+    module.exports = {
+      values: values,
+      keys: keys,
+      pairsToObj: pairsToObj,
+      objToPairs: objToPairs,
+      listsToObj: listsToObj,
+      objToLists: objToLists,
+      empty: empty,
+      each: each,
+      map: map,
+      filter: filter,
+      compact: compact,
+      reject: reject,
+      partition: partition,
+      find: find
+    };
+    function curry$(f, bound){
+      var context,
+      _curry = function(args) {
+        return f.length > 1 ? function(){
+          var params = args ? args.concat() : [];
+          context = bound ? context || this : this;
+          return params.push.apply(params, arguments) <
+              f.length && arguments.length ?
+            _curry.call(context, params) : f.apply(context, params);
+        } : f;
+      };
+      return _curry();
+    }
+    },{}],18:[function(require,module,exports){
+    // Generated by LiveScript 1.6.0
+    var split, join, lines, unlines, words, unwords, chars, unchars, reverse, repeat, capitalize, camelize, dasherize;
+    split = curry$(function(sep, str){
+      return str.split(sep);
+    });
+    join = curry$(function(sep, xs){
+      return xs.join(sep);
+    });
+    lines = function(str){
+      if (!str.length) {
+        return [];
+      }
+      return str.split('\n');
+    };
+    unlines = function(it){
+      return it.join('\n');
+    };
+    words = function(str){
+      if (!str.length) {
+        return [];
+      }
+      return str.split(/[ ]+/);
+    };
+    unwords = function(it){
+      return it.join(' ');
+    };
+    chars = function(it){
+      return it.split('');
+    };
+    unchars = function(it){
+      return it.join('');
+    };
+    reverse = function(str){
+      return str.split('').reverse().join('');
+    };
+    repeat = curry$(function(n, str){
+      var result, i$;
+      result = '';
+      for (i$ = 0; i$ < n; ++i$) {
+        result += str;
+      }
+      return result;
+    });
+    capitalize = function(str){
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    };
+    camelize = function(it){
+      return it.replace(/[-_]+(.)?/g, function(arg$, c){
+        return (c != null ? c : '').toUpperCase();
+      });
+    };
+    dasherize = function(str){
+      return str.replace(/([^-A-Z])([A-Z]+)/g, function(arg$, lower, upper){
+        return lower + "-" + (upper.length > 1
+          ? upper
+          : upper.toLowerCase());
+      }).replace(/^([A-Z]+)/, function(arg$, upper){
+        if (upper.length > 1) {
+          return upper + "-";
+        } else {
+          return upper.toLowerCase();
+        }
+      });
+    };
+    module.exports = {
+      split: split,
+      join: join,
+      lines: lines,
+      unlines: unlines,
+      words: words,
+      unwords: unwords,
+      chars: chars,
+      unchars: unchars,
+      reverse: reverse,
+      repeat: repeat,
+      capitalize: capitalize,
+      camelize: camelize,
+      dasherize: dasherize
+    };
+    function curry$(f, bound){
+      var context,
+      _curry = function(args) {
+        return f.length > 1 ? function(){
+          var params = args ? args.concat() : [];
+          context = bound ? context || this : this;
+          return params.push.apply(params, arguments) <
+              f.length && arguments.length ?
+            _curry.call(context, params) : f.apply(context, params);
+        } : f;
+      };
+      return _curry();
+    }
+    },{}],19:[function(require,module,exports){
+    // Generated by LiveScript 1.6.0
+    var Func, List, Obj, Str, Num, id, isType, replicate, prelude, toString$ = {}.toString;
+    Func = require('./Func.js');
+    List = require('./List.js');
+    Obj = require('./Obj.js');
+    Str = require('./Str.js');
+    Num = require('./Num.js');
+    id = function(x){
+      return x;
+    };
+    isType = curry$(function(type, x){
+      return toString$.call(x).slice(8, -1) === type;
+    });
+    replicate = curry$(function(n, x){
+      var i$, results$ = [];
+      for (i$ = 0; i$ < n; ++i$) {
+        results$.push(x);
+      }
+      return results$;
+    });
+    Str.empty = List.empty;
+    Str.slice = List.slice;
+    Str.take = List.take;
+    Str.drop = List.drop;
+    Str.splitAt = List.splitAt;
+    Str.takeWhile = List.takeWhile;
+    Str.dropWhile = List.dropWhile;
+    Str.span = List.span;
+    Str.breakStr = List.breakList;
+    prelude = {
+      Func: Func,
+      List: List,
+      Obj: Obj,
+      Str: Str,
+      Num: Num,
+      id: id,
+      isType: isType,
+      replicate: replicate
+    };
+    prelude.each = List.each;
+    prelude.map = List.map;
+    prelude.filter = List.filter;
+    prelude.compact = List.compact;
+    prelude.reject = List.reject;
+    prelude.partition = List.partition;
+    prelude.find = List.find;
+    prelude.head = List.head;
+    prelude.first = List.first;
+    prelude.tail = List.tail;
+    prelude.last = List.last;
+    prelude.initial = List.initial;
+    prelude.empty = List.empty;
+    prelude.reverse = List.reverse;
+    prelude.difference = List.difference;
+    prelude.intersection = List.intersection;
+    prelude.union = List.union;
+    prelude.countBy = List.countBy;
+    prelude.groupBy = List.groupBy;
+    prelude.fold = List.fold;
+    prelude.foldl = List.foldl;
+    prelude.fold1 = List.fold1;
+    prelude.foldl1 = List.foldl1;
+    prelude.foldr = List.foldr;
+    prelude.foldr1 = List.foldr1;
+    prelude.unfoldr = List.unfoldr;
+    prelude.andList = List.andList;
+    prelude.orList = List.orList;
+    prelude.any = List.any;
+    prelude.all = List.all;
+    prelude.unique = List.unique;
+    prelude.uniqueBy = List.uniqueBy;
+    prelude.sort = List.sort;
+    prelude.sortWith = List.sortWith;
+    prelude.sortBy = List.sortBy;
+    prelude.sum = List.sum;
+    prelude.product = List.product;
+    prelude.mean = List.mean;
+    prelude.average = List.average;
+    prelude.concat = List.concat;
+    prelude.concatMap = List.concatMap;
+    prelude.flatten = List.flatten;
+    prelude.maximum = List.maximum;
+    prelude.minimum = List.minimum;
+    prelude.maximumBy = List.maximumBy;
+    prelude.minimumBy = List.minimumBy;
+    prelude.scan = List.scan;
+    prelude.scanl = List.scanl;
+    prelude.scan1 = List.scan1;
+    prelude.scanl1 = List.scanl1;
+    prelude.scanr = List.scanr;
+    prelude.scanr1 = List.scanr1;
+    prelude.slice = List.slice;
+    prelude.take = List.take;
+    prelude.drop = List.drop;
+    prelude.splitAt = List.splitAt;
+    prelude.takeWhile = List.takeWhile;
+    prelude.dropWhile = List.dropWhile;
+    prelude.span = List.span;
+    prelude.breakList = List.breakList;
+    prelude.zip = List.zip;
+    prelude.zipWith = List.zipWith;
+    prelude.zipAll = List.zipAll;
+    prelude.zipAllWith = List.zipAllWith;
+    prelude.at = List.at;
+    prelude.elemIndex = List.elemIndex;
+    prelude.elemIndices = List.elemIndices;
+    prelude.findIndex = List.findIndex;
+    prelude.findIndices = List.findIndices;
+    prelude.apply = Func.apply;
+    prelude.curry = Func.curry;
+    prelude.flip = Func.flip;
+    prelude.fix = Func.fix;
+    prelude.over = Func.over;
+    prelude.split = Str.split;
+    prelude.join = Str.join;
+    prelude.lines = Str.lines;
+    prelude.unlines = Str.unlines;
+    prelude.words = Str.words;
+    prelude.unwords = Str.unwords;
+    prelude.chars = Str.chars;
+    prelude.unchars = Str.unchars;
+    prelude.repeat = Str.repeat;
+    prelude.capitalize = Str.capitalize;
+    prelude.camelize = Str.camelize;
+    prelude.dasherize = Str.dasherize;
+    prelude.values = Obj.values;
+    prelude.keys = Obj.keys;
+    prelude.pairsToObj = Obj.pairsToObj;
+    prelude.objToPairs = Obj.objToPairs;
+    prelude.listsToObj = Obj.listsToObj;
+    prelude.objToLists = Obj.objToLists;
+    prelude.max = Num.max;
+    prelude.min = Num.min;
+    prelude.negate = Num.negate;
+    prelude.abs = Num.abs;
+    prelude.signum = Num.signum;
+    prelude.quot = Num.quot;
+    prelude.rem = Num.rem;
+    prelude.div = Num.div;
+    prelude.mod = Num.mod;
+    prelude.recip = Num.recip;
+    prelude.pi = Num.pi;
+    prelude.tau = Num.tau;
+    prelude.exp = Num.exp;
+    prelude.sqrt = Num.sqrt;
+    prelude.ln = Num.ln;
+    prelude.pow = Num.pow;
+    prelude.sin = Num.sin;
+    prelude.tan = Num.tan;
+    prelude.cos = Num.cos;
+    prelude.acos = Num.acos;
+    prelude.asin = Num.asin;
+    prelude.atan = Num.atan;
+    prelude.atan2 = Num.atan2;
+    prelude.truncate = Num.truncate;
+    prelude.round = Num.round;
+    prelude.ceiling = Num.ceiling;
+    prelude.floor = Num.floor;
+    prelude.isItNaN = Num.isItNaN;
+    prelude.even = Num.even;
+    prelude.odd = Num.odd;
+    prelude.gcd = Num.gcd;
+    prelude.lcm = Num.lcm;
+    prelude.VERSION = '1.2.1';
+    module.exports = prelude;
+    function curry$(f, bound){
+      var context,
+      _curry = function(args) {
+        return f.length > 1 ? function(){
+          var params = args ? args.concat() : [];
+          context = bound ? context || this : this;
+          return params.push.apply(params, arguments) <
+              f.length && arguments.length ?
+            _curry.call(context, params) : f.apply(context, params);
+        } : f;
+      };
+      return _curry();
+    }
+    },{"./Func.js":14,"./List.js":15,"./Num.js":16,"./Obj.js":17,"./Str.js":18}],20:[function(require,module,exports){
+    // shim for using process in browser
+    var process = module.exports = {};
+    
+    // cached from whatever global is present so that test runners that stub it
+    // don't break things.  But we need to wrap it in a try catch in case it is
+    // wrapped in strict mode code which doesn't define any globals.  It's inside a
+    // function because try/catches deoptimize in certain engines.
+    
+    var cachedSetTimeout;
+    var cachedClearTimeout;
+    
+    function defaultSetTimout() {
+        throw new Error('setTimeout has not been defined');
+    }
+    function defaultClearTimeout () {
+        throw new Error('clearTimeout has not been defined');
+    }
+    (function () {
+        try {
+            if (typeof setTimeout === 'function') {
+                cachedSetTimeout = setTimeout;
+            } else {
+                cachedSetTimeout = defaultSetTimout;
+            }
+        } catch (e) {
+            cachedSetTimeout = defaultSetTimout;
+        }
+        try {
+            if (typeof clearTimeout === 'function') {
+                cachedClearTimeout = clearTimeout;
+            } else {
+                cachedClearTimeout = defaultClearTimeout;
+            }
+        } catch (e) {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } ())
+    function runTimeout(fun) {
+        if (cachedSetTimeout === setTimeout) {
+            //normal enviroments in sane situations
+            return setTimeout(fun, 0);
+        }
+        // if setTimeout wasn't available but was latter defined
+        if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+            cachedSetTimeout = setTimeout;
+            return setTimeout(fun, 0);
+        }
+        try {
+            // when when somebody has screwed with setTimeout but no I.E. maddness
+            return cachedSetTimeout(fun, 0);
+        } catch(e){
+            try {
+                // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+                return cachedSetTimeout.call(null, fun, 0);
+            } catch(e){
+                // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+                return cachedSetTimeout.call(this, fun, 0);
+            }
+        }
+    
+    
+    }
+    function runClearTimeout(marker) {
+        if (cachedClearTimeout === clearTimeout) {
+            //normal enviroments in sane situations
+            return clearTimeout(marker);
+        }
+        // if clearTimeout wasn't available but was latter defined
+        if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+            cachedClearTimeout = clearTimeout;
+            return clearTimeout(marker);
+        }
+        try {
+            // when when somebody has screwed with setTimeout but no I.E. maddness
+            return cachedClearTimeout(marker);
+        } catch (e){
+            try {
+                // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+                return cachedClearTimeout.call(null, marker);
+            } catch (e){
+                // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+                // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+                return cachedClearTimeout.call(this, marker);
+            }
+        }
+    
+    
+    
+    }
+    var queue = [];
+    var draining = false;
+    var currentQueue;
+    var queueIndex = -1;
+    
+    function cleanUpNextTick() {
+        if (!draining || !currentQueue) {
+            return;
+        }
+        draining = false;
+        if (currentQueue.length) {
+            queue = currentQueue.concat(queue);
+        } else {
+            queueIndex = -1;
+        }
+        if (queue.length) {
+            drainQueue();
+        }
+    }
+    
+    function drainQueue() {
+        if (draining) {
+            return;
+        }
+        var timeout = runTimeout(cleanUpNextTick);
+        draining = true;
+    
+        var len = queue.length;
+        while(len) {
+            currentQueue = queue;
+            queue = [];
+            while (++queueIndex < len) {
+                if (currentQueue) {
+                    currentQueue[queueIndex].run();
+                }
+            }
+            queueIndex = -1;
+            len = queue.length;
+        }
+        currentQueue = null;
+        draining = false;
+        runClearTimeout(timeout);
+    }
+    
+    process.nextTick = function (fun) {
+        var args = new Array(arguments.length - 1);
+        if (arguments.length > 1) {
+            for (var i = 1; i < arguments.length; i++) {
+                args[i - 1] = arguments[i];
+            }
+        }
+        queue.push(new Item(fun, args));
+        if (queue.length === 1 && !draining) {
+            runTimeout(drainQueue);
+        }
+    };
+    
+    // v8 likes predictible objects
+    function Item(fun, array) {
+        this.fun = fun;
+        this.array = array;
+    }
+    Item.prototype.run = function () {
+        this.fun.apply(null, this.array);
+    };
+    process.title = 'browser';
+    process.browser = true;
+    process.env = {};
+    process.argv = [];
+    process.version = ''; // empty string to avoid regexp issues
+    process.versions = {};
+    
+    function noop() {}
+    
+    process.on = noop;
+    process.addListener = noop;
+    process.once = noop;
+    process.off = noop;
+    process.removeListener = noop;
+    process.removeAllListeners = noop;
+    process.emit = noop;
+    process.prependListener = noop;
+    process.prependOnceListener = noop;
+    
+    process.listeners = function (name) { return [] }
+    
+    process.binding = function (name) {
+        throw new Error('process.binding is not supported');
+    };
+    
+    process.cwd = function () { return '/' };
+    process.chdir = function (dir) {
+        throw new Error('process.chdir is not supported');
+    };
+    process.umask = function() { return 0; };
+    
+    },{}],21:[function(require,module,exports){
+    /* -*- Mode: js; js-indent-level: 2; -*- */
+    /*
+     * Copyright 2011 Mozilla Foundation and contributors
+     * Licensed under the New BSD license. See LICENSE or:
+     * http://opensource.org/licenses/BSD-3-Clause
+     */
+    
+    var util = require('./util');
+    var has = Object.prototype.hasOwnProperty;
+    var hasNativeMap = typeof Map !== "undefined";
+    
+    /**
+     * A data structure which is a combination of an array and a set. Adding a new
+     * member is O(1), testing for membership is O(1), and finding the index of an
+     * element is O(1). Removing elements from the set is not supported. Only
+     * strings are supported for membership.
+     */
+    function ArraySet() {
+      this._array = [];
+      this._set = hasNativeMap ? new Map() : Object.create(null);
+    }
+    
+    /**
+     * Static method for creating ArraySet instances from an existing array.
+     */
+    ArraySet.fromArray = function ArraySet_fromArray(aArray, aAllowDuplicates) {
+      var set = new ArraySet();
+      for (var i = 0, len = aArray.length; i < len; i++) {
+        set.add(aArray[i], aAllowDuplicates);
+      }
+      return set;
+    };
+    
+    /**
+     * Return how many unique items are in this ArraySet. If duplicates have been
+     * added, than those do not count towards the size.
+     *
+     * @returns Number
+     */
+    ArraySet.prototype.size = function ArraySet_size() {
+      return hasNativeMap ? this._set.size : Object.getOwnPropertyNames(this._set).length;
+    };
+    
+    /**
+     * Add the given string to this set.
+     *
+     * @param String aStr
+     */
+    ArraySet.prototype.add = function ArraySet_add(aStr, aAllowDuplicates) {
+      var sStr = hasNativeMap ? aStr : util.toSetString(aStr);
+      var isDuplicate = hasNativeMap ? this.has(aStr) : has.call(this._set, sStr);
+      var idx = this._array.length;
+      if (!isDuplicate || aAllowDuplicates) {
+        this._array.push(aStr);
+      }
+      if (!isDuplicate) {
+        if (hasNativeMap) {
+          this._set.set(aStr, idx);
+        } else {
+          this._set[sStr] = idx;
+        }
+      }
+    };
+    
+    /**
+     * Is the given string a member of this set?
+     *
+     * @param String aStr
+     */
+    ArraySet.prototype.has = function ArraySet_has(aStr) {
+      if (hasNativeMap) {
+        return this._set.has(aStr);
+      } else {
+        var sStr = util.toSetString(aStr);
+        return has.call(this._set, sStr);
+      }
+    };
+    
+    /**
+     * What is the index of the given string in the array?
+     *
+     * @param String aStr
+     */
+    ArraySet.prototype.indexOf = function ArraySet_indexOf(aStr) {
+      if (hasNativeMap) {
+        var idx = this._set.get(aStr);
+        if (idx >= 0) {
+            return idx;
+        }
+      } else {
+        var sStr = util.toSetString(aStr);
+        if (has.call(this._set, sStr)) {
+          return this._set[sStr];
+        }
+      }
+    
+      throw new Error('"' + aStr + '" is not in the set.');
+    };
+    
+    /**
+     * What is the element at the given index?
+     *
+     * @param Number aIdx
+     */
+    ArraySet.prototype.at = function ArraySet_at(aIdx) {
+      if (aIdx >= 0 && aIdx < this._array.length) {
+        return this._array[aIdx];
+      }
+      throw new Error('No element indexed by ' + aIdx);
+    };
+    
+    /**
+     * Returns the array representation of this set (which has the proper indices
+     * indicated by indexOf). Note that this is a copy of the internal array used
+     * for storing the members so that no one can mess with internal state.
+     */
+    ArraySet.prototype.toArray = function ArraySet_toArray() {
+      return this._array.slice();
+    };
+    
+    exports.ArraySet = ArraySet;
+    
+    },{"./util":30}],22:[function(require,module,exports){
+    /* -*- Mode: js; js-indent-level: 2; -*- */
+    /*
+     * Copyright 2011 Mozilla Foundation and contributors
+     * Licensed under the New BSD license. See LICENSE or:
+     * http://opensource.org/licenses/BSD-3-Clause
+     *
+     * Based on the Base 64 VLQ implementation in Closure Compiler:
+     * https://code.google.com/p/closure-compiler/source/browse/trunk/src/com/google/debugging/sourcemap/Base64VLQ.java
+     *
+     * Copyright 2011 The Closure Compiler Authors. All rights reserved.
+     * Redistribution and use in source and binary forms, with or without
+     * modification, are permitted provided that the following conditions are
+     * met:
+     *
+     *  * Redistributions of source code must retain the above copyright
+     *    notice, this list of conditions and the following disclaimer.
+     *  * Redistributions in binary form must reproduce the above
+     *    copyright notice, this list of conditions and the following
+     *    disclaimer in the documentation and/or other materials provided
+     *    with the distribution.
+     *  * Neither the name of Google Inc. nor the names of its
+     *    contributors may be used to endorse or promote products derived
+     *    from this software without specific prior written permission.
+     *
+     * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+     * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+     * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+     * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+     * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+     * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+     * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+     * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+     * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+     * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+     * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+     */
+    
+    var base64 = require('./base64');
+    
+    // A single base 64 digit can contain 6 bits of data. For the base 64 variable
+    // length quantities we use in the source map spec, the first bit is the sign,
+    // the next four bits are the actual value, and the 6th bit is the
+    // continuation bit. The continuation bit tells us whether there are more
+    // digits in this value following this digit.
+    //
+    //   Continuation
+    //   |    Sign
+    //   |    |
+    //   V    V
+    //   101011
+    
+    var VLQ_BASE_SHIFT = 5;
+    
+    // binary: 100000
+    var VLQ_BASE = 1 << VLQ_BASE_SHIFT;
+    
+    // binary: 011111
+    var VLQ_BASE_MASK = VLQ_BASE - 1;
+    
+    // binary: 100000
+    var VLQ_CONTINUATION_BIT = VLQ_BASE;
+    
+    /**
+     * Converts from a two-complement value to a value where the sign bit is
+     * placed in the least significant bit.  For example, as decimals:
+     *   1 becomes 2 (10 binary), -1 becomes 3 (11 binary)
+     *   2 becomes 4 (100 binary), -2 becomes 5 (101 binary)
+     */
+    function toVLQSigned(aValue) {
+      return aValue < 0
+        ? ((-aValue) << 1) + 1
+        : (aValue << 1) + 0;
+    }
+    
+    /**
+     * Converts to a two-complement value from a value where the sign bit is
+     * placed in the least significant bit.  For example, as decimals:
+     *   2 (10 binary) becomes 1, 3 (11 binary) becomes -1
+     *   4 (100 binary) becomes 2, 5 (101 binary) becomes -2
+     */
+    function fromVLQSigned(aValue) {
+      var isNegative = (aValue & 1) === 1;
+      var shifted = aValue >> 1;
+      return isNegative
+        ? -shifted
+        : shifted;
+    }
+    
+    /**
+     * Returns the base 64 VLQ encoded value.
+     */
+    exports.encode = function base64VLQ_encode(aValue) {
+      var encoded = "";
+      var digit;
+    
+      var vlq = toVLQSigned(aValue);
+    
+      do {
+        digit = vlq & VLQ_BASE_MASK;
+        vlq >>>= VLQ_BASE_SHIFT;
+        if (vlq > 0) {
+          // There are still more digits in this value, so we must make sure the
+          // continuation bit is marked.
+          digit |= VLQ_CONTINUATION_BIT;
+        }
+        encoded += base64.encode(digit);
+      } while (vlq > 0);
+    
+      return encoded;
+    };
+    
+    /**
+     * Decodes the next base 64 VLQ value from the given string and returns the
+     * value and the rest of the string via the out parameter.
+     */
+    exports.decode = function base64VLQ_decode(aStr, aIndex, aOutParam) {
+      var strLen = aStr.length;
+      var result = 0;
+      var shift = 0;
+      var continuation, digit;
+    
+      do {
+        if (aIndex >= strLen) {
+          throw new Error("Expected more digits in base 64 VLQ value.");
+        }
+    
+        digit = base64.decode(aStr.charCodeAt(aIndex++));
+        if (digit === -1) {
+          throw new Error("Invalid base64 digit: " + aStr.charAt(aIndex - 1));
+        }
+    
+        continuation = !!(digit & VLQ_CONTINUATION_BIT);
+        digit &= VLQ_BASE_MASK;
+        result = result + (digit << shift);
+        shift += VLQ_BASE_SHIFT;
+      } while (continuation);
+    
+      aOutParam.value = fromVLQSigned(result);
+      aOutParam.rest = aIndex;
+    };
+    
+    },{"./base64":23}],23:[function(require,module,exports){
+    /* -*- Mode: js; js-indent-level: 2; -*- */
+    /*
+     * Copyright 2011 Mozilla Foundation and contributors
+     * Licensed under the New BSD license. See LICENSE or:
+     * http://opensource.org/licenses/BSD-3-Clause
+     */
+    
+    var intToCharMap = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'.split('');
+    
+    /**
+     * Encode an integer in the range of 0 to 63 to a single base 64 digit.
+     */
+    exports.encode = function (number) {
+      if (0 <= number && number < intToCharMap.length) {
+        return intToCharMap[number];
+      }
+      throw new TypeError("Must be between 0 and 63: " + number);
+    };
+    
+    /**
+     * Decode a single base 64 character code digit to an integer. Returns -1 on
+     * failure.
+     */
+    exports.decode = function (charCode) {
+      var bigA = 65;     // 'A'
+      var bigZ = 90;     // 'Z'
+    
+      var littleA = 97;  // 'a'
+      var littleZ = 122; // 'z'
+    
+      var zero = 48;     // '0'
+      var nine = 57;     // '9'
+    
+      var plus = 43;     // '+'
+      var slash = 47;    // '/'
+    
+      var littleOffset = 26;
+      var numberOffset = 52;
+    
+      // 0 - 25: ABCDEFGHIJKLMNOPQRSTUVWXYZ
+      if (bigA <= charCode && charCode <= bigZ) {
+        return (charCode - bigA);
+      }
+    
+      // 26 - 51: abcdefghijklmnopqrstuvwxyz
+      if (littleA <= charCode && charCode <= littleZ) {
+        return (charCode - littleA + littleOffset);
+      }
+    
+      // 52 - 61: 0123456789
+      if (zero <= charCode && charCode <= nine) {
+        return (charCode - zero + numberOffset);
+      }
+    
+      // 62: +
+      if (charCode == plus) {
+        return 62;
+      }
+    
+      // 63: /
+      if (charCode == slash) {
+        return 63;
+      }
+    
+      // Invalid base64 digit.
+      return -1;
+    };
+    
+    },{}],24:[function(require,module,exports){
+    /* -*- Mode: js; js-indent-level: 2; -*- */
+    /*
+     * Copyright 2011 Mozilla Foundation and contributors
+     * Licensed under the New BSD license. See LICENSE or:
+     * http://opensource.org/licenses/BSD-3-Clause
+     */
+    
+    exports.GREATEST_LOWER_BOUND = 1;
+    exports.LEAST_UPPER_BOUND = 2;
+    
+    /**
+     * Recursive implementation of binary search.
+     *
+     * @param aLow Indices here and lower do not contain the needle.
+     * @param aHigh Indices here and higher do not contain the needle.
+     * @param aNeedle The element being searched for.
+     * @param aHaystack The non-empty array being searched.
+     * @param aCompare Function which takes two elements and returns -1, 0, or 1.
+     * @param aBias Either 'binarySearch.GREATEST_LOWER_BOUND' or
+     *     'binarySearch.LEAST_UPPER_BOUND'. Specifies whether to return the
+     *     closest element that is smaller than or greater than the one we are
+     *     searching for, respectively, if the exact element cannot be found.
+     */
+    function recursiveSearch(aLow, aHigh, aNeedle, aHaystack, aCompare, aBias) {
+      // This function terminates when one of the following is true:
+      //
+      //   1. We find the exact element we are looking for.
+      //
+      //   2. We did not find the exact element, but we can return the index of
+      //      the next-closest element.
+      //
+      //   3. We did not find the exact element, and there is no next-closest
+      //      element than the one we are searching for, so we return -1.
+      var mid = Math.floor((aHigh - aLow) / 2) + aLow;
+      var cmp = aCompare(aNeedle, aHaystack[mid], true);
+      if (cmp === 0) {
+        // Found the element we are looking for.
+        return mid;
+      }
+      else if (cmp > 0) {
+        // Our needle is greater than aHaystack[mid].
+        if (aHigh - mid > 1) {
+          // The element is in the upper half.
+          return recursiveSearch(mid, aHigh, aNeedle, aHaystack, aCompare, aBias);
+        }
+    
+        // The exact needle element was not found in this haystack. Determine if
+        // we are in termination case (3) or (2) and return the appropriate thing.
+        if (aBias == exports.LEAST_UPPER_BOUND) {
+          return aHigh < aHaystack.length ? aHigh : -1;
+        } else {
+          return mid;
+        }
+      }
+      else {
+        // Our needle is less than aHaystack[mid].
+        if (mid - aLow > 1) {
+          // The element is in the lower half.
+          return recursiveSearch(aLow, mid, aNeedle, aHaystack, aCompare, aBias);
+        }
+    
+        // we are in termination case (3) or (2) and return the appropriate thing.
+        if (aBias == exports.LEAST_UPPER_BOUND) {
+          return mid;
+        } else {
+          return aLow < 0 ? -1 : aLow;
+        }
+      }
+    }
+    
+    /**
+     * This is an implementation of binary search which will always try and return
+     * the index of the closest element if there is no exact hit. This is because
+     * mappings between original and generated line/col pairs are single points,
+     * and there is an implicit region between each of them, so a miss just means
+     * that you aren't on the very start of a region.
+     *
+     * @param aNeedle The element you are looking for.
+     * @param aHaystack The array that is being searched.
+     * @param aCompare A function which takes the needle and an element in the
+     *     array and returns -1, 0, or 1 depending on whether the needle is less
+     *     than, equal to, or greater than the element, respectively.
+     * @param aBias Either 'binarySearch.GREATEST_LOWER_BOUND' or
+     *     'binarySearch.LEAST_UPPER_BOUND'. Specifies whether to return the
+     *     closest element that is smaller than or greater than the one we are
+     *     searching for, respectively, if the exact element cannot be found.
+     *     Defaults to 'binarySearch.GREATEST_LOWER_BOUND'.
+     */
+    exports.search = function search(aNeedle, aHaystack, aCompare, aBias) {
+      if (aHaystack.length === 0) {
+        return -1;
+      }
+    
+      var index = recursiveSearch(-1, aHaystack.length, aNeedle, aHaystack,
+                                  aCompare, aBias || exports.GREATEST_LOWER_BOUND);
+      if (index < 0) {
+        return -1;
+      }
+    
+      // We have found either the exact element, or the next-closest element than
+      // the one we are searching for. However, there may be more than one such
+      // element. Make sure we always return the smallest of these.
+      while (index - 1 >= 0) {
+        if (aCompare(aHaystack[index], aHaystack[index - 1], true) !== 0) {
+          break;
+        }
+        --index;
+      }
+    
+      return index;
+    };
+    
+    },{}],25:[function(require,module,exports){
+    /* -*- Mode: js; js-indent-level: 2; -*- */
+    /*
+     * Copyright 2014 Mozilla Foundation and contributors
+     * Licensed under the New BSD license. See LICENSE or:
+     * http://opensource.org/licenses/BSD-3-Clause
+     */
+    
+    var util = require('./util');
+    
+    /**
+     * Determine whether mappingB is after mappingA with respect to generated
+     * position.
+     */
+    function generatedPositionAfter(mappingA, mappingB) {
+      // Optimized for most common case
+      var lineA = mappingA.generatedLine;
+      var lineB = mappingB.generatedLine;
+      var columnA = mappingA.generatedColumn;
+      var columnB = mappingB.generatedColumn;
+      return lineB > lineA || lineB == lineA && columnB >= columnA ||
+             util.compareByGeneratedPositionsInflated(mappingA, mappingB) <= 0;
+    }
+    
+    /**
+     * A data structure to provide a sorted view of accumulated mappings in a
+     * performance conscious manner. It trades a neglibable overhead in general
+     * case for a large speedup in case of mappings being added in order.
+     */
+    function MappingList() {
+      this._array = [];
+      this._sorted = true;
+      // Serves as infimum
+      this._last = {generatedLine: -1, generatedColumn: 0};
+    }
+    
+    /**
+     * Iterate through internal items. This method takes the same arguments that
+     * `Array.prototype.forEach` takes.
+     *
+     * NOTE: The order of the mappings is NOT guaranteed.
+     */
+    MappingList.prototype.unsortedForEach =
+      function MappingList_forEach(aCallback, aThisArg) {
+        this._array.forEach(aCallback, aThisArg);
+      };
+    
+    /**
+     * Add the given source mapping.
+     *
+     * @param Object aMapping
+     */
+    MappingList.prototype.add = function MappingList_add(aMapping) {
+      if (generatedPositionAfter(this._last, aMapping)) {
+        this._last = aMapping;
+        this._array.push(aMapping);
+      } else {
+        this._sorted = false;
+        this._array.push(aMapping);
+      }
+    };
+    
+    /**
+     * Returns the flat, sorted array of mappings. The mappings are sorted by
+     * generated position.
+     *
+     * WARNING: This method returns internal data without copying, for
+     * performance. The return value must NOT be mutated, and should be treated as
+     * an immutable borrow. If you want to take ownership, you must make your own
+     * copy.
+     */
+    MappingList.prototype.toArray = function MappingList_toArray() {
+      if (!this._sorted) {
+        this._array.sort(util.compareByGeneratedPositionsInflated);
+        this._sorted = true;
+      }
+      return this._array;
+    };
+    
+    exports.MappingList = MappingList;
+    
+    },{"./util":30}],26:[function(require,module,exports){
+    /* -*- Mode: js; js-indent-level: 2; -*- */
+    /*
+     * Copyright 2011 Mozilla Foundation and contributors
+     * Licensed under the New BSD license. See LICENSE or:
+     * http://opensource.org/licenses/BSD-3-Clause
+     */
+    
+    // It turns out that some (most?) JavaScript engines don't self-host
+    // `Array.prototype.sort`. This makes sense because C++ will likely remain
+    // faster than JS when doing raw CPU-intensive sorting. However, when using a
+    // custom comparator function, calling back and forth between the VM's C++ and
+    // JIT'd JS is rather slow *and* loses JIT type information, resulting in
+    // worse generated code for the comparator function than would be optimal. In
+    // fact, when sorting with a comparator, these costs outweigh the benefits of
+    // sorting in C++. By using our own JS-implemented Quick Sort (below), we get
+    // a ~3500ms mean speed-up in `bench/bench.html`.
+    
+    /**
+     * Swap the elements indexed by `x` and `y` in the array `ary`.
+     *
+     * @param {Array} ary
+     *        The array.
+     * @param {Number} x
+     *        The index of the first item.
+     * @param {Number} y
+     *        The index of the second item.
+     */
+    function swap(ary, x, y) {
+      var temp = ary[x];
+      ary[x] = ary[y];
+      ary[y] = temp;
+    }
+    
+    /**
+     * Returns a random integer within the range `low .. high` inclusive.
+     *
+     * @param {Number} low
+     *        The lower bound on the range.
+     * @param {Number} high
+     *        The upper bound on the range.
+     */
+    function randomIntInRange(low, high) {
+      return Math.round(low + (Math.random() * (high - low)));
+    }
+    
+    /**
+     * The Quick Sort algorithm.
+     *
+     * @param {Array} ary
+     *        An array to sort.
+     * @param {function} comparator
+     *        Function to use to compare two items.
+     * @param {Number} p
+     *        Start index of the array
+     * @param {Number} r
+     *        End index of the array
+     */
+    function doQuickSort(ary, comparator, p, r) {
+      // If our lower bound is less than our upper bound, we (1) partition the
+      // array into two pieces and (2) recurse on each half. If it is not, this is
+      // the empty array and our base case.
+    
+      if (p < r) {
+        // (1) Partitioning.
+        //
+        // The partitioning chooses a pivot between `p` and `r` and moves all
+        // elements that are less than or equal to the pivot to the before it, and
+        // all the elements that are greater than it after it. The effect is that
+        // once partition is done, the pivot is in the exact place it will be when
+        // the array is put in sorted order, and it will not need to be moved
+        // again. This runs in O(n) time.
+    
+        // Always choose a random pivot so that an input array which is reverse
+        // sorted does not cause O(n^2) running time.
+        var pivotIndex = randomIntInRange(p, r);
+        var i = p - 1;
+    
+        swap(ary, pivotIndex, r);
+        var pivot = ary[r];
+    
+        // Immediately after `j` is incremented in this loop, the following hold
+        // true:
+        //
+        //   * Every element in `ary[p .. i]` is less than or equal to the pivot.
+        //
+        //   * Every element in `ary[i+1 .. j-1]` is greater than the pivot.
+        for (var j = p; j < r; j++) {
+          if (comparator(ary[j], pivot) <= 0) {
+            i += 1;
+            swap(ary, i, j);
+          }
+        }
+    
+        swap(ary, i + 1, j);
+        var q = i + 1;
+    
+        // (2) Recurse on each half.
+    
+        doQuickSort(ary, comparator, p, q - 1);
+        doQuickSort(ary, comparator, q + 1, r);
+      }
+    }
+    
+    /**
+     * Sort the given array in-place with the given comparator function.
+     *
+     * @param {Array} ary
+     *        An array to sort.
+     * @param {function} comparator
+     *        Function to use to compare two items.
+     */
+    exports.quickSort = function (ary, comparator) {
+      doQuickSort(ary, comparator, 0, ary.length - 1);
+    };
+    
+    },{}],27:[function(require,module,exports){
+    /* -*- Mode: js; js-indent-level: 2; -*- */
+    /*
+     * Copyright 2011 Mozilla Foundation and contributors
+     * Licensed under the New BSD license. See LICENSE or:
+     * http://opensource.org/licenses/BSD-3-Clause
+     */
+    
+    var util = require('./util');
+    var binarySearch = require('./binary-search');
+    var ArraySet = require('./array-set').ArraySet;
+    var base64VLQ = require('./base64-vlq');
+    var quickSort = require('./quick-sort').quickSort;
+    
+    function SourceMapConsumer(aSourceMap, aSourceMapURL) {
+      var sourceMap = aSourceMap;
+      if (typeof aSourceMap === 'string') {
+        sourceMap = util.parseSourceMapInput(aSourceMap);
+      }
+    
+      return sourceMap.sections != null
+        ? new IndexedSourceMapConsumer(sourceMap, aSourceMapURL)
+        : new BasicSourceMapConsumer(sourceMap, aSourceMapURL);
+    }
+    
+    SourceMapConsumer.fromSourceMap = function(aSourceMap, aSourceMapURL) {
+      return BasicSourceMapConsumer.fromSourceMap(aSourceMap, aSourceMapURL);
+    }
+    
+    /**
+     * The version of the source mapping spec that we are consuming.
+     */
+    SourceMapConsumer.prototype._version = 3;
+    
+    // `__generatedMappings` and `__originalMappings` are arrays that hold the
+    // parsed mapping coordinates from the source map's "mappings" attribute. They
+    // are lazily instantiated, accessed via the `_generatedMappings` and
+    // `_originalMappings` getters respectively, and we only parse the mappings
+    // and create these arrays once queried for a source location. We jump through
+    // these hoops because there can be many thousands of mappings, and parsing
+    // them is expensive, so we only want to do it if we must.
+    //
+    // Each object in the arrays is of the form:
+    //
+    //     {
+    //       generatedLine: The line number in the generated code,
+    //       generatedColumn: The column number in the generated code,
+    //       source: The path to the original source file that generated this
+    //               chunk of code,
+    //       originalLine: The line number in the original source that
+    //                     corresponds to this chunk of generated code,
+    //       originalColumn: The column number in the original source that
+    //                       corresponds to this chunk of generated code,
+    //       name: The name of the original symbol which generated this chunk of
+    //             code.
+    //     }
+    //
+    // All properties except for `generatedLine` and `generatedColumn` can be
+    // `null`.
+    //
+    // `_generatedMappings` is ordered by the generated positions.
+    //
+    // `_originalMappings` is ordered by the original positions.
+    
+    SourceMapConsumer.prototype.__generatedMappings = null;
+    Object.defineProperty(SourceMapConsumer.prototype, '_generatedMappings', {
+      configurable: true,
+      enumerable: true,
+      get: function () {
+        if (!this.__generatedMappings) {
+          this._parseMappings(this._mappings, this.sourceRoot);
+        }
+    
+        return this.__generatedMappings;
+      }
+    });
+    
+    SourceMapConsumer.prototype.__originalMappings = null;
+    Object.defineProperty(SourceMapConsumer.prototype, '_originalMappings', {
+      configurable: true,
+      enumerable: true,
+      get: function () {
+        if (!this.__originalMappings) {
+          this._parseMappings(this._mappings, this.sourceRoot);
+        }
+    
+        return this.__originalMappings;
+      }
+    });
+    
+    SourceMapConsumer.prototype._charIsMappingSeparator =
+      function SourceMapConsumer_charIsMappingSeparator(aStr, index) {
+        var c = aStr.charAt(index);
+        return c === ";" || c === ",";
+      };
+    
+    /**
+     * Parse the mappings in a string in to a data structure which we can easily
+     * query (the ordered arrays in the `this.__generatedMappings` and
+     * `this.__originalMappings` properties).
+     */
+    SourceMapConsumer.prototype._parseMappings =
+      function SourceMapConsumer_parseMappings(aStr, aSourceRoot) {
+        throw new Error("Subclasses must implement _parseMappings");
+      };
+    
+    SourceMapConsumer.GENERATED_ORDER = 1;
+    SourceMapConsumer.ORIGINAL_ORDER = 2;
+    
+    SourceMapConsumer.GREATEST_LOWER_BOUND = 1;
+    SourceMapConsumer.LEAST_UPPER_BOUND = 2;
+    
+    /**
+     * Iterate over each mapping between an original source/line/column and a
+     * generated line/column in this source map.
+     *
+     * @param Function aCallback
+     *        The function that is called with each mapping.
+     * @param Object aContext
+     *        Optional. If specified, this object will be the value of `this` every
+     *        time that `aCallback` is called.
+     * @param aOrder
+     *        Either `SourceMapConsumer.GENERATED_ORDER` or
+     *        `SourceMapConsumer.ORIGINAL_ORDER`. Specifies whether you want to
+     *        iterate over the mappings sorted by the generated file's line/column
+     *        order or the original's source/line/column order, respectively. Defaults to
+     *        `SourceMapConsumer.GENERATED_ORDER`.
+     */
+    SourceMapConsumer.prototype.eachMapping =
+      function SourceMapConsumer_eachMapping(aCallback, aContext, aOrder) {
+        var context = aContext || null;
+        var order = aOrder || SourceMapConsumer.GENERATED_ORDER;
+    
+        var mappings;
+        switch (order) {
+        case SourceMapConsumer.GENERATED_ORDER:
+          mappings = this._generatedMappings;
+          break;
+        case SourceMapConsumer.ORIGINAL_ORDER:
+          mappings = this._originalMappings;
+          break;
+        default:
+          throw new Error("Unknown order of iteration.");
+        }
+    
+        var sourceRoot = this.sourceRoot;
+        mappings.map(function (mapping) {
+          var source = mapping.source === null ? null : this._sources.at(mapping.source);
+          source = util.computeSourceURL(sourceRoot, source, this._sourceMapURL);
+          return {
+            source: source,
+            generatedLine: mapping.generatedLine,
+            generatedColumn: mapping.generatedColumn,
+            originalLine: mapping.originalLine,
+            originalColumn: mapping.originalColumn,
+            name: mapping.name === null ? null : this._names.at(mapping.name)
+          };
+        }, this).forEach(aCallback, context);
+      };
+    
+    /**
+     * Returns all generated line and column information for the original source,
+     * line, and column provided. If no column is provided, returns all mappings
+     * corresponding to a either the line we are searching for or the next
+     * closest line that has any mappings. Otherwise, returns all mappings
+     * corresponding to the given line and either the column we are searching for
+     * or the next closest column that has any offsets.
+     *
+     * The only argument is an object with the following properties:
+     *
+     *   - source: The filename of the original source.
+     *   - line: The line number in the original source.  The line number is 1-based.
+     *   - column: Optional. the column number in the original source.
+     *    The column number is 0-based.
+     *
+     * and an array of objects is returned, each with the following properties:
+     *
+     *   - line: The line number in the generated source, or null.  The
+     *    line number is 1-based.
+     *   - column: The column number in the generated source, or null.
+     *    The column number is 0-based.
+     */
+    SourceMapConsumer.prototype.allGeneratedPositionsFor =
+      function SourceMapConsumer_allGeneratedPositionsFor(aArgs) {
+        var line = util.getArg(aArgs, 'line');
+    
+        // When there is no exact match, BasicSourceMapConsumer.prototype._findMapping
+        // returns the index of the closest mapping less than the needle. By
+        // setting needle.originalColumn to 0, we thus find the last mapping for
+        // the given line, provided such a mapping exists.
+        var needle = {
+          source: util.getArg(aArgs, 'source'),
+          originalLine: line,
+          originalColumn: util.getArg(aArgs, 'column', 0)
+        };
+    
+        needle.source = this._findSourceIndex(needle.source);
+        if (needle.source < 0) {
+          return [];
+        }
+    
+        var mappings = [];
+    
+        var index = this._findMapping(needle,
+                                      this._originalMappings,
+                                      "originalLine",
+                                      "originalColumn",
+                                      util.compareByOriginalPositions,
+                                      binarySearch.LEAST_UPPER_BOUND);
+        if (index >= 0) {
+          var mapping = this._originalMappings[index];
+    
+          if (aArgs.column === undefined) {
+            var originalLine = mapping.originalLine;
+    
+            // Iterate until either we run out of mappings, or we run into
+            // a mapping for a different line than the one we found. Since
+            // mappings are sorted, this is guaranteed to find all mappings for
+            // the line we found.
+            while (mapping && mapping.originalLine === originalLine) {
+              mappings.push({
+                line: util.getArg(mapping, 'generatedLine', null),
+                column: util.getArg(mapping, 'generatedColumn', null),
+                lastColumn: util.getArg(mapping, 'lastGeneratedColumn', null)
+              });
+    
+              mapping = this._originalMappings[++index];
+            }
+          } else {
+            var originalColumn = mapping.originalColumn;
+    
+            // Iterate until either we run out of mappings, or we run into
+            // a mapping for a different line than the one we were searching for.
+            // Since mappings are sorted, this is guaranteed to find all mappings for
+            // the line we are searching for.
+            while (mapping &&
+                   mapping.originalLine === line &&
+                   mapping.originalColumn == originalColumn) {
+              mappings.push({
+                line: util.getArg(mapping, 'generatedLine', null),
+                column: util.getArg(mapping, 'generatedColumn', null),
+                lastColumn: util.getArg(mapping, 'lastGeneratedColumn', null)
+              });
+    
+              mapping = this._originalMappings[++index];
+            }
+          }
+        }
+    
+        return mappings;
+      };
+    
+    exports.SourceMapConsumer = SourceMapConsumer;
+    
+    /**
+     * A BasicSourceMapConsumer instance represents a parsed source map which we can
+     * query for information about the original file positions by giving it a file
+     * position in the generated source.
+     *
+     * The first parameter is the raw source map (either as a JSON string, or
+     * already parsed to an object). According to the spec, source maps have the
+     * following attributes:
+     *
+     *   - version: Which version of the source map spec this map is following.
+     *   - sources: An array of URLs to the original source files.
+     *   - names: An array of identifiers which can be referrenced by individual mappings.
+     *   - sourceRoot: Optional. The URL root from which all sources are relative.
+     *   - sourcesContent: Optional. An array of contents of the original source files.
+     *   - mappings: A string of base64 VLQs which contain the actual mappings.
+     *   - file: Optional. The generated file this source map is associated with.
+     *
+     * Here is an example source map, taken from the source map spec[0]:
+     *
+     *     {
+     *       version : 3,
+     *       file: "out.js",
+     *       sourceRoot : "",
+     *       sources: ["foo.js", "bar.js"],
+     *       names: ["src", "maps", "are", "fun"],
+     *       mappings: "AA,AB;;ABCDE;"
+     *     }
+     *
+     * The second parameter, if given, is a string whose value is the URL
+     * at which the source map was found.  This URL is used to compute the
+     * sources array.
+     *
+     * [0]: https://docs.google.com/document/d/1U1RGAehQwRypUTovF1KRlpiOFze0b-_2gc6fAH0KY0k/edit?pli=1#
+     */
+    function BasicSourceMapConsumer(aSourceMap, aSourceMapURL) {
+      var sourceMap = aSourceMap;
+      if (typeof aSourceMap === 'string') {
+        sourceMap = util.parseSourceMapInput(aSourceMap);
+      }
+    
+      var version = util.getArg(sourceMap, 'version');
+      var sources = util.getArg(sourceMap, 'sources');
+      // Sass 3.3 leaves out the 'names' array, so we deviate from the spec (which
+      // requires the array) to play nice here.
+      var names = util.getArg(sourceMap, 'names', []);
+      var sourceRoot = util.getArg(sourceMap, 'sourceRoot', null);
+      var sourcesContent = util.getArg(sourceMap, 'sourcesContent', null);
+      var mappings = util.getArg(sourceMap, 'mappings');
+      var file = util.getArg(sourceMap, 'file', null);
+    
+      // Once again, Sass deviates from the spec and supplies the version as a
+      // string rather than a number, so we use loose equality checking here.
+      if (version != this._version) {
+        throw new Error('Unsupported version: ' + version);
+      }
+    
+      if (sourceRoot) {
+        sourceRoot = util.normalize(sourceRoot);
+      }
+    
+      sources = sources
+        .map(String)
+        // Some source maps produce relative source paths like "./foo.js" instead of
+        // "foo.js".  Normalize these first so that future comparisons will succeed.
+        // See bugzil.la/1090768.
+        .map(util.normalize)
+        // Always ensure that absolute sources are internally stored relative to
+        // the source root, if the source root is absolute. Not doing this would
+        // be particularly problematic when the source root is a prefix of the
+        // source (valid, but why??). See github issue #199 and bugzil.la/1188982.
+        .map(function (source) {
+          return sourceRoot && util.isAbsolute(sourceRoot) && util.isAbsolute(source)
+            ? util.relative(sourceRoot, source)
+            : source;
+        });
+    
+      // Pass `true` below to allow duplicate names and sources. While source maps
+      // are intended to be compressed and deduplicated, the TypeScript compiler
+      // sometimes generates source maps with duplicates in them. See Github issue
+      // #72 and bugzil.la/889492.
+      this._names = ArraySet.fromArray(names.map(String), true);
+      this._sources = ArraySet.fromArray(sources, true);
+    
+      this._absoluteSources = this._sources.toArray().map(function (s) {
+        return util.computeSourceURL(sourceRoot, s, aSourceMapURL);
+      });
+    
+      this.sourceRoot = sourceRoot;
+      this.sourcesContent = sourcesContent;
+      this._mappings = mappings;
+      this._sourceMapURL = aSourceMapURL;
+      this.file = file;
+    }
+    
+    BasicSourceMapConsumer.prototype = Object.create(SourceMapConsumer.prototype);
+    BasicSourceMapConsumer.prototype.consumer = SourceMapConsumer;
+    
+    /**
+     * Utility function to find the index of a source.  Returns -1 if not
+     * found.
+     */
+    BasicSourceMapConsumer.prototype._findSourceIndex = function(aSource) {
+      var relativeSource = aSource;
+      if (this.sourceRoot != null) {
+        relativeSource = util.relative(this.sourceRoot, relativeSource);
+      }
+    
+      if (this._sources.has(relativeSource)) {
+        return this._sources.indexOf(relativeSource);
+      }
+    
+      // Maybe aSource is an absolute URL as returned by |sources|.  In
+      // this case we can't simply undo the transform.
+      var i;
+      for (i = 0; i < this._absoluteSources.length; ++i) {
+        if (this._absoluteSources[i] == aSource) {
+          return i;
+        }
+      }
+    
+      return -1;
+    };
+    
+    /**
+     * Create a BasicSourceMapConsumer from a SourceMapGenerator.
+     *
+     * @param SourceMapGenerator aSourceMap
+     *        The source map that will be consumed.
+     * @param String aSourceMapURL
+     *        The URL at which the source map can be found (optional)
+     * @returns BasicSourceMapConsumer
+     */
+    BasicSourceMapConsumer.fromSourceMap =
+      function SourceMapConsumer_fromSourceMap(aSourceMap, aSourceMapURL) {
+        var smc = Object.create(BasicSourceMapConsumer.prototype);
+    
+        var names = smc._names = ArraySet.fromArray(aSourceMap._names.toArray(), true);
+        var sources = smc._sources = ArraySet.fromArray(aSourceMap._sources.toArray(), true);
+        smc.sourceRoot = aSourceMap._sourceRoot;
+        smc.sourcesContent = aSourceMap._generateSourcesContent(smc._sources.toArray(),
+                                                                smc.sourceRoot);
+        smc.file = aSourceMap._file;
+        smc._sourceMapURL = aSourceMapURL;
+        smc._absoluteSources = smc._sources.toArray().map(function (s) {
+          return util.computeSourceURL(smc.sourceRoot, s, aSourceMapURL);
+        });
+    
+        // Because we are modifying the entries (by converting string sources and
+        // names to indices into the sources and names ArraySets), we have to make
+        // a copy of the entry or else bad things happen. Shared mutable state
+        // strikes again! See github issue #191.
+    
+        var generatedMappings = aSourceMap._mappings.toArray().slice();
+        var destGeneratedMappings = smc.__generatedMappings = [];
+        var destOriginalMappings = smc.__originalMappings = [];
+    
+        for (var i = 0, length = generatedMappings.length; i < length; i++) {
+          var srcMapping = generatedMappings[i];
+          var destMapping = new Mapping;
+          destMapping.generatedLine = srcMapping.generatedLine;
+          destMapping.generatedColumn = srcMapping.generatedColumn;
+    
+          if (srcMapping.source) {
+            destMapping.source = sources.indexOf(srcMapping.source);
+            destMapping.originalLine = srcMapping.originalLine;
+            destMapping.originalColumn = srcMapping.originalColumn;
+    
+            if (srcMapping.name) {
+              destMapping.name = names.indexOf(srcMapping.name);
+            }
+    
+            destOriginalMappings.push(destMapping);
+          }
+    
+          destGeneratedMappings.push(destMapping);
+        }
+    
+        quickSort(smc.__originalMappings, util.compareByOriginalPositions);
+    
+        return smc;
+      };
+    
+    /**
+     * The version of the source mapping spec that we are consuming.
+     */
+    BasicSourceMapConsumer.prototype._version = 3;
+    
+    /**
+     * The list of original sources.
+     */
+    Object.defineProperty(BasicSourceMapConsumer.prototype, 'sources', {
+      get: function () {
+        return this._absoluteSources.slice();
+      }
+    });
+    
+    /**
+     * Provide the JIT with a nice shape / hidden class.
+     */
+    function Mapping() {
+      this.generatedLine = 0;
+      this.generatedColumn = 0;
+      this.source = null;
+      this.originalLine = null;
+      this.originalColumn = null;
+      this.name = null;
+    }
+    
+    /**
+     * Parse the mappings in a string in to a data structure which we can easily
+     * query (the ordered arrays in the `this.__generatedMappings` and
+     * `this.__originalMappings` properties).
+     */
+    BasicSourceMapConsumer.prototype._parseMappings =
+      function SourceMapConsumer_parseMappings(aStr, aSourceRoot) {
+        var generatedLine = 1;
+        var previousGeneratedColumn = 0;
+        var previousOriginalLine = 0;
+        var previousOriginalColumn = 0;
+        var previousSource = 0;
+        var previousName = 0;
+        var length = aStr.length;
+        var index = 0;
+        var cachedSegments = {};
+        var temp = {};
+        var originalMappings = [];
+        var generatedMappings = [];
+        var mapping, str, segment, end, value;
+    
+        while (index < length) {
+          if (aStr.charAt(index) === ';') {
+            generatedLine++;
+            index++;
+            previousGeneratedColumn = 0;
+          }
+          else if (aStr.charAt(index) === ',') {
+            index++;
+          }
+          else {
+            mapping = new Mapping();
+            mapping.generatedLine = generatedLine;
+    
+            // Because each offset is encoded relative to the previous one,
+            // many segments often have the same encoding. We can exploit this
+            // fact by caching the parsed variable length fields of each segment,
+            // allowing us to avoid a second parse if we encounter the same
+            // segment again.
+            for (end = index; end < length; end++) {
+              if (this._charIsMappingSeparator(aStr, end)) {
+                break;
+              }
+            }
+            str = aStr.slice(index, end);
+    
+            segment = cachedSegments[str];
+            if (segment) {
+              index += str.length;
+            } else {
+              segment = [];
+              while (index < end) {
+                base64VLQ.decode(aStr, index, temp);
+                value = temp.value;
+                index = temp.rest;
+                segment.push(value);
+              }
+    
+              if (segment.length === 2) {
+                throw new Error('Found a source, but no line and column');
+              }
+    
+              if (segment.length === 3) {
+                throw new Error('Found a source and line, but no column');
+              }
+    
+              cachedSegments[str] = segment;
+            }
+    
+            // Generated column.
+            mapping.generatedColumn = previousGeneratedColumn + segment[0];
+            previousGeneratedColumn = mapping.generatedColumn;
+    
+            if (segment.length > 1) {
+              // Original source.
+              mapping.source = previousSource + segment[1];
+              previousSource += segment[1];
+    
+              // Original line.
+              mapping.originalLine = previousOriginalLine + segment[2];
+              previousOriginalLine = mapping.originalLine;
+              // Lines are stored 0-based
+              mapping.originalLine += 1;
+    
+              // Original column.
+              mapping.originalColumn = previousOriginalColumn + segment[3];
+              previousOriginalColumn = mapping.originalColumn;
+    
+              if (segment.length > 4) {
+                // Original name.
+                mapping.name = previousName + segment[4];
+                previousName += segment[4];
+              }
+            }
+    
+            generatedMappings.push(mapping);
+            if (typeof mapping.originalLine === 'number') {
+              originalMappings.push(mapping);
+            }
+          }
+        }
+    
+        quickSort(generatedMappings, util.compareByGeneratedPositionsDeflated);
+        this.__generatedMappings = generatedMappings;
+    
+        quickSort(originalMappings, util.compareByOriginalPositions);
+        this.__originalMappings = originalMappings;
+      };
+    
+    /**
+     * Find the mapping that best matches the hypothetical "needle" mapping that
+     * we are searching for in the given "haystack" of mappings.
+     */
+    BasicSourceMapConsumer.prototype._findMapping =
+      function SourceMapConsumer_findMapping(aNeedle, aMappings, aLineName,
+                                             aColumnName, aComparator, aBias) {
+        // To return the position we are searching for, we must first find the
+        // mapping for the given position and then return the opposite position it
+        // points to. Because the mappings are sorted, we can use binary search to
+        // find the best mapping.
+    
+        if (aNeedle[aLineName] <= 0) {
+          throw new TypeError('Line must be greater than or equal to 1, got '
+                              + aNeedle[aLineName]);
+        }
+        if (aNeedle[aColumnName] < 0) {
+          throw new TypeError('Column must be greater than or equal to 0, got '
+                              + aNeedle[aColumnName]);
+        }
+    
+        return binarySearch.search(aNeedle, aMappings, aComparator, aBias);
+      };
+    
+    /**
+     * Compute the last column for each generated mapping. The last column is
+     * inclusive.
+     */
+    BasicSourceMapConsumer.prototype.computeColumnSpans =
+      function SourceMapConsumer_computeColumnSpans() {
+        for (var index = 0; index < this._generatedMappings.length; ++index) {
+          var mapping = this._generatedMappings[index];
+    
+          // Mappings do not contain a field for the last generated columnt. We
+          // can come up with an optimistic estimate, however, by assuming that
+          // mappings are contiguous (i.e. given two consecutive mappings, the
+          // first mapping ends where the second one starts).
+          if (index + 1 < this._generatedMappings.length) {
+            var nextMapping = this._generatedMappings[index + 1];
+    
+            if (mapping.generatedLine === nextMapping.generatedLine) {
+              mapping.lastGeneratedColumn = nextMapping.generatedColumn - 1;
+              continue;
+            }
+          }
+    
+          // The last mapping for each line spans the entire line.
+          mapping.lastGeneratedColumn = Infinity;
+        }
+      };
+    
+    /**
+     * Returns the original source, line, and column information for the generated
+     * source's line and column positions provided. The only argument is an object
+     * with the following properties:
+     *
+     *   - line: The line number in the generated source.  The line number
+     *     is 1-based.
+     *   - column: The column number in the generated source.  The column
+     *     number is 0-based.
+     *   - bias: Either 'SourceMapConsumer.GREATEST_LOWER_BOUND' or
+     *     'SourceMapConsumer.LEAST_UPPER_BOUND'. Specifies whether to return the
+     *     closest element that is smaller than or greater than the one we are
+     *     searching for, respectively, if the exact element cannot be found.
+     *     Defaults to 'SourceMapConsumer.GREATEST_LOWER_BOUND'.
+     *
+     * and an object is returned with the following properties:
+     *
+     *   - source: The original source file, or null.
+     *   - line: The line number in the original source, or null.  The
+     *     line number is 1-based.
+     *   - column: The column number in the original source, or null.  The
+     *     column number is 0-based.
+     *   - name: The original identifier, or null.
+     */
+    BasicSourceMapConsumer.prototype.originalPositionFor =
+      function SourceMapConsumer_originalPositionFor(aArgs) {
+        var needle = {
+          generatedLine: util.getArg(aArgs, 'line'),
+          generatedColumn: util.getArg(aArgs, 'column')
+        };
+    
+        var index = this._findMapping(
+          needle,
+          this._generatedMappings,
+          "generatedLine",
+          "generatedColumn",
+          util.compareByGeneratedPositionsDeflated,
+          util.getArg(aArgs, 'bias', SourceMapConsumer.GREATEST_LOWER_BOUND)
+        );
+    
+        if (index >= 0) {
+          var mapping = this._generatedMappings[index];
+    
+          if (mapping.generatedLine === needle.generatedLine) {
+            var source = util.getArg(mapping, 'source', null);
+            if (source !== null) {
+              source = this._sources.at(source);
+              source = util.computeSourceURL(this.sourceRoot, source, this._sourceMapURL);
+            }
+            var name = util.getArg(mapping, 'name', null);
+            if (name !== null) {
+              name = this._names.at(name);
+            }
+            return {
+              source: source,
+              line: util.getArg(mapping, 'originalLine', null),
+              column: util.getArg(mapping, 'originalColumn', null),
+              name: name
+            };
+          }
+        }
+    
+        return {
+          source: null,
+          line: null,
+          column: null,
+          name: null
+        };
+      };
+    
+    /**
+     * Return true if we have the source content for every source in the source
+     * map, false otherwise.
+     */
+    BasicSourceMapConsumer.prototype.hasContentsOfAllSources =
+      function BasicSourceMapConsumer_hasContentsOfAllSources() {
+        if (!this.sourcesContent) {
+          return false;
+        }
+        return this.sourcesContent.length >= this._sources.size() &&
+          !this.sourcesContent.some(function (sc) { return sc == null; });
+      };
+    
+    /**
+     * Returns the original source content. The only argument is the url of the
+     * original source file. Returns null if no original source content is
+     * available.
+     */
+    BasicSourceMapConsumer.prototype.sourceContentFor =
+      function SourceMapConsumer_sourceContentFor(aSource, nullOnMissing) {
+        if (!this.sourcesContent) {
+          return null;
+        }
+    
+        var index = this._findSourceIndex(aSource);
+        if (index >= 0) {
+          return this.sourcesContent[index];
+        }
+    
+        var relativeSource = aSource;
+        if (this.sourceRoot != null) {
+          relativeSource = util.relative(this.sourceRoot, relativeSource);
+        }
+    
+        var url;
+        if (this.sourceRoot != null
+            && (url = util.urlParse(this.sourceRoot))) {
+          // XXX: file:// URIs and absolute paths lead to unexpected behavior for
+          // many users. We can help them out when they expect file:// URIs to
+          // behave like it would if they were running a local HTTP server. See
+          // https://bugzilla.mozilla.org/show_bug.cgi?id=885597.
+          var fileUriAbsPath = relativeSource.replace(/^file:\/\//, "");
+          if (url.scheme == "file"
+              && this._sources.has(fileUriAbsPath)) {
+            return this.sourcesContent[this._sources.indexOf(fileUriAbsPath)]
+          }
+    
+          if ((!url.path || url.path == "/")
+              && this._sources.has("/" + relativeSource)) {
+            return this.sourcesContent[this._sources.indexOf("/" + relativeSource)];
+          }
+        }
+    
+        // This function is used recursively from
+        // IndexedSourceMapConsumer.prototype.sourceContentFor. In that case, we
+        // don't want to throw if we can't find the source - we just want to
+        // return null, so we provide a flag to exit gracefully.
+        if (nullOnMissing) {
+          return null;
+        }
+        else {
+          throw new Error('"' + relativeSource + '" is not in the SourceMap.');
+        }
+      };
+    
+    /**
+     * Returns the generated line and column information for the original source,
+     * line, and column positions provided. The only argument is an object with
+     * the following properties:
+     *
+     *   - source: The filename of the original source.
+     *   - line: The line number in the original source.  The line number
+     *     is 1-based.
+     *   - column: The column number in the original source.  The column
+     *     number is 0-based.
+     *   - bias: Either 'SourceMapConsumer.GREATEST_LOWER_BOUND' or
+     *     'SourceMapConsumer.LEAST_UPPER_BOUND'. Specifies whether to return the
+     *     closest element that is smaller than or greater than the one we are
+     *     searching for, respectively, if the exact element cannot be found.
+     *     Defaults to 'SourceMapConsumer.GREATEST_LOWER_BOUND'.
+     *
+     * and an object is returned with the following properties:
+     *
+     *   - line: The line number in the generated source, or null.  The
+     *     line number is 1-based.
+     *   - column: The column number in the generated source, or null.
+     *     The column number is 0-based.
+     */
+    BasicSourceMapConsumer.prototype.generatedPositionFor =
+      function SourceMapConsumer_generatedPositionFor(aArgs) {
+        var source = util.getArg(aArgs, 'source');
+        source = this._findSourceIndex(source);
+        if (source < 0) {
+          return {
+            line: null,
+            column: null,
+            lastColumn: null
+          };
+        }
+    
+        var needle = {
+          source: source,
+          originalLine: util.getArg(aArgs, 'line'),
+          originalColumn: util.getArg(aArgs, 'column')
+        };
+    
+        var index = this._findMapping(
+          needle,
+          this._originalMappings,
+          "originalLine",
+          "originalColumn",
+          util.compareByOriginalPositions,
+          util.getArg(aArgs, 'bias', SourceMapConsumer.GREATEST_LOWER_BOUND)
+        );
+    
+        if (index >= 0) {
+          var mapping = this._originalMappings[index];
+    
+          if (mapping.source === needle.source) {
+            return {
+              line: util.getArg(mapping, 'generatedLine', null),
+              column: util.getArg(mapping, 'generatedColumn', null),
+              lastColumn: util.getArg(mapping, 'lastGeneratedColumn', null)
+            };
+          }
+        }
+    
+        return {
+          line: null,
+          column: null,
+          lastColumn: null
+        };
+      };
+    
+    exports.BasicSourceMapConsumer = BasicSourceMapConsumer;
+    
+    /**
+     * An IndexedSourceMapConsumer instance represents a parsed source map which
+     * we can query for information. It differs from BasicSourceMapConsumer in
+     * that it takes "indexed" source maps (i.e. ones with a "sections" field) as
+     * input.
+     *
+     * The first parameter is a raw source map (either as a JSON string, or already
+     * parsed to an object). According to the spec for indexed source maps, they
+     * have the following attributes:
+     *
+     *   - version: Which version of the source map spec this map is following.
+     *   - file: Optional. The generated file this source map is associated with.
+     *   - sections: A list of section definitions.
+     *
+     * Each value under the "sections" field has two fields:
+     *   - offset: The offset into the original specified at which this section
+     *       begins to apply, defined as an object with a "line" and "column"
+     *       field.
+     *   - map: A source map definition. This source map could also be indexed,
+     *       but doesn't have to be.
+     *
+     * Instead of the "map" field, it's also possible to have a "url" field
+     * specifying a URL to retrieve a source map from, but that's currently
+     * unsupported.
+     *
+     * Here's an example source map, taken from the source map spec[0], but
+     * modified to omit a section which uses the "url" field.
+     *
+     *  {
+     *    version : 3,
+     *    file: "app.js",
+     *    sections: [{
+     *      offset: {line:100, column:10},
+     *      map: {
+     *        version : 3,
+     *        file: "section.js",
+     *        sources: ["foo.js", "bar.js"],
+     *        names: ["src", "maps", "are", "fun"],
+     *        mappings: "AAAA,E;;ABCDE;"
+     *      }
+     *    }],
+     *  }
+     *
+     * The second parameter, if given, is a string whose value is the URL
+     * at which the source map was found.  This URL is used to compute the
+     * sources array.
+     *
+     * [0]: https://docs.google.com/document/d/1U1RGAehQwRypUTovF1KRlpiOFze0b-_2gc6fAH0KY0k/edit#heading=h.535es3xeprgt
+     */
+    function IndexedSourceMapConsumer(aSourceMap, aSourceMapURL) {
+      var sourceMap = aSourceMap;
+      if (typeof aSourceMap === 'string') {
+        sourceMap = util.parseSourceMapInput(aSourceMap);
+      }
+    
+      var version = util.getArg(sourceMap, 'version');
+      var sections = util.getArg(sourceMap, 'sections');
+    
+      if (version != this._version) {
+        throw new Error('Unsupported version: ' + version);
+      }
+    
+      this._sources = new ArraySet();
+      this._names = new ArraySet();
+    
+      var lastOffset = {
+        line: -1,
+        column: 0
+      };
+      this._sections = sections.map(function (s) {
+        if (s.url) {
+          // The url field will require support for asynchronicity.
+          // See https://github.com/mozilla/source-map/issues/16
+          throw new Error('Support for url field in sections not implemented.');
+        }
+        var offset = util.getArg(s, 'offset');
+        var offsetLine = util.getArg(offset, 'line');
+        var offsetColumn = util.getArg(offset, 'column');
+    
+        if (offsetLine < lastOffset.line ||
+            (offsetLine === lastOffset.line && offsetColumn < lastOffset.column)) {
+          throw new Error('Section offsets must be ordered and non-overlapping.');
+        }
+        lastOffset = offset;
+    
+        return {
+          generatedOffset: {
+            // The offset fields are 0-based, but we use 1-based indices when
+            // encoding/decoding from VLQ.
+            generatedLine: offsetLine + 1,
+            generatedColumn: offsetColumn + 1
+          },
+          consumer: new SourceMapConsumer(util.getArg(s, 'map'), aSourceMapURL)
+        }
+      });
+    }
+    
+    IndexedSourceMapConsumer.prototype = Object.create(SourceMapConsumer.prototype);
+    IndexedSourceMapConsumer.prototype.constructor = SourceMapConsumer;
+    
+    /**
+     * The version of the source mapping spec that we are consuming.
+     */
+    IndexedSourceMapConsumer.prototype._version = 3;
+    
+    /**
+     * The list of original sources.
+     */
+    Object.defineProperty(IndexedSourceMapConsumer.prototype, 'sources', {
+      get: function () {
+        var sources = [];
+        for (var i = 0; i < this._sections.length; i++) {
+          for (var j = 0; j < this._sections[i].consumer.sources.length; j++) {
+            sources.push(this._sections[i].consumer.sources[j]);
+          }
+        }
+        return sources;
+      }
+    });
+    
+    /**
+     * Returns the original source, line, and column information for the generated
+     * source's line and column positions provided. The only argument is an object
+     * with the following properties:
+     *
+     *   - line: The line number in the generated source.  The line number
+     *     is 1-based.
+     *   - column: The column number in the generated source.  The column
+     *     number is 0-based.
+     *
+     * and an object is returned with the following properties:
+     *
+     *   - source: The original source file, or null.
+     *   - line: The line number in the original source, or null.  The
+     *     line number is 1-based.
+     *   - column: The column number in the original source, or null.  The
+     *     column number is 0-based.
+     *   - name: The original identifier, or null.
+     */
+    IndexedSourceMapConsumer.prototype.originalPositionFor =
+      function IndexedSourceMapConsumer_originalPositionFor(aArgs) {
+        var needle = {
+          generatedLine: util.getArg(aArgs, 'line'),
+          generatedColumn: util.getArg(aArgs, 'column')
+        };
+    
+        // Find the section containing the generated position we're trying to map
+        // to an original position.
+        var sectionIndex = binarySearch.search(needle, this._sections,
+          function(needle, section) {
+            var cmp = needle.generatedLine - section.generatedOffset.generatedLine;
+            if (cmp) {
+              return cmp;
+            }
+    
+            return (needle.generatedColumn -
+                    section.generatedOffset.generatedColumn);
+          });
+        var section = this._sections[sectionIndex];
+    
+        if (!section) {
+          return {
+            source: null,
+            line: null,
+            column: null,
+            name: null
+          };
+        }
+    
+        return section.consumer.originalPositionFor({
+          line: needle.generatedLine -
+            (section.generatedOffset.generatedLine - 1),
+          column: needle.generatedColumn -
+            (section.generatedOffset.generatedLine === needle.generatedLine
+             ? section.generatedOffset.generatedColumn - 1
+             : 0),
+          bias: aArgs.bias
+        });
+      };
+    
+    /**
+     * Return true if we have the source content for every source in the source
+     * map, false otherwise.
+     */
+    IndexedSourceMapConsumer.prototype.hasContentsOfAllSources =
+      function IndexedSourceMapConsumer_hasContentsOfAllSources() {
+        return this._sections.every(function (s) {
+          return s.consumer.hasContentsOfAllSources();
+        });
+      };
+    
+    /**
+     * Returns the original source content. The only argument is the url of the
+     * original source file. Returns null if no original source content is
+     * available.
+     */
+    IndexedSourceMapConsumer.prototype.sourceContentFor =
+      function IndexedSourceMapConsumer_sourceContentFor(aSource, nullOnMissing) {
+        for (var i = 0; i < this._sections.length; i++) {
+          var section = this._sections[i];
+    
+          var content = section.consumer.sourceContentFor(aSource, true);
+          if (content) {
+            return content;
+          }
+        }
+        if (nullOnMissing) {
+          return null;
+        }
+        else {
+          throw new Error('"' + aSource + '" is not in the SourceMap.');
+        }
+      };
+    
+    /**
+     * Returns the generated line and column information for the original source,
+     * line, and column positions provided. The only argument is an object with
+     * the following properties:
+     *
+     *   - source: The filename of the original source.
+     *   - line: The line number in the original source.  The line number
+     *     is 1-based.
+     *   - column: The column number in the original source.  The column
+     *     number is 0-based.
+     *
+     * and an object is returned with the following properties:
+     *
+     *   - line: The line number in the generated source, or null.  The
+     *     line number is 1-based. 
+     *   - column: The column number in the generated source, or null.
+     *     The column number is 0-based.
+     */
+    IndexedSourceMapConsumer.prototype.generatedPositionFor =
+      function IndexedSourceMapConsumer_generatedPositionFor(aArgs) {
+        for (var i = 0; i < this._sections.length; i++) {
+          var section = this._sections[i];
+    
+          // Only consider this section if the requested source is in the list of
+          // sources of the consumer.
+          if (section.consumer._findSourceIndex(util.getArg(aArgs, 'source')) === -1) {
+            continue;
+          }
+          var generatedPosition = section.consumer.generatedPositionFor(aArgs);
+          if (generatedPosition) {
+            var ret = {
+              line: generatedPosition.line +
+                (section.generatedOffset.generatedLine - 1),
+              column: generatedPosition.column +
+                (section.generatedOffset.generatedLine === generatedPosition.line
+                 ? section.generatedOffset.generatedColumn - 1
+                 : 0)
+            };
+            return ret;
+          }
+        }
+    
+        return {
+          line: null,
+          column: null
+        };
+      };
+    
+    /**
+     * Parse the mappings in a string in to a data structure which we can easily
+     * query (the ordered arrays in the `this.__generatedMappings` and
+     * `this.__originalMappings` properties).
+     */
+    IndexedSourceMapConsumer.prototype._parseMappings =
+      function IndexedSourceMapConsumer_parseMappings(aStr, aSourceRoot) {
+        this.__generatedMappings = [];
+        this.__originalMappings = [];
+        for (var i = 0; i < this._sections.length; i++) {
+          var section = this._sections[i];
+          var sectionMappings = section.consumer._generatedMappings;
+          for (var j = 0; j < sectionMappings.length; j++) {
+            var mapping = sectionMappings[j];
+    
+            var source = section.consumer._sources.at(mapping.source);
+            source = util.computeSourceURL(section.consumer.sourceRoot, source, this._sourceMapURL);
+            this._sources.add(source);
+            source = this._sources.indexOf(source);
+    
+            var name = null;
+            if (mapping.name) {
+              name = section.consumer._names.at(mapping.name);
+              this._names.add(name);
+              name = this._names.indexOf(name);
+            }
+    
+            // The mappings coming from the consumer for the section have
+            // generated positions relative to the start of the section, so we
+            // need to offset them to be relative to the start of the concatenated
+            // generated file.
+            var adjustedMapping = {
+              source: source,
+              generatedLine: mapping.generatedLine +
+                (section.generatedOffset.generatedLine - 1),
+              generatedColumn: mapping.generatedColumn +
+                (section.generatedOffset.generatedLine === mapping.generatedLine
+                ? section.generatedOffset.generatedColumn - 1
+                : 0),
+              originalLine: mapping.originalLine,
+              originalColumn: mapping.originalColumn,
+              name: name
+            };
+    
+            this.__generatedMappings.push(adjustedMapping);
+            if (typeof adjustedMapping.originalLine === 'number') {
+              this.__originalMappings.push(adjustedMapping);
+            }
+          }
+        }
+    
+        quickSort(this.__generatedMappings, util.compareByGeneratedPositionsDeflated);
+        quickSort(this.__originalMappings, util.compareByOriginalPositions);
+      };
+    
+    exports.IndexedSourceMapConsumer = IndexedSourceMapConsumer;
+    
+    },{"./array-set":21,"./base64-vlq":22,"./binary-search":24,"./quick-sort":26,"./util":30}],28:[function(require,module,exports){
+    /* -*- Mode: js; js-indent-level: 2; -*- */
+    /*
+     * Copyright 2011 Mozilla Foundation and contributors
+     * Licensed under the New BSD license. See LICENSE or:
+     * http://opensource.org/licenses/BSD-3-Clause
+     */
+    
+    var base64VLQ = require('./base64-vlq');
+    var util = require('./util');
+    var ArraySet = require('./array-set').ArraySet;
+    var MappingList = require('./mapping-list').MappingList;
+    
+    /**
+     * An instance of the SourceMapGenerator represents a source map which is
+     * being built incrementally. You may pass an object with the following
+     * properties:
+     *
+     *   - file: The filename of the generated source.
+     *   - sourceRoot: A root for all relative URLs in this source map.
+     */
+    function SourceMapGenerator(aArgs) {
+      if (!aArgs) {
+        aArgs = {};
+      }
+      this._file = util.getArg(aArgs, 'file', null);
+      this._sourceRoot = util.getArg(aArgs, 'sourceRoot', null);
+      this._skipValidation = util.getArg(aArgs, 'skipValidation', false);
+      this._sources = new ArraySet();
+      this._names = new ArraySet();
+      this._mappings = new MappingList();
+      this._sourcesContents = null;
+    }
+    
+    SourceMapGenerator.prototype._version = 3;
+    
+    /**
+     * Creates a new SourceMapGenerator based on a SourceMapConsumer
+     *
+     * @param aSourceMapConsumer The SourceMap.
+     */
+    SourceMapGenerator.fromSourceMap =
+      function SourceMapGenerator_fromSourceMap(aSourceMapConsumer) {
+        var sourceRoot = aSourceMapConsumer.sourceRoot;
+        var generator = new SourceMapGenerator({
+          file: aSourceMapConsumer.file,
+          sourceRoot: sourceRoot
+        });
+        aSourceMapConsumer.eachMapping(function (mapping) {
+          var newMapping = {
+            generated: {
+              line: mapping.generatedLine,
+              column: mapping.generatedColumn
+            }
+          };
+    
+          if (mapping.source != null) {
+            newMapping.source = mapping.source;
+            if (sourceRoot != null) {
+              newMapping.source = util.relative(sourceRoot, newMapping.source);
+            }
+    
+            newMapping.original = {
+              line: mapping.originalLine,
+              column: mapping.originalColumn
+            };
+    
+            if (mapping.name != null) {
+              newMapping.name = mapping.name;
+            }
+          }
+    
+          generator.addMapping(newMapping);
+        });
+        aSourceMapConsumer.sources.forEach(function (sourceFile) {
+          var sourceRelative = sourceFile;
+          if (sourceRoot !== null) {
+            sourceRelative = util.relative(sourceRoot, sourceFile);
+          }
+    
+          if (!generator._sources.has(sourceRelative)) {
+            generator._sources.add(sourceRelative);
+          }
+    
+          var content = aSourceMapConsumer.sourceContentFor(sourceFile);
+          if (content != null) {
+            generator.setSourceContent(sourceFile, content);
+          }
+        });
+        return generator;
+      };
+    
+    /**
+     * Add a single mapping from original source line and column to the generated
+     * source's line and column for this source map being created. The mapping
+     * object should have the following properties:
+     *
+     *   - generated: An object with the generated line and column positions.
+     *   - original: An object with the original line and column positions.
+     *   - source: The original source file (relative to the sourceRoot).
+     *   - name: An optional original token name for this mapping.
+     */
+    SourceMapGenerator.prototype.addMapping =
+      function SourceMapGenerator_addMapping(aArgs) {
+        var generated = util.getArg(aArgs, 'generated');
+        var original = util.getArg(aArgs, 'original', null);
+        var source = util.getArg(aArgs, 'source', null);
+        var name = util.getArg(aArgs, 'name', null);
+    
+        if (!this._skipValidation) {
+          this._validateMapping(generated, original, source, name);
+        }
+    
+        if (source != null) {
+          source = String(source);
+          if (!this._sources.has(source)) {
+            this._sources.add(source);
+          }
+        }
+    
+        if (name != null) {
+          name = String(name);
+          if (!this._names.has(name)) {
+            this._names.add(name);
+          }
+        }
+    
+        this._mappings.add({
+          generatedLine: generated.line,
+          generatedColumn: generated.column,
+          originalLine: original != null && original.line,
+          originalColumn: original != null && original.column,
+          source: source,
+          name: name
+        });
+      };
+    
+    /**
+     * Set the source content for a source file.
+     */
+    SourceMapGenerator.prototype.setSourceContent =
+      function SourceMapGenerator_setSourceContent(aSourceFile, aSourceContent) {
+        var source = aSourceFile;
+        if (this._sourceRoot != null) {
+          source = util.relative(this._sourceRoot, source);
+        }
+    
+        if (aSourceContent != null) {
+          // Add the source content to the _sourcesContents map.
+          // Create a new _sourcesContents map if the property is null.
+          if (!this._sourcesContents) {
+            this._sourcesContents = Object.create(null);
+          }
+          this._sourcesContents[util.toSetString(source)] = aSourceContent;
+        } else if (this._sourcesContents) {
+          // Remove the source file from the _sourcesContents map.
+          // If the _sourcesContents map is empty, set the property to null.
+          delete this._sourcesContents[util.toSetString(source)];
+          if (Object.keys(this._sourcesContents).length === 0) {
+            this._sourcesContents = null;
+          }
+        }
+      };
+    
+    /**
+     * Applies the mappings of a sub-source-map for a specific source file to the
+     * source map being generated. Each mapping to the supplied source file is
+     * rewritten using the supplied source map. Note: The resolution for the
+     * resulting mappings is the minimium of this map and the supplied map.
+     *
+     * @param aSourceMapConsumer The source map to be applied.
+     * @param aSourceFile Optional. The filename of the source file.
+     *        If omitted, SourceMapConsumer's file property will be used.
+     * @param aSourceMapPath Optional. The dirname of the path to the source map
+     *        to be applied. If relative, it is relative to the SourceMapConsumer.
+     *        This parameter is needed when the two source maps aren't in the same
+     *        directory, and the source map to be applied contains relative source
+     *        paths. If so, those relative source paths need to be rewritten
+     *        relative to the SourceMapGenerator.
+     */
+    SourceMapGenerator.prototype.applySourceMap =
+      function SourceMapGenerator_applySourceMap(aSourceMapConsumer, aSourceFile, aSourceMapPath) {
+        var sourceFile = aSourceFile;
+        // If aSourceFile is omitted, we will use the file property of the SourceMap
+        if (aSourceFile == null) {
+          if (aSourceMapConsumer.file == null) {
+            throw new Error(
+              'SourceMapGenerator.prototype.applySourceMap requires either an explicit source file, ' +
+              'or the source map\'s "file" property. Both were omitted.'
+            );
+          }
+          sourceFile = aSourceMapConsumer.file;
+        }
+        var sourceRoot = this._sourceRoot;
+        // Make "sourceFile" relative if an absolute Url is passed.
+        if (sourceRoot != null) {
+          sourceFile = util.relative(sourceRoot, sourceFile);
+        }
+        // Applying the SourceMap can add and remove items from the sources and
+        // the names array.
+        var newSources = new ArraySet();
+        var newNames = new ArraySet();
+    
+        // Find mappings for the "sourceFile"
+        this._mappings.unsortedForEach(function (mapping) {
+          if (mapping.source === sourceFile && mapping.originalLine != null) {
+            // Check if it can be mapped by the source map, then update the mapping.
+            var original = aSourceMapConsumer.originalPositionFor({
+              line: mapping.originalLine,
+              column: mapping.originalColumn
+            });
+            if (original.source != null) {
+              // Copy mapping
+              mapping.source = original.source;
+              if (aSourceMapPath != null) {
+                mapping.source = util.join(aSourceMapPath, mapping.source)
+              }
+              if (sourceRoot != null) {
+                mapping.source = util.relative(sourceRoot, mapping.source);
+              }
+              mapping.originalLine = original.line;
+              mapping.originalColumn = original.column;
+              if (original.name != null) {
+                mapping.name = original.name;
+              }
+            }
+          }
+    
+          var source = mapping.source;
+          if (source != null && !newSources.has(source)) {
+            newSources.add(source);
+          }
+    
+          var name = mapping.name;
+          if (name != null && !newNames.has(name)) {
+            newNames.add(name);
+          }
+    
+        }, this);
+        this._sources = newSources;
+        this._names = newNames;
+    
+        // Copy sourcesContents of applied map.
+        aSourceMapConsumer.sources.forEach(function (sourceFile) {
+          var content = aSourceMapConsumer.sourceContentFor(sourceFile);
+          if (content != null) {
+            if (aSourceMapPath != null) {
+              sourceFile = util.join(aSourceMapPath, sourceFile);
+            }
+            if (sourceRoot != null) {
+              sourceFile = util.relative(sourceRoot, sourceFile);
+            }
+            this.setSourceContent(sourceFile, content);
+          }
+        }, this);
+      };
+    
+    /**
+     * A mapping can have one of the three levels of data:
+     *
+     *   1. Just the generated position.
+     *   2. The Generated position, original position, and original source.
+     *   3. Generated and original position, original source, as well as a name
+     *      token.
+     *
+     * To maintain consistency, we validate that any new mapping being added falls
+     * in to one of these categories.
+     */
+    SourceMapGenerator.prototype._validateMapping =
+      function SourceMapGenerator_validateMapping(aGenerated, aOriginal, aSource,
+                                                  aName) {
+        // When aOriginal is truthy but has empty values for .line and .column,
+        // it is most likely a programmer error. In this case we throw a very
+        // specific error message to try to guide them the right way.
+        // For example: https://github.com/Polymer/polymer-bundler/pull/519
+        if (aOriginal && typeof aOriginal.line !== 'number' && typeof aOriginal.column !== 'number') {
+            throw new Error(
+                'original.line and original.column are not numbers -- you probably meant to omit ' +
+                'the original mapping entirely and only map the generated position. If so, pass ' +
+                'null for the original mapping instead of an object with empty or null values.'
+            );
+        }
+    
+        if (aGenerated && 'line' in aGenerated && 'column' in aGenerated
+            && aGenerated.line > 0 && aGenerated.column >= 0
+            && !aOriginal && !aSource && !aName) {
+          // Case 1.
+          return;
+        }
+        else if (aGenerated && 'line' in aGenerated && 'column' in aGenerated
+                 && aOriginal && 'line' in aOriginal && 'column' in aOriginal
+                 && aGenerated.line > 0 && aGenerated.column >= 0
+                 && aOriginal.line > 0 && aOriginal.column >= 0
+                 && aSource) {
+          // Cases 2 and 3.
+          return;
+        }
+        else {
+          throw new Error('Invalid mapping: ' + JSON.stringify({
+            generated: aGenerated,
+            source: aSource,
+            original: aOriginal,
+            name: aName
+          }));
+        }
+      };
+    
+    /**
+     * Serialize the accumulated mappings in to the stream of base 64 VLQs
+     * specified by the source map format.
+     */
+    SourceMapGenerator.prototype._serializeMappings =
+      function SourceMapGenerator_serializeMappings() {
+        var previousGeneratedColumn = 0;
+        var previousGeneratedLine = 1;
+        var previousOriginalColumn = 0;
+        var previousOriginalLine = 0;
+        var previousName = 0;
+        var previousSource = 0;
+        var result = '';
+        var next;
+        var mapping;
+        var nameIdx;
+        var sourceIdx;
+    
+        var mappings = this._mappings.toArray();
+        for (var i = 0, len = mappings.length; i < len; i++) {
+          mapping = mappings[i];
+          next = ''
+    
+          if (mapping.generatedLine !== previousGeneratedLine) {
+            previousGeneratedColumn = 0;
+            while (mapping.generatedLine !== previousGeneratedLine) {
+              next += ';';
+              previousGeneratedLine++;
+            }
+          }
+          else {
+            if (i > 0) {
+              if (!util.compareByGeneratedPositionsInflated(mapping, mappings[i - 1])) {
+                continue;
+              }
+              next += ',';
+            }
+          }
+    
+          next += base64VLQ.encode(mapping.generatedColumn
+                                     - previousGeneratedColumn);
+          previousGeneratedColumn = mapping.generatedColumn;
+    
+          if (mapping.source != null) {
+            sourceIdx = this._sources.indexOf(mapping.source);
+            next += base64VLQ.encode(sourceIdx - previousSource);
+            previousSource = sourceIdx;
+    
+            // lines are stored 0-based in SourceMap spec version 3
+            next += base64VLQ.encode(mapping.originalLine - 1
+                                       - previousOriginalLine);
+            previousOriginalLine = mapping.originalLine - 1;
+    
+            next += base64VLQ.encode(mapping.originalColumn
+                                       - previousOriginalColumn);
+            previousOriginalColumn = mapping.originalColumn;
+    
+            if (mapping.name != null) {
+              nameIdx = this._names.indexOf(mapping.name);
+              next += base64VLQ.encode(nameIdx - previousName);
+              previousName = nameIdx;
+            }
+          }
+    
+          result += next;
+        }
+    
+        return result;
+      };
+    
+    SourceMapGenerator.prototype._generateSourcesContent =
+      function SourceMapGenerator_generateSourcesContent(aSources, aSourceRoot) {
+        return aSources.map(function (source) {
+          if (!this._sourcesContents) {
+            return null;
+          }
+          if (aSourceRoot != null) {
+            source = util.relative(aSourceRoot, source);
+          }
+          var key = util.toSetString(source);
+          return Object.prototype.hasOwnProperty.call(this._sourcesContents, key)
+            ? this._sourcesContents[key]
+            : null;
+        }, this);
+      };
+    
+    /**
+     * Externalize the source map.
+     */
+    SourceMapGenerator.prototype.toJSON =
+      function SourceMapGenerator_toJSON() {
+        var map = {
+          version: this._version,
+          sources: this._sources.toArray(),
+          names: this._names.toArray(),
+          mappings: this._serializeMappings()
+        };
+        if (this._file != null) {
+          map.file = this._file;
+        }
+        if (this._sourceRoot != null) {
+          map.sourceRoot = this._sourceRoot;
+        }
+        if (this._sourcesContents) {
+          map.sourcesContent = this._generateSourcesContent(map.sources, map.sourceRoot);
+        }
+    
+        return map;
+      };
+    
+    /**
+     * Render the source map being generated to a string.
+     */
+    SourceMapGenerator.prototype.toString =
+      function SourceMapGenerator_toString() {
+        return JSON.stringify(this.toJSON());
+      };
+    
+    exports.SourceMapGenerator = SourceMapGenerator;
+    
+    },{"./array-set":21,"./base64-vlq":22,"./mapping-list":25,"./util":30}],29:[function(require,module,exports){
+    /* -*- Mode: js; js-indent-level: 2; -*- */
+    /*
+     * Copyright 2011 Mozilla Foundation and contributors
+     * Licensed under the New BSD license. See LICENSE or:
+     * http://opensource.org/licenses/BSD-3-Clause
+     */
+    
+    var SourceMapGenerator = require('./source-map-generator').SourceMapGenerator;
+    var util = require('./util');
+    
+    // Matches a Windows-style `\r\n` newline or a `\n` newline used by all other
+    // operating systems these days (capturing the result).
+    var REGEX_NEWLINE = /(\r?\n)/;
+    
+    // Newline character code for charCodeAt() comparisons
+    var NEWLINE_CODE = 10;
+    
+    // Private symbol for identifying `SourceNode`s when multiple versions of
+    // the source-map library are loaded. This MUST NOT CHANGE across
+    // versions!
+    var isSourceNode = "$$$isSourceNode$$$";
+    
+    /**
+     * SourceNodes provide a way to abstract over interpolating/concatenating
+     * snippets of generated JavaScript source code while maintaining the line and
+     * column information associated with the original source code.
+     *
+     * @param aLine The original line number.
+     * @param aColumn The original column number.
+     * @param aSource The original source's filename.
+     * @param aChunks Optional. An array of strings which are snippets of
+     *        generated JS, or other SourceNodes.
+     * @param aName The original identifier.
+     */
+    function SourceNode(aLine, aColumn, aSource, aChunks, aName) {
+      this.children = [];
+      this.sourceContents = {};
+      this.line = aLine == null ? null : aLine;
+      this.column = aColumn == null ? null : aColumn;
+      this.source = aSource == null ? null : aSource;
+      this.name = aName == null ? null : aName;
+      this[isSourceNode] = true;
+      if (aChunks != null) this.add(aChunks);
+    }
+    
+    /**
+     * Creates a SourceNode from generated code and a SourceMapConsumer.
+     *
+     * @param aGeneratedCode The generated code
+     * @param aSourceMapConsumer The SourceMap for the generated code
+     * @param aRelativePath Optional. The path that relative sources in the
+     *        SourceMapConsumer should be relative to.
+     */
+    SourceNode.fromStringWithSourceMap =
+      function SourceNode_fromStringWithSourceMap(aGeneratedCode, aSourceMapConsumer, aRelativePath) {
+        // The SourceNode we want to fill with the generated code
+        // and the SourceMap
+        var node = new SourceNode();
+    
+        // All even indices of this array are one line of the generated code,
+        // while all odd indices are the newlines between two adjacent lines
+        // (since `REGEX_NEWLINE` captures its match).
+        // Processed fragments are accessed by calling `shiftNextLine`.
+        var remainingLines = aGeneratedCode.split(REGEX_NEWLINE);
+        var remainingLinesIndex = 0;
+        var shiftNextLine = function() {
+          var lineContents = getNextLine();
+          // The last line of a file might not have a newline.
+          var newLine = getNextLine() || "";
+          return lineContents + newLine;
+    
+          function getNextLine() {
+            return remainingLinesIndex < remainingLines.length ?
+                remainingLines[remainingLinesIndex++] : undefined;
+          }
+        };
+    
+        // We need to remember the position of "remainingLines"
+        var lastGeneratedLine = 1, lastGeneratedColumn = 0;
+    
+        // The generate SourceNodes we need a code range.
+        // To extract it current and last mapping is used.
+        // Here we store the last mapping.
+        var lastMapping = null;
+    
+        aSourceMapConsumer.eachMapping(function (mapping) {
+          if (lastMapping !== null) {
+            // We add the code from "lastMapping" to "mapping":
+            // First check if there is a new line in between.
+            if (lastGeneratedLine < mapping.generatedLine) {
+              // Associate first line with "lastMapping"
+              addMappingWithCode(lastMapping, shiftNextLine());
+              lastGeneratedLine++;
+              lastGeneratedColumn = 0;
+              // The remaining code is added without mapping
+            } else {
+              // There is no new line in between.
+              // Associate the code between "lastGeneratedColumn" and
+              // "mapping.generatedColumn" with "lastMapping"
+              var nextLine = remainingLines[remainingLinesIndex] || '';
+              var code = nextLine.substr(0, mapping.generatedColumn -
+                                            lastGeneratedColumn);
+              remainingLines[remainingLinesIndex] = nextLine.substr(mapping.generatedColumn -
+                                                  lastGeneratedColumn);
+              lastGeneratedColumn = mapping.generatedColumn;
+              addMappingWithCode(lastMapping, code);
+              // No more remaining code, continue
+              lastMapping = mapping;
+              return;
+            }
+          }
+          // We add the generated code until the first mapping
+          // to the SourceNode without any mapping.
+          // Each line is added as separate string.
+          while (lastGeneratedLine < mapping.generatedLine) {
+            node.add(shiftNextLine());
+            lastGeneratedLine++;
+          }
+          if (lastGeneratedColumn < mapping.generatedColumn) {
+            var nextLine = remainingLines[remainingLinesIndex] || '';
+            node.add(nextLine.substr(0, mapping.generatedColumn));
+            remainingLines[remainingLinesIndex] = nextLine.substr(mapping.generatedColumn);
+            lastGeneratedColumn = mapping.generatedColumn;
+          }
+          lastMapping = mapping;
+        }, this);
+        // We have processed all mappings.
+        if (remainingLinesIndex < remainingLines.length) {
+          if (lastMapping) {
+            // Associate the remaining code in the current line with "lastMapping"
+            addMappingWithCode(lastMapping, shiftNextLine());
+          }
+          // and add the remaining lines without any mapping
+          node.add(remainingLines.splice(remainingLinesIndex).join(""));
+        }
+    
+        // Copy sourcesContent into SourceNode
+        aSourceMapConsumer.sources.forEach(function (sourceFile) {
+          var content = aSourceMapConsumer.sourceContentFor(sourceFile);
+          if (content != null) {
+            if (aRelativePath != null) {
+              sourceFile = util.join(aRelativePath, sourceFile);
+            }
+            node.setSourceContent(sourceFile, content);
+          }
+        });
+    
+        return node;
+    
+        function addMappingWithCode(mapping, code) {
+          if (mapping === null || mapping.source === undefined) {
+            node.add(code);
+          } else {
+            var source = aRelativePath
+              ? util.join(aRelativePath, mapping.source)
+              : mapping.source;
+            node.add(new SourceNode(mapping.originalLine,
+                                    mapping.originalColumn,
+                                    source,
+                                    code,
+                                    mapping.name));
+          }
+        }
+      };
+    
+    /**
+     * Add a chunk of generated JS to this source node.
+     *
+     * @param aChunk A string snippet of generated JS code, another instance of
+     *        SourceNode, or an array where each member is one of those things.
+     */
+    SourceNode.prototype.add = function SourceNode_add(aChunk) {
+      if (Array.isArray(aChunk)) {
+        aChunk.forEach(function (chunk) {
+          this.add(chunk);
+        }, this);
+      }
+      else if (aChunk[isSourceNode] || typeof aChunk === "string") {
+        if (aChunk) {
+          this.children.push(aChunk);
+        }
+      }
+      else {
+        throw new TypeError(
+          "Expected a SourceNode, string, or an array of SourceNodes and strings. Got " + aChunk
+        );
+      }
+      return this;
+    };
+    
+    /**
+     * Add a chunk of generated JS to the beginning of this source node.
+     *
+     * @param aChunk A string snippet of generated JS code, another instance of
+     *        SourceNode, or an array where each member is one of those things.
+     */
+    SourceNode.prototype.prepend = function SourceNode_prepend(aChunk) {
+      if (Array.isArray(aChunk)) {
+        for (var i = aChunk.length-1; i >= 0; i--) {
+          this.prepend(aChunk[i]);
+        }
+      }
+      else if (aChunk[isSourceNode] || typeof aChunk === "string") {
+        this.children.unshift(aChunk);
+      }
+      else {
+        throw new TypeError(
+          "Expected a SourceNode, string, or an array of SourceNodes and strings. Got " + aChunk
+        );
+      }
+      return this;
+    };
+    
+    /**
+     * Walk over the tree of JS snippets in this node and its children. The
+     * walking function is called once for each snippet of JS and is passed that
+     * snippet and the its original associated source's line/column location.
+     *
+     * @param aFn The traversal function.
+     */
+    SourceNode.prototype.walk = function SourceNode_walk(aFn) {
+      var chunk;
+      for (var i = 0, len = this.children.length; i < len; i++) {
+        chunk = this.children[i];
+        if (chunk[isSourceNode]) {
+          chunk.walk(aFn);
+        }
+        else {
+          if (chunk !== '') {
+            aFn(chunk, { source: this.source,
+                         line: this.line,
+                         column: this.column,
+                         name: this.name });
+          }
+        }
+      }
+    };
+    
+    /**
+     * Like `String.prototype.join` except for SourceNodes. Inserts `aStr` between
+     * each of `this.children`.
+     *
+     * @param aSep The separator.
+     */
+    SourceNode.prototype.join = function SourceNode_join(aSep) {
+      var newChildren;
+      var i;
+      var len = this.children.length;
+      if (len > 0) {
+        newChildren = [];
+        for (i = 0; i < len-1; i++) {
+          newChildren.push(this.children[i]);
+          newChildren.push(aSep);
+        }
+        newChildren.push(this.children[i]);
+        this.children = newChildren;
+      }
+      return this;
+    };
+    
+    /**
+     * Call String.prototype.replace on the very right-most source snippet. Useful
+     * for trimming whitespace from the end of a source node, etc.
+     *
+     * @param aPattern The pattern to replace.
+     * @param aReplacement The thing to replace the pattern with.
+     */
+    SourceNode.prototype.replaceRight = function SourceNode_replaceRight(aPattern, aReplacement) {
+      var lastChild = this.children[this.children.length - 1];
+      if (lastChild[isSourceNode]) {
+        lastChild.replaceRight(aPattern, aReplacement);
+      }
+      else if (typeof lastChild === 'string') {
+        this.children[this.children.length - 1] = lastChild.replace(aPattern, aReplacement);
+      }
+      else {
+        this.children.push(''.replace(aPattern, aReplacement));
+      }
+      return this;
+    };
+    
+    /**
+     * Set the source content for a source file. This will be added to the SourceMapGenerator
+     * in the sourcesContent field.
+     *
+     * @param aSourceFile The filename of the source file
+     * @param aSourceContent The content of the source file
+     */
+    SourceNode.prototype.setSourceContent =
+      function SourceNode_setSourceContent(aSourceFile, aSourceContent) {
+        this.sourceContents[util.toSetString(aSourceFile)] = aSourceContent;
+      };
+    
+    /**
+     * Walk over the tree of SourceNodes. The walking function is called for each
+     * source file content and is passed the filename and source content.
+     *
+     * @param aFn The traversal function.
+     */
+    SourceNode.prototype.walkSourceContents =
+      function SourceNode_walkSourceContents(aFn) {
+        for (var i = 0, len = this.children.length; i < len; i++) {
+          if (this.children[i][isSourceNode]) {
+            this.children[i].walkSourceContents(aFn);
+          }
+        }
+    
+        var sources = Object.keys(this.sourceContents);
+        for (var i = 0, len = sources.length; i < len; i++) {
+          aFn(util.fromSetString(sources[i]), this.sourceContents[sources[i]]);
+        }
+      };
+    
+    /**
+     * Return the string representation of this source node. Walks over the tree
+     * and concatenates all the various snippets together to one string.
+     */
+    SourceNode.prototype.toString = function SourceNode_toString() {
+      var str = "";
+      this.walk(function (chunk) {
+        str += chunk;
+      });
+      return str;
+    };
+    
+    /**
+     * Returns the string representation of this source node along with a source
+     * map.
+     */
+    SourceNode.prototype.toStringWithSourceMap = function SourceNode_toStringWithSourceMap(aArgs) {
+      var generated = {
+        code: "",
+        line: 1,
+        column: 0
+      };
+      var map = new SourceMapGenerator(aArgs);
+      var sourceMappingActive = false;
+      var lastOriginalSource = null;
+      var lastOriginalLine = null;
+      var lastOriginalColumn = null;
+      var lastOriginalName = null;
+      this.walk(function (chunk, original) {
+        generated.code += chunk;
+        if (original.source !== null
+            && original.line !== null
+            && original.column !== null) {
+          if(lastOriginalSource !== original.source
+             || lastOriginalLine !== original.line
+             || lastOriginalColumn !== original.column
+             || lastOriginalName !== original.name) {
+            map.addMapping({
+              source: original.source,
+              original: {
+                line: original.line,
+                column: original.column
+              },
+              generated: {
+                line: generated.line,
+                column: generated.column
+              },
+              name: original.name
+            });
+          }
+          lastOriginalSource = original.source;
+          lastOriginalLine = original.line;
+          lastOriginalColumn = original.column;
+          lastOriginalName = original.name;
+          sourceMappingActive = true;
+        } else if (sourceMappingActive) {
+          map.addMapping({
+            generated: {
+              line: generated.line,
+              column: generated.column
+            }
+          });
+          lastOriginalSource = null;
+          sourceMappingActive = false;
+        }
+        for (var idx = 0, length = chunk.length; idx < length; idx++) {
+          if (chunk.charCodeAt(idx) === NEWLINE_CODE) {
+            generated.line++;
+            generated.column = 0;
+            // Mappings end at eol
+            if (idx + 1 === length) {
+              lastOriginalSource = null;
+              sourceMappingActive = false;
+            } else if (sourceMappingActive) {
+              map.addMapping({
+                source: original.source,
+                original: {
+                  line: original.line,
+                  column: original.column
+                },
+                generated: {
+                  line: generated.line,
+                  column: generated.column
+                },
+                name: original.name
+              });
+            }
+          } else {
+            generated.column++;
+          }
+        }
+      });
+      this.walkSourceContents(function (sourceFile, sourceContent) {
+        map.setSourceContent(sourceFile, sourceContent);
+      });
+    
+      return { code: generated.code, map: map };
+    };
+    
+    exports.SourceNode = SourceNode;
+    
+    },{"./source-map-generator":28,"./util":30}],30:[function(require,module,exports){
+    /* -*- Mode: js; js-indent-level: 2; -*- */
+    /*
+     * Copyright 2011 Mozilla Foundation and contributors
+     * Licensed under the New BSD license. See LICENSE or:
+     * http://opensource.org/licenses/BSD-3-Clause
+     */
+    
+    /**
+     * This is a helper function for getting values from parameter/options
+     * objects.
+     *
+     * @param args The object we are extracting values from
+     * @param name The name of the property we are getting.
+     * @param defaultValue An optional value to return if the property is missing
+     * from the object. If this is not specified and the property is missing, an
+     * error will be thrown.
+     */
+    function getArg(aArgs, aName, aDefaultValue) {
+      if (aName in aArgs) {
+        return aArgs[aName];
+      } else if (arguments.length === 3) {
+        return aDefaultValue;
+      } else {
+        throw new Error('"' + aName + '" is a required argument.');
+      }
+    }
+    exports.getArg = getArg;
+    
+    var urlRegexp = /^(?:([\w+\-.]+):)?\/\/(?:(\w+:\w+)@)?([\w.-]*)(?::(\d+))?(.*)$/;
+    var dataUrlRegexp = /^data:.+\,.+$/;
+    
+    function urlParse(aUrl) {
+      var match = aUrl.match(urlRegexp);
+      if (!match) {
+        return null;
+      }
+      return {
+        scheme: match[1],
+        auth: match[2],
+        host: match[3],
+        port: match[4],
+        path: match[5]
+      };
+    }
+    exports.urlParse = urlParse;
+    
+    function urlGenerate(aParsedUrl) {
+      var url = '';
+      if (aParsedUrl.scheme) {
+        url += aParsedUrl.scheme + ':';
+      }
+      url += '//';
+      if (aParsedUrl.auth) {
+        url += aParsedUrl.auth + '@';
+      }
+      if (aParsedUrl.host) {
+        url += aParsedUrl.host;
+      }
+      if (aParsedUrl.port) {
+        url += ":" + aParsedUrl.port
+      }
+      if (aParsedUrl.path) {
+        url += aParsedUrl.path;
+      }
+      return url;
+    }
+    exports.urlGenerate = urlGenerate;
+    
+    /**
+     * Normalizes a path, or the path portion of a URL:
+     *
+     * - Replaces consecutive slashes with one slash.
+     * - Removes unnecessary '.' parts.
+     * - Removes unnecessary '<dir>/..' parts.
+     *
+     * Based on code in the Node.js 'path' core module.
+     *
+     * @param aPath The path or url to normalize.
+     */
+    function normalize(aPath) {
+      var path = aPath;
+      var url = urlParse(aPath);
+      if (url) {
+        if (!url.path) {
+          return aPath;
+        }
+        path = url.path;
+      }
+      var isAbsolute = exports.isAbsolute(path);
+    
+      var parts = path.split(/\/+/);
+      for (var part, up = 0, i = parts.length - 1; i >= 0; i--) {
+        part = parts[i];
+        if (part === '.') {
+          parts.splice(i, 1);
+        } else if (part === '..') {
+          up++;
+        } else if (up > 0) {
+          if (part === '') {
+            // The first part is blank if the path is absolute. Trying to go
+            // above the root is a no-op. Therefore we can remove all '..' parts
+            // directly after the root.
+            parts.splice(i + 1, up);
+            up = 0;
+          } else {
+            parts.splice(i, 2);
+            up--;
+          }
+        }
+      }
+      path = parts.join('/');
+    
+      if (path === '') {
+        path = isAbsolute ? '/' : '.';
+      }
+    
+      if (url) {
+        url.path = path;
+        return urlGenerate(url);
+      }
+      return path;
+    }
+    exports.normalize = normalize;
+    
+    /**
+     * Joins two paths/URLs.
+     *
+     * @param aRoot The root path or URL.
+     * @param aPath The path or URL to be joined with the root.
+     *
+     * - If aPath is a URL or a data URI, aPath is returned, unless aPath is a
+     *   scheme-relative URL: Then the scheme of aRoot, if any, is prepended
+     *   first.
+     * - Otherwise aPath is a path. If aRoot is a URL, then its path portion
+     *   is updated with the result and aRoot is returned. Otherwise the result
+     *   is returned.
+     *   - If aPath is absolute, the result is aPath.
+     *   - Otherwise the two paths are joined with a slash.
+     * - Joining for example 'http://' and 'www.example.com' is also supported.
+     */
+    function join(aRoot, aPath) {
+      if (aRoot === "") {
+        aRoot = ".";
+      }
+      if (aPath === "") {
+        aPath = ".";
+      }
+      var aPathUrl = urlParse(aPath);
+      var aRootUrl = urlParse(aRoot);
+      if (aRootUrl) {
+        aRoot = aRootUrl.path || '/';
+      }
+    
+      // `join(foo, '//www.example.org')`
+      if (aPathUrl && !aPathUrl.scheme) {
+        if (aRootUrl) {
+          aPathUrl.scheme = aRootUrl.scheme;
+        }
+        return urlGenerate(aPathUrl);
+      }
+    
+      if (aPathUrl || aPath.match(dataUrlRegexp)) {
+        return aPath;
+      }
+    
+      // `join('http://', 'www.example.com')`
+      if (aRootUrl && !aRootUrl.host && !aRootUrl.path) {
+        aRootUrl.host = aPath;
+        return urlGenerate(aRootUrl);
+      }
+    
+      var joined = aPath.charAt(0) === '/'
+        ? aPath
+        : normalize(aRoot.replace(/\/+$/, '') + '/' + aPath);
+    
+      if (aRootUrl) {
+        aRootUrl.path = joined;
+        return urlGenerate(aRootUrl);
+      }
+      return joined;
+    }
+    exports.join = join;
+    
+    exports.isAbsolute = function (aPath) {
+      return aPath.charAt(0) === '/' || urlRegexp.test(aPath);
+    };
+    
+    /**
+     * Make a path relative to a URL or another path.
+     *
+     * @param aRoot The root path or URL.
+     * @param aPath The path or URL to be made relative to aRoot.
+     */
+    function relative(aRoot, aPath) {
+      if (aRoot === "") {
+        aRoot = ".";
+      }
+    
+      aRoot = aRoot.replace(/\/$/, '');
+    
+      // It is possible for the path to be above the root. In this case, simply
+      // checking whether the root is a prefix of the path won't work. Instead, we
+      // need to remove components from the root one by one, until either we find
+      // a prefix that fits, or we run out of components to remove.
+      var level = 0;
+      while (aPath.indexOf(aRoot + '/') !== 0) {
+        var index = aRoot.lastIndexOf("/");
+        if (index < 0) {
+          return aPath;
+        }
+    
+        // If the only part of the root that is left is the scheme (i.e. http://,
+        // file:///, etc.), one or more slashes (/), or simply nothing at all, we
+        // have exhausted all components, so the path is not relative to the root.
+        aRoot = aRoot.slice(0, index);
+        if (aRoot.match(/^([^\/]+:\/)?\/*$/)) {
+          return aPath;
+        }
+    
+        ++level;
+      }
+    
+      // Make sure we add a "../" for each component we removed from the root.
+      return Array(level + 1).join("../") + aPath.substr(aRoot.length + 1);
+    }
+    exports.relative = relative;
+    
+    var supportsNullProto = (function () {
+      var obj = Object.create(null);
+      return !('__proto__' in obj);
+    }());
+    
+    function identity (s) {
+      return s;
+    }
+    
+    /**
+     * Because behavior goes wacky when you set `__proto__` on objects, we
+     * have to prefix all the strings in our set with an arbitrary character.
+     *
+     * See https://github.com/mozilla/source-map/pull/31 and
+     * https://github.com/mozilla/source-map/issues/30
+     *
+     * @param String aStr
+     */
+    function toSetString(aStr) {
+      if (isProtoString(aStr)) {
+        return '$' + aStr;
+      }
+    
+      return aStr;
+    }
+    exports.toSetString = supportsNullProto ? identity : toSetString;
+    
+    function fromSetString(aStr) {
+      if (isProtoString(aStr)) {
+        return aStr.slice(1);
+      }
+    
+      return aStr;
+    }
+    exports.fromSetString = supportsNullProto ? identity : fromSetString;
+    
+    function isProtoString(s) {
+      if (!s) {
+        return false;
+      }
+    
+      var length = s.length;
+    
+      if (length < 9 /* "__proto__".length */) {
+        return false;
+      }
+    
+      if (s.charCodeAt(length - 1) !== 95  /* '_' */ ||
+          s.charCodeAt(length - 2) !== 95  /* '_' */ ||
+          s.charCodeAt(length - 3) !== 111 /* 'o' */ ||
+          s.charCodeAt(length - 4) !== 116 /* 't' */ ||
+          s.charCodeAt(length - 5) !== 111 /* 'o' */ ||
+          s.charCodeAt(length - 6) !== 114 /* 'r' */ ||
+          s.charCodeAt(length - 7) !== 112 /* 'p' */ ||
+          s.charCodeAt(length - 8) !== 95  /* '_' */ ||
+          s.charCodeAt(length - 9) !== 95  /* '_' */) {
+        return false;
+      }
+    
+      for (var i = length - 10; i >= 0; i--) {
+        if (s.charCodeAt(i) !== 36 /* '$' */) {
+          return false;
+        }
+      }
+    
+      return true;
+    }
+    
+    /**
+     * Comparator between two mappings where the original positions are compared.
+     *
+     * Optionally pass in `true` as `onlyCompareGenerated` to consider two
+     * mappings with the same original source/line/column, but different generated
+     * line and column the same. Useful when searching for a mapping with a
+     * stubbed out mapping.
+     */
+    function compareByOriginalPositions(mappingA, mappingB, onlyCompareOriginal) {
+      var cmp = strcmp(mappingA.source, mappingB.source);
+      if (cmp !== 0) {
+        return cmp;
+      }
+    
+      cmp = mappingA.originalLine - mappingB.originalLine;
+      if (cmp !== 0) {
+        return cmp;
+      }
+    
+      cmp = mappingA.originalColumn - mappingB.originalColumn;
+      if (cmp !== 0 || onlyCompareOriginal) {
+        return cmp;
+      }
+    
+      cmp = mappingA.generatedColumn - mappingB.generatedColumn;
+      if (cmp !== 0) {
+        return cmp;
+      }
+    
+      cmp = mappingA.generatedLine - mappingB.generatedLine;
+      if (cmp !== 0) {
+        return cmp;
+      }
+    
+      return strcmp(mappingA.name, mappingB.name);
+    }
+    exports.compareByOriginalPositions = compareByOriginalPositions;
+    
+    /**
+     * Comparator between two mappings with deflated source and name indices where
+     * the generated positions are compared.
+     *
+     * Optionally pass in `true` as `onlyCompareGenerated` to consider two
+     * mappings with the same generated line and column, but different
+     * source/name/original line and column the same. Useful when searching for a
+     * mapping with a stubbed out mapping.
+     */
+    function compareByGeneratedPositionsDeflated(mappingA, mappingB, onlyCompareGenerated) {
+      var cmp = mappingA.generatedLine - mappingB.generatedLine;
+      if (cmp !== 0) {
+        return cmp;
+      }
+    
+      cmp = mappingA.generatedColumn - mappingB.generatedColumn;
+      if (cmp !== 0 || onlyCompareGenerated) {
+        return cmp;
+      }
+    
+      cmp = strcmp(mappingA.source, mappingB.source);
+      if (cmp !== 0) {
+        return cmp;
+      }
+    
+      cmp = mappingA.originalLine - mappingB.originalLine;
+      if (cmp !== 0) {
+        return cmp;
+      }
+    
+      cmp = mappingA.originalColumn - mappingB.originalColumn;
+      if (cmp !== 0) {
+        return cmp;
+      }
+    
+      return strcmp(mappingA.name, mappingB.name);
+    }
+    exports.compareByGeneratedPositionsDeflated = compareByGeneratedPositionsDeflated;
+    
+    function strcmp(aStr1, aStr2) {
+      if (aStr1 === aStr2) {
+        return 0;
+      }
+    
+      if (aStr1 === null) {
+        return 1; // aStr2 !== null
+      }
+    
+      if (aStr2 === null) {
+        return -1; // aStr1 !== null
+      }
+    
+      if (aStr1 > aStr2) {
+        return 1;
+      }
+    
+      return -1;
+    }
+    
+    /**
+     * Comparator between two mappings with inflated source and name strings where
+     * the generated positions are compared.
+     */
+    function compareByGeneratedPositionsInflated(mappingA, mappingB) {
+      var cmp = mappingA.generatedLine - mappingB.generatedLine;
+      if (cmp !== 0) {
+        return cmp;
+      }
+    
+      cmp = mappingA.generatedColumn - mappingB.generatedColumn;
+      if (cmp !== 0) {
+        return cmp;
+      }
+    
+      cmp = strcmp(mappingA.source, mappingB.source);
+      if (cmp !== 0) {
+        return cmp;
+      }
+    
+      cmp = mappingA.originalLine - mappingB.originalLine;
+      if (cmp !== 0) {
+        return cmp;
+      }
+    
+      cmp = mappingA.originalColumn - mappingB.originalColumn;
+      if (cmp !== 0) {
+        return cmp;
+      }
+    
+      return strcmp(mappingA.name, mappingB.name);
+    }
+    exports.compareByGeneratedPositionsInflated = compareByGeneratedPositionsInflated;
+    
+    /**
+     * Strip any JSON XSSI avoidance prefix from the string (as documented
+     * in the source maps specification), and then parse the string as
+     * JSON.
+     */
+    function parseSourceMapInput(str) {
+      return JSON.parse(str.replace(/^\)]}'[^\n]*\n/, ''));
+    }
+    exports.parseSourceMapInput = parseSourceMapInput;
+    
+    /**
+     * Compute the URL of a source given the the source root, the source's
+     * URL, and the source map's URL.
+     */
+    function computeSourceURL(sourceRoot, sourceURL, sourceMapURL) {
+      sourceURL = sourceURL || '';
+    
+      if (sourceRoot) {
+        // This follows what Chrome does.
+        if (sourceRoot[sourceRoot.length - 1] !== '/' && sourceURL[0] !== '/') {
+          sourceRoot += '/';
+        }
+        // The spec says:
+        //   Line 4: An optional source root, useful for relocating source
+        //   files on a server or removing repeated values in the
+        //   “sources” entry.  This value is prepended to the individual
+        //   entries in the “source” field.
+        sourceURL = sourceRoot + sourceURL;
+      }
+    
+      // Historically, SourceMapConsumer did not take the sourceMapURL as
+      // a parameter.  This mode is still somewhat supported, which is why
+      // this code block is conditional.  However, it's preferable to pass
+      // the source map URL to SourceMapConsumer, so that this function
+      // can implement the source URL resolution algorithm as outlined in
+      // the spec.  This block is basically the equivalent of:
+      //    new URL(sourceURL, sourceMapURL).toString()
+      // ... except it avoids using URL, which wasn't available in the
+      // older releases of node still supported by this library.
+      //
+      // The spec says:
+      //   If the sources are not absolute URLs after prepending of the
+      //   “sourceRoot”, the sources are resolved relative to the
+      //   SourceMap (like resolving script src in a html document).
+      if (sourceMapURL) {
+        var parsed = urlParse(sourceMapURL);
+        if (!parsed) {
+          throw new Error("sourceMapURL could not be parsed");
+        }
+        if (parsed.path) {
+          // Strip the last path component, but keep the "/".
+          var index = parsed.path.lastIndexOf('/');
+          if (index >= 0) {
+            parsed.path = parsed.path.substring(0, index + 1);
+          }
+        }
+        sourceURL = join(urlGenerate(parsed), sourceURL);
+      }
+    
+      return normalize(sourceURL);
+    }
+    exports.computeSourceURL = computeSourceURL;
+    
+    },{}],31:[function(require,module,exports){
+    /*
+     * Copyright 2009-2011 Mozilla Foundation and contributors
+     * Licensed under the New BSD license. See LICENSE.txt or:
+     * http://opensource.org/licenses/BSD-3-Clause
+     */
+    exports.SourceMapGenerator = require('./lib/source-map-generator').SourceMapGenerator;
+    exports.SourceMapConsumer = require('./lib/source-map-consumer').SourceMapConsumer;
+    exports.SourceNode = require('./lib/source-node').SourceNode;
+    
+    },{"./lib/source-map-consumer":27,"./lib/source-map-generator":28,"./lib/source-node":29}],"livescript":[function(require,module,exports){
+    // Generated by LiveScript 1.6.1
+    var LiveScript;
+    LiveScript = require('./index');
+    LiveScript.stab = function(code, callback, filename){
+      var e;
+      try {
+        LiveScript.run(code, {
+          filename: filename,
+          map: 'embedded'
+        });
+      } catch (e$) {
+        e = e$;
+      }
+      if (typeof callback == 'function') {
+        callback(e);
+      }
+    };
+    LiveScript.load = function(url, callback){
+      var xhr;
+      xhr = new XMLHttpRequest;
+      xhr.open('GET', url, true);
+      if ('overrideMimeType' in xhr) {
+        xhr.overrideMimeType('text/plain');
+      }
+      xhr.onreadystatechange = function(){
+        var ref$;
+        if (xhr.readyState === 4) {
+          if ((ref$ = xhr.status) === 200 || ref$ === 0) {
+            LiveScript.stab(xhr.responseText, callback, url);
+          } else {
+            if (typeof callback == 'function') {
+              callback(Error(url + ": " + xhr.status + " " + xhr.statusText));
+            }
+          }
+        }
+      };
+      xhr.send(null);
+      return xhr;
+    };
+    LiveScript.go = function(){
+      var type, sink, i$, ref$, len$, script, that;
+      type = /^(?:text\/|application\/)?ls$/i;
+      sink = function(error){
+        error && setTimeout(function(){
+          throw error;
+        });
+      };
+      for (i$ = 0, len$ = (ref$ = document.getElementsByTagName('script')).length; i$ < len$; ++i$) {
+        script = ref$[i$];
+        if (type.test(script.type)) {
+          if (that = script.src) {
+            LiveScript.load(that, sink);
+          } else {
+            LiveScript.stab(script.innerHTML, sink, script.id);
+          }
+        }
+      }
+    };
+    module.exports = LiveScript;
+    },{"./index":2}]},{},[]);

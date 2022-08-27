@@ -38,7 +38,7 @@
 
 - [x] 内置支持生成和[carbon](https://carbon.now.sh/)一样漂亮美观的代码图片
 
-- [x] 内置使用[Skypack](https://www.skypack.dev/)支持在浏览器上使用ES模块语法
+- [x] 内置使用[unpkg](https://unpkg.com/)及[importmap](https://github.com/WICG/import-maps)支持在浏览器上使用ES模块语法
 
 - [x] 支持嵌入模式，方便在文档网站中使用，让文档示例更轻松
 
@@ -96,6 +96,22 @@ UI库：`element-plus`
 
 ![界面截图3](./assets/view3.jpg)
 
+# 关于使用ESM
+
+目前在`JavaScript`、`TypeScript`、`CoffeeScript`、`Vue3`、`Vue2`等模式下支持使用`ESM`，默认情况下，如果你直接按下列方式导入模块的话：
+
+```js
+import moment from 'moment'
+```
+
+最后会转换成：
+
+```js
+import moment from 'https://unpkg.com/moment?module'
+```
+
+也就是使用[unpkg](https://unpkg.com/)，但是有些模块`unpkg`获取不到`ESM`版本，或者直接这样获取到的版本不是我们所期望的，比如导入`vue`时，我们需要的是`https://unpkg.com/vue@3.2.37/dist/vue.esm-browser.js`，但是`https://unpkg.com/vue?module`默认返回的是`https://unpkg.com/vue@3.2.37/dist/vue.runtime.esm-bundler.js?module`，这个版本无法运行在浏览器上，所以这时候就可以通过手动添加[importmap](https://github.com/WICG/import-maps)来设置导入模块的来源。
+
 # 主题新增教程
 
 本教程针对迁移`VSCode`主题。
@@ -114,7 +130,39 @@ UI库：`element-plus`
 
 - `npm run createThemeList`：根据主题文件列表自动生成配置文件。
 
-- `npm run buildVueSFCCompiler`：打包`@vue/compiler-sfc`文件。
+- `npm run buildVueSFCCompiler`：打包`@vue/compiler-sfc`文件，针对`Vue3`。
+
+# 编译器更新指南
+
+因为本项目是纯前端项目，所以在使用`less`、`sass`、`typescript`等预处理语言或扩展语言时需要在线进行编译，这个工作是由各个语言的编译器处理的，这些编译器你可以在`/public/parses/`目录下找到，随着时间的推移，肯定会落后于它们的新版本，所以你需要定期更新它们，获取它们的浏览器使用版本并不是一件易事，所以在这里将有些仅有的经验分享给大家。
+
+- `less`
+
+首先`npm i less`，然后在`node_modules`找到`less/dist/`目录，该目录下的两个文件都是`umd`格式的，可以直接使用。
+
+- `sass`
+
+`sass`目前使用的是这个项目[sass.js](https://github.com/medialize/sass.js)，但是这个项目已经三年没有更新了。
+
+- `babel`
+
+`babel`提供了浏览器使用版本，具体可以参考官方文档[@babel/standalone](https://babeljs.io/docs/en/babel-standalone)。
+
+- `typescript`
+
+`typescript`直接`npm i typescript`，然后找到`node_modules/typescript/lib/typescript.js`文件，它也是支持直接在浏览器上使用的。
+
+- `coffeescript`
+
+`coffeescript`也是直接`npm i coffeescript`，然后找到`node_modules/coffeescript/coffeescript-browser-compiler-legacy/coffeescript.js`文件，支持直接在浏览器上使用。
+
+- `livescript`
+
+`livescript`的浏览器使用版本可以直接去其官方仓库下载[browser](https://github.com/gkz/LiveScript/blob/master/browser/)，不过也两年没有更新了。
+
+- 其他
+
+`postcss`、`stylus`暂时没有找到浏览器使用版本或编译成功，知道的朋友欢迎提个`issue`。
 
 # 新增代码模板
 
