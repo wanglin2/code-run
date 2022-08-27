@@ -2,7 +2,7 @@
   <div class="dropdownContainer" ref="dropdownContainer">
     <div class="dropdownHeader" @click="toggleDropdownList()">
       <span
-        class="icon el-icon el-icon-arrow-down"
+        class="icon iconfont icon-jiantouxia"
         :class="{ show: showDropdownList }"
       ></span>
     </div>
