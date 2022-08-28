@@ -13,12 +13,13 @@
 
 <script setup>
 import Header from "@/components/Header.vue";
-import { computed, watch, getCurrentInstance, onUnmounted, ref, defineProps } from "vue";
+import { computed, watch, getCurrentInstance, onUnmounted, ref, defineProps, toRaw } from "vue";
 import { useStore } from "vuex";
 import { layoutMap, defaultViewThemeConfig } from "@/config/constants";
 import { useRouter, useRoute } from "vue-router";
 import { initMonacoEditor } from "@/utils/monacoEditor";
 import nprogress from "nprogress";
+import { getThemeValue } from '@/utils';
 
 const props = defineProps({
   // 是否是嵌入模式
@@ -81,7 +82,7 @@ const useLayout = ({ store }) => {
 };
 
 // 新窗口预览
-const useWindowPreview = ({ store, layout, router, proxy }) => {
+const useWindowPreview = ({ store, layout, router, proxy, themeData }) => {
   // 预览窗口
   let previewWindow = null;
   // 通知预览窗口进行刷新
@@ -92,7 +93,8 @@ const useWindowPreview = ({ store, layout, router, proxy }) => {
         type: "preview",
         data: {
           config: {
-            openAlmightyConsole: editData.value.config.openAlmightyConsole,
+            ...editData.value.config,
+            themeData: toRaw(themeData.value),
           },
           code: {
             HTML: {
@@ -116,7 +118,12 @@ const useWindowPreview = ({ store, layout, router, proxy }) => {
                   ...item,
                 };
               }),
+              importMap: editData.value.code.JS.importMap || ''
             },
+            VUE: {
+              language: editData.value.code.VUE.language,
+              content: editData.value.code.VUE.content,
+            }
           },
         },
       });
@@ -162,36 +169,26 @@ const useWindowPreview = ({ store, layout, router, proxy }) => {
 };
 
 // 界面主题，设置css变量
-const useTheme = ({ proxy, store }) => {
+const useTheme = ({ proxy, store, layout }) => {
   // 主题同步设置
   const pageThemeSyncCodeTheme = computed(() => {
     return store.state.editData.config.pageThemeSyncCodeTheme;
   });
+  const themeData = ref(null);
   let lastThemeData = null;
-  // 获取变量的值
-  const getThemeValue = (item, data) => {
-    let arr = defaultViewThemeConfig[item];
-    let len = arr.length;
-    if (!data || !pageThemeSyncCodeTheme.value) {
-      return arr[len - 1];
-    }
-    for (let i = 0; i < len - 1; i++) {
-      let cur = arr[i];
-      if (data.colors[cur] !== undefined) {
-        return data.colors[cur];
-      }
-    }
-    return arr[len - 1];
-  };
   // 更新主题变量
   const updateTheme = (data) => {
+    themeData.value = data;
     lastThemeData = data;
     Object.keys(defaultViewThemeConfig).forEach((item) => {
       document.documentElement.style.setProperty(
         item,
-        getThemeValue(item, data)
+        getThemeValue(item, data, pageThemeSyncCodeTheme.value)
       );
     });
+    if (layout.value === "newWindowPreview") {
+      proxy.$eventEmitter.emit("preview_window_run");
+    }
   };
   updateTheme();
   watch(pageThemeSyncCodeTheme, () => {
@@ -201,18 +198,23 @@ const useTheme = ({ proxy, store }) => {
   onUnmounted(() => {
     proxy.$eventEmitter.off("set-theme", updateTheme);
   });
+
+  return {
+    themeData
+  }
 };
 
 // created部分
 const { proxy, router, store, init, showContent } = useInit();
 const { layout, activeLayout } = useLayout({ store });
+const { themeData } = useTheme({ proxy, store, layout });
 const { previewLayoutHandle } = useWindowPreview({
   store,
   layout,
   router,
   proxy,
+  themeData
 });
-useTheme({ proxy, store });
 init(() => {
   previewLayoutHandle();
 });
