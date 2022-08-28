@@ -2,7 +2,8 @@ import {
     load
 } from '@/utils/load'
 import transform from '@/utils/transform'
-import { routerMode, base } from "@/config";
+import { routerMode, base } from "@/config"
+import { defaultViewThemeConfig } from "@/config/constants"
 
 /** 
  * javascript comment 
@@ -155,4 +156,20 @@ export const createEmbedUrl = (id) => {
             ? "#/embed/" + id
             : "embed/" + id
     }`;
+}
+
+// 获取变量的值
+export const getThemeValue = (item, data, pageThemeSyncCodeTheme) => {
+    let arr = defaultViewThemeConfig[item]
+    let len = arr.length
+    if (!data || !pageThemeSyncCodeTheme) {
+        return arr[len - 1]
+    }
+    for (let i = 0; i < len - 1; i++) {
+        let cur = arr[i]
+        if (data.colors[cur] !== undefined) {
+            return data.colors[cur]
+        }
+    }
+    return arr[len - 1]
 }
