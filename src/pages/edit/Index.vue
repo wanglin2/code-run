@@ -93,9 +93,8 @@ const useWindowPreview = ({ store, layout, router, proxy, themeData }) => {
         type: "preview",
         data: {
           config: {
-            openAlmightyConsole: editData.value.config.openAlmightyConsole,
+            ...editData.value.config,
             themeData: toRaw(themeData.value),
-            pageThemeSyncCodeTheme: editData.value.config.pageThemeSyncCodeTheme
           },
           code: {
             HTML: {
@@ -121,6 +120,10 @@ const useWindowPreview = ({ store, layout, router, proxy, themeData }) => {
               }),
               importMap: editData.value.code.JS.importMap || ''
             },
+            VUE: {
+              language: editData.value.code.VUE.language,
+              content: editData.value.code.VUE.content,
+            }
           },
         },
       });
