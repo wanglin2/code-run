@@ -98,10 +98,14 @@ const useInitData = () => {
       : editData.value.code.JS.importMap) || defaultImportMapStr);
   });
   const vueLanguage = computed(() => {
-    return editData.value.code.VUE.language;
+    return isNewWindowPreview.value 
+      ? newWindowPreviewData.value.code.VUE.language 
+      : editData.value.code.VUE.language;
   });
   const vueContent = computed(() => {
-    return editData.value.code.VUE.content;
+    return isNewWindowPreview.value 
+      ? newWindowPreviewData.value.code.VUE.content
+      : editData.value.code.VUE.content;
   });
 
   return {
@@ -255,7 +259,9 @@ const useRun = ({
   const srcdoc = ref("");
   // 当前布局类型
   const layout = computed(() => {
-    return store.state.editData.config.layout;
+    return isNewWindowPreview.value 
+      ? newWindowPreviewData.value.config.layout
+      : editData.value.config.layout;
   });
   // 是否开启全能调试
   const openAlmightyConsole = computed(() => {
@@ -281,7 +287,7 @@ const useRun = ({
       let _cssResourcesPlus = [];
       let compiledData = null;
       // vue单文件
-      if (layout.value === "vue") {
+      if (layout.value === "vue" || (layout.value === "newWindowPreview" && vueContent.value)) {
         compiledData = await compileVue(vueLanguage.value, vueContent.value, importMap.value.imports || {});
         if (compiledData) {
           // 自动引入vue资源
