@@ -53,7 +53,8 @@ const store = createStore({
         return {
             uuid: generateUUID(),
             editData: createDefaultData(),
-            githubToken: ''
+            githubToken: '',
+            previewDoc: ''
         }
     },
     mutations: {
@@ -210,6 +211,16 @@ const store = createStore({
          */
         setCodeTitle(state, title) {
             state.editData.title = title
+        },
+
+        /** 
+         * javascript comment 
+         * @Author: 王林25 
+         * @Date: 2022-10-27 18:59:00 
+         * @Desc: 设置当前编译完成进行预览的文档 
+         */
+        setPreviewDoc(state, previewDoc) {
+            state.previewDoc = previewDoc
         }
     },
     actions: {

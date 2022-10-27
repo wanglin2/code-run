@@ -322,7 +322,7 @@ const useRun = ({
             ...item,
           };
         }));
-      srcdoc.value = createHtml(
+      let doc = createHtml(
         compiledData.html,
         compiledData.js.js,
         compiledData.css,
@@ -332,6 +332,8 @@ const useRun = ({
         openAlmightyConsole.value,
         compiledData.js.useImport
       );
+      store.commit('setPreviewDoc', doc);
+      srcdoc.value = doc;
       isNewWindowPreview.value = false;
     } catch (error) {
       console.log(error);
