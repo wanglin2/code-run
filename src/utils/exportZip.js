@@ -1,10 +1,6 @@
 import JSzip from 'jszip'
 import saveAs from './FileSaver'
-import {
-    assembleHtml,
-    compile,
-    compileVue
-} from './index'
+import store from '@/store'
 
 const suffixMap = {
     html: 'html',
@@ -23,38 +19,15 @@ const suffixMap = {
     vue3: 'vue'
 }
 
-/** 
- * javascript comment 
- * @Author: 王林25 
- * @Date: 2021-05-20 15:02:34 
- * @Desc: 生成html 
- */
-const createHtml = (title, htmlStr, cssResources, jsResources) => {
-    // 添加依赖资源
-    let _cssResources = cssResources
-        .map((item) => {
-            return `<link href="${item.url}" rel="stylesheet">`
-        })
-        .join('\n')
-    let _jsResources = jsResources
-        .map((item) => {
-            return `<script src="${item.url}"><\/script>`
-        })
-        .join('\n')
-    let head = `
-        <title>${title}<\/title>
-        ${_cssResources}
-        <link rel="stylesheet" href="./style.css">
-    `
-    let body = `
-        ${htmlStr}
-        ${_jsResources}
-        <script src="./script.js"></script>
-    `
-    return assembleHtml(head, body)
+const handlePreviewDoc = (doc) => {
+    return doc
+        .replace('<script src="/code-run-online/base/index.js"></script>', '')
+        .replace('<script src="/code-run-online/console/index.js"></script>', '')
+        .replace(/".\/lib/img, '"https://wanglin2.github.io/code-run-online/lib')
+        .replace(/"\/code-run-online\/lib/img, '"https://wanglin2.github.io/code-run-online/lib')
 }
 
-const handleNormal = async (data, fileName, cssResources, jsResources) => {
+const handleNormal = async (data) => {
     let html = data.value.code.HTML.content
     let htmlLan = data.value.code.HTML.language
     let js = data.value.code.JS.content
@@ -69,15 +42,11 @@ const handleNormal = async (data, fileName, cssResources, jsResources) => {
     zip.file('src/style.' + suffixMap[cssLan], css)
     // 编译后的代码
     zip.folder('dist')
-    let compiledData = await compile(htmlLan, jsLan, cssLan, html, js, css)
-    let _html = createHtml(fileName, compiledData.html, cssResources, jsResources)
-    zip.file('dist/index.html', _html)
-    zip.file('dist/script.js', compiledData.js)
-    zip.file('dist/style.css', compiledData.css)
+    zip.file('dist/index.html', handlePreviewDoc(store.state.previewDoc))
     return zip
 }
 
-const handleVue2 = async (data, fileName, cssResources, jsResources) => {
+const handleVue = async (data) => {
     let content = data.value.code.VUE.content
     let lang = data.value.code.VUE.language
     let zip = new JSzip()
@@ -86,11 +55,7 @@ const handleVue2 = async (data, fileName, cssResources, jsResources) => {
     zip.file('src/index.' + suffixMap[lang], content)
     // 编译后的代码
     zip.folder('dist')
-    let compiledData = await compileVue(lang, content)
-    let _html = createHtml(fileName, compiledData.html, cssResources, jsResources)
-    zip.file('dist/index.html', _html)
-    zip.file('dist/script.js', compiledData.js)
-    zip.file('dist/style.css', compiledData.css)
+    zip.file('dist/index.html', handlePreviewDoc(store.state.previewDoc))
     return zip
 }
 
@@ -102,22 +67,12 @@ const handleVue2 = async (data, fileName, cssResources, jsResources) => {
  */
 const exportZip = async (data, fileName) => {
     let zip = null
-    let cssResources = data.value.code.CSS.resources.map((item) => {
-        return {
-            ...item,
-        }
-    })
-    let jsResources = data.value.code.JS.resources.map((item) => {
-        return {
-            ...item,
-        }
-    })
     switch (data.value.config.layout) {
         case 'vue':
-            zip = await handleVue2(data, fileName, cssResources, jsResources)
+            zip = await handleVue(data)
             break;
         default:
-            zip = await handleNormal(data, fileName, cssResources, jsResources)
+            zip = await handleNormal(data)
     }
     // 下载
     zip.generateAsync({
