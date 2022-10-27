@@ -6,7 +6,11 @@
     </DragItem>
     <!-- 预览&控制台 -->
     <DragItem :index="1" :disabled="false">
-      <Drag :number="2" dir="v" :config="[{ min: 0 }, { min: 48, default: 48 }]">
+      <Drag
+        :number="2"
+        dir="v"
+        :config="[{ min: 0 }, { min: 48, default: 48 }]"
+      >
         <DragItem
           :index="0"
           :disabled="true"

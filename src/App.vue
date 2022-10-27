@@ -9,8 +9,7 @@
 
 <style>
 @font-face {
-  src: url('./assets/font/seti.woff')
-    format('woff');
+  src: url('./assets/font/seti.woff') format('woff');
   font-family: 'seti';
   font-weight: normal;
   font-style: normal;

@@ -83,7 +83,7 @@ const useInit = () => {
   const store = useStore()
   return {
     store,
-    config: store.state.editData.config,
+    config: store.state.editData.config
   }
 }
 
@@ -96,19 +96,19 @@ const useTheme = ({ store, config }) => {
     () => {
       return config.codeTheme
     },
-    (value) => {
+    value => {
       codeTheme.value = value
     }
   )
 
   // 切换代码主题
-  const codeThemeChange = async (e) => {
+  const codeThemeChange = async e => {
     store.commit('setCodeTheme', e)
   }
 
   return {
     codeTheme,
-    codeThemeChange,
+    codeThemeChange
   }
 }
 
@@ -117,12 +117,12 @@ const useThemeSync = ({ store, config }) => {
   const pageThemeSyncCodeTheme = ref(false)
   pageThemeSyncCodeTheme.value = config.pageThemeSyncCodeTheme
 
-  watch(pageThemeSyncCodeTheme, (value) => {
+  watch(pageThemeSyncCodeTheme, value => {
     store.commit('setPageThemeSyncCodeTheme', value)
   })
 
   return {
-    pageThemeSyncCodeTheme,
+    pageThemeSyncCodeTheme
   }
 }
 
@@ -135,19 +135,19 @@ const useFontSize = ({ store, config }) => {
     () => {
       return config.codeFontSize
     },
-    (value) => {
+    value => {
       codeFontSize.value = value
     }
   )
 
   // 切换字号
-  const codeFontSizeChange = async (e) => {
+  const codeFontSizeChange = async e => {
     store.commit('setCodeFontSize', e)
   }
 
   return {
     codeFontSize,
-    codeFontSizeChange,
+    codeFontSizeChange
   }
 }
 
@@ -158,7 +158,7 @@ const useSelectFile = ({ codeTheme, codeThemeChange }) => {
   const themeName = ref('')
   let defaultThemeIndex = 1
   // 处理文件
-  const handleFile = (file) => {
+  const handleFile = file => {
     themeName.value = file.name.replace(/\..*$/, '')
     let reader = new FileReader()
     reader.readAsText(file)
@@ -174,22 +174,22 @@ const useSelectFile = ({ codeTheme, codeThemeChange }) => {
     fileInput.value.click()
   }
   // 文件变化
-  const fileChange = (e) => {
+  const fileChange = e => {
     let file = e.target.files[0]
     handleFile(file)
   }
   // 拖拽上传
-  const onDrop = (e) => {
+  const onDrop = e => {
     e.preventDefault()
     let file = e.dataTransfer.files[0]
     handleFile(file)
   }
-  const onDragOver = (e) => {
+  const onDragOver = e => {
     e.preventDefault()
   }
   // 主题数据变化
   let timer = null
-  watch(themeText, (value) => {
+  watch(themeText, value => {
     if (!value) {
       return
     }
@@ -203,7 +203,7 @@ const useSelectFile = ({ codeTheme, codeThemeChange }) => {
           value: themeName.value,
           custom: true,
           loaded: true,
-          cache: themeData,
+          cache: themeData
         })
         codeTheme.value = themeName.value
         codeThemeChange(themeName.value)
@@ -220,7 +220,7 @@ const useSelectFile = ({ codeTheme, codeThemeChange }) => {
     selectFile,
     fileChange,
     onDrop,
-    onDragOver,
+    onDragOver
   }
 }
 
@@ -229,9 +229,13 @@ const { store, config } = useInit()
 const { codeTheme, codeThemeChange } = useTheme({ store, config })
 const { pageThemeSyncCodeTheme } = useThemeSync({ store, config })
 const { codeFontSize, codeFontSizeChange } = useFontSize({ store, config })
-const { themeText, selectFile, fileChange, onDrop, onDragOver } = useSelectFile(
-  { codeTheme, codeThemeChange }
-)
+const {
+  themeText,
+  selectFile,
+  fileChange,
+  onDrop,
+  onDragOver
+} = useSelectFile({ codeTheme, codeThemeChange })
 </script>
 
 <style scoped lang="less">

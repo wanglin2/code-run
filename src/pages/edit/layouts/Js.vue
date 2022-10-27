@@ -20,8 +20,10 @@ import Drag from '@/components/Drag.vue'
 import DragItem from '@/components/DragItem.vue'
 import { reactive } from 'vue'
 
-const showList = reactive([{
-  title: 'JS',
-  disableDrag: true
-}])
+const showList = reactive([
+  {
+    title: 'JS',
+    disableDrag: true
+  }
+])
 </script>

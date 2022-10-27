@@ -39,107 +39,107 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
-import { useStore } from "vuex";
-import { ElSwitch } from "element-plus";
+import { ref, watch } from 'vue'
+import { useStore } from 'vuex'
+import { ElSwitch } from 'element-plus'
 
 // hooks定义部分
 
 // 初始化
 const useInit = () => {
-  const store = useStore();
+  const store = useStore()
   return {
     store,
-    config: store.state.editData.config,
-  };
-};
+    config: store.state.editData.config
+  }
+}
 
 // 保留日志设置
 const usePreviousLogs = ({ store, config }) => {
   // 保留之前的日志
-  const keepPreviousLogs = ref(false);
-  keepPreviousLogs.value = config.keepPreviousLogs;
+  const keepPreviousLogs = ref(false)
+  keepPreviousLogs.value = config.keepPreviousLogs
   watch(
     () => {
-      return config.keepPreviousLogs;
+      return config.keepPreviousLogs
     },
-    (value) => {
-      keepPreviousLogs.value = value;
+    value => {
+      keepPreviousLogs.value = value
     }
-  );
+  )
 
   // 切换是否保留之前的日志
-  const keepPreviousLogsChange = (e) => {
-    store.commit("setKeepPreviousLogs", e);
-  };
+  const keepPreviousLogsChange = e => {
+    store.commit('setKeepPreviousLogs', e)
+  }
 
   return {
     keepPreviousLogs,
-    keepPreviousLogsChange,
-  };
-};
+    keepPreviousLogsChange
+  }
+}
 
 // 自动运行设置
 const useAutoRun = ({ store, config }) => {
   // 自动运行
-  const autoRun = ref(false);
-  autoRun.value = config.autoRun;
+  const autoRun = ref(false)
+  autoRun.value = config.autoRun
   watch(
     () => {
-      return config.autoRun;
+      return config.autoRun
     },
-    (value) => {
-      autoRun.value = value;
+    value => {
+      autoRun.value = value
     }
-  );
+  )
 
   // 切换自动运行
-  const autoRunChange = (e) => {
-    store.commit("setAutoRun", e);
-  };
+  const autoRunChange = e => {
+    store.commit('setAutoRun', e)
+  }
 
   return {
     autoRun,
-    autoRunChange,
-  };
-};
+    autoRunChange
+  }
+}
 
 // 全能调试设置
 const useAlmightyConsole = ({ store, config }) => {
   // 开启全能调试
-  const openAlmightyConsole = ref(false);
-  openAlmightyConsole.value = config.openAlmightyConsole;
+  const openAlmightyConsole = ref(false)
+  openAlmightyConsole.value = config.openAlmightyConsole
   watch(
     () => {
-      return config.openAlmightyConsole;
+      return config.openAlmightyConsole
     },
-    (value) => {
-      openAlmightyConsole.value = value;
+    value => {
+      openAlmightyConsole.value = value
     }
-  );
+  )
 
   // 切换全能调试
-  const openAlmightyConsoleChange = (e) => {
-    store.commit("setOpenAlmightyConsole", e);
-  };
+  const openAlmightyConsoleChange = e => {
+    store.commit('setOpenAlmightyConsole', e)
+  }
 
   return {
     openAlmightyConsole,
-    openAlmightyConsoleChange,
-  };
-};
+    openAlmightyConsoleChange
+  }
+}
 
 // created部分
-const { store, config } = useInit();
+const { store, config } = useInit()
 const { keepPreviousLogs, keepPreviousLogsChange } = usePreviousLogs({
   store,
-  config,
-});
-const { autoRun, autoRunChange } = useAutoRun({ store, config });
+  config
+})
+const { autoRun, autoRunChange } = useAutoRun({ store, config })
 const { openAlmightyConsole, openAlmightyConsoleChange } = useAlmightyConsole({
   store,
-  config,
-});
+  config
+})
 </script>
 
 <style scoped lang="less">

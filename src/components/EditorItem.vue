@@ -5,13 +5,22 @@
         <div class="title" :class="[{ rotate: noSpace }, dir]">{{ title }}</div>
         <div class="right">
           <!-- 支持es6模块提示 -->
-          <el-popover placement="bottom" effect="dark" trigger="hover" v-if="supportESModuleMap[language]">
+          <el-popover
+            placement="bottom"
+            effect="dark"
+            trigger="hover"
+            v-if="supportESModuleMap[language]"
+          >
             <template #reference>
               <div class="addBtn">
                 <span class="iconfont icon-tishi"></span>
               </div>
             </template>
-            支持使用ES6模块语法，了解更多<a href='https://github.com/wanglin2/code-run#关于使用ESM' target='_blank'>关于使用ESM</a>
+            支持使用ES6模块语法，了解更多<a
+              href="https://github.com/wanglin2/code-run#关于使用ESM"
+              target="_blank"
+              >关于使用ESM</a
+            >
           </el-popover>
           <!-- 格式化按钮 -->
           <el-tooltip
@@ -59,7 +68,9 @@
               v-if="showAddBtn"
             >
               <div class="addBtn" @click="addResource()">
-                <span class="iconfont icon-chuangjiantianjiapiliangtianjia"></span>
+                <span
+                  class="iconfont icon-chuangjiantianjiapiliangtianjia"
+                ></span>
               </div>
             </el-tooltip>
           </template>
@@ -90,7 +101,11 @@
             </el-option>
           </el-select>
           <!-- 更多 -->
-          <Dropdown style="margin-left: 10px;" :list="dropdownList" @click="onDropdownClick"></Dropdown>
+          <Dropdown
+            style="margin-left: 10px;"
+            :list="dropdownList"
+            @click="onDropdownClick"
+          ></Dropdown>
         </div>
       </div>
       <div class="editorContentBody" ref="editorEl"></div>
@@ -106,10 +121,15 @@ import {
   onMounted,
   watch,
   nextTick,
-  defineEmits,
+  defineEmits
 } from 'vue'
 import ResizeObserver from 'resize-observer-polyfill'
-import { supportLanguage, formatterParserMap, langTypeMap, supportESModuleMap } from '@/config/constants'
+import {
+  supportLanguage,
+  formatterParserMap,
+  langTypeMap,
+  supportESModuleMap
+} from '@/config/constants'
 import { ElTooltip, ElSelect, ElOption, ElPopover } from 'element-plus'
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api'
 import { wire } from '@/utils/monacoEditor'
@@ -132,47 +152,47 @@ const props = defineProps({
     type: Array,
     default() {
       return []
-    },
+    }
   },
   title: {
     type: String,
-    default: '',
+    default: ''
   },
   language: {
     type: String,
-    default: '',
+    default: ''
   },
   codeTheme: {
     type: String,
-    default: '',
+    default: ''
   },
   codeFontSize: {
     type: Number,
-    default: 16,
+    default: 16
   },
   content: {
     type: String,
-    default: '',
+    default: ''
   },
   showAddBtn: {
     type: Boolean,
-    default: false,
+    default: false
   },
   dir: {
     type: String,
-    default: '',
+    default: ''
   },
   showAllAddResourcesBtn: {
     type: Boolean,
-    default: false,
+    default: false
   },
   showHeader: {
     type: Boolean,
-    default: true,
+    default: true
   },
   readOnly: {
     type: Boolean,
-    default: false,
+    default: false
   }
 })
 
@@ -190,7 +210,7 @@ const useCreateEditor = ({ props, emit, updateDoc }) => {
       editor = monaco.editor.create(editorEl.value, {
         model: null,
         minimap: {
-          enabled: false, // 关闭小地图
+          enabled: false // 关闭小地图
         },
         wordWrap: 'on', // 代码超出换行
         theme: props.codeTheme || 'vs-dark', // 主题
@@ -218,16 +238,16 @@ const useCreateEditor = ({ props, emit, updateDoc }) => {
       () => {
         return props.codeFontSize
       },
-      (val) => {
+      val => {
         editor.updateOptions({
-          fontSize: val,
+          fontSize: val
         })
       }
     )
   }
 
   return {
-    createEditor,
+    createEditor
   }
 }
 
@@ -236,7 +256,7 @@ const usePreprocessor = ({ props, emit, updateDoc }) => {
   // 预处理器
   const preprocessor = ref(props.language)
   // 修改预处理器
-  const preprocessorChange = (e) => {
+  const preprocessorChange = e => {
     emit('preprocessor-change', e)
   }
   // 更新语言
@@ -253,7 +273,7 @@ const usePreprocessor = ({ props, emit, updateDoc }) => {
 
   return {
     preprocessor,
-    preprocessorChange,
+    preprocessorChange
   }
 }
 
@@ -271,7 +291,7 @@ const useSizeChange = ({ props }) => {
     timer = setTimeout(() => {
       nextTick(() => {
         if (!editorItem.value) {
-          return ;
+          return
         }
         let { width, height } = editorItem.value.getBoundingClientRect()
         // 宽度小于100像素则旋转标题
@@ -284,7 +304,7 @@ const useSizeChange = ({ props }) => {
   }
 
   // 监听dom大小变化
-  const ro = new ResizeObserver((entries) => {
+  const ro = new ResizeObserver(entries => {
     for (const entry of entries) {
       if (entry.target.classList.contains('dragItem')) {
         resize()
@@ -303,7 +323,7 @@ const useSizeChange = ({ props }) => {
   })
 
   return {
-    noSpace,
+    noSpace
   }
 }
 
@@ -339,14 +359,14 @@ const useDoc = ({ props }) => {
 
   return {
     updateDoc,
-    getValue,
+    getValue
   }
 }
 
 // 处理资源
 const useResource = ({ emit }) => {
   // 点击添加资源
-  const addResource = (languageType) => {
+  const addResource = languageType => {
     emit('add-resource', languageType)
   }
   // 点击添加importMap
@@ -365,7 +385,7 @@ const useCodeFormat = ({ getValue, updateDoc, emit }) => {
   const codeFormatter = () => {
     let str = window.prettier.format(getValue(), {
       parser: formatterParserMap[props.language],
-      plugins: window.prettierPlugins,
+      plugins: window.prettierPlugins
     })
     // 设置文档内容
     updateDoc(str, props.language)
@@ -378,7 +398,7 @@ const useCodeFormat = ({ getValue, updateDoc, emit }) => {
   }
 
   return {
-    codeFormatter,
+    codeFormatter
   }
 }
 
@@ -397,7 +417,7 @@ const useCreateCodeImg = () => {
 
   return {
     createCodeImg
-  };
+  }
 }
 
 // 打开本地文件
@@ -406,8 +426,10 @@ const useOpenLocalFile = ({ updateDoc, emit }) => {
   const openLocalFile = () => {
     let el = document.createElement('input')
     el.type = 'file'
-    el.accept = langTypeMap[props.language] ? langTypeMap[props.language].join(',') : ''
-    el.addEventListener('input', (e) => {
+    el.accept = langTypeMap[props.language]
+      ? langTypeMap[props.language].join(',')
+      : ''
+    el.addEventListener('input', e => {
       let file = e.target.files[0]
       let reader = new FileReader()
       reader.readAsText(file)
@@ -429,7 +451,7 @@ const useOpenLocalFile = ({ updateDoc, emit }) => {
   }
 
   return {
-    openLocalFile,
+    openLocalFile
   }
 }
 
@@ -445,16 +467,16 @@ const useDropdown = ({ createCodeImg, openLocalFile }) => {
       value: 'openLocalFile'
     }
   ]
-  const onDropdownClick = (item) => {
+  const onDropdownClick = item => {
     switch (item.value) {
       case 'createCodeImg':
         createCodeImg()
-        break;
+        break
       case 'openLocalFile':
         openLocalFile()
-        break;
+        break
       default:
-        break;
+        break
     }
   }
 
@@ -469,12 +491,12 @@ const { updateDoc, getValue } = useDoc({ props })
 const { createEditor } = useCreateEditor({
   props,
   emit,
-  updateDoc,
+  updateDoc
 })
 const { preprocessor, preprocessorChange } = usePreprocessor({
   props,
   emit,
-  updateDoc,
+  updateDoc
 })
 const { noSpace } = useSizeChange({ props })
 const { addResource, addImportMap } = useResource({ emit })
@@ -482,7 +504,10 @@ const { codeFormatter } = useCodeFormat({ getValue, updateDoc, emit })
 useInit({ createEditor })
 const { createCodeImg } = useCreateCodeImg({ props })
 const { openLocalFile } = useOpenLocalFile({ props, updateDoc, emit })
-const { dropdownList, onDropdownClick } = useDropdown({ createCodeImg, openLocalFile })
+const { dropdownList, onDropdownClick } = useDropdown({
+  createCodeImg,
+  openLocalFile
+})
 </script>
 
 <style scoped lang="less">

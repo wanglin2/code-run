@@ -3,7 +3,7 @@
 </template>
 
 <script setup>
-import Index from "../edit/Index.vue";
+import Index from '../edit/Index.vue'
 </script>
 
 <style scoped lang="less"></style>

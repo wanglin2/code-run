@@ -1,6 +1,4 @@
-import {
-    createApp
-} from 'vue'
+import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
@@ -12,16 +10,16 @@ import 'nprogress/nprogress.css'
 import './assets/iconfont/iconfont.css'
 
 const create = () => {
-    const app = createApp(App)
-    app.config.globalProperties.$eventEmitter = new EventEmitter()
-    app.use(router)
-    app.use(store)
-    app.directive('loading', ElLoadingDirective)
-    app.mount('#app')
+  const app = createApp(App)
+  app.config.globalProperties.$eventEmitter = new EventEmitter()
+  app.use(router)
+  app.use(store)
+  app.directive('loading', ElLoadingDirective)
+  app.mount('#app')
 }
 
 const init = () => {
-    store.dispatch('getGithubToken')
-    create()
+  store.dispatch('getGithubToken')
+  create()
 }
 init()
