@@ -22,28 +22,28 @@
           :showHeader="showHeader"
           :readOnly="readOnly"
           @code-change="
-            (code) => {
+            code => {
               codeChange(item, code)
             }
           "
           @preprocessor-change="
-            (p) => {
+            p => {
               preprocessorChange(item, p)
             }
           "
           @add-resource="
-            (languageType) => {
+            languageType => {
               addResource(languageType || item.title)
             }
           "
           @add-importmap="addImportmap(item)"
           @space-change="
-            (noSpace) => {
+            noSpace => {
               item.showTitle = noSpace
             }
           "
           @create-code-img="
-            (editor) => {
+            editor => {
               showCreateCodeImg(editor, item)
             }
           "
@@ -53,14 +53,17 @@
     <!-- 资源管理弹窗 -->
     <EditAssets ref="EditAssetsComp"></EditAssets>
     <!-- 生成代码图片 -->
-    <CodeToImg 
-      ref="CodeToImgComp" 
-      :getThemeData="getThemeData" 
-      :codeTheme="codeTheme" 
+    <CodeToImg
+      ref="CodeToImgComp"
+      :getThemeData="getThemeData"
+      :codeTheme="codeTheme"
       :codeFontSize="codeFontSize"
     ></CodeToImg>
     <!-- importmap编辑 -->
-    <EditImportMap :codeTheme="codeTheme" :codeFontSize="codeFontSize"></EditImportMap>
+    <EditImportMap
+      :codeTheme="codeTheme"
+      :codeFontSize="codeFontSize"
+    ></EditImportMap>
   </div>
 </template>
 
@@ -72,24 +75,19 @@ import {
   computed,
   getCurrentInstance,
   watch,
-  onUnmounted,
+  onUnmounted
 } from 'vue'
 import { useStore } from 'vuex'
 import EditorItem from '@/components/EditorItem.vue'
 import Drag from './Drag.vue'
 import DragItem from './DragItem.vue'
-import {
-  defaultEditorMap,
-  preprocessorListMap,
-} from '@/config/constants'
-import {
-  ElMessage,
-} from 'element-plus'
+import { defaultEditorMap, preprocessorListMap } from '@/config/constants'
+import { ElMessage } from 'element-plus'
 import { codeThemeList } from '@/config/codeThemeList'
 import { base } from '@/config'
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api'
 import CodeToImg from '@/components/CodeToImg.vue'
-import EditImportMap from './EditImportMap.vue';
+import EditImportMap from './EditImportMap.vue'
 import EditAssets from './EditAssets.vue'
 
 // props
@@ -97,35 +95,35 @@ const props = defineProps({
   // 是否隐藏编辑器
   hide: {
     type: Boolean,
-    default: false,
+    default: false
   },
   // 排布方向
   dir: {
     type: String,
-    default: 'h', // v（垂直）、h（水平）
+    default: 'h' // v（垂直）、h（水平）
   },
   // 要显示的编辑器列表
   showList: {
     type: Array,
     default() {
       return ['HTML', 'CSS', 'JS']
-    }, // 目前共有四种编辑器：'HTML'、 'CSS'、 'JS'、 'VUE'
+    } // 目前共有四种编辑器：'HTML'、 'CSS'、 'JS'、 'VUE'
   },
   // 是否要显示编辑器的头部
   showHeader: {
     type: Boolean,
-    default: true,
+    default: true
   },
   // 不要触发代码运行
   notRunCode: {
     type: Boolean,
-    default: false,
+    default: false
   },
   // 编辑器只读
   readOnly: {
     type: Boolean,
-    default: false,
-  },
+    default: false
+  }
 })
 
 // hooks定义部分
@@ -137,7 +135,7 @@ const useInit = () => {
     proxy: getCurrentInstance().proxy,
     editData: computed(() => store.state.editData), // 数据
     codeTheme: computed(() => store.state.editData.config.codeTheme), // 代码主题
-    codeFontSize: computed(() => store.state.editData.config.codeFontSize), // 代码字号
+    codeFontSize: computed(() => store.state.editData.config.codeFontSize) // 代码字号
   }
 }
 
@@ -150,17 +148,17 @@ const useInitEditorList = ({ props, editData }) => {
   // 初始化编辑器列表数据
   const initEditorItemList = () => {
     editorItemList = ref(
-      props.showList.map((item) => {
+      props.showList.map(item => {
         if (typeof item === 'string') {
           return {
             ...defaultEditorMap[item],
-            showTitle: false,
+            showTitle: false
           }
         } else {
           return {
             ...defaultEditorMap[item.title],
             ...item,
-            showTitle: false,
+            showTitle: false
           }
         }
       })
@@ -169,16 +167,20 @@ const useInitEditorList = ({ props, editData }) => {
   initEditorItemList()
 
   // 数据变化后重新初始化
-  watch(() => {
-    return props.showList
-  }, initEditorItemList, {
-    deep: true
-  })
+  watch(
+    () => {
+      return props.showList
+    },
+    initEditorItemList,
+    {
+      deep: true
+    }
+  )
 
   // 设置编辑器列表初始数据
   const setInitData = () => {
     const code = editData.value.code
-    Object.keys(code).forEach((type) => {
+    Object.keys(code).forEach(type => {
       let index = getIndexByType(type)
       if (index === -1) {
         return
@@ -191,7 +193,7 @@ const useInitEditorList = ({ props, editData }) => {
   return {
     show,
     editorItemList,
-    setInitData,
+    setInitData
   }
 }
 
@@ -204,7 +206,7 @@ const useTheme = ({ codeTheme, proxy }) => {
       if (!codeTheme.value) {
         return
       }
-      let item = codeThemeList.find((item) => {
+      let item = codeThemeList.find(item => {
         return item.value === codeTheme.value
       })
       if (!item) {
@@ -244,7 +246,7 @@ const useTheme = ({ codeTheme, proxy }) => {
 
   return {
     loadTheme,
-    getThemeData,
+    getThemeData
   }
 }
 
@@ -280,7 +282,7 @@ const useRunCode = ({ store, proxy }) => {
   )
 
   return {
-    runCode,
+    runCode
   }
 }
 
@@ -292,7 +294,7 @@ const useEditorChange = ({
   autoRun,
   runCode,
   editData,
-  proxy,
+  proxy
 }) => {
   // 重新设置代码数据
   const resetCode = () => {
@@ -308,14 +310,14 @@ const useEditorChange = ({
   const codeChange = (item, code) => {
     store.commit('setCodeContent', {
       type: item.title,
-      code,
+      code
     })
     autoRun()
   }
 
   // 获取指定语言的数据
-  const getIndexByType = (type) => {
-    return editorItemList.value.findIndex((item) => {
+  const getIndexByType = type => {
+    return editorItemList.value.findIndex(item => {
       return item.title === type
     })
   }
@@ -328,7 +330,7 @@ const useEditorChange = ({
       editData.value.code[item.title].content
     store.commit('setCodePreprocessor', {
       type: item.title,
-      preprocessor: p,
+      preprocessor: p
     })
     runCode()
   }
@@ -336,7 +338,7 @@ const useEditorChange = ({
   return {
     codeChange,
     getIndexByType,
-    preprocessorChange,
+    preprocessorChange
   }
 }
 
@@ -356,7 +358,7 @@ const useAutoRun = ({ store, runCode }) => {
     }, 1000)
   }
   return {
-    autoRun,
+    autoRun
   }
 }
 
@@ -369,7 +371,7 @@ const useCodeToImg = () => {
   }
 
   return {
-    showCreateCodeImg,
+    showCreateCodeImg
   }
 }
 
@@ -393,7 +395,7 @@ const useAssets = () => {
 const { store, editData, codeTheme, proxy, codeFontSize } = useInit()
 const { show, editorItemList, setInitData } = useInitEditorList({
   props,
-  editData,
+  editData
 })
 const { loadTheme, getThemeData } = useTheme({ codeTheme, proxy })
 const { runCode } = useRunCode({ store, proxy })
@@ -405,15 +407,10 @@ const { getIndexByType, preprocessorChange, codeChange } = useEditorChange({
   autoRun,
   runCode,
   editData,
-  proxy,
+  proxy
 })
-const {
-  showCreateCodeImg,
-} = useCodeToImg()
-const {
-  addResource,
-  addImportmap
-} = useAssets()
+const { showCreateCodeImg } = useCodeToImg()
+const { addResource, addImportmap } = useAssets()
 onMounted(async () => {
   await loadTheme()
   setInitData()

@@ -104,105 +104,105 @@ import {
   computed,
   watch,
   nextTick,
-  getCurrentInstance,
-} from "vue";
-import SwitchBtn from "@/components/SwitchBtn";
-import Editor from "@/components/Editor.vue";
-import Preview from "@/components/Preview.vue";
-import Console from "@/components/Console.vue";
-import Drag from "@/components/Drag.vue";
-import DragItem from "@/components/DragItem.vue";
-import { getEmbedCodeTypeListMap, scaleTypeList } from "@/config/constants";
-import { useRoute } from "vue-router";
-import { createShareUrl, newWindowOpenUrl } from "@/utils";
-import { useStore } from "vuex";
+  getCurrentInstance
+} from 'vue'
+import SwitchBtn from '@/components/SwitchBtn'
+import Editor from '@/components/Editor.vue'
+import Preview from '@/components/Preview.vue'
+import Console from '@/components/Console.vue'
+import Drag from '@/components/Drag.vue'
+import DragItem from '@/components/DragItem.vue'
+import { getEmbedCodeTypeListMap, scaleTypeList } from '@/config/constants'
+import { useRoute } from 'vue-router'
+import { createShareUrl, newWindowOpenUrl } from '@/utils'
+import { useStore } from 'vuex'
 // import { getTemplate } from "@/config/templates";
 
 const props = defineProps({
   layout: {
-    type: String,
-  },
-});
+    type: String
+  }
+})
 
-const proxy = getCurrentInstance().proxy;
-const route = useRoute();
-const store = useStore();
-const editData = computed(() => store.state.editData);
+const proxy = getCurrentInstance().proxy
+const route = useRoute()
+const store = useStore()
+const editData = computed(() => store.state.editData)
 const resourcesBlockList = computed(() => {
-  let res = [];
-  Object.keys(editData.value.code).forEach((item) => {
-    let itemData = editData.value.code[item];
+  let res = []
+  Object.keys(editData.value.code).forEach(item => {
+    let itemData = editData.value.code[item]
     if (itemData.resources && itemData.resources.length > 0) {
       res.push({
         type: itemData.language,
-        list: itemData.resources,
-      });
+        list: itemData.resources
+      })
     }
-  });
+  })
   // if (props.layout === 'vue') {
   //   res.push({
   //     type: 'vue',
   //     list: getTemplate(editData.value.code.VUE.language).code.JS.resources,
   //   });
   // }
-  return res;
-});
-const codeTypes = ref([]);
-const previewTypes = ref(["preview"]);
-const showEditor = ref(false);
-const notRunCode = ref(false);
-const resourceType = ref([]);
-const scaleType = ref([1]);
-const scale = ref(1);
+  return res
+})
+const codeTypes = ref([])
+const previewTypes = ref(['preview'])
+const showEditor = ref(false)
+const notRunCode = ref(false)
+const resourceType = ref([])
+const scaleType = ref([1])
+const scale = ref(1)
 
 const codeTypeList = ref(
-  getEmbedCodeTypeListMap(props.layout).map((item) => {
+  getEmbedCodeTypeListMap(props.layout).map(item => {
     return {
       name: item,
       value: item,
       title: item,
       disableDrag: true,
-      showTouchBar: false,
-    };
+      showTouchBar: false
+    }
   })
-);
+)
 
 const showCodeTypeList = computed(() => {
   return codeTypes.value.length > 0
-    ? codeTypeList.value.filter((item) => {
-        return codeTypes.value.includes(item.value);
+    ? codeTypeList.value.filter(item => {
+        return codeTypes.value.includes(item.value)
       })
-    : codeTypeList.value;
-});
+    : codeTypeList.value
+})
 
 watch(codeTypes, () => {
-  notRunCode.value = true;
-});
+  notRunCode.value = true
+})
 
 watch(
   showCodeTypeList,
   () => {
-    showEditor.value = false;
+    showEditor.value = false
     nextTick(() => {
-      showEditor.value = true;
-    });
+      showEditor.value = true
+    })
   },
   {
-    immediate: true,
+    immediate: true
   }
-);
+)
 
-const scaleTypeChange = (data) => {
-  scale.value = data[0];
-};
+const scaleTypeChange = data => {
+  scale.value = data[0]
+}
 
 const reRunCode = () => {
-  proxy.$eventEmitter.emit("run");
-};
+  proxy.$eventEmitter.emit('run')
+}
 
 const toCodeRun = () => {
-  newWindowOpenUrl(createShareUrl(route.params.id));
-};
+  newWindowOpenUrl(createShareUrl(route.params.id))
+}
 </script>
 
 <style lang="less">

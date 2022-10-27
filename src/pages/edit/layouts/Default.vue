@@ -1,5 +1,9 @@
 <template>
-  <Drag :number="3" dir="v" :config="[{ min: 0 }, null, { min: 48, default: 48 }]">
+  <Drag
+    :number="3"
+    dir="v"
+    :config="[{ min: 0 }, null, { min: 48, default: 48 }]"
+  >
     <DragItem :index="0" :disabled="true" :showTouchBar="false">
       <Editor></Editor>
     </DragItem>

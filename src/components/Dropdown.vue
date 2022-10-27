@@ -20,62 +20,62 @@
 </template>
 
 <script setup>
-import { ref, onBeforeUnmount, defineProps, defineEmits } from "vue";
+import { ref, onBeforeUnmount, defineProps, defineEmits } from 'vue'
 
 const props = defineProps({
   list: {
     type: Array,
     default() {
-      return [];
-    },
-  },
-});
+      return []
+    }
+  }
+})
 
-const emit = defineEmits(["click"]);
+const emit = defineEmits(['click'])
 
 // 下拉菜单
-const dropdownContainer = ref(null);
+const dropdownContainer = ref(null)
 const useDropdown = () => {
-  const showDropdownList = ref(false);
-  const toggleDropdownList = (value) => {
+  const showDropdownList = ref(false)
+  const toggleDropdownList = value => {
     showDropdownList.value =
-      value !== undefined ? value : !showDropdownList.value;
-  };
-  const onBodyClick = (e) => {
-    let tar = e.target;
+      value !== undefined ? value : !showDropdownList.value
+  }
+  const onBodyClick = e => {
+    let tar = e.target
     while (tar && tar !== document.body) {
       if (tar === dropdownContainer.value) {
-        return;
+        return
       }
-      tar = tar.parentNode;
+      tar = tar.parentNode
     }
-    showDropdownList.value = false;
-  };
-  document.body.addEventListener("click", onBodyClick);
+    showDropdownList.value = false
+  }
+  document.body.addEventListener('click', onBodyClick)
   onBeforeUnmount(() => {
-    document.body.removeEventListener("click", onBodyClick);
-  });
+    document.body.removeEventListener('click', onBodyClick)
+  })
 
   return {
     showDropdownList,
-    toggleDropdownList,
-  };
-};
+    toggleDropdownList
+  }
+}
 
 // 菜单点击
 const useClick = ({ emit, showDropdownList }) => {
-  const onDropdownItemClick = (item) => {
-    emit("click", item);
-    showDropdownList.value = false;
-  };
+  const onDropdownItemClick = item => {
+    emit('click', item)
+    showDropdownList.value = false
+  }
 
   return {
-    onDropdownItemClick,
-  };
-};
+    onDropdownItemClick
+  }
+}
 
-const { showDropdownList, toggleDropdownList } = useDropdown();
-const { onDropdownItemClick } = useClick({ emit, showDropdownList });
+const { showDropdownList, toggleDropdownList } = useDropdown()
+const { onDropdownItemClick } = useClick({ emit, showDropdownList })
 </script>
 
 <style lang="less" scoped>

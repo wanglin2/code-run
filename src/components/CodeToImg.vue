@@ -98,98 +98,98 @@
 </template>
 
 <script setup>
-import { ref, reactive, defineExpose, defineProps, nextTick } from "vue";
-import { codeToImg } from "@/utils/codeToImg";
-import { ElButton, ElDialog, ElSwitch, ElInputNumber } from "element-plus";
-import "cropperjs/dist/cropper.css";
-import Cropper from "cropperjs";
+import { ref, reactive, defineExpose, defineProps, nextTick } from 'vue'
+import { codeToImg } from '@/utils/codeToImg'
+import { ElButton, ElDialog, ElSwitch, ElInputNumber } from 'element-plus'
+import 'cropperjs/dist/cropper.css'
+import Cropper from 'cropperjs'
 
 const props = defineProps({
   getThemeData: {
-    type: Function,
+    type: Function
   },
   codeTheme: {
     type: String,
-    default: "",
+    default: ''
   },
   codeFontSize: {
     type: Number,
-    default: 16,
-  },
-});
+    default: 16
+  }
+})
 
 // 代码图片预览下载
-const codeImgPreviewBoxImg = ref(null);
+const codeImgPreviewBoxImg = ref(null)
 const useCodeImgPreview = () => {
-  const codeImgPreviewDialogVisible = ref(false);
-  const codeImgPreviewUrl = ref("");
+  const codeImgPreviewDialogVisible = ref(false)
+  const codeImgPreviewUrl = ref('')
   const codeImgPreviewBoxStyle = reactive({
     width: 0,
-    height: 0,
-  });
-  let cropper = null;
+    height: 0
+  })
+  let cropper = null
 
   // 关闭弹窗
   const cancelDownloadCodeImg = () => {
-    codeImgPreviewDialogVisible.value = false;
-    codeImgPreviewUrl.value = "";
-  };
+    codeImgPreviewDialogVisible.value = false
+    codeImgPreviewUrl.value = ''
+  }
 
   // 下载图片
   const confirmDownloadCodeImg = () => {
-    let canvas = cropper.getCroppedCanvas();
-    let link = document.createElement("a");
-    link.download = "export.png";
-    link.href = canvas.toDataURL();
-    link.click();
-  };
+    let canvas = cropper.getCroppedCanvas()
+    let link = document.createElement('a')
+    link.download = 'export.png'
+    link.href = canvas.toDataURL()
+    link.click()
+  }
 
   // 设置预览url
-  const setCodeImgPreviewUrl = (url) => {
-    let image = new Image();
-    const defaultWidth = 700;
-    const defaultHeight = 500;
-    const defaultRatio = defaultWidth / defaultHeight;
+  const setCodeImgPreviewUrl = url => {
+    let image = new Image()
+    const defaultWidth = 700
+    const defaultHeight = 500
+    const defaultRatio = defaultWidth / defaultHeight
     image.onload = () => {
-      let imageRatio = image.width / image.height;
-      let _width = 0;
-      let _height = 0;
+      let imageRatio = image.width / image.height
+      let _width = 0
+      let _height = 0
       if (imageRatio > defaultRatio) {
         // 宽固定，调整高度
-        _width = defaultWidth;
-        _height = defaultWidth / imageRatio;
+        _width = defaultWidth
+        _height = defaultWidth / imageRatio
       } else {
         // 高固定，调整宽度
-        _height = defaultHeight;
-        _width = imageRatio * defaultHeight;
+        _height = defaultHeight
+        _width = imageRatio * defaultHeight
       }
-      codeImgPreviewBoxStyle.width = _width + "px";
-      codeImgPreviewBoxStyle.height = _height + "px";
-      codeImgPreviewUrl.value = url;
-      codeImgPreviewDialogVisible.value = true;
+      codeImgPreviewBoxStyle.width = _width + 'px'
+      codeImgPreviewBoxStyle.height = _height + 'px'
+      codeImgPreviewUrl.value = url
+      codeImgPreviewDialogVisible.value = true
       nextTick(() => {
         let initCropperData = {
           left: 0,
           top: 0,
           width: _width,
-          height: _height,
-        };
+          height: _height
+        }
         if (cropper) {
-          cropper.destroy();
-          cropper = null;
+          cropper.destroy()
+          cropper = null
         }
         cropper = new Cropper(codeImgPreviewBoxImg.value, {
           viewMode: 1,
           minContainerWidth: 0,
           minContainerHeight: 0,
           ready() {
-            cropper.setCropBoxData(initCropperData);
-          },
-        });
-      });
-    };
-    image.src = url;
-  };
+            cropper.setCropBoxData(initCropperData)
+          }
+        })
+      })
+    }
+    image.src = url
+  }
 
   return {
     codeImgPreviewDialogVisible,
@@ -197,13 +197,13 @@ const useCodeImgPreview = () => {
     codeImgPreviewBoxStyle,
     cancelDownloadCodeImg,
     confirmDownloadCodeImg,
-    setCodeImgPreviewUrl,
-  };
-};
+    setCodeImgPreviewUrl
+  }
+}
 
 // 生成代码图片
 const useCreateCodeImg = ({ setCodeImgPreviewUrl }) => {
-  const createCodeImgSettingDialogVisible = ref(false);
+  const createCodeImgSettingDialogVisible = ref(false)
   const codeImgSetting = reactive({
     lineNumbers: false,
     top: 20,
@@ -211,30 +211,30 @@ const useCreateCodeImg = ({ setCodeImgPreviewUrl }) => {
     radius: 5,
     width: 1000,
     showDots: true,
-    delay: 3,
-  });
-  const creatingCodeImg = ref(false);
-  let editor = null;
-  let createItem = null;
+    delay: 3
+  })
+  const creatingCodeImg = ref(false)
+  let editor = null
+  let createItem = null
 
   // 显示设置弹窗
   const showCreateCodeImg = (_editor, item) => {
-    createCodeImgSettingDialogVisible.value = true;
-    editor = _editor;
-    createItem = item;
-  };
+    createCodeImgSettingDialogVisible.value = true
+    editor = _editor
+    createItem = item
+  }
 
   // 关闭弹窗
   const cancelCreateCodeImg = () => {
-    createCodeImgSettingDialogVisible.value = false;
-    creatingCodeImg.value = false;
-    editor = null;
-    createItem = null;
-  };
+    createCodeImgSettingDialogVisible.value = false
+    creatingCodeImg.value = false
+    editor = null
+    createItem = null
+  }
 
   // 确认生成代码图片
   const confirmCreateCodeImg = async () => {
-    creatingCodeImg.value = true;
+    creatingCodeImg.value = true
     let img = await codeToImg({
       editor, // 当前编辑器实例
       themeData: props.getThemeData(), // 当前主题数据
@@ -242,12 +242,12 @@ const useCreateCodeImg = ({ setCodeImgPreviewUrl }) => {
       codeTheme: props.codeTheme,
       codeFontSize: props.codeFontSize,
       content: editor.getValue(),
-      language: createItem.language,
-    });
-    creatingCodeImg.value = false;
-    cancelCreateCodeImg();
-    setCodeImgPreviewUrl(img);
-  };
+      language: createItem.language
+    })
+    creatingCodeImg.value = false
+    cancelCreateCodeImg()
+    setCodeImgPreviewUrl(img)
+  }
 
   return {
     createCodeImgSettingDialogVisible,
@@ -255,9 +255,9 @@ const useCreateCodeImg = ({ setCodeImgPreviewUrl }) => {
     showCreateCodeImg,
     cancelCreateCodeImg,
     confirmCreateCodeImg,
-    creatingCodeImg,
-  };
-};
+    creatingCodeImg
+  }
+}
 
 const {
   codeImgPreviewDialogVisible,
@@ -265,8 +265,8 @@ const {
   codeImgPreviewBoxStyle,
   cancelDownloadCodeImg,
   confirmDownloadCodeImg,
-  setCodeImgPreviewUrl,
-} = useCodeImgPreview();
+  setCodeImgPreviewUrl
+} = useCodeImgPreview()
 
 const {
   createCodeImgSettingDialogVisible,
@@ -274,14 +274,14 @@ const {
   showCreateCodeImg,
   cancelCreateCodeImg,
   confirmCreateCodeImg,
-  creatingCodeImg,
+  creatingCodeImg
 } = useCreateCodeImg({
-  setCodeImgPreviewUrl,
-});
+  setCodeImgPreviewUrl
+})
 
 defineExpose({
-  showCreateCodeImg,
-});
+  showCreateCodeImg
+})
 </script>
 
 <style lang="less" scoped>
