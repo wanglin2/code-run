@@ -24,45 +24,45 @@
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
-import { useStore } from "vuex";
-import { layoutList, previewImgMap } from "@/config/constants";
-import { ElSelect, ElButton, ElOption } from "element-plus";
+import { computed, ref } from 'vue'
+import { useStore } from 'vuex'
+import { layoutList, previewImgMap } from '@/config/constants'
+import { ElSelect, ElButton, ElOption } from 'element-plus'
 
 // 初始化
 const useInit = () => {
-  const store = useStore();
+  const store = useStore()
   return {
-    store,
-  };
-};
+    store
+  }
+}
 
 // 布局处理
 const useLayout = ({ store }) => {
   // 预览图片
   const previewImg = computed(() => {
-    return previewImgMap[layout.value];
-  });
+    return previewImgMap[layout.value]
+  })
 
   // 布局
-  const layout = ref("");
-  layout.value = store.state.editData.config.layout;
+  const layout = ref('')
+  layout.value = store.state.editData.config.layout
 
   // 切换布局
   const confirm = () => {
-    store.commit("setLayout", layout.value);
-  };
+    store.commit('setLayout', layout.value)
+  }
 
   return {
     previewImg,
     layout,
-    confirm,
-  };
-};
+    confirm
+  }
+}
 
 // created部分
-const { store } = useInit();
-const { previewImg, layout, confirm } = useLayout({ store });
+const { store } = useInit()
+const { previewImg, layout, confirm } = useLayout({ store })
 </script>
 
 <style scoped lang="less">
