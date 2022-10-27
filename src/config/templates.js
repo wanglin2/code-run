@@ -45,24 +45,24 @@ const = {
 */
 
 const es6Module = {
-    name: '使用ES6模块语法',
-    icon: es6Icon,
-    code: {
-        HTML: {
-            language: 'html',
-            content: `<div id="app">
+  name: '使用ES6模块语法',
+  icon: es6Icon,
+  code: {
+    HTML: {
+      language: 'html',
+      content: `<div id="app">
 {{ message }}
 </div>`,
-            resources: []
-        },
-        CSS: {
-            language: 'css',
-            content: '',
-            resources: []
-        },
-        JS: {
-            language: 'javascript',
-            content: `import Vue from 'vue'
+      resources: []
+    },
+    CSS: {
+      language: 'css',
+      content: '',
+      resources: []
+    },
+    JS: {
+      language: 'javascript',
+      content: `import Vue from 'vue'
 import moment from 'moment'
 var app = new Vue({
     el: '#app',
@@ -70,53 +70,53 @@ var app = new Vue({
         message: 'Hello ' + moment().format('YYYY')
     }
 })`,
-            resources: [],
-            importMap: `
+      resources: [],
+      importMap: `
 {
     "imports": {
         "vue": "./lib/vue@2.7.10.esm.browser.js"
     }
 }
             `
-        },
-        VUE: {
-            language: 'vue2',
-            content: ``,
-            resources: []
-        }
     },
+    VUE: {
+      language: 'vue2',
+      content: ``,
+      resources: []
+    }
+  }
 }
 
 const vue3SFC = {
-    name: 'Vue 3单文件',
-    isVueSFC: true,
-    icon: vueIcon,
-    code: {
-        HTML: {
-            language: 'html',
-            content: ``,
-            resources: []
-        },
-        CSS: {
-            language: 'css',
-            content: '',
-            resources: []
-        },
-        JS: {
-            language: 'javascript',
-            content: ``,
-            resources: [],
-            importMap: `
+  name: 'Vue 3单文件',
+  isVueSFC: true,
+  icon: vueIcon,
+  code: {
+    HTML: {
+      language: 'html',
+      content: ``,
+      resources: []
+    },
+    CSS: {
+      language: 'css',
+      content: '',
+      resources: []
+    },
+    JS: {
+      language: 'javascript',
+      content: ``,
+      resources: [],
+      importMap: `
 {
     "imports": {
         "vue": "./lib/vue@3.2.37.esm-browser.js"
     }
 }
             `
-        },
-        VUE: {
-            language: 'vue3',
-            content: `<template>
+    },
+    VUE: {
+      language: 'vue3',
+      content: `<template>
     <h1>{{ msg }}</h1>
     <input v-model="msg">
 </template>
@@ -134,41 +134,41 @@ h1 {
 }
 </style>  
             `,
-            resources: []
-        },
-    },
+      resources: []
+    }
+  }
 }
 
 const vue2SFC_ESM = {
-    name: 'Vue 2单文件 ESM版',
-    isVueSFC: true,
-    icon: vueIcon,
-    code: {
-        HTML: {
-            language: 'html',
-            content: ``,
-            resources: []
-        },
-        CSS: {
-            language: 'css',
-            content: '',
-            resources: []
-        },
-        JS: {
-            language: 'javascript',
-            content: ``,
-            resources: [],
-            importMap: `
+  name: 'Vue 2单文件 ESM版',
+  isVueSFC: true,
+  icon: vueIcon,
+  code: {
+    HTML: {
+      language: 'html',
+      content: ``,
+      resources: []
+    },
+    CSS: {
+      language: 'css',
+      content: '',
+      resources: []
+    },
+    JS: {
+      language: 'javascript',
+      content: ``,
+      resources: [],
+      importMap: `
 {
     "imports": {
         "vue": "./lib/vue@2.7.10.esm.browser.js"
     }
 }
             `
-        },
-        VUE: {
-            language: 'vue2',
-            content: `
+    },
+    VUE: {
+      language: 'vue2',
+      content: `
 <template>
     <div>
         <div class="example">{{ msg }}</div>
@@ -195,37 +195,39 @@ export default {
 }
 </style>  
             `,
-            resources: []
-        },
-    },
+      resources: []
+    }
+  }
 }
 
 const vue2SFC = {
-    name: 'Vue 2单文件',
-    isVueSFC: true,
-    icon: vueIcon,
-    code: {
-        HTML: {
-            language: 'html',
-            content: ``,
-            resources: []
-        },
-        CSS: {
-            language: 'css',
-            content: '',
-            resources: []
-        },
-        JS: {
-            language: 'javascript',
-            content: ``,
-            resources: [{
-                name: 'Vue 2',
-                url: base + 'lib/vue@2.6.14.js'
-            }]
-        },
-        VUE: {
-            language: 'vue2',
-            content: `
+  name: 'Vue 2单文件',
+  isVueSFC: true,
+  icon: vueIcon,
+  code: {
+    HTML: {
+      language: 'html',
+      content: ``,
+      resources: []
+    },
+    CSS: {
+      language: 'css',
+      content: '',
+      resources: []
+    },
+    JS: {
+      language: 'javascript',
+      content: ``,
+      resources: [
+        {
+          name: 'Vue 2',
+          url: base + 'lib/vue@2.6.14.js'
+        }
+      ]
+    },
+    VUE: {
+      language: 'vue2',
+      content: `
 <template>
     <div>
         <div class="example">{{ msg }}</div>
@@ -249,25 +251,25 @@ export default {
 }
 </style>  
             `,
-            resources: []
-        },
-    },
+      resources: []
+    }
+  }
 }
 
 const vue3 = {
-    name: 'Vue 3',
-    icon: vueIcon,
-    code: {
-        HTML: {
-            language: 'html',
-            content: `<div id="hello-vue" class="demo">
+  name: 'Vue 3',
+  icon: vueIcon,
+  code: {
+    HTML: {
+      language: 'html',
+      content: `<div id="hello-vue" class="demo">
 {{ message }}
 </div>`,
-            resources: []
-        },
-        CSS: {
-            language: 'css',
-            content: `.demo {
+      resources: []
+    },
+    CSS: {
+      language: 'css',
+      content: `.demo {
 font-family: sans-serif;
 border: 1px solid #eee;
 border-radius: 2px;
@@ -277,11 +279,11 @@ margin-bottom: 40px;
 user-select: none;
 overflow-x: auto;
 }`,
-            resources: []
-        },
-        JS: {
-            language: 'javascript',
-            content: `const HelloVueApp = {
+      resources: []
+    },
+    JS: {
+      language: 'javascript',
+      content: `const HelloVueApp = {
 data() {
     return {
     message: 'Hello Vue!!'
@@ -290,116 +292,123 @@ data() {
 }
 
 Vue.createApp(HelloVueApp).mount('#hello-vue')`,
-            resources: [{
-                name: 'Vue 3',
-                url: base + 'lib/vue3.2.0-beta.7.global.js'
-            }]
-        },
-        VUE: {
-            language: 'vue2',
-            content: ``,
-            resources: []
-        },
+      resources: [
+        {
+          name: 'Vue 3',
+          url: base + 'lib/vue3.2.0-beta.7.global.js'
+        }
+      ]
     },
+    VUE: {
+      language: 'vue2',
+      content: ``,
+      resources: []
+    }
+  }
 }
 
 const vue2 = {
-    name: 'Vue 2',
-    icon: vueIcon,
-    code: {
-        HTML: {
-            language: 'html',
-            content: `<div id="app">
+  name: 'Vue 2',
+  icon: vueIcon,
+  code: {
+    HTML: {
+      language: 'html',
+      content: `<div id="app">
 {{ message }}
 </div>`,
-            resources: []
-        },
-        CSS: {
-            language: 'css',
-            content: '',
-            resources: []
-        },
-        JS: {
-            language: 'javascript',
-            content: `var app = new Vue({
+      resources: []
+    },
+    CSS: {
+      language: 'css',
+      content: '',
+      resources: []
+    },
+    JS: {
+      language: 'javascript',
+      content: `var app = new Vue({
 el: '#app',
 data: {
     message: 'Hello Vue!'
 }
 })`,
-            resources: [{
-                name: 'Vue 2',
-                url: base + 'lib/vue@2.6.14.js'
-            }]
-        },
-        VUE: {
-            language: 'vue2',
-            content: ``,
-            resources: []
-        },
+      resources: [
+        {
+          name: 'Vue 2',
+          url: base + 'lib/vue@2.6.14.js'
+        }
+      ]
     },
+    VUE: {
+      language: 'vue2',
+      content: ``,
+      resources: []
+    }
+  }
 }
 
 const react = {
-    name: 'React',
-    icon: reactIcon,
-    code: {
-        HTML: {
-            language: 'html',
-            content: `<div id="root"></div>`,
-            resources: []
-        },
-        CSS: {
-            language: 'css',
-            content: '',
-            resources: []
-        },
-        JS: {
-            language: 'babel',
-            content: `ReactDOM.render(
+  name: 'React',
+  icon: reactIcon,
+  code: {
+    HTML: {
+      language: 'html',
+      content: `<div id="root"></div>`,
+      resources: []
+    },
+    CSS: {
+      language: 'css',
+      content: '',
+      resources: []
+    },
+    JS: {
+      language: 'babel',
+      content: `ReactDOM.render(
 <h1>Hello, world!</h1>,
 document.getElementById('root')
 );`,
-            resources: [{
-                    name: 'React',
-                    url: base + 'lib/react@18.2.0.js'
-                },
-                {
-                    name: 'react-dom',
-                    url: base + 'lib/react-dom@18.2.0.js'
-                },
-            ]
+      resources: [
+        {
+          name: 'React',
+          url: base + 'lib/react@18.2.0.js'
         },
-        VUE: {
-            language: 'vue2',
-            content: ``,
-            resources: []
-        },
+        {
+          name: 'react-dom',
+          url: base + 'lib/react-dom@18.2.0.js'
+        }
+      ]
     },
+    VUE: {
+      language: 'vue2',
+      content: ``,
+      resources: []
+    }
+  }
 }
 
 const elementPlus = {
-    name: 'element-plus',
-    icon: elementPlusIcon,
-    code: {
-        HTML: {
-            language: 'html',
-            content: `<div id="app">
+  name: 'element-plus',
+  icon: elementPlusIcon,
+  code: {
+    HTML: {
+      language: 'html',
+      content: `<div id="app">
 <el-button>{{ message }}</el-button>
 </div>`,
-            resources: []
-        },
-        CSS: {
-            language: 'css',
-            content: '',
-            resources: [{
-                name: 'element-plus',
-                url: base + 'lib/element-plus@2.2.6.css'
-            }]
-        },
-        JS: {
-            language: 'javascript',
-            content: `const App = {
+      resources: []
+    },
+    CSS: {
+      language: 'css',
+      content: '',
+      resources: [
+        {
+          name: 'element-plus',
+          url: base + 'lib/element-plus@2.2.6.css'
+        }
+      ]
+    },
+    JS: {
+      language: 'javascript',
+      content: `const App = {
 data() {
     return {
     message: "Hello Element Plus",
@@ -409,93 +418,101 @@ data() {
 const app = Vue.createApp(App);
 app.use(ElementPlus);
 app.mount("#app");`,
-            resources: [{
-                name: 'Vue 3',
-                url: base + 'lib/vue3.2.0-beta.7.global.js'
-            }, {
-                name: 'element-plus',
-                url: base + 'lib/element-plus@.2.26.js'
-            }]
+      resources: [
+        {
+          name: 'Vue 3',
+          url: base + 'lib/vue3.2.0-beta.7.global.js'
         },
-        VUE: {
-            language: 'vue2',
-            content: ``,
-            resources: []
-        },
+        {
+          name: 'element-plus',
+          url: base + 'lib/element-plus@.2.26.js'
+        }
+      ]
     },
+    VUE: {
+      language: 'vue2',
+      content: ``,
+      resources: []
+    }
+  }
 }
 
 const elementUi = {
-    name: 'element-ui',
-    icon: elementIcon,
-    code: {
-        HTML: {
-            language: 'html',
-            content: `<div id="app">
+  name: 'element-ui',
+  icon: elementIcon,
+  code: {
+    HTML: {
+      language: 'html',
+      content: `<div id="app">
 <el-button @click="visible = true">按钮</el-button>
 <el-dialog :visible.sync="visible" title="Hello world">
     <p>欢迎使用 Element</p>
 </el-dialog>
 </div>`,
-            resources: []
-        },
-        CSS: {
-            language: 'css',
-            content: '',
-            resources: [{
-                name: 'element-ui',
-                url: base + 'lib/element-ui@2.15.9.css'
-            }]
-        },
-        JS: {
-            language: 'javascript',
-            content: `new Vue({
+      resources: []
+    },
+    CSS: {
+      language: 'css',
+      content: '',
+      resources: [
+        {
+          name: 'element-ui',
+          url: base + 'lib/element-ui@2.15.9.css'
+        }
+      ]
+    },
+    JS: {
+      language: 'javascript',
+      content: `new Vue({
 el: '#app',
 data: function() {
     return { visible: false }
 }
 })`,
-            resources: [{
-                    name: 'Vue 2',
-                    url: base + 'lib/vue@2.6.14.js'
-                },
-                {
-                    name: 'element-ui',
-                    url: base + 'lib/element-ui@2.15.9.js'
-                }
-            ]
+      resources: [
+        {
+          name: 'Vue 2',
+          url: base + 'lib/vue@2.6.14.js'
         },
-        VUE: {
-            language: 'vue2',
-            content: ``,
-            resources: []
-        },
+        {
+          name: 'element-ui',
+          url: base + 'lib/element-ui@2.15.9.js'
+        }
+      ]
     },
+    VUE: {
+      language: 'vue2',
+      content: ``,
+      resources: []
+    }
+  }
 }
 
 const openLayers = {
-    name: 'OpenLayers',
-    icon: openlayersIcon,
-    code: {
-        HTML: {
-            language: 'html',
-            content: `<div id="map" class="map"></div>`,
-            resources: []
-        },
-        CSS: {
-            language: 'css',
-            content: `.map {
+  name: 'OpenLayers',
+  icon: openlayersIcon,
+  code: {
+    HTML: {
+      language: 'html',
+      content: `<div id="map" class="map"></div>`,
+      resources: []
+    },
+    CSS: {
+      language: 'css',
+      content: `.map {
 height: 400px;
 width: 100%;
 }`,
-            resources: [{
-                name: 'OpenLayers',
-                url: base + 'lib/ol@6.5.0.css'
-            }]
-        },
-        JS: {
-            language: 'javascript',
-            content: `var map = new ol.Map({
+      resources: [
+        {
+          name: 'OpenLayers',
+          url: base + 'lib/ol@6.5.0.css'
+        }
+      ]
+    },
+    JS: {
+      language: 'javascript',
+      content: `var map = new ol.Map({
     target: 'map',
     layers: [
         new ol.layer.Tile({
@@ -507,37 +524,39 @@ width: 100%;
         zoom: 4
     })
 });`,
-            resources: [{
-                name: 'OpenLayers',
-                url: base + 'lib/ol@6.5.0.js'
-            }]
-        },
-        VUE: {
-            language: 'vue2',
-            content: ``,
-            resources: []
-        },
+      resources: [
+        {
+          name: 'OpenLayers',
+          url: base + 'lib/ol@6.5.0.js'
+        }
+      ]
     },
+    VUE: {
+      language: 'vue2',
+      content: ``,
+      resources: []
+    }
+  }
 }
 
 const eCharts = {
-    name: 'ECharts',
-    icon: echartsIcon,
-    code: {
-        HTML: {
-            language: 'html',
-            content: `<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+  name: 'ECharts',
+  icon: echartsIcon,
+  code: {
+    HTML: {
+      language: 'html',
+      content: `<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
 <div id="main" style="width: 600px;height:400px;"></div>`,
-            resources: []
-        },
-        CSS: {
-            language: 'css',
-            content: '',
-            resources: []
-        },
-        JS: {
-            language: 'javascript',
-            content: `// 基于准备好的dom，初始化echarts实例
+      resources: []
+    },
+    CSS: {
+      language: 'css',
+      content: '',
+      resources: []
+    },
+    JS: {
+      language: 'javascript',
+      content: `// 基于准备好的dom，初始化echarts实例
 var myChart = echarts.init(document.getElementById('main'));
 
 // 指定图表的配置项和数据
@@ -562,36 +581,38 @@ series: [{
 
 // 使用刚指定的配置项和数据显示图表。
 myChart.setOption(option);`,
-            resources: [{
-                name: 'ECharts',
-                url: base + 'lib/echarts@5.1.0.js'
-            }]
-        },
-        VUE: {
-            language: 'vue2',
-            content: ``,
-            resources: []
-        },
+      resources: [
+        {
+          name: 'ECharts',
+          url: base + 'lib/echarts@5.1.0.js'
+        }
+      ]
     },
+    VUE: {
+      language: 'vue2',
+      content: ``,
+      resources: []
+    }
+  }
 }
 
 const g2 = {
-    name: 'G2',
-    icon: g2Icon,
-    code: {
-        HTML: {
-            language: 'html',
-            content: `<div id="container"></div>`,
-            resources: []
-        },
-        CSS: {
-            language: 'css',
-            content: '',
-            resources: []
-        },
-        JS: {
-            language: 'javascript',
-            content: `const data = [
+  name: 'G2',
+  icon: g2Icon,
+  code: {
+    HTML: {
+      language: 'html',
+      content: `<div id="container"></div>`,
+      resources: []
+    },
+    CSS: {
+      language: 'css',
+      content: '',
+      resources: []
+    },
+    JS: {
+      language: 'javascript',
+      content: `const data = [
     { type: '未知', value: 654, percent: 0.02 },
     { type: '17 岁以下', value: 654, percent: 0.02 },
     { type: '18-24 岁', value: 4400, percent: 0.2 },
@@ -647,73 +668,79 @@ data.forEach((item) => {
         });
 });
 chart.render();`,
-            resources: [{
-                name: 'g2',
-                url: base + 'lib/g2@4.1.16.js'
-            }]
-        },
-        VUE: {
-            language: 'vue2',
-            content: ``,
-            resources: []
-        },
+      resources: [
+        {
+          name: 'g2',
+          url: base + 'lib/g2@4.1.16.js'
+        }
+      ]
     },
+    VUE: {
+      language: 'vue2',
+      content: ``,
+      resources: []
+    }
+  }
 }
 
 const angular = {
-    name: 'Angular 1.x',
-    icon: angularIcon,
-    code: {
-        HTML: {
-            language: 'html',
-            content: `<div ng-app="">
+  name: 'Angular 1.x',
+  icon: angularIcon,
+  code: {
+    HTML: {
+      language: 'html',
+      content: `<div ng-app="">
     <p>名字 : <input type="text" ng-model="name"></p>
     <h1>Hello {{name}}</h1>
     <p ng-bind="name"></p>
 </div>`,
-            resources: []
-        },
-        CSS: {
-            language: 'css',
-            content: '',
-            resources: []
-        },
-        JS: {
-            language: 'javascript',
-            content: ``,
-            resources: [{
-                name: 'angular',
-                url: base + 'lib/angular@1.4.6.js'
-            }]
-        },
-        VUE: {
-            language: 'vue2',
-            content: ``,
-            resources: []
-        },
+      resources: []
     },
+    CSS: {
+      language: 'css',
+      content: '',
+      resources: []
+    },
+    JS: {
+      language: 'javascript',
+      content: ``,
+      resources: [
+        {
+          name: 'angular',
+          url: base + 'lib/angular@1.4.6.js'
+        }
+      ]
+    },
+    VUE: {
+      language: 'vue2',
+      content: ``,
+      resources: []
+    }
+  }
 }
 
 const leaflet = {
-    name: 'Leaflet',
-    icon: leafletIcon,
-    code: {
-        HTML: {
-            language: 'html',
-            content: `<div id="mapid"></div>`,
-            resources: []
-        },
-        CSS: {
-            language: 'css',
-            content: '#mapid { height: 180px; }',
-            resources: [{
-                name: 'leaflet',
-                url: base + 'lib/leaflet@1.7.1.css'
-            }]
-        },
-        JS: {
-            language: 'javascript',
-            content: `const accessToken = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw';
+  name: 'Leaflet',
+  icon: leafletIcon,
+  code: {
+    HTML: {
+      language: 'html',
+      content: `<div id="mapid"></div>`,
+      resources: []
+    },
+    CSS: {
+      language: 'css',
+      content: '#mapid { height: 180px; }',
+      resources: [
+        {
+          name: 'leaflet',
+          url: base + 'lib/leaflet@1.7.1.css'
+        }
+      ]
+    },
+    JS: {
+      language: 'javascript',
+      content: `const accessToken = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw';
 var mymap = L.map('mapid').setView([51.505, -0.09], 13);
 L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -723,41 +750,45 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
     zoomOffset: -1,
     accessToken: accessToken
 }).addTo(mymap);`,
-            resources: [{
-                name: 'leaflet',
-                url: base + 'lib/leaflet@1.7.1.js'
-            }]
-        },
-        VUE: {
-            language: 'vue2',
-            content: ``,
-            resources: []
-        },
+      resources: [
+        {
+          name: 'leaflet',
+          url: base + 'lib/leaflet@1.7.1.js'
+        }
+      ]
     },
+    VUE: {
+      language: 'vue2',
+      content: ``,
+      resources: []
+    }
+  }
 }
 
 const vant = {
-    name: 'Vant',
-    icon: vantIcon,
-    code: {
-        HTML: {
-            language: 'html',
-            content: `
+  name: 'Vant',
+  icon: vantIcon,
+  code: {
+    HTML: {
+      language: 'html',
+      content: `
 <div id="app"></div>            
             `,
-            resources: []
-        },
-        CSS: {
-            language: 'css',
-            content: '',
-            resources: [{
-                name: 'vant',
-                url: base + 'lib/vant@2.12.css'
-            }]
-        },
-        JS: {
-            language: 'javascript',
-            content: `// 在 #app 标签下渲染一个按钮组件
+      resources: []
+    },
+    CSS: {
+      language: 'css',
+      content: '',
+      resources: [
+        {
+          name: 'vant',
+          url: base + 'lib/vant@2.12.css'
+        }
+      ]
+    },
+    JS: {
+      language: 'javascript',
+      content: `// 在 #app 标签下渲染一个按钮组件
 new Vue({
     el: '#app',
     template: '<van-button>按钮</van-button>',
@@ -769,42 +800,45 @@ vant.Toast('提示');
 // 通过 CDN 引入时不会自动注册 Lazyload 组件
 // 可以通过下面的方式手动注册
 Vue.use(vant.Lazyload);`,
-            resources: [{
-                name: 'vue',
-                url: base + 'lib/vue@2.6.14.js'
-            }, {
-                name: 'vant',
-                url: base + 'lib/vant@2.12.js'
-            }]
+      resources: [
+        {
+          name: 'vue',
+          url: base + 'lib/vue@2.6.14.js'
         },
-        VUE: {
-            language: 'vue2',
-            content: ``,
-            resources: []
-        },
+        {
+          name: 'vant',
+          url: base + 'lib/vant@2.12.js'
+        }
+      ]
     },
+    VUE: {
+      language: 'vue2',
+      content: ``,
+      resources: []
+    }
+  }
 }
 
 const konva = {
-    name: 'Konva',
-    icon: konvaIcon,
-    code: {
-        HTML: {
-            language: 'html',
-            content: `<div id="container"></div>`,
-            resources: []
-        },
-        CSS: {
-            language: 'css',
-            content: `.container {
+  name: 'Konva',
+  icon: konvaIcon,
+  code: {
+    HTML: {
+      language: 'html',
+      content: `<div id="container"></div>`,
+      resources: []
+    },
+    CSS: {
+      language: 'css',
+      content: `.container {
     width: 500px;
     height: 500px;
 }`,
-            resources: []
-        },
-        JS: {
-            language: 'javascript',
-            content: `// first we need to create a stage
+      resources: []
+    },
+    JS: {
+      language: 'javascript',
+      content: `// first we need to create a stage
 var stage = new Konva.Stage({
     container: 'container',   // id of container <div>
     width: 500,
@@ -832,64 +866,66 @@ stage.add(layer);
 
 // draw the image
 layer.draw();`,
-            resources: [{
-                name: 'konva',
-                url: base + 'lib/konva@7.0.3.js'
-            }]
-        },
-        VUE: {
-            language: 'vue2',
-            content: ``,
-            resources: []
-        },
+      resources: [
+        {
+          name: 'konva',
+          url: base + 'lib/konva@7.0.3.js'
+        }
+      ]
     },
+    VUE: {
+      language: 'vue2',
+      content: ``,
+      resources: []
+    }
+  }
 }
 
-/** 
- * javascript comment 
- * @Author: 王林25 
- * @Date: 2021-05-14 10:47:23 
- * @Desc: 模板列表 
+/**
+ * javascript comment
+ * @Author: 王林25
+ * @Date: 2021-05-14 10:47:23
+ * @Desc: 模板列表
  */
 const templateList = [
-    es6Module,
-    vue3SFC,
-    vue2SFC_ESM,
-    vue2SFC,
-    vue3,
-    vue2,
-    react,
-    elementPlus,
-    elementUi,
-    openLayers,
-    eCharts,
-    g2,
-    angular,
-    vant,
-    leaflet,
-    konva
+  es6Module,
+  vue3SFC,
+  vue2SFC_ESM,
+  vue2SFC,
+  vue3,
+  vue2,
+  react,
+  elementPlus,
+  elementUi,
+  openLayers,
+  eCharts,
+  g2,
+  angular,
+  vant,
+  leaflet,
+  konva
 ]
 const templateMap = {
-    es6Module,
-    vue3SFC,
-    vue2SFC_ESM,
-    vue2SFC,
-    vue3,
-    vue2,
-    react,
-    elementPlus,
-    elementUi,
-    openLayers,
-    eCharts,
-    g2,
-    angular,
-    vant,
-    leaflet,
-    konva
+  es6Module,
+  vue3SFC,
+  vue2SFC_ESM,
+  vue2SFC,
+  vue3,
+  vue2,
+  react,
+  elementPlus,
+  elementUi,
+  openLayers,
+  eCharts,
+  g2,
+  angular,
+  vant,
+  leaflet,
+  konva
 }
 
-export const getTemplate = (name) => {
-    return templateMap[name]
+export const getTemplate = name => {
+  return templateMap[name]
 }
 
 export default templateList

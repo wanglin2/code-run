@@ -1,5 +1,9 @@
 <template>
-  <Drag :number="3" dir="v" :config="[{ min: 0 }, {min: 48, default: 48}, null]">
+  <Drag
+    :number="3"
+    dir="v"
+    :config="[{ min: 0 }, { min: 48, default: 48 }, null]"
+  >
     <DragItem :index="0" :disabled="true" :showTouchBar="false" title="预览">
       <Preview></Preview>
     </DragItem>

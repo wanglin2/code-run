@@ -1,7 +1,7 @@
 {
   "name": "@wanglin1994/code-run",
   "description": "一个简单的前端代码在线运行平台",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "authors": [
     {
       "name": "街角小林",
@@ -30,7 +30,8 @@
     "convertTheme": "node ./scripts/convertTheme.js",
     "createThemeList": "node ./scripts/createThemeList.js",
     "buildLiveScript": "node ./scripts/buildLiveScript.js",
-    "buildVueSFCCompiler": "node ./scripts/buildVueCompilerSfc.js"
+    "buildVueSFCCompiler": "node ./scripts/buildVueCompilerSfc.js",
+    "format": "prettier --write src/**"
   },
   "dependencies": {
     "@element-plus/icons": "^0.0.11",
@@ -72,6 +73,7 @@
     "less": "^4.1.1",
     "less-loader": "^4.1.0",
     "monaco-editor-webpack-plugin": "^4.1.2",
+    "prettier": "^1.19.1",
     "vscode-theme-to-monaco-theme-node": "^1.0.0"
   },
   "eslintConfig": {

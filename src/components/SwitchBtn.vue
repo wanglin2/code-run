@@ -13,49 +13,49 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits } from "vue";
+import { defineProps, defineEmits } from 'vue'
 
 const props = defineProps({
   list: {
     type: Array,
     default() {
-      return [];
-    },
+      return []
+    }
   },
   modelValue: {
     type: Array,
     default() {
-      return [];
-    },
+      return []
+    }
   },
   single: {
     type: Boolean,
-    default: true,
+    default: true
   },
   size: {
     type: String,
-    default: 'large'// small
+    default: 'large' // small
   }
-});
+})
 
-const emits = defineEmits(["update:modelValue"]);
+const emits = defineEmits(['update:modelValue'])
 
-const toggleActive = (value) => {
-  let newValue;
+const toggleActive = value => {
+  let newValue
   if (props.modelValue.includes(value)) {
-    newValue = props.modelValue.filter((item) => {
-      return item !== value;
-    });
+    newValue = props.modelValue.filter(item => {
+      return item !== value
+    })
   } else {
     if (props.single) {
-      newValue = [value];
+      newValue = [value]
     } else {
-      newValue = [...props.modelValue, value];
+      newValue = [...props.modelValue, value]
     }
   }
-  emits("update:modelValue", newValue);
-  emits("change", newValue);
-};
+  emits('update:modelValue', newValue)
+  emits('change', newValue)
+}
 </script>
 
 <style scoped lang="less">
