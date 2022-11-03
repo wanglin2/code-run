@@ -1,7 +1,7 @@
 {
   "name": "@wanglin1994/code-run",
   "description": "一个简单的前端代码在线运行平台",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "authors": [
     {
       "name": "街角小林",
@@ -45,8 +45,8 @@
     "jszip": "^3.7.1",
     "livescript": "^1.6.0",
     "loadjs": "^4.2.0",
-    "monaco-editor": "^0.26.0",
-    "monaco-editor-textmate": "^3.0.0",
+    "monaco-editor": "^0.29.1",
+    "monaco-editor-textmate": "^4.0.0",
     "monaco-textmate": "^3.0.1",
     "nprogress": "^0.2.0",
     "onigasm": "^2.2.5",
@@ -72,7 +72,7 @@
     "fs-extra": "^7.0.1",
     "less": "^4.1.1",
     "less-loader": "^4.1.0",
-    "monaco-editor-webpack-plugin": "^4.1.2",
+    "monaco-editor-webpack-plugin": "^5.0.0",
     "prettier": "^1.19.1",
     "vscode-theme-to-monaco-theme-node": "^1.0.0"
   },
