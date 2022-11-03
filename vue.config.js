@@ -5,6 +5,7 @@ module.exports = {
     publicPath: '/code-run-online/',
     lintOnSave: false,
     productionSourceMap: false,
+    transpileDependencies: [/monaco-editor-textmate/],
     configureWebpack: {
         resolve: {
             alias: {
