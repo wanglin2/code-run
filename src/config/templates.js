@@ -3,14 +3,12 @@ import vueIcon from '../assets/templateIcons/vue.png'
 import reactIcon from '../assets/templateIcons/react.svg'
 import elementIcon from '../assets/templateIcons/element.svg'
 import echartsIcon from '../assets/templateIcons/echarts.png'
-import openlayersIcon from '../assets/templateIcons/openlayers.png'
 import g2Icon from '../assets/templateIcons/g2.png'
 import angularIcon from '../assets/templateIcons/angular.png'
 import vantIcon from '../assets/templateIcons/vant.png'
 import leafletIcon from '../assets/templateIcons/leaflet.png'
 import konvaIcon from '../assets/templateIcons/konva.png'
 import es6Icon from '../assets/templateIcons/es6.webp'
-import { base } from '@/config'
 
 /*
 const = {
@@ -74,7 +72,7 @@ var app = new Vue({
       importMap: `
 {
     "imports": {
-        "vue": "./lib/vue@2.7.10.esm.browser.js"
+        "vue": "https://unpkg.com/vue@2.7.14/dist/vue.esm.browser.min.js"
     }
 }
             `
@@ -109,7 +107,7 @@ const vue3SFC = {
       importMap: `
 {
     "imports": {
-        "vue": "./lib/vue@3.2.37.esm-browser.js"
+        "vue": "https://unpkg.com/vue@3.2.37/dist/vue.esm-browser.prod.js"
     }
 }
             `
@@ -161,7 +159,7 @@ const vue2SFC_ESM = {
       importMap: `
 {
     "imports": {
-        "vue": "./lib/vue@2.7.10.esm.browser.js"
+        "vue": "https://unpkg.com/vue@2.7.14/dist/vue.esm.browser.js"
     }
 }
             `
@@ -221,7 +219,7 @@ const vue2SFC = {
       resources: [
         {
           name: 'Vue 2',
-          url: base + 'lib/vue@2.6.14.js'
+          url: 'https://unpkg.com/vue@2.6.14/dist/vue.js'
         }
       ]
     },
@@ -295,7 +293,7 @@ Vue.createApp(HelloVueApp).mount('#hello-vue')`,
       resources: [
         {
           name: 'Vue 3',
-          url: base + 'lib/vue3.2.0-beta.7.global.js'
+          url: 'https://unpkg.com/vue@3.3.4/dist/vue.global.js'
         }
       ]
     },
@@ -334,7 +332,7 @@ data: {
       resources: [
         {
           name: 'Vue 2',
-          url: base + 'lib/vue@2.6.14.js'
+          url: 'https://unpkg.com/vue@2.7.14/dist/vue.js'
         }
       ]
     },
@@ -369,11 +367,11 @@ document.getElementById('root')
       resources: [
         {
           name: 'React',
-          url: base + 'lib/react@18.2.0.js'
+          url: 'https://unpkg.com/react@18.2.0/umd/react.development.js'
         },
         {
           name: 'react-dom',
-          url: base + 'lib/react-dom@18.2.0.js'
+          url: 'https://unpkg.com/react-dom@18.2.0/umd/react-dom.development.js'
         }
       ]
     },
@@ -402,7 +400,7 @@ const elementPlus = {
       resources: [
         {
           name: 'element-plus',
-          url: base + 'lib/element-plus@2.2.6.css'
+          url: 'https://unpkg.com/element-plus@2.3.7/dist/index.css'
         }
       ]
     },
@@ -421,11 +419,11 @@ app.mount("#app");`,
       resources: [
         {
           name: 'Vue 3',
-          url: base + 'lib/vue3.2.0-beta.7.global.js'
+          url: 'https://unpkg.com/vue@3.3.4/dist/vue.global.js'
         },
         {
           name: 'element-plus',
-          url: base + 'lib/element-plus@.2.26.js'
+          url: 'https://unpkg.com/element-plus@2.3.7/dist/index.full.js'
         }
       ]
     },
@@ -457,7 +455,7 @@ const elementUi = {
       resources: [
         {
           name: 'element-ui',
-          url: base + 'lib/element-ui@2.15.9.css'
+          url: 'https://unpkg.com/element-ui@2.15.13/lib/theme-chalk/index.css'
         }
       ]
     },
@@ -472,62 +470,11 @@ data: function() {
       resources: [
         {
           name: 'Vue 2',
-          url: base + 'lib/vue@2.6.14.js'
+          url: 'https://unpkg.com/vue@2.7.14/dist/vue.js'
         },
         {
           name: 'element-ui',
-          url: base + 'lib/element-ui@2.15.9.js'
-        }
-      ]
-    },
-    VUE: {
-      language: 'vue2',
-      content: ``,
-      resources: []
-    }
-  }
-}
-
-const openLayers = {
-  name: 'OpenLayers',
-  icon: openlayersIcon,
-  code: {
-    HTML: {
-      language: 'html',
-      content: `<div id="map" class="map"></div>`,
-      resources: []
-    },
-    CSS: {
-      language: 'css',
-      content: `.map {
-height: 400px;
-width: 100%;
-}`,
-      resources: [
-        {
-          name: 'OpenLayers',
-          url: base + 'lib/ol@6.5.0.css'
-        }
-      ]
-    },
-    JS: {
-      language: 'javascript',
-      content: `var map = new ol.Map({
-    target: 'map',
-    layers: [
-        new ol.layer.Tile({
-        source: new ol.source.OSM()
-        })
-    ],
-    view: new ol.View({
-        center: ol.proj.fromLonLat([37.41, 8.82]),
-        zoom: 4
-    })
-});`,
-      resources: [
-        {
-          name: 'OpenLayers',
-          url: base + 'lib/ol@6.5.0.js'
+          url: 'https://unpkg.com/element-ui@2.15.13/lib/index.js'
         }
       ]
     },
@@ -584,7 +531,7 @@ myChart.setOption(option);`,
       resources: [
         {
           name: 'ECharts',
-          url: base + 'lib/echarts@5.1.0.js'
+          url: 'https://unpkg.com/echarts@5.4.2/dist/echarts.js'
         }
       ]
     },
@@ -671,7 +618,7 @@ chart.render();`,
       resources: [
         {
           name: 'g2',
-          url: base + 'lib/g2@4.1.16.js'
+          url: 'https://unpkg.com/@antv/g2@4.2.10/dist/g2.min.js'
         }
       ]
     },
@@ -707,7 +654,7 @@ const angular = {
       resources: [
         {
           name: 'angular',
-          url: base + 'lib/angular@1.4.6.js'
+          url: 'https://unpkg.com/angular@1.8.3/angular.min.js'
         }
       ]
     },
@@ -734,7 +681,7 @@ const leaflet = {
       resources: [
         {
           name: 'leaflet',
-          url: base + 'lib/leaflet@1.7.1.css'
+          url: 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css'
         }
       ]
     },
@@ -753,7 +700,7 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
       resources: [
         {
           name: 'leaflet',
-          url: base + 'lib/leaflet@1.7.1.js'
+          url: 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js'
         }
       ]
     },
@@ -782,7 +729,7 @@ const vant = {
       resources: [
         {
           name: 'vant',
-          url: base + 'lib/vant@2.12.css'
+          url: 'https://unpkg.com/vant@2.12.54/lib/index.css'
         }
       ]
     },
@@ -802,12 +749,12 @@ vant.Toast('提示');
 Vue.use(vant.Lazyload);`,
       resources: [
         {
-          name: 'vue',
-          url: base + 'lib/vue@2.6.14.js'
+          name: 'Vue 2',
+          url: 'https://unpkg.com/vue@2.7.14/dist/vue.js'
         },
         {
           name: 'vant',
-          url: base + 'lib/vant@2.12.js'
+          url: 'https://unpkg.com/vant@2.12.54/lib/vant.min.js'
         }
       ]
     },
@@ -869,7 +816,7 @@ layer.draw();`,
       resources: [
         {
           name: 'konva',
-          url: base + 'lib/konva@7.0.3.js'
+          url: 'https://unpkg.com/konva@9.2.0/konva.min.js'
         }
       ]
     },
@@ -897,7 +844,6 @@ const templateList = [
   react,
   elementPlus,
   elementUi,
-  openLayers,
   eCharts,
   g2,
   angular,
@@ -915,7 +861,6 @@ const templateMap = {
   react,
   elementPlus,
   elementUi,
-  openLayers,
   eCharts,
   g2,
   angular,

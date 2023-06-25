@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "@element-plus/icons": "^0.0.11",
-    "@octokit/core": "^3.5.1",
+    "@octokit/core": "^4.2.4",
     "core-js": "^3.6.5",
     "cropperjs": "^1.5.12",
     "dayjs": "^1.10.7",
@@ -71,7 +71,7 @@
     "eslint-plugin-vue": "^7.0.0",
     "fs-extra": "^7.0.1",
     "less": "^4.1.1",
-    "less-loader": "^4.1.0",
+    "less-loader": "^6.2.0",
     "monaco-editor-webpack-plugin": "^5.0.0",
     "prettier": "^1.19.1",
     "vscode-theme-to-monaco-theme-node": "^1.0.0"
