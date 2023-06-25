@@ -480,6 +480,7 @@ const vue = (preprocessor, code, importMap) => {
             let compiledScript = window.Vue3TemplateCompiler.compileScript(
               componentData.descriptor,
               {
+                inlineTemplate: true,
                 refSugar: true,
                 id: Math.random() + ''
               }

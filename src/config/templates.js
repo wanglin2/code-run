@@ -107,7 +107,7 @@ const vue3SFC = {
       importMap: `
 {
     "imports": {
-        "vue": "https://unpkg.com/vue@3.2.37/dist/vue.esm-browser.prod.js"
+        "vue": "https://unpkg.com/vue@3.3.4/dist/vue.esm-browser.js"
     }
 }
             `

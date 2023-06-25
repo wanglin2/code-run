@@ -160,9 +160,13 @@ import moment from 'https://unpkg.com/moment?module'
 
 `livescript`的浏览器使用版本可以直接去其官方仓库下载[browser](https://github.com/gkz/LiveScript/blob/master/browser/)，不过也两年没有更新了。
 
+- `postcss`
+
+可以使用`Browserify` 或 `webpack`把它打包到一个文件中。
+
 - 其他
 
-`postcss`、`stylus`暂时没有找到浏览器使用版本或编译成功，知道的朋友欢迎提个`issue`。
+`stylus`暂时没有找到浏览器使用版本或编译成功，知道的朋友欢迎提个`issue`。
 
 # 新增代码模板
 
