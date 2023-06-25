@@ -23,7 +23,7 @@ import { layoutMap, defaultViewThemeConfig } from '@/config/constants'
 import { useRouter, useRoute } from 'vue-router'
 import { initMonacoEditor } from '@/utils/monacoEditor'
 import nprogress from 'nprogress'
-import { getThemeValue } from '@/utils'
+import { getThemeValue, utoa } from '@/utils'
 
 const props = defineProps({
   // 是否是嵌入模式
@@ -48,7 +48,10 @@ const useInit = () => {
   // 获取当前编辑数据
   const getData = async () => {
     nprogress.start()
-    await store.dispatch('getData', route.params.id)
+    await store.dispatch('getData', {
+      id: route.params.id, 
+      data: route.query.data
+    })
     proxy.$eventEmitter.emit('reset_code')
     nprogress.done()
   }
@@ -57,8 +60,10 @@ const useInit = () => {
     () => {
       return route.params
     },
-    () => {
-      getData()
+    (newVal, oldVal) => {
+      if (newVal.params.id !== oldVal.params.id) {
+        getData()
+      }
     }
   )
   getData()
@@ -69,6 +74,26 @@ const useInit = () => {
     router: useRouter(),
     init
   }
+}
+
+// 将数据保存到query里
+const useQueryStore = (store, router) => {
+  watch(() => {
+    return store.state.editData
+  },() => {
+    if (store.state.githubToken) {
+      return
+    }
+    let data = utoa(JSON.stringify(store.state.editData))
+    router.replace({
+      name: 'Editor',
+      query: {
+        data
+      }
+    })
+  }, {
+    deep: true
+  })
 }
 
 // 布局
@@ -210,6 +235,7 @@ const useTheme = ({ proxy, store, layout }) => {
 
 // created部分
 const { proxy, router, store, init, showContent } = useInit()
+useQueryStore(store, router)
 const { layout, activeLayout } = useLayout({ store })
 const { themeData } = useTheme({ proxy, store, layout })
 const { previewLayoutHandle } = useWindowPreview({

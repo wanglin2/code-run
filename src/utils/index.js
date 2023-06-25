@@ -2,6 +2,7 @@ import { load } from '@/utils/load'
 import transform from '@/utils/transform'
 import { routerMode, base } from '@/config'
 import { defaultViewThemeConfig } from '@/config/constants'
+import { zlibSync, strToU8, strFromU8, unzlibSync } from 'fflate'
 
 /**
  * javascript comment
@@ -181,4 +182,33 @@ export const getThemeValue = (item, data, pageThemeSyncCodeTheme) => {
     }
   }
   return arr[len - 1]
+}
+
+// 压缩数据
+export const utoa = (data) => {
+  // 将字符串转成Uint8Array
+  const buffer = strToU8(data)
+  // 以最大的压缩级别进行压缩，返回的zipped也是一个Uint8Array
+  const zipped = zlibSync(buffer, { level: 9 })
+  // 将Uint8Array重新转换成二进制字符串
+  const binary = strFromU8(zipped, true)
+  // 将二进制字符串编码为Base64编码字符串
+  return btoa(binary)
+}
+
+// 解压缩数据
+export const atou = (base64) => {
+  // 将base64转成二进制字符串
+  const binary = atob(base64)
+  // 检查是否是zlib压缩的数据，zlib header (x78), level 9 (xDA)
+  if (binary.startsWith('\x78\xDA')) {
+      // 将字符串转成Uint8Array
+      const buffer = strToU8(binary, true)
+      // 解压缩
+      const unzipped = unzlibSync(buffer)
+      // 将Uint8Array重新转换成字符串
+      return strFromU8(unzipped)
+  }
+  // 兼容没有使用压缩的数据
+  return decodeURIComponent(escape(binary))
 }

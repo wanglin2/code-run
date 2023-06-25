@@ -1,5 +1,5 @@
 import { createStore } from 'vuex'
-import { generateUUID } from '@/utils'
+import { generateUUID, atou } from '@/utils'
 import { create, request } from '@/utils/octokit'
 // 存储github token的本地存储的key
 const githubTokenSaveKey = 'codeRun:githubToken'
@@ -214,7 +214,7 @@ const store = createStore({
      * @Date: 2021-05-12 19:49:17
      * @Desc:  获取数据
      */
-    getData(ctx, id) {
+    getData(ctx, { id, data }) {
       return new Promise(async resolve => {
         try {
           let parseData = createDefaultData()
@@ -223,6 +223,8 @@ const store = createStore({
               gist_id: id
             })
             parseData = JSON.parse(data.files['coderun.json'].content)
+          } else if (data) {
+            parseData = JSON.parse(atou(data))
           }
           ctx.commit('setEditData', parseData)
           resolve()

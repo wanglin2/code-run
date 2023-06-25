@@ -36,6 +36,8 @@
 
 - [x] 内置支持保存到github gist【[gist API](https://docs.github.com/cn/rest/reference/gists)】，想要保存到自己的存储体系修改也十分简单
 
+- [x] 内置支持在未配置github gist的情况下将变动保存到url中，可方便的将url分享给他人查看
+
 - [x] 内置支持生成和[carbon](https://carbon.now.sh/)一样漂亮美观的代码图片
 
 - [x] 内置使用[unpkg](https://unpkg.com/)及[importmap](https://github.com/WICG/import-maps)支持在浏览器上使用ES模块语法

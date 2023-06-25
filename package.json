@@ -41,6 +41,7 @@
     "dayjs": "^1.10.7",
     "element-plus": "^1.1.0-beta.12",
     "eventemitter3": "^4.0.7",
+    "fflate": "^0.8.0",
     "html2canvas": "^1.3.2",
     "jszip": "^3.7.1",
     "livescript": "^1.6.0",
