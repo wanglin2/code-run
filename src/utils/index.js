@@ -150,7 +150,12 @@ export const newWindowOpenUrl = url => {
  * @Date: 2022-06-23 18:42:01
  * @Desc: 生成分享url
  */
-export const createShareUrl = id => {
+export const createShareUrl = (id, queryData) => {
+  if (queryData) {
+    return `${location.origin}${base}${
+      routerMode === 'hash' ? '#/?data=' + queryData : '/?data=' + queryData
+    }`
+  }
   return `${location.origin}${base}${
     routerMode === 'hash' ? '#/share/' + id : 'share/' + id
   }`
@@ -162,7 +167,12 @@ export const createShareUrl = id => {
  * @Date: 2022-06-23 18:49:05
  * @Desc: 生成嵌入url
  */
-export const createEmbedUrl = id => {
+export const createEmbedUrl = (id, queryData) => {
+  if (queryData) {
+    return `${location.origin}${base}${
+      routerMode === 'hash' ? '#/embed/?data=' + queryData : 'embed/?data=' + queryData
+    }`
+  }
   return `${location.origin}${base}${
     routerMode === 'hash' ? '#/embed/' + id : 'embed/' + id
   }`

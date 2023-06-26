@@ -45,21 +45,21 @@ const useShare = () => {
       shareUrlInput.value.select()
     })
   }
-  const createShareUrl = () => {
+  const createShareUrl = (queryData) => {
     copyDialogTitle.value = '分享'
     copyDialogTip.value = '复制url进行分享吧~'
-    showUrl(createShareUrlUtil(route.params.id))
+    showUrl(createShareUrlUtil(route.params.id, queryData))
   }
-  const createEmbedUrl = () => {
+  const createEmbedUrl = (queryData) => {
     copyDialogTitle.value = '嵌入'
     copyDialogTip.value = '复制url嵌入到你页面的iframe里吧~'
-    showUrl(createEmbedUrlUtil(route.params.id))
+    showUrl(createEmbedUrlUtil(route.params.id, queryData))
   }
-  const createEmbedCode = () => {
+  const createEmbedCode = (queryData) => {
     copyDialogTitle.value = '嵌入'
     copyDialogTip.value = '复制代码插入到你页面里吧~'
     let code = `<iframe height="500" style="width: 100%;" scrolling="no" src="${createEmbedUrlUtil(
-      route.params.id
+      route.params.id, queryData
     )}" frameborder="no" loading="lazy" allowtransparency="true" allowfullscreen="true"></iframe>`
     showUrl(code)
   }
@@ -91,4 +91,8 @@ defineExpose({
 })
 </script>
 
-<style lang="less"></style>
+<style lang="less" scoped>
+.tip {
+  margin-top: 5px;
+}
+</style>

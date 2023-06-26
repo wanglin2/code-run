@@ -2,4 +2,4 @@
 export const routerMode = 'hash'
 
 // 应用的基路径。例如，如果整个单页应用服务在 /app/ 下，然后 base 就应该设为 "/app/"
-export const base = './'
+export const base = '/code-run/'

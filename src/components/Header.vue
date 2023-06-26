@@ -374,7 +374,7 @@ const useDropDownMenu = () => {
   }
   // 隐藏所有下拉菜单
   const hideAllList = extra => {
-    ;[showToolsList, showMoreList]
+    [showToolsList, showMoreList]
       .filter(item => {
         return item !== extra
       })
@@ -396,7 +396,7 @@ const useDropDownMenu = () => {
 }
 
 // 登录退出
-const useLogin = ({ store, router }) => {
+const useLogin = ({ store, router, route }) => {
   const githubTokenInputDialogVisible = ref(false)
   const githubTokenValue = ref('')
   // github token
@@ -424,6 +424,11 @@ const useLogin = ({ store, router }) => {
     store.dispatch('saveGithubToken', trimValue)
     githubTokenInputDialogVisible.value = false
     githubTokenValue.value = ''
+    if (route.name === 'Editor' && !!route.query.data) {
+      router.replace({
+        name: 'Editor'
+      })
+    }
   }
   // 取消输入
   const cancelGithubTokenValueInput = () => {
@@ -458,8 +463,11 @@ const useTitle = ({ store }) => {
 // 保存
 const useSave = ({ githubToken, login, store, router, route }) => {
   const loading = ref(false)
+  const hasQueryData = computed(() => {
+    return route.name === 'Editor' && !!route.query.data
+  })
   const isEdit = computed(() => {
-    return route.name === 'Edit' && !!route.params.id
+    return (route.name === 'Edit' && !!route.params.id) || hasQueryData.value
   })
   const createData = () => {
     let data = {
@@ -513,7 +521,8 @@ const useSave = ({ githubToken, login, store, router, route }) => {
     save,
     loading,
     createNew,
-    isEdit
+    isEdit,
+    hasQueryData
   }
 }
 
@@ -603,11 +612,11 @@ const useDrawer = ({ router, route, githubToken, login }) => {
 
 // 分享
 const ShareComp = ref(null)
-const useShare = () => {
+const useShare = (hasQueryData, route) => {
   const methods = {}
   ;['createShareUrl', 'createEmbedUrl', 'createEmbedCode'].forEach(method => {
-    methods[method] = (...args) => {
-      ShareComp.value[method](...args)
+    methods[method] = () => {
+      ShareComp.value[method](hasQueryData.value ? encodeURIComponent(route.query.data) : null)
     }
   })
 
@@ -624,7 +633,7 @@ const {
   cancelGithubTokenValueInput,
   login,
   logout
-} = useLogin({ store, router })
+} = useLogin({ store, router, route })
 const {
   showToolsList,
   toggleToolsList,
@@ -651,7 +660,7 @@ const {
   openSetting
 } = useSettingDialog()
 const { codeTitle, onCodeTitleInput } = useTitle({ store })
-const { save, loading, createNew, isEdit } = useSave({
+const { save, loading, createNew, isEdit, hasQueryData } = useSave({
   githubToken,
   login,
   store,
@@ -671,7 +680,7 @@ const {
   gistCurrentChange,
   gistPageNo
 } = useDrawer({ router, route, githubToken, login })
-const { createShareUrl, createEmbedUrl, createEmbedCode } = useShare()
+const { createShareUrl, createEmbedUrl, createEmbedCode } = useShare(hasQueryData, route)
 </script>
 
 <style scoped lang="less">

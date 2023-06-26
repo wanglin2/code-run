@@ -9,6 +9,7 @@ import vantIcon from '../assets/templateIcons/vant.png'
 import leafletIcon from '../assets/templateIcons/leaflet.png'
 import konvaIcon from '../assets/templateIcons/konva.png'
 import es6Icon from '../assets/templateIcons/es6.webp'
+import mindMapIcon from '../assets/templateIcons/mindMap.png'
 
 /*
 const = {
@@ -41,6 +42,70 @@ const = {
     },
 }
 */
+
+const mindMap = {
+  name: '思维导图',
+  icon: mindMapIcon,
+  code: {
+      HTML: {
+          language: 'html',
+          content: `<div id="mindMapContainer"></div>`,
+          resources: []
+      },
+      CSS: {
+          language: 'css',
+          content: `
+#mindMapContainer {
+  width: 800px;
+  height: 500px;
+}
+
+#mindMapContainer * {
+  margin: 0;
+  padding: 0;
+}          
+`,
+          resources: [
+            {
+              name: 'simple-mind-map',
+              url: 'https://unpkg.com/simple-mind-map@0.6.3/dist/simpleMindMap.esm.css'
+            }
+          ]
+      },
+      JS: {
+          language: 'javascript',
+          content: `
+import MindMap from "simple-mind-map";
+
+const mindMap = new MindMap({
+  el: document.getElementById('mindMapContainer'),
+  data: {
+    "data": {
+        "text": "根节点"
+    },
+    "children": []
+  }
+});
+          `,
+          resources: [{
+              name: '',
+              url: ''
+          }],
+          importMap: `
+{
+    "imports": {
+        "simple-mind-map": "https://unpkg.com/simple-mind-map@0.6.3/dist/simpleMindMap.esm.js"
+    }
+}
+            `
+      },
+      VUE: {
+          language: 'vue2',
+          content: ``,
+          resources: []
+      }
+  },
+}
 
 const es6Module = {
   name: '使用ES6模块语法',
@@ -835,6 +900,7 @@ layer.draw();`,
  * @Desc: 模板列表
  */
 const templateList = [
+  mindMap,
   es6Module,
   vue3SFC,
   vue2SFC_ESM,
@@ -852,6 +918,7 @@ const templateList = [
   konva
 ]
 const templateMap = {
+  mindMap,
   es6Module,
   vue3SFC,
   vue2SFC_ESM,

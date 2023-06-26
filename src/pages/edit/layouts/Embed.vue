@@ -201,7 +201,7 @@ const reRunCode = () => {
 }
 
 const toCodeRun = () => {
-  newWindowOpenUrl(createShareUrl(route.params.id))
+  newWindowOpenUrl(createShareUrl(route.params.id, route.query.data ? encodeURIComponent(route.query.data) : null))
 }
 </script>
 

@@ -33,6 +33,11 @@ const routes = [
     path: '/embed/:id',
     name: 'Embed',
     component: Embed
+  },
+  {
+    path: '/embed/',
+    name: 'QueryEmbed',
+    component: Embed
   }
 ]
 

@@ -47,13 +47,17 @@ const useInit = () => {
   const route = useRoute()
   // 获取当前编辑数据
   const getData = async () => {
-    nprogress.start()
-    await store.dispatch('getData', {
-      id: route.params.id, 
-      data: route.query.data
-    })
-    proxy.$eventEmitter.emit('reset_code')
-    nprogress.done()
+    try {
+      nprogress.start()
+      await store.dispatch('getData', {
+        id: route.params.id, 
+        data: route.query.data
+      })
+      proxy.$eventEmitter.emit('reset_code')
+      nprogress.done()
+    } catch (error) {
+      nprogress.done()
+    }
   }
   // 监听路由变化
   watch(
@@ -61,7 +65,7 @@ const useInit = () => {
       return route.params
     },
     (newVal, oldVal) => {
-      if (newVal.params.id !== oldVal.params.id) {
+      if (newVal.id !== oldVal.id) {
         getData()
       }
     }

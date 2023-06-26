@@ -1,6 +1,7 @@
 import { createStore } from 'vuex'
 import { generateUUID, atou } from '@/utils'
 import { create, request } from '@/utils/octokit'
+import { ElMessage } from 'element-plus'
 // 存储github token的本地存储的key
 const githubTokenSaveKey = 'codeRun:githubToken'
 
@@ -215,7 +216,7 @@ const store = createStore({
      * @Desc:  获取数据
      */
     getData(ctx, { id, data }) {
-      return new Promise(async resolve => {
+      return new Promise(async (resolve, reject) => {
         try {
           let parseData = createDefaultData()
           if (id) {
@@ -230,6 +231,8 @@ const store = createStore({
           resolve()
         } catch (e) {
           console.log(e)
+          ElMessage.error('请求失败')
+          reject(e)
         }
       })
     },
